@@ -55,7 +55,13 @@ namespace Silicus.Ensure.Web.Controllers
         // GET: Employee
         public ActionResult Index()
         {
-            return View("EmployeeList");
+            var model = new EmployeeTestSuitAssignementViewmodel();
+            model.EmployeeList = GetUserDetails();
+            
+            model.TestSuitList = _testSuiteService.GetTestSuiteDetails()
+                              .Where(m => m.IsDeleted == false && m.IsExternal == false).OrderByDescending(m => m.TestSuiteId);
+
+            return View("EmployeeList", model);
             //return View("AssigedTest");
         }
 
@@ -73,10 +79,11 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetEmployeeassigedforTestSuits(int suitId)
         {
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId).Select(ts => ts.EmployeeId).ToList<int>();
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId && ts.StatusId == 2).Select(ts => ts.EmployeeId).ToList<int>();
 
             return Json(TestSuits, JsonRequestBehavior.AllowGet);
         }
+
         private int GetUtilityId()
         {
             var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
@@ -116,7 +123,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         }
 
-        public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
+        private List<SelectListItem> GetUserDetails()
         {
             var userlist = _containerUserService.GetAllUsers();
             var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
@@ -127,24 +134,13 @@ namespace Silicus.Ensure.Web.Controllers
                                  join allUsers in userlistViewModel
                                  on userinRoles.UserId equals allUsers.UserId
                                  where userinRoles.IsActive
-                                 select new UserDetailViewModel
+                                 select new SelectListItem
                                  {
-                                     RoleName = userinRoles?.Role?.Name,
-                                     UserName = allUsers.UserName,
-                                     Department = allUsers.Department,
-                                     Designation = allUsers.Designation,
-                                     Email = allUsers.Email,
-                                     FirstName = allUsers.FirstName,
-                                     FullName = allUsers.FullName,
-                                     LastName = allUsers.LastName,
-                                     MiddleName = allUsers.MiddleName,
-                                     EmployeeId = allUsers.EmployeeId,
-                                     RoleId = userinRoles.Role.ID,
-                                     UserId = allUsers.UserId
+                                     Text = allUsers.FullName,
+                                     Value = allUsers.UserId.ToString()
                                  }).ToList();
 
-            DataSourceResult result = userWithRoles.ToDataSourceResult(request);
-            return Json(result);
+            return userWithRoles;
         }
 
         public ActionResult GetEmployeeTestSuits([DataSourceRequest] DataSourceRequest request)
@@ -368,41 +364,41 @@ namespace Silicus.Ensure.Web.Controllers
             //return View();
         }
 
-        public ActionResult GetEmployeeTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
-        {
-            _testSuiteService.TestSuiteActivation();
-            var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails()
-                .Where(model => model.IsDeleted == false && model.IsExternal == false).OrderByDescending(model => model.TestSuiteId).ToArray();
-            var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
-            bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
-            //var testSuitId = _testSuiteService.GetEmployeeTestSuiteByEmployeeId(UserId);
-            //foreach (var item in viewModels)
-            //{
-            //    if (testSuitId != null)
-            //    {
-            //        if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
-            //        {
-            //            item.IsAssigned = true;
-            //        }
-            //    }
-            //    if (item.Position.HasValue)
-            //    {
-            //        item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
-            //    }
-            //    else
-            //    {
-            //        item.PositionName = "Not assigned";
-            //    }
-            //    List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
-            //    item.PrimaryTagNames = string.Join(",", (from a in tags
-            //                                             where TagId.Contains(a.TagId)
-            //                                             select a.TagName));
-            //    item.StatusName = ((TestSuiteStatus)item.Status).ToString();
-            //    item.UserInRole = userInRole;
-            //}
-            return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
+        //public ActionResult GetEmployeeTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
+        //{
+        //    //_testSuiteService.TestSuiteActivation();
+        //    //var tags = _tagsService.GetTagsDetails();
+        //    var testSuitelist = _testSuiteService.GetTestSuiteDetails()
+        //        .Where(model => model.IsDeleted == false && model.IsExternal == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+        //    var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+        //    //bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
+        //    //var testSuitId = _testSuiteService.GetEmployeeTestSuiteByEmployeeId(UserId);
+        //    //foreach (var item in viewModels)
+        //    //{
+        //    //    if (testSuitId != null)
+        //    //    {
+        //    //        if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
+        //    //        {
+        //    //            item.IsAssigned = true;
+        //    //        }
+        //    //    }
+        //    //    if (item.Position.HasValue)
+        //    //    {
+        //    //        item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        item.PositionName = "Not assigned";
+        //    //    }
+        //    //    List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+        //    //    item.PrimaryTagNames = string.Join(",", (from a in tags
+        //    //                                             where TagId.Contains(a.TagId)
+        //    //                                             select a.TagName));
+        //    //    item.StatusName = ((TestSuiteStatus)item.Status).ToString();
+        //    //    item.UserInRole = userInRole;
+        //    //}
+        //    return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        //}
 
         private Position GetPosition(int positionId)
         {

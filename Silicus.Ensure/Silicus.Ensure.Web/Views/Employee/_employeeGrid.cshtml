@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Models.UserBusinessModel
+﻿@model Silicus.Ensure.Web.Models.EmployeeTestSuitAssignementViewmodel
 @using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 @using System.Linq
@@ -13,107 +13,114 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             <div class="form-group">
-                @(Html.Kendo().DropDownList()
-          .Name("DDTestSuit")
-          .DataTextField("TestSuiteName")
-          .DataValueField("TestSuiteId")
-        .Events(e =>
-                            {
-                                e.DataBound("getAssignedEmpID")
-                                .Change("getAssignedEmpID");
-                            })
-          .DataSource(source =>
-          {
-              source.Custom()
-
-                  .Transport(transport =>
-                  {
-                      transport.Read("GetEmployeeTestSuiteDetails", "Employee");
-                  })
-                  .Schema(schema =>
-                  {
-                      schema.Data("Data")
-                            .Total("Total");
-                  });
-
-          })
-
-
+                @(Html.Kendo().DropDownListFor(c => c.SelectedEmployeeId)
+                       .BindTo(Model.TestSuitList)
+                        .Name("DDTestSuit")
+                        .DataTextField("TestSuiteName")
+                        .DataValueField("TestSuiteId")
+                        .Events(e =>
+                        {
+                            e.DataBound("getAssignedEmpID")
+                            .Change("getAssignedEmpID");
+                        })
                 )
             </div>
         </div>
     </div>
     <button type="button" id="Savebtn" style="width:70px;" class="btn green">Save</button>
-    
+
 </div>
 
 <br />
 <div class="">
     @if (Request.IsAuthenticated)
     {
-        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("EmployeeGrids")
-         .Columns(columns =>
-         {
-             columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);
-             columns.Bound(c => c.FullName).Title("Name");
-             columns.Bound(p => p.RoleName).Title("Role name");
-             columns.Bound(p => p.EmployeeId).Title("EmployeeId");
-             columns.Bound(p => p.Email);
-             //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','New') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
-             //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
-             //columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(650).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px;font-size:14px;text-transform:initial;' class='btn green' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' style='font-size:14px;text-transform:initial;' class='btn green' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <p class="font18">Employee List</p>
+            @Html.ListBox("ddl-employee-list", Model.EmployeeList, new { @class = "form-control" })
+        </div>
 
-         })
-            .DataSource(dataSource => dataSource.Ajax().Model(model =>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 arrow-wrapper">
+            <button class="btn btn-xs" id="btnMovetoSelected"><span class="btn btn-xs" type=""><span class="fa fa-angle-double-right fa-2x"></span></span></button><br /><br />
+            <button class="btn btn-xs" id="btnMovetoNotSelected"><span class="btn btn-xs" type=""><span class="fa fa-angle-double-left fa-2x"></span></span></button>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <p class="font18">Selected Employee</p>
+            <select multiple class="form-control" id="ddl-selectedEmployee-List"></select>
+        </div>
+
+
+        @*@(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("EmployeeGrids")
+            .Columns(columns =>
             {
-                model.Id(p => p.Email);
-                model.Field(p => p.Email).Editable(false);
-            })
+                columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);
+                columns.Bound(c => c.FullName).Title("Name");
+                columns.Bound(p => p.RoleName).Title("Role name");
+                columns.Bound(p => p.EmployeeId).Title("EmployeeId");
+                columns.Bound(p => p.Email);
+                //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','New') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
+                //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
+                //columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(650).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px;font-size:14px;text-transform:initial;' class='btn green' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' style='font-size:14px;text-transform:initial;' class='btn green' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
 
-            .Read(read => read.Action("GetUserDetails", "Employee")).ServerOperation(false)
-            //.Create(update => update.Action("CreateUser", "User"))
-            //.Update(update => update.Action("UpdateUser", "User"))
-            //.Destroy(update => update.Action("DeleteUser", "User"))
-            .PageSize(100))
-            .Pageable(pager => { pager.PageSizes(false); })
-            .Sortable()
-            .HtmlAttributes(new { style = "height: 70vh;" })
-             .Scrollable(scrollable => scrollable.Virtual(true))
-              .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
-            //.Resizable(resizing => resizing.Columns(true))
-        )
+            })
+               .DataSource(dataSource => dataSource.Ajax().Model(model =>
+               {
+                   model.Id(p => p.Email);
+                   model.Field(p => p.Email).Editable(false);
+               })
+
+               .Read(read => read.Action("GetUserDetails", "Employee")).ServerOperation(false)
+               //.Create(update => update.Action("CreateUser", "User"))
+               //.Update(update => update.Action("UpdateUser", "User"))
+               //.Destroy(update => update.Action("DeleteUser", "User"))
+               .PageSize(100))
+               .Pageable(pager => { pager.PageSizes(false); })
+               .Sortable()
+               .HtmlAttributes(new { style = "height: 70vh;" })
+                .Scrollable(scrollable => scrollable.Virtual(true))
+                 .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+               //.Resizable(resizing => resizing.Columns(true))*@
+        //)
     }
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#chkselectallEmployeeRecord').on('click', function (e) {
-            $('.EmployeeSelection').prop('checked', $(this).is(':checked'));
+        $('#btnMovetoSelected').click(function (e) {
+            var selectedOpts = $('#ddl-employee-list option:selected');
+            if (selectedOpts.length == 0) {
+                alert("Nothing to move.");
+                e.preventDefault();
+            }
+            $('#ddl-selectedEmployee-List').append($(selectedOpts).clone());
+            $(selectedOpts).remove();
+            e.preventDefault();
         });
-       
 
-        function GenerateSelectedEmpArray() {
-            var row = $("#EmployeeGrids").data("kendoGrid").tbody.find('tr');
-            var SelectedTrans = new Array();
-
-            $.each(row, function (index) {
-                var checkbox = $(this).find('input.EmployeeSelection')[0];
-                if ($(checkbox).is(':checked')) {
-                    SelectedTrans.push($(checkbox).attr("id"));
-                }
-            });
-            return SelectedTrans;
-        }
+        $('#btnMovetoNotSelected').click(function (e) {
+            var selectedOpts = $('#ddl-selectedEmployee-List option:selected');
+            if (selectedOpts.length == 0) {
+                alert("Nothing to move.");
+                e.preventDefault();
+            }
+            $('#ddl-employee-list').append($(selectedOpts).clone());
+            $(selectedOpts).remove();
+            e.preventDefault();
+        });
 
         $("#Savebtn").bind("click", function () {
             showCustomLoader();
-            var empArray = GenerateSelectedEmpArray();
+            var empArray = new Array();
+
+            $('#ddl-selectedEmployee-List').find('option').each(function () {
+                empArray.push($(this).val());
+            });
+            
             var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
-           
+
             if (empArray.length > 0 && testSuitData.value() > 0) {
-                //var uId = $("#CurrentUser").val();
-                //var IsReAssign = $("#IsReAssign").val();
-                //var checkvals = $("[class='check']:checked").attr("value")
 
                 $('#myEmpModal').find('input[type=checkbox]:checked').removeAttr('checked');
                 $.ajax({
@@ -124,19 +131,9 @@
                     data: { SuiteId: testSuitData.value(), UserList: empArray },
                     contenttype: "application/json; charset=utf-8",
                     success: function (returndata) {
-                        if (returndata == 1) {
-
-                            //$('#myEmpModal').fadeOut();
-
-                            ShowMessage("Test suite assigned successfully.", 1);
-
-                            $('#EmployeeGrids').data('kendoGrid').dataSource.read();
-
-                            //$('#EmployeeGrids').data('kendoGrid').refresh();
+                        if (returndata == 1) { 
+                            ShowMessage("Test suite assigned successfully.", 1);                          
                             $(".loader-overlay").hide();
-                            //$(".modal-scrollable").hide();
-                            //$(".modal-backdrop").hide();
-
                         }
                     },
                     error: function (er) {
@@ -152,49 +149,41 @@
 
     });
 
+    function appendAndRemove(lstBoxId, selectedOpts, permission) {
+        $.each(selectedOpts, function (index, value) {
+            var fieldId = selectedOpts[index].value;
+            if ($(selectedOpts[index]).attr(permission) === 'true') {
+                $('#' + lstBoxId).append($(selectedOpts[index]).clone());
+                $(selectedOpts[index]).remove();
+            }
+        });
+    }
 
-    function getAssignedEmpID()
-    {      
+    function getAssignedEmpID() {
         var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
         $.ajax({
-            type:'get',
+            type: 'get',
             url: "/Employee/GetEmployeeassigedforTestSuits",
             data: { suitId: testSuitData.value() },
             success: function (empList) {
-               // debugger;
-                $.each(empList, function (index, data) {
-                    $('#' + data).prop('checked', true);
-                });
-               
+                var obj = $("#ddl-employee-list option");
+                var selectedEmp = new Array();
+                for (i = 0; i < obj.length; i++) {
+                    $.each(empList, function (index, data) {
+                        if (obj[i].value == data) {
+                            selectedEmp.push(obj[i]);
+                            $("#Enmarcado option[value='" + obj[i].value + "']").remove();
+                        }
+                    });
+
+                }
+                $('#ddl-selectedEmployee-List').append(selectedEmp);
+
             },
             error: function (er) {
                 $(".loader-overlay").hide();
             }
         });
-        }
-    @*function AssignEmployeeTest(UserId, TestStatus) {
-        $(".modal-scrollable").show();
-        $(".modal-backdrop").show();
-        if (TestStatus == '@CandidateStatus.New.ToString()') {
-            showCustomLoader();
-            $('#assignTestHeader').text('Assign Employee Test');
-            $.ajax({
-                type: 'post',
-                async: false,
-                url: "/Employee/EmployeeSuit",
-                cache: false,
-                data: { UserId: UserId },
-                contenttype: "application/json; charset=utf-8",
-                success: function (data) {
-                    $("#EmployeeInfo").html(data);
-                    $('#myEmpModal').fadeIn();
-                    $('#myEmpModal').modal();
-                }
-            });
-        }
-        else {
-            alert("Sorry! Can't perform this operation.");
-            $(".loader-overlay").hide();
-        }
-    }*@
+    }
+    
 </script>
