@@ -20,6 +20,7 @@ using Silicus.Ensure.Web.Models.Employee;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IQuestionService _questionService;
