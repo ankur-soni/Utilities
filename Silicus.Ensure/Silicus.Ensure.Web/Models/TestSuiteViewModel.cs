@@ -91,6 +91,7 @@ namespace Silicus.Ensure.Web.Models
 
         public bool IsAssigned { get; set; }
 
+        [Required(ErrorMessage = "Is External is required.")]
         [Display(Name = "Is External")]
         public bool? IsExternal { get; set; }
     }
