@@ -20,6 +20,22 @@
         $("#employee-link a span.arrow").addClass("open");
         SetNavigationMenuActive('Marksheer');
     });
+
+    function KendoVauesFilterDropdown(args) {
+        var data = [
+                        { text: "Test assigned", value: "2" },
+                        { text: "Test submitted", value: "3" },
+                        { text: "Under evaluation", value: "4" }
+        ];
+        args.element.kendoDropDownList({
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource: data,
+            autoBind: false,
+            valuePrimitive: true,
+            
+        });
+    }
 </script>
 
 <div class="table-responsive">
@@ -50,7 +66,8 @@
                                                                         else{#
                                                                             #=StatusId#
                                                                         #}
-                                                                        #").Title("Status").Width(250); ;
+                                                                        #").Title("Status").Width(250).Filterable(f => f.Cell(c => c.Operator("eq")
+                .Template("KendoVauesFilterDropdown")));
 
          })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
