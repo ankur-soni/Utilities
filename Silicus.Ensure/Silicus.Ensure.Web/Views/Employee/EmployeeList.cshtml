@@ -1,4 +1,4 @@
-﻿
+﻿@model Silicus.Ensure.Web.Models.EmployeeTestSuitAssignementViewmodel
 @{
     ViewBag.Title = "EmployeeList";
 }
@@ -12,7 +12,7 @@
         SetNavigationMenuActive('AssignedTest');
     });
 </script>
-@Html.Partial("_employeeGrid")
+@Html.Partial("_employeeGrid", Model)
 
 <div id="myEmpModal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
     <div class="modal-header">

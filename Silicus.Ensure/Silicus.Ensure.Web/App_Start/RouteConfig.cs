@@ -14,7 +14,7 @@ namespace Silicus.Ensure.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Admin", action = "Candidates", id = UrlParameter.Optional }
+                defaults: new { controller = "Employee", action = "AssignedTest", id = UrlParameter.Optional }
                 );
         }
     }
