@@ -51,9 +51,9 @@
                             @Html.LabelFor(model => model.IsExternal) <span style="color:red;">*</span>
                         </div>
                         <div class="col-md-4">
-                            @Html.RadioButtonFor(model => model.IsExternal, true, true) Yes  
+                            @Html.RadioButtonFor(model => model.IsExternal, true, true) Yes
                             @Html.RadioButtonFor(model=>model.IsExternal, false, false) No 
-                            @Html.ValidationMessageFor(model => model.IsExternal, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.IsExternal,"", new { @class = "text-danger" })
                         </div>
                     </div>
 
