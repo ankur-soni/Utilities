@@ -50,6 +50,7 @@
              columns.Bound(p => p.EmployeeId).Title("EmployeeId");
              columns.Bound(p => p.MaxScore).Title("Total Marks");
              columns.Bound(p => p.MarksObtained);
+             columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
                                                                             Test assigned

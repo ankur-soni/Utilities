@@ -116,6 +116,7 @@ namespace Silicus.Ensure.Web.Controllers
                                    MarksObtained = tests.EmployeeTestDetails.Select(x=>x.Mark).Sum(),
                                    TestSuitId = tests.TestSuiteId,
                                    TestSuitName = testDetail.TestSuiteName,
+                                   AttemptDate = tests.AttemptDate,
                                    StatusId = tests.StatusId
                                }).ToList();
 
@@ -255,6 +256,7 @@ namespace Silicus.Ensure.Web.Controllers
             EmployeeTestSuite testSuit = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuiteId);
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
+            testSuit.AttemptDate = DateTime.Now;
             _testSuiteService.UpdateEmployeeTestSuite(testSuit);
 
             // Calculate marks on test submit.

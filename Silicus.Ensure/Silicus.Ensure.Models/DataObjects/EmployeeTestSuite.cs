@@ -34,6 +34,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public DateTime? CreatedDate { get; set; }
 
+        public DateTime? AttemptDate { get; set; }
+
         public virtual ICollection<EmployeeTestDetails> EmployeeTestDetails { get; set; }
     }
 }
