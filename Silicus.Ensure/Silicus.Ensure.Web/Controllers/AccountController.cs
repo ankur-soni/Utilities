@@ -18,10 +18,10 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult Login(string returnUrl, string userName)
         {
 
-            if (!Request.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "CandidateAccount");
-            }
+            //if (!Request.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Login", "CandidateAccount");
+            //}
 
             if (string.IsNullOrWhiteSpace(userName) && HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
             {
@@ -61,17 +61,17 @@ namespace Silicus.Ensure.Web.Controllers
                 case RoleName.Candidate:
                     return RedirectToAction("Welcome", "Candidate");
                     break;
-                case RoleName.Panel:
-                    return RedirectToAction("Candidates", "Admin");
-                    break;
-                case RoleName.Admin:
-                    return RedirectToAction("Candidates", "Admin");
-                    break;
-                case RoleName.Recruiter:
-                    return RedirectToAction("Candidates", "Admin");
-                    break;
+                //case RoleName.Panel:
+                //    return RedirectToAction("Candidates", "Admin");
+                //    break;
+                //case RoleName.Admin:
+                //    return RedirectToAction("Candidates", "Admin");
+                //    break;
+                //case RoleName.Recruiter:
+                //    return RedirectToAction("Candidates", "Admin");
+                //    break;
                 default:
-                    return View();
+                    return RedirectToAction("AssignedTest", "Employee");
                     break;
             }
         }
@@ -93,7 +93,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public void SignOut()
         {
-            string callbackUrl = Url.Action("Candidates", "Admin", routeValues: null, protocol: Request.Url.Scheme);
+            string callbackUrl = Url.Action("AssignedTest", "Employee", routeValues: null, protocol: Request.Url.Scheme);
             string[] cookies = HttpContext.Request.Cookies.AllKeys;
             HttpContext.GetOwinContext().Authentication.SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },
