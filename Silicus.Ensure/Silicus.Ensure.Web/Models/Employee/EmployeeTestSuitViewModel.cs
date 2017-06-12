@@ -44,6 +44,8 @@ namespace Silicus.Ensure.Web.Models.Employee
 
         public string TestSuitName { get; set; }
 
+        public DateTime? AttemptDate { get; set; }
+
         public int StatusId { get; set; }
     }
 }
