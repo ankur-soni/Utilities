@@ -1,6 +1,7 @@
 ﻿using Silicus.Encourage.Models;
 using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.Web.Mvc;
 
 namespace Silicus.EncourageWithAzureAd.Web.Models
@@ -31,5 +32,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public string ReviewerName { get; set; }
+        public int EncourageReviewerId { get; set; }
     }
 }

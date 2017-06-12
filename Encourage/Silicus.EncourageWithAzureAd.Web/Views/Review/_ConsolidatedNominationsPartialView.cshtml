@@ -80,7 +80,7 @@
                             {
                                 foreach (var reviewer in Model.Reviewers)
                                 {
-                                    var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                                    var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.EncourageReviewerId && rc.CriteriaId == criteria.Id);
                                     <td class="points">
                                         @(reviewerComment != null ? (reviewerComment.Credit*reviewerComment.Weightage/100m).ToString("F") : "-")
                                     </td>

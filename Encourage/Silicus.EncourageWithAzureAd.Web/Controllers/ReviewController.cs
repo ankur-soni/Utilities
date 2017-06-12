@@ -601,7 +601,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.RoleId == (int)Roles.Reviewer && x.UtilityId == utility.Id).ToList();
             }
           
-           // var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
+            var encourageReviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
 
             foreach (var reviewer in activeReviewers)
             {
@@ -610,6 +610,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 {
                     Id = reviewer.Id,
                     UserId = reviewer.UserId,
+                    EncourageReviewerId = encourageReviewers.FirstOrDefault(z => z.UserId == reviewer.UserId) != null ? encourageReviewers.FirstOrDefault(z => z.UserId == reviewer.UserId).Id : 0,
                     ReviewerName = reviewerObj != null ? reviewerObj.FirstName + " " + reviewerObj.LastName : ""
                 });
             }
