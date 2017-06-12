@@ -51,8 +51,9 @@
                             @Html.LabelFor(model => model.IsExternal) <span style="color:red;">*</span>
                         </div>
                         <div class="col-md-4">
-                            @Html.RadioButtonFor(model => model.IsExternal, true, true) Yes
-                            @Html.RadioButtonFor(model=>model.IsExternal, false, false) No 
+                            @Html.RadioButtonFor(model => model.IsExternal, true) Yes
+                            @Html.RadioButtonFor(model=>model.IsExternal, false) No 
+                            @*<div id="IsExtenalError"></div>*@
                             @Html.ValidationMessageFor(model => model.IsExternal,"", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -438,7 +439,16 @@
                                         return isAvailable;
                                     }
                                     return true;
-                                }
+                                }//,
+                                //IsExternal: function (input, params) {
+                                //    //debugger
+                                //    if (input.is("[name=IsExternal]") && !input.is(":checked")) {
+                                //        input.attr("data-IsExternal-msg", "IsExternal required.");
+                                //        input.attr("class", "k-invalid");
+                                //        return false;
+                                //    }
+                                //    return true;
+                                //}
                             }
                         });
 
@@ -486,6 +496,13 @@
                                 if (!isNaN(value)) sum += value;
                             });
                             var validatable = $("form").kendoValidator().data("kendoValidator");
+
+                            //if (!($("#IsExternal").is(':checked'))) {
+                            //    $("#IsExtenalError").html("Is External is required.");
+                            //}
+                            //else {
+                            //    $("#IsExtenalError").html("");
+                            //}
 
                             if (validatable.validate()) {
                                 if (sum != 100) {
