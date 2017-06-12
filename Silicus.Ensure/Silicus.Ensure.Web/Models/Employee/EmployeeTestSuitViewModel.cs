@@ -17,8 +17,11 @@ namespace Silicus.Ensure.Web.Models.Employee
         public int PracticalCount { get; set; }
         public int Duration { get; set; }
         public int RemainingTime { get; set; }
+        public int? MarksObtained { get; set; }
         public int TotalQuestionCount { get; set; }
         public int DurationInMin { get; set; }
+        public DateTime? AttemptDate { get; set; }
+       
         public int ExtraCount { get; set; }
         public string SpecialInstruction { get; set; }
         public QuestionNavigationViewModel NavigationDetails { get; set; }

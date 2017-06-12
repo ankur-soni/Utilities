@@ -58,7 +58,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var model = new EmployeeTestSuitAssignementViewmodel();
             model.EmployeeList = GetUserDetails();
-            
+
             model.TestSuitList = _testSuiteService.GetTestSuiteDetails()
                               .Where(m => m.IsDeleted == false && m.IsExternal == false).OrderByDescending(m => m.TestSuiteId);
 
@@ -113,7 +113,7 @@ namespace Silicus.Ensure.Web.Controllers
                                    EmployeeId = users.EmployeeID,
                                    EmpName = users.DisplayName,
                                    MaxScore = tests.MaxScore,
-                                   MarksObtained = tests.EmployeeTestDetails.Select(x=>x.Mark).Sum(),
+                                   MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum(),
                                    TestSuitId = tests.TestSuiteId,
                                    TestSuitName = testDetail.TestSuiteName,
                                    AttemptDate = tests.AttemptDate,
@@ -140,7 +140,7 @@ namespace Silicus.Ensure.Web.Controllers
                                  {
                                      Text = allUsers.FullName,
                                      Value = allUsers.UserId.ToString()
-                                 }).OrderBy(t=>t.Text).Distinct< SelectListItem>().ToList();
+                                 }).OrderBy(t => t.Text).Distinct<SelectListItem>().ToList();
 
             return userWithRoles;
         }
@@ -152,28 +152,28 @@ namespace Silicus.Ensure.Web.Controllers
 
             var empTestSuits = _testSuiteService.GetEmployeeTestSuite(user.ID);
             var testSuits = _testSuiteService.GetTestSuiteDetails();
-            var userlistViewModel = _mappingService.Map<IEnumerable<EmployeeTestSuite>, IEnumerable<Models.Employee.EmployeeTestSuitViewModel>>(empTestSuits);
+            
+            var TestResults = (from tests in empTestSuits
+                               join masterTest in testSuits
+                                on tests.TestSuiteId equals masterTest.TestSuiteId
+                               select new Models.Employee.EmployeeTestSuitViewModel
+                               {
+                                   EmployeeTestSuiteId = tests.EmployeeTestSuiteId,
+                                   TestSuiteId = tests.TestSuiteId,
+                                   TestSuitName = masterTest.TestSuiteName,
+                                   EmployeeId = tests.EmployeeId,
+                                   MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum(),
+                                   ObjectiveCount = tests.ObjectiveCount,
+                                   PracticalCount = tests.PracticalCount,
+                                   Duration = tests.Duration,
+                                   TotalQuestionCount = tests.ObjectiveCount + tests.PracticalCount,
+                                   AttemptDate = tests.AttemptDate,
+                                   StatusId = (CandidateStatus)tests.StatusId
+                               }).ToList();
 
-            #region Custom Map - Name Of Test Suit
-            try
-            {
-                if (empTestSuits.Any() && testSuits.Any())
-                {
-                    var empTestSuitIds = empTestSuits.Select(p => p.TestSuiteId).ToList();
-                    var relatedTestSuits = testSuits.Where(p => empTestSuitIds.Contains(p.TestSuiteId));
-                    Dictionary<int, string> testSuiteMap = relatedTestSuits.ToDictionary(x => x.TestSuiteId, x => x.TestSuiteName);
-                    foreach (var item in userlistViewModel)
-                        if (testSuiteMap.ContainsKey(item.TestSuiteId))
-                            item.TestSuitName = testSuiteMap[item.TestSuiteId];
-                }
-            }
-            catch (Exception)
-            {
-                //TBD - Graceful Failure
-            }
-            #endregion
 
-            DataSourceResult result = userlistViewModel.ToDataSourceResult(request);
+
+            DataSourceResult result = TestResults.ToDataSourceResult(request);
             return Json(result);
         }
 

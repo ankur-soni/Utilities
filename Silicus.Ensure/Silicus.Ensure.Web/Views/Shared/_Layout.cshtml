@@ -189,7 +189,7 @@
                     <div class="page-sidebar navbar-collapse collapse">
                         <!-- BEGIN SIDEBAR MENU -->
                         
-                        @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                        @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()) || role.Contains(RoleName.Employee.ToString()))
                         {
                             <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                                 <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->

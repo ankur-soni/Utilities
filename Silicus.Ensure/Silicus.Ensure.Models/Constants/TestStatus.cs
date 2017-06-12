@@ -19,7 +19,9 @@
         Candidate = 1,
         Panel = 2,
         Admin = 3,
-        Recruiter = 4
+        Recruiter = 4,
+        Employee = 5
+
     }
 
     public enum Year
