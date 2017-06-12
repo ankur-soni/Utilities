@@ -93,7 +93,7 @@ namespace Silicus.Ensure.Web.Models
 
         [Required(ErrorMessage = "Is External is required.")]
         [Display(Name = "Is External")]
-        public bool? IsExternal { get; set; }
+        public bool IsExternal { get; set; }
     }
 
     public class TestSuiteTagViewModel
