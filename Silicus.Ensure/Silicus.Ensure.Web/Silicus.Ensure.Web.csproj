@@ -5128,9 +5128,12 @@
     <None Include="Properties\PublishProfiles\Anand.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Ensure-Beta.pubxml" />
     <None Include="Properties\PublishProfiles\EnsureBeta - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\EnsureBeta - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ensurestaging - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ensurestaging - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensurestaging - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ensurestaging - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEnsureBeta - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEnsureBeta - Web Deploy.pubxml" />

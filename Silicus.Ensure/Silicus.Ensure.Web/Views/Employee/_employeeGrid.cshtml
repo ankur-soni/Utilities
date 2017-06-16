@@ -177,7 +177,7 @@
             url: "/Employee/GetEmployeeassigedforTestSuits",
             data: { suitId: testSuitData.value() },
             success: function (empList) {
-                debugger;
+              
                 var obj = $("#ddl-employee-list option");
                 var selectedEmp = new Array();
                 for (i = 0; i < obj.length; i++) {

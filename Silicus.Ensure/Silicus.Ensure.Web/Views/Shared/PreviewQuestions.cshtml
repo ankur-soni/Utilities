@@ -294,7 +294,7 @@ else
     }
 
     function OnAddMoreTimeOK() {
-        debugger;
+      
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt == null || timerCnt == "")
             timerCnt = 0;
@@ -313,7 +313,7 @@ else
 
                     // Assign reduced chance
                     $("#TimerIncCount").val(data);
-                    debugger;
+                  
                     // Update Progress bar
                     totalTime = parseInt(totalTime) + parseInt(60 * 10);
                     var leftTm = parseInt(totalTime) - clock.getTime();

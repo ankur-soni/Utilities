@@ -20,7 +20,7 @@
     </div>
     <div class="time-section">
         <h6>DURATION</h6>
-        <a style="width: 35%;float: right;margin-top: -27px;" href="#" id="btnAddMoreTime" name="btnAddMoreTime" onclick="AddMoreTime()"><span>Add Extra Time </span></a>
+        @*<a style="width: 35%;float: right;margin-top: -27px;" href="#" id="btnAddMoreTime" name="btnAddMoreTime" onclick="AddMoreTime()"><span>Add Extra Time </span></a>*@
         @Html.Hidden("TimerIncCount", Model.ExtraCount)
         <div class="timeBox" id="counter">
             <span>00:00:00</span>
@@ -137,12 +137,20 @@
         UpdateTimeDB();
         showCustomLoader();
         var answer = GetAnswer();
+        //var testSuiteId = $("#TestSuiteId").val();
+        //var userTestSuiteId = $("#UserTestSuiteId").val();
+        //var userTestDetailId = $("#UserTestDetailId").val();
+        //var userId = $("#UserId").val();
+        //testDurationComplete = true;
+        //debugger;
+        //window.location.href = '/Employee/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
         var testSuiteId = $("#TestSuiteId").val();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var userId = $("#UserId").val();
-        testDurationComplete = true;
-        window.location.href = '/Employee/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+        var EmployeeTestSuiteId = $("#EmployeeTestSuiteId").val();
+        var employeeTestDetailId = $("#employeeTestDetailId").val();
+        var employeeId = $("#EmployeeId").val();
+        window.onbeforeunload = null;
+        
+        window.location.href = '/Employee/OnSubmitTest?testSuiteId=' + testSuiteId + '&EmployeeTestSuiteId=' + EmployeeTestSuiteId + '&employeeTestDetailId=' + employeeTestDetailId + '&EmployeeId=' + employeeId + '&answer=' + answer;
         $(".loader-overlay").hide();
     }
 

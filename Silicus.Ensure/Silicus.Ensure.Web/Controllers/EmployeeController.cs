@@ -313,6 +313,7 @@ namespace Silicus.Ensure.Web.Controllers
             return navigationDetails;
         }
 
+        [HttpPost]
         public ActionResult AssignEmployeeSuite(int SuiteId, List<int> UserList, int IsReAssign = 0)
         {
             // string mailsubject = "";

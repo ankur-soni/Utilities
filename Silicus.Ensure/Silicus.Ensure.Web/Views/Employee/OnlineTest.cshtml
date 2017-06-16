@@ -97,13 +97,13 @@
                         </div>
                     </div>*@
                 </div>
-                <div class="panel panel-default">
+                @*<div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a href="#" onclick="navigateToTest('Practical')">PRACTICAL TEST</a>
                         </h4>
                     </div>
-                </div>
+                </div>*@
             </div>
             <!--mobile menu end here-->
             <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
@@ -244,7 +244,7 @@ else
     }
 
     function UpdateCurrentQuestionAndLoadNewOne(questionId) {
-        debugger;
+      
         UpdateTimeDB();
         var questionNavigationDetails = GetCurrentQuestionStatus();
         var activeLinkId;
@@ -318,7 +318,7 @@ else
     }
 
     function GetQuestionDetails(questionId) {
-        debugger;
+       
         var answer = GetAnswer();
         var EmployeeTestSuiteId = $("#EmployeeTestSuiteId").val();
         var employeeTestDetailId = $("#employeeTestDetailId").val();
@@ -371,12 +371,12 @@ else
         var employeeTestDetailId = $("#employeeTestDetailId").val();
         var employeeId = $("#EmployeeId").val();
         window.onbeforeunload = null;
-
+        
         window.location.href = '/Employee/OnSubmitTest?testSuiteId=' + testSuiteId + '&EmployeeTestSuiteId=' + EmployeeTestSuiteId + '&employeeTestDetailId=' + employeeTestDetailId + '&EmployeeId=' + employeeId + '&answer=' + answer;
     }
 
     function getCurrentQuestionStatus() {
-        debugger;
+      
         var QuestionNumber = $("#QuestionNumber").val();
         var QuestionType = $("#QuestionType").val();
         var IsAnswered = false;

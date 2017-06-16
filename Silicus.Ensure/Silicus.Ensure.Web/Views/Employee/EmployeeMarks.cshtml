@@ -79,7 +79,7 @@
             }).Group(g => g.Add(c => c.TestSuitName))
 
             .Read(read => read.Action("GetTestSuitResult", "Employee")).ServerOperation(false)
-
+            
             .PageSize(100))
             .Pageable(pager => { pager.PageSizes(false); })
             .Sortable()
