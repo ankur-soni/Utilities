@@ -59,8 +59,14 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult Excel_Export_Save(string contentType, string base64, string fileName)
+        {
+            var fileContents = Convert.FromBase64String(base64);
 
-     public void SendMailByRoleName(string subject, string templateName,List<string> roleName,string candidateName=null,string candidateStatus=null,string RecruiterName=null)
+            return File(fileContents, contentType, fileName);
+        }
+        public void SendMailByRoleName(string subject, string templateName,List<string> roleName,string candidateName=null,string candidateStatus=null,string RecruiterName=null)
         {
             string extension = ".cshtml";
             List<EmailModel> emailList = new List<EmailModel>();

@@ -5294,6 +5294,7 @@
     <Content Include="Scripts\JQuery\1.11.2\jquery.validate.min.js" />
     <Content Include="Scripts\JQuery\1.11.2\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\JQuery\1.11.2\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jszip.min.js" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\jquery.min.js" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.all.min.js" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.aspnetmvc.min.js" />

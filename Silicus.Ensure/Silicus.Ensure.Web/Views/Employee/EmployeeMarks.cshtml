@@ -5,7 +5,7 @@
 @{
     ViewBag.Title = "Obtained Marks";
 }
-
+<script src="~/Scripts/jszip.min.js"></script>
 <div class="row">
     <div class="col-sm-12">
         <h1 class="page-title">
@@ -84,6 +84,12 @@
             .Pageable(pager => { pager.PageSizes(false); })
             .Sortable()
             .Groupable()
+             .Excel(excel => excel
+        .FileName("EmployeeTest Result Export.xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Common"))
+    )
+     .ToolBar(tools => tools.Excel())
             .HtmlAttributes(new { style = "height: 700px;" })
              .Scrollable(scrollable => scrollable.Virtual(true))
               .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
