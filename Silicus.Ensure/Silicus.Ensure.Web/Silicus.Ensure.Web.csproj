@@ -4589,6 +4589,7 @@
     <Content Include="Content\plugins\wysihtml\wysihtml.js" />
     <Content Include="Content\plugins\wysihtml\wysihtml.table_editing.js" />
     <Content Include="Content\plugins\wysihtml\wysihtml.toolbar.js" />
+    <Content Include="Content\prettify.css" />
     <Content Include="Content\scrollbar.css" />
     <Content Include="Content\style-candidate.css" />
     <Content Include="Content\style.css" />
@@ -5309,6 +5310,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\prefixfree.min.js" />
     <Content Include="Scripts\Knockout\3.2.0\knockout.mapping-latest.js" />
+    <Content Include="Scripts\prettify.js" />
     <Content Include="Scripts\sessionTimeout.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />

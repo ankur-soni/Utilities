@@ -1,7 +1,11 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.TestDetailsViewModel
 
 @using Kendo.Mvc.UI;
-
+<script>
+    $(document).ready(function () {
+        prettyPrint();
+    });
+</script>
 
 <div class="row">
     <div class="col-sm-12" style="padding:20px 50px 0px 50px;">
@@ -21,7 +25,7 @@
             </script>
         }
 
-        <span>Q&nbsp;@Model.DisplayQuestionNumber.</span> @Model.QuestionDescription <b>(@Model.Marks Marks)</b>
+        <pre class"prettyprint lang-cs"> <span>Q&nbsp;@Model.DisplayQuestionNumber.</span> @Model.QuestionDescription <br /><b class="pull-right">(@Model.Marks Marks)</b></pre>
     </div>
     <div class="col-sm-12">
         <div class="btmBorder"></div>
@@ -361,7 +365,7 @@
         else if (Model.QuestionType == 2)
         {
             <div class="col-sm-12 questionDiv" id="editorDiv" style="padding: 20px 50px 30px 50px;">
-                @Html.TextAreaFor(m => m.Answer, new {@Id= "PracticalAnswer", @rows = "10", @class = "form-control " })
+                @Html.TextAreaFor(m => m.Answer, new { @Id = "PracticalAnswer", @rows = "10", @class = "form-control " })
             </div>
         }
     </div>
