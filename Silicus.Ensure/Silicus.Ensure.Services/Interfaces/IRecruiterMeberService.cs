@@ -9,8 +9,8 @@ namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IRecruiterMeberService
     {
-        RecruiterMembersDetail GetRecruiterMeberDetails(int userId);
+        //RecruiterMembersDetail GetRecruiterMeberDetails(int userId);
 
-        bool UpesertRecruiterMeberDetail(RecruiterMembersDetail recruiterMembersDetail);
+        //bool UpesertRecruiterMeberDetail(RecruiterMembersDetail recruiterMembersDetail);
     }
 }

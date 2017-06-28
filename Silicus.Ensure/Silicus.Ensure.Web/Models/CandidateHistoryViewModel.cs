@@ -102,7 +102,7 @@ namespace Silicus.Ensure.Web.Models
 
         public Guid IdentityUserId { get; set; }
 
-        public IList<Position> PositionList { get; set; }
+        //public IList<Position> PositionList { get; set; }
 
         public string Position { get; set; }
 

@@ -9,7 +9,7 @@ namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IPanelMemberService
     {
-        PanelMemberDetail GetPanelMeberDetails(int userId);
-        bool UpesertPanelMeberDetail(PanelMemberDetail panelMemberDetail);
+        //PanelMemberDetail GetPanelMeberDetails(int userId);
+        //bool UpesertPanelMeberDetail(PanelMemberDetail panelMemberDetail);
     }
 }

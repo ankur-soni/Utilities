@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly IUserService _userService;
-        private readonly IPositionService _positionService;
+        //private readonly IPositionService _positionService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
 
         private readonly CommonController _commonController;
@@ -70,7 +70,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -78,7 +78,7 @@ namespace Silicus.Ensure.Web.Controllers
             _mappingService = mappingService;
             _questionService = questionService;
             _userService = userService;
-            _positionService = positionService;
+            //_positionService = positionService;
             _logger = logger;
             _containerUserService = containerUserService;
             _commonController = commonController;
@@ -225,14 +225,14 @@ namespace Silicus.Ensure.Web.Controllers
         {
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            ViewBag.PositionListItem = from item in positionDetails
-                                       select new SelectListItem()
-                                       {
-                                           Text = item.PositionName,
-                                           Value = item.PositionName
+           // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            //ViewBag.PositionListItem = from item in positionDetails
+            //                           select new SelectListItem()
+            //                           {
+            //                               Text = item.PositionName,
+            //                               Value = item.PositionName
 
-                                       };
+            //                           };
             return View();
         }
 
@@ -243,65 +243,65 @@ namespace Silicus.Ensure.Web.Controllers
         {
             DateTime dob;
             DateTime.TryParseExact(dobString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob);
-            var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
-            var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
-            return PartialView("_CadidateGrid", candidatebusinessModelList);
+           // var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
+            //var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
+            return PartialView("_CadidateGrid", null);
         }
 
-        public ActionResult GetCandidateProfile(int userId)
-        {
-            var candidate = _userService.GetUserById(userId);
-            var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            candidatebusinessModel.PositionList = positionDetails.ToList();
-            return PartialView("_CandidateProfile", candidatebusinessModel);
+        //public ActionResult GetCandidateProfile(int userId)
+        //{
+        //    var candidate = _userService.GetUserById(userId);
+        //    var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
+        //    //var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+        //    //candidatebusinessModel.PositionList = positionDetails.ToList();
+        //    return PartialView("_CandidateProfile", candidatebusinessModel);
 
-        }
-
-
-
-        public ActionResult CandidateHistory(int userId)
-        {
-            List<CandidateHistoryViewModel> objUserApplicationDetails = new List<CandidateHistoryViewModel>();
-
-            var candidateApplicationDetails = _userService.GetUserDetails(userId);
-            foreach (var candidateApplication in candidateApplicationDetails)
-            {
-                TestSuiteViewModel testSuiteViewModel = null;
-                var candidatebusinessModel = _mappingService.Map<UserBusinessModel, CandidateHistoryViewModel>(candidateApplication);
-                var positionDetails = _positionService.GetPositionDetails().OrderBy(m => m.PositionName);
-                candidatebusinessModel.PositionList = positionDetails.ToList();
-                var userTestSuiteDetails = _userService.GetTestSuiteDetailsOfUser(candidateApplication.UserApplicationId);
-                if (userTestSuiteDetails != null)
-                {
-                    testSuiteViewModel = new TestSuiteViewModel();
-                    TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuiteDetails.GetType().GetProperty("TestSuiteId").GetValue(userTestSuiteDetails, null));
-                    testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
-                    testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                    if (testSuiteViewModel.Position.HasValue)
-                    {
-                        var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
-                        if (position != null)
-                            testSuiteViewModel.PositionName = position.PositionName;
-                    }
-
-                    List<TestSuiteTagViewModel> testSuiteTags;
-                    GetTestSuiteTags(testSuitDetails, out testSuiteTags);
-                    testSuiteViewModel.Tags = testSuiteTags;
-                    testSuiteViewModel.Userid = userId;
-                }
-                candidateApplication.Technology = GetSkills(candidateApplication.Technology);
-                candidatebusinessModel.Technology = candidateApplication.Technology;
-                candidatebusinessModel.TestSuiteViewModel = testSuiteViewModel;
-                objUserApplicationDetails.Add(candidatebusinessModel);
-
-            }
+        //}
 
 
 
-            return View(objUserApplicationDetails);
+        //public ActionResult CandidateHistory(int userId)
+        //{
+        //    List<CandidateHistoryViewModel> objUserApplicationDetails = new List<CandidateHistoryViewModel>();
 
-        }
+        //    var candidateApplicationDetails = _userService.GetUserDetails(userId);
+        //    foreach (var candidateApplication in candidateApplicationDetails)
+        //    {
+        //        TestSuiteViewModel testSuiteViewModel = null;
+        //        var candidatebusinessModel = _mappingService.Map<UserBusinessModel, CandidateHistoryViewModel>(candidateApplication);
+        //       // var positionDetails = _positionService.GetPositionDetails().OrderBy(m => m.PositionName);
+        //       // candidatebusinessModel.PositionList = positionDetails.ToList();
+        //        var userTestSuiteDetails = _userService.GetTestSuiteDetailsOfUser(candidateApplication.UserApplicationId);
+        //        if (userTestSuiteDetails != null)
+        //        {
+        //            testSuiteViewModel = new TestSuiteViewModel();
+        //            TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuiteDetails.GetType().GetProperty("TestSuiteId").GetValue(userTestSuiteDetails, null));
+        //            testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
+        //            testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
+        //            //if (testSuiteViewModel.Position.HasValue)
+        //            //{
+        //            //   // var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
+        //            //    //if (position != null)
+        //            //       // testSuiteViewModel.PositionName = position.PositionName;
+        //            //}
+
+        //            List<TestSuiteTagViewModel> testSuiteTags;
+        //            GetTestSuiteTags(testSuitDetails, out testSuiteTags);
+        //            testSuiteViewModel.Tags = testSuiteTags;
+        //            testSuiteViewModel.Userid = userId;
+        //        }
+        //        candidateApplication.Technology = GetSkills(candidateApplication.Technology);
+        //        candidatebusinessModel.Technology = candidateApplication.Technology;
+        //        candidatebusinessModel.TestSuiteViewModel = testSuiteViewModel;
+        //        objUserApplicationDetails.Add(candidatebusinessModel);
+
+        //    }
+
+
+
+        //    return View(objUserApplicationDetails);
+
+        //}
 
         private string GetSkills(string technology)
         {
@@ -331,45 +331,45 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request, int UserId)
-        {
-            try
-            {
-                bool isAssignedPanel = false;
-                var user = _userService.GetUserById(UserId);
-                var panelList = new List<PanelViewModel>();
+        //public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        //{
+        //    //try
+        //    //{
+        //    //    bool isAssignedPanel = false;
+        //    //    var user = _userService.GetUserById(UserId);
+        //    //    var panelList = new List<PanelViewModel>();
 
-                if (user != null)
-                {
-                    var panelUserlist = _positionService.GetAllPanelMemberDetails();
+        //    //    if (user != null)
+        //    //    {
+        //    //        //var panelUserlist = _positionService.GetAllPanelMemberDetails();
 
-                    foreach (var item in panelUserlist)
-                    {
-                        isAssignedPanel = false;
-                        if (item.UserId == Convert.ToInt32(user.PanelId))
-                        {
-                            isAssignedPanel = true;
-                        }
-                        panelList.Add(new PanelViewModel()
-                        {
-                            PanelId = item.UserId,
-                            PanelName = item.FirstName + " " + item.LastName,
-                            Designation = item.Designation,
-                            Department = item.Department,
-                            IsAssignedPanel = isAssignedPanel
-                        });
-                    }
-                    panelList.OrderBy(x => x.IsAssignedPanel == true);
-                }
+        //    //        foreach (var item in panelUserlist)
+        //    //        {
+        //    //            isAssignedPanel = false;
+        //    //            if (item.UserId == Convert.ToInt32(user.PanelId))
+        //    //            {
+        //    //                isAssignedPanel = true;
+        //    //            }
+        //    //            panelList.Add(new PanelViewModel()
+        //    //            {
+        //    //                PanelId = item.UserId,
+        //    //                PanelName = item.FirstName + " " + item.LastName,
+        //    //                Designation = item.Designation,
+        //    //                Department = item.Department,
+        //    //                IsAssignedPanel = isAssignedPanel
+        //    //            });
+        //    //        }
+        //    //        panelList.OrderBy(x => x.IsAssignedPanel == true);
+        //    //    }
 
-                DataSourceResult result = panelList.ToDataSourceResult(request);
-                return Json(result);
-            }
-            catch
-            {
-                return Json(-1);
-            }
-        }
+        //    //    DataSourceResult result = panelList.ToDataSourceResult(request);
+        //    //    return Json(result);
+        //    //}
+        //    //catch
+        //    //{
+        //    //    return Json(-1);
+        //    //}
+        //}
 
         public ActionResult AssignPanel(int UserId, int IsReassign = 0)
         {
@@ -378,29 +378,29 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialSelctPanelList");
         }
 
-        public ActionResult AssignPanelCandidate(string PUserId, int UserId, int IsReAssign = 0)
-        {
-            try
-            {
-                var user = _positionService.GetAllPanelMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(PUserId));
-                if (user != null)
-                {
-                    var updateUser = _userService.GetUserById(UserId);
-                    updateUser.PanelId = Convert.ToString(user.UserId);
-                    updateUser.PanelName = user.FirstName + " " + user.LastName;
-                    _userService.Update(updateUser);
-                    List<string> Receipient = new List<string>() { "Admin", "Panel" };
-                    _commonController.SendMailByRoleName("Panel Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidatePanelAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName);
+        //public ActionResult AssignPanelCandidate(string PUserId, int UserId, int IsReAssign = 0)
+        //{
+        //    try
+        //    {
+        //        var user = _positionService.GetAllPanelMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(PUserId));
+        //        if (user != null)
+        //        {
+        //            var updateUser = _userService.GetUserById(UserId);
+        //            updateUser.PanelId = Convert.ToString(user.UserId);
+        //            updateUser.PanelName = user.FirstName + " " + user.LastName;
+        //            _userService.Update(updateUser);
+        //            List<string> Receipient = new List<string>() { "Admin", "Panel" };
+        //            _commonController.SendMailByRoleName("Panel Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidatePanelAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName);
 
-                }
+        //        }
 
-                return Json(1);
-            }
-            catch
-            {
-                return Json(-1);
-            }
-        }
+        //        return Json(1);
+        //    }
+        //    catch
+        //    {
+        //        return Json(-1);
+        //    }
+        //}
 
         public ActionResult AssignRecruiter(int UserId, int IsReassign = 0)
         {
@@ -409,97 +409,95 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialSelectRecruiterList");
         }
 
-        public ActionResult GetRecruiterDetails([DataSourceRequest] DataSourceRequest request, int UserId)
-        {
-            try
-            {
-                bool isAssignedRecruiter = false;
-                var user = _userService.GetUserById(UserId);
-                var recruiterList = new List<RecruiterViewModel>();
+        //public ActionResult GetRecruiterDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        //{
+        //    try
+        //    {
+        //        bool isAssignedRecruiter = false;
+        //        var user = _userService.GetUserById(UserId);
+        //        var recruiterList = new List<RecruiterViewModel>();
 
-                if (user != null)
-                {
-                    var recruiterUserlist = _positionService.GetAllRecruiterMemberDetails();
+        //        if (user != null)
+        //        {
+        //            var recruiterUserlist = _positionService.GetAllRecruiterMemberDetails();
 
-                    foreach (var item in recruiterUserlist)
-                    {
-                        isAssignedRecruiter = false;
-                        if (item.UserId == Convert.ToInt32(user.RecruiterId))
-                        {
-                            isAssignedRecruiter = true;
-                        }
-                        recruiterList.Add(new RecruiterViewModel()
-                        {
-                            RecruiterId = item.UserId,
-                            RecruiterName = item.FirstName + " " + item.LastName,
-                            IsAssignedRecruiter = isAssignedRecruiter
-                        });
-                    }
+        //            foreach (var item in recruiterUserlist)
+        //            {
+        //                isAssignedRecruiter = false;
+        //                if (item.UserId == Convert.ToInt32(user.RecruiterId))
+        //                {
+        //                    isAssignedRecruiter = true;
+        //                }
+        //                recruiterList.Add(new RecruiterViewModel()
+        //                {
+        //                    RecruiterId = item.UserId,
+        //                    RecruiterName = item.FirstName + " " + item.LastName,
+        //                    IsAssignedRecruiter = isAssignedRecruiter
+        //                });
+        //            }
 
-                    recruiterList.OrderBy(x => x.IsAssignedRecruiter == true);
-                }
+        //            recruiterList.OrderBy(x => x.IsAssignedRecruiter == true);
+        //        }
 
-                DataSourceResult result = recruiterList.ToDataSourceResult(request);
-                return Json(result);
-            }
-            catch
-            {
-                return Json(-1);
-            }
-        }
-
-
-        public ActionResult AssignRecruiterCandidate(string RecruiterUserId, int UserId, int IsReAssign = 0)
-        {
-            try
-            {
-                var user = _positionService.GetAllRecruiterMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(RecruiterUserId));
-                if (user != null)
-                {
-                    var updateUser = _userService.GetUserById(UserId);
-                    updateUser.RecruiterId = Convert.ToString(user.UserId);
-                    updateUser.RecruiterName = user.FirstName + " " + user.LastName;
-                    _userService.Update(updateUser);
-                    List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
-                    _commonController.SendMailByRoleName("Recruiter Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidateRecruiterAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName, null, user.FirstName + " " + user.LastName);
-
-                }
-
-                return Json(1);
-            }
-            catch
-            {
-                return Json(-1);
-            }
-        }
+        //        DataSourceResult result = recruiterList.ToDataSourceResult(request);
+        //        return Json(result);
+        //    }
+        //    catch
+        //    {
+        //        return Json(-1);
+        //    }
+        //}
 
 
+        //public ActionResult AssignRecruiterCandidate(string RecruiterUserId, int UserId, int IsReAssign = 0)
+        //{
+        //    try
+        //    {
+        //        var user = _positionService.GetAllRecruiterMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(RecruiterUserId));
+        //        if (user != null)
+        //        {
+        //            var updateUser = _userService.GetUserById(UserId);
+        //            updateUser.RecruiterId = Convert.ToString(user.UserId);
+        //            updateUser.RecruiterName = user.FirstName + " " + user.LastName;
+        //            _userService.Update(updateUser);
+        //            List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+        //            _commonController.SendMailByRoleName("Recruiter Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidateRecruiterAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName, null, user.FirstName + " " + user.LastName);
 
-        public ActionResult PartialTestSuitView(int testSuiteId, int userId)
-        {
-            try
-            {
-                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
-                TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
-                testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                if(testSuiteViewModel.Position.HasValue)
-                {
-                    var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
-                    if (position != null)
-                        testSuiteViewModel.PositionName = position.PositionName;
-                }
+        //        }
+
+        //        return Json(1);
+        //    }
+        //    catch
+        //    {
+        //        return Json(-1);
+        //    }
+        //}
+
+        //public ActionResult PartialTestSuitView(int testSuiteId, int userId)
+        //{
+        //    try
+        //    {
+        //        TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
+        //        TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
+        //        testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
+        //        if(testSuiteViewModel.Position.HasValue)
+        //        {
+        //            var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
+        //            if (position != null)
+        //                testSuiteViewModel.PositionName = position.PositionName;
+        //        }
                 
-                List<TestSuiteTagViewModel> testSuiteTags;
-                GetTestSuiteTags(testSuitDetails, out testSuiteTags);
-                testSuiteViewModel.Tags = testSuiteTags;
-                testSuiteViewModel.Userid = userId;
-                return PartialView(testSuiteViewModel);
-            }
-            catch
-            {
-                return PartialView();
-            }
-        }
+        //        List<TestSuiteTagViewModel> testSuiteTags;
+        //        GetTestSuiteTags(testSuitDetails, out testSuiteTags);
+        //        testSuiteViewModel.Tags = testSuiteTags;
+        //        testSuiteViewModel.Userid = userId;
+        //        return PartialView(testSuiteViewModel);
+        //    }
+        //    catch
+        //    {
+        //        return PartialView();
+        //    }
+        //}
 
         private void GetTestSuiteTags(TestSuite testSuite, out List<TestSuiteTagViewModel> testSuiteTags)
         {
@@ -521,98 +519,98 @@ namespace Silicus.Ensure.Web.Controllers
                 testSuiteTags.Add(testSuiteTagViewModel);
             }
         }
-        public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
-        {
-            string mailsubject = "";
-            var updateCurrentUsers = _userService.GetUserById(UserId);
-            if (updateCurrentUsers != null)
-            {
-                if (SuiteId > 0 && UserId > 0)
-                {
-                    if (IsReAssign == 1)
-                    {
-                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
-                        if (userTest.Any())
-                        {
-                            foreach (var utest in userTest)
-                            {
+        //public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
+        //{
+        //    string mailsubject = "";
+        //   // var updateCurrentUsers = _userService.GetUserById(UserId);
+        //    if (updateCurrentUsers != null)
+        //    {
+        //        if (SuiteId > 0 && UserId > 0)
+        //        {
+        //            if (IsReAssign == 1)
+        //            {
+        //                var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+        //                if (userTest.Any())
+        //                {
+        //                    foreach (var utest in userTest)
+        //                    {
 
-                                _testSuiteService.DeleteUserTestSuite(utest);
-                            }
-                        }
-                    }
-                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
-                    UserTestSuite userTestSuite = new UserTestSuite();
-                    userTestSuite.UserApplicationId = updateCurrentUsers.UserApplicationId;
-                    userTestSuite.TestSuiteId = SuiteId;
-                    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                    var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
-                    selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
-                    selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
+        //                        _testSuiteService.DeleteUserTestSuite(utest);
+        //                    }
+        //                }
+        //            }
+        //            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
+        //            UserTestSuite userTestSuite = new UserTestSuite();
+        //            userTestSuite.UserApplicationId = updateCurrentUsers.UserApplicationId;
+        //            userTestSuite.TestSuiteId = SuiteId;
+        //            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+        //            //var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
+        //            //selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
+        //            //selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
 
-                    _userService.Update(selectUser);
+        //            //_userService.Update(selectUser);
 
-                    List<string> Receipient = new List<string>() { "Admin", "Panel" };
+        //            //List<string> Receipient = new List<string>() { "Admin", "Panel" };
 
-                    if (IsReAssign == 0)
-                    {
-                        mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
-                        _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
-                    }
-                    else
-                    {
-                        mailsubject = "Test Re-Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
-                        _commonController.SendMailByRoleName(mailsubject, "TestReassign.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
-                    }
+        //            //if (IsReAssign == 0)
+        //            //{
+        //            //    mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+        //            //    _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+        //            //}
+        //            //else
+        //            //{
+        //            //    mailsubject = "Test Re-Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+        //            //    _commonController.SendMailByRoleName(mailsubject, "TestReassign.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+        //            //}
 
-                    return Json(1);
-                }
-                else
-                {
-                    return Json(-1);
-                }
-            }
-            return View();
-        }
+        //            return Json(1);
+        //        }
+        //        else
+        //        {
+        //            return Json(-1);
+        //        }
+        //    }
+        //    return View();
+        //}
 
-        public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request, int UserId)
-        {
-            _testSuiteService.TestSuiteActivation();
-            var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
-            var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
-            bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
-            var userApplicationId = _userService.GetUserLastestApplicationId(UserId);
-            var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(userApplicationId);
-            foreach (var item in viewModels)
-            {
-                if (testSuitId != null)
-                {
-                    if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
-                    {
-                        item.IsAssigned = true;
-                    }
-                }
+        //public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        //{
+        //    _testSuiteService.TestSuiteActivation();
+        //    var tags = _tagsService.GetTagsDetails();
+        //    var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+        //    var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+        //    bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
+        //    //var userApplicationId = _userService.GetUserLastestApplicationId(UserId);
+        //    var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(userApplicationId);
+        //    foreach (var item in viewModels)
+        //    {
+        //        if (testSuitId != null)
+        //        {
+        //            if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
+        //            {
+        //                item.IsAssigned = true;
+        //            }
+        //        }
 
-                if(item.Position.HasValue)
-                {
-                    item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
+        //        //if(item.Position.HasValue)
+        //        //{
+        //        //    item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
 
-                }
-                else
-                {
-                    item.PositionName = "Not assigned";
-                }
-                List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
-                item.PrimaryTagNames = string.Join(",", (from a in tags
-                                                         where TagId.Contains(a.TagId)
-                                                         select a.TagName));
-                item.StatusName = ((TestSuiteStatus)item.Status).ToString();
-                item.UserInRole = userInRole;
-            }
-            viewModels = viewModels.Where(x => x.StatusName == TestSuiteStatus.Ready.ToString()).ToArray();
-            return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
+        //        //}
+        //        //else
+        //        //{
+        //        //    item.PositionName = "Not assigned";
+        //        //}
+        //        List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+        //        item.PrimaryTagNames = string.Join(",", (from a in tags
+        //                                                 where TagId.Contains(a.TagId)
+        //                                                 select a.TagName));
+        //        item.StatusName = ((TestSuiteStatus)item.Status).ToString();
+        //        item.UserInRole = userInRole;
+        //    }
+        //    viewModels = viewModels.Where(x => x.StatusName == TestSuiteStatus.Ready.ToString()).ToArray();
+        //    return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        //}
 
         #region Remove Later
 
@@ -703,115 +701,115 @@ namespace Silicus.Ensure.Web.Controllers
 
         #endregion
 
-        private Position GetPosition(int positionId)
-        {
-            return _positionService.GetPositionById(positionId);
-        }
-        public ActionResult CandidateAdd(int UserId, bool IsCandidateReappear = false)
-        {
-            UserViewModel currUser = new UserViewModel();
-            currUser.UserId = UserId;
+        //private Position GetPosition(int positionId)
+        //{
+        //    return _positionService.GetPositionById(positionId);
+        //}
+        //public ActionResult CandidateAdd(int UserId, bool IsCandidateReappear = false)
+        //{
+        //    UserViewModel currUser = new UserViewModel();
+        //    currUser.UserId = UserId;
 
-            if (UserId != 0)
-            {
-                var user = _userService.GetUserById(UserId);
-                currUser = _mappingService.Map<UserBusinessModel, UserViewModel>(user);
-            }
-            else if (TempData["UserViewModel"] != null)
-            {
-                currUser = TempData["UserViewModel"] as UserViewModel;
-            }
+        //    if (UserId != 0)
+        //    {
+        //        var user = _userService.GetUserById(UserId);
+        //        currUser = _mappingService.Map<UserBusinessModel, UserViewModel>(user);
+        //    }
+        //    else if (TempData["UserViewModel"] != null)
+        //    {
+        //        currUser = TempData["UserViewModel"] as UserViewModel;
+        //    }
 
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            currUser.PositionList = positionDetails.ToList();
-            currUser.IsCandidateReappear = IsCandidateReappear;
-            if (!string.IsNullOrWhiteSpace(currUser.DOB))
-            {
-                DateTime dt = DateTime.Parse(currUser.DOB);
-                currUser.DOB = dt.ToString("dd/MM/yyyy");
-            }
-
-
+        //    //var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+        //   // currUser.PositionList = positionDetails.ToList();
+        //    currUser.IsCandidateReappear = IsCandidateReappear;
+        //    if (!string.IsNullOrWhiteSpace(currUser.DOB))
+        //    {
+        //        DateTime dt = DateTime.Parse(currUser.DOB);
+        //        currUser.DOB = dt.ToString("dd/MM/yyyy");
+        //    }
 
 
-            return View(currUser);
-        }
+
+
+        //    return View(currUser);
+        //}
 
         #endregion
 
-        public ActionResult ViewQuestion(int testSuiteId, int userId)
-        {
-            var viewerEmailId = User.Identity.Name;
-            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            var candidate = _userService.GetUserById(userId);
-            int count = 0;
-            var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
-            var testSuiteQuestionList = new List<TestSuiteQuestion>();
-            try
-            {
-                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
-                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidate.UserApplicationId };
-                if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
-                {
-                    var questionList = _testSuiteService.GetPreview(previewTest);
-                    foreach (var pQuestion in questionList)
-                    {
-                        count++;
-                        testSuiteQuestionList.Add(new TestSuiteQuestion()
-                        {
-                            QuestionType = pQuestion.QuestionType,
-                            QuestionNumber = count,
-                            QuestionDescription = pQuestion.QuestionDescription,
-                            OptionCount = pQuestion.OptionCount,
-                            Answer = pQuestion.Answer,
-                            CorrectAnswer = pQuestion.CorrectAnswer,
-                            Id = pQuestion.Id,
-                            Marks = pQuestion.Marks,
-                            Option1 = pQuestion.Option1,
-                            Option2 = pQuestion.Option2,
-                            Option3 = pQuestion.Option3,
-                            Option4 = pQuestion.Option4,
-                            Option5 = pQuestion.Option5,
-                            Option6 = pQuestion.Option6,
-                            Option7 = pQuestion.Option7,
-                            Option8 = pQuestion.Option8,
-                        });
-                    }
+        //public ActionResult ViewQuestion(int testSuiteId, int userId)
+        //{
+        //    var viewerEmailId = User.Identity.Name;
+        //    var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+        //    var candidate = _userService.GetUserById(userId);
+        //    int count = 0;
+        //    var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
+        //    var testSuiteQuestionList = new List<TestSuiteQuestion>();
+        //    try
+        //    {
+        //        TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
+        //        var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidate.UserApplicationId };
+        //        if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
+        //        {
+        //            var questionList = _testSuiteService.GetPreview(previewTest);
+        //            foreach (var pQuestion in questionList)
+        //            {
+        //                count++;
+        //                testSuiteQuestionList.Add(new TestSuiteQuestion()
+        //                {
+        //                    QuestionType = pQuestion.QuestionType,
+        //                    QuestionNumber = count,
+        //                    QuestionDescription = pQuestion.QuestionDescription,
+        //                    OptionCount = pQuestion.OptionCount,
+        //                    Answer = pQuestion.Answer,
+        //                    CorrectAnswer = pQuestion.CorrectAnswer,
+        //                    Id = pQuestion.Id,
+        //                    Marks = pQuestion.Marks,
+        //                    Option1 = pQuestion.Option1,
+        //                    Option2 = pQuestion.Option2,
+        //                    Option3 = pQuestion.Option3,
+        //                    Option4 = pQuestion.Option4,
+        //                    Option5 = pQuestion.Option5,
+        //                    Option6 = pQuestion.Option6,
+        //                    Option7 = pQuestion.Option7,
+        //                    Option8 = pQuestion.Option8,
+        //                });
+        //            }
 
-                    testSuiteViewQuesModel.TestSuiteQuestion = testSuiteQuestionList;
-                    testSuiteViewQuesModel.TestSuiteName = testSuitDetails.TestSuiteName;
-                    testSuiteViewQuesModel.Duration = testSuitDetails.Duration;
-                    testSuiteViewQuesModel.ObjectiveCount = questionList.Count(x => x.QuestionType == 1);
-                    testSuiteViewQuesModel.PracticalCount = questionList.Count(x => x.QuestionType == 2);
-                    TestSuiteCandidateModel testSuiteCandidateModel = new TestSuiteCandidateModel
-                    {
-                        TestSuiteId = testSuiteId,
-                        UserId = userId,
-                        PracticalCount = testSuiteViewQuesModel.PracticalCount,
-                        ObjectiveCount = testSuiteViewQuesModel.ObjectiveCount,
-                        Duration = testSuiteViewQuesModel.Duration
-                    };
-                    var candidateInfoBusinessModel = _userService.GetCandidateInfo(candidate);
-                    testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-                    testSuiteCandidateModel.NavigationDetails = GetQuestionNavigationDetails(questionList);
-                    testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-                    testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-                    testSuiteCandidateModel.ProfilePhotoFilePath = candidate.ProfilePhotoFilePath;
-                    return View("PreviewTest", testSuiteCandidateModel);
-                }
-                else
-                {
-                    testSuiteViewQuesModel.ErrorMessage = "Test suite is not ready.";
-                }
+        //            testSuiteViewQuesModel.TestSuiteQuestion = testSuiteQuestionList;
+        //            testSuiteViewQuesModel.TestSuiteName = testSuitDetails.TestSuiteName;
+        //            testSuiteViewQuesModel.Duration = testSuitDetails.Duration;
+        //            testSuiteViewQuesModel.ObjectiveCount = questionList.Count(x => x.QuestionType == 1);
+        //            testSuiteViewQuesModel.PracticalCount = questionList.Count(x => x.QuestionType == 2);
+        //            TestSuiteCandidateModel testSuiteCandidateModel = new TestSuiteCandidateModel
+        //            {
+        //                TestSuiteId = testSuiteId,
+        //                UserId = userId,
+        //                PracticalCount = testSuiteViewQuesModel.PracticalCount,
+        //                ObjectiveCount = testSuiteViewQuesModel.ObjectiveCount,
+        //                Duration = testSuiteViewQuesModel.Duration
+        //            };
+        //            var candidateInfoBusinessModel = _userService.GetCandidateInfo(candidate);
+        //            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+        //            testSuiteCandidateModel.NavigationDetails = GetQuestionNavigationDetails(questionList);
+        //            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+        //            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+        //            testSuiteCandidateModel.ProfilePhotoFilePath = candidate.ProfilePhotoFilePath;
+        //            return View("PreviewTest", testSuiteCandidateModel);
+        //        }
+        //        else
+        //        {
+        //            testSuiteViewQuesModel.ErrorMessage = "Test suite is not ready.";
+        //        }
 
-            }
-            catch
-            {
-                testSuiteViewQuesModel.ErrorMessage = "Something went wrong! Please try later.";
-            }
+        //    }
+        //    catch
+        //    {
+        //        testSuiteViewQuesModel.ErrorMessage = "Something went wrong! Please try later.";
+        //    }
 
-            return View(testSuiteViewQuesModel);
-        }
+        //    return View(testSuiteViewQuesModel);
+        //}
 
         private QuestionNavigationViewModel GetQuestionNavigationDetails(IEnumerable<Question> questions)
         {
@@ -836,245 +834,245 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #region Create PDF
 
-        public ActionResult CreatePDF(int? id)
-        {
-            var filename = "";
-            byte[] byteInfo = generatePDF(id, out filename);
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("Content-Disposition", "inline;filename=" + filename);
-            Response.BinaryWrite(byteInfo);
-            return new EmptyResult();
-        }
+        //public ActionResult CreatePDF(int? id)
+        //{
+        //    var filename = "";
+        //    byte[] byteInfo = generatePDF(id, out filename);
+        //    Response.ContentType = "application/pdf";
+        //    Response.AddHeader("Content-Disposition", "inline;filename=" + filename);
+        //    Response.BinaryWrite(byteInfo);
+        //    return new EmptyResult();
+        //}
 
-        public Byte[] generatePDF(int? id, out string filename)
-        {
-            int UserId = 0;
-            int QuesId = 0;
-            if (id != null)
-            {
-                UserId = Convert.ToInt32(id);
-            }
+        //public Byte[] generatePDF(int? id, out string filename)
+        //{
+        //    int UserId = 0;
+        //    int QuesId = 0;
+        //    if (id != null)
+        //    {
+        //        UserId = Convert.ToInt32(id);
+        //    }
 
-            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
+        //    var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+        //    var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
 
-            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+        //    ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
 
-            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
-                                  join userTest in userTestSuitDetails.ToList()
-                                      on question.Id equals userTest.QuestionId
-                                  select question).ToList();
+        //    List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+        //                          join userTest in userTestSuitDetails.ToList()
+        //                              on question.Id equals userTest.QuestionId
+        //                          select question).ToList();
 
-            Que = Que.OrderBy(x => x.Id).ToList();
+        //    Que = Que.OrderBy(x => x.Id).ToList();
 
-            StringBuilder sb = new StringBuilder();
+        //    StringBuilder sb = new StringBuilder();
 
-            sb.Append("<h2>Question Set for " + "<strong>" + userDetails.FirstName + " " + userDetails.LastName + "</strong></h2>");
-            sb.Append("<br />");
-            sb.Append("<div></div>");
-            sb.Append("<strong>Date: </strong>" + DateTime.Now.ToString("dd-MM-yyyy"));
-            sb.Append("<br />");
-            sb.Append("<br />");
-            sb.Append("<table border='5' cellpadding='0' cellspacing='10' width='100%'><tr><td>&nbsp;</td></tr></table>");
-            sb.Append("<br />");
-            sb.Append("<br />");
-            sb.Append("<div>");
-            sb.Append("</div>");
-            sb.Append("<br />");
-            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
-            sb.Append("<h3><strong>Objective Question Set</strong></h3>");
-            sb.Append("<br />");
-            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+        //    sb.Append("<h2>Question Set for " + "<strong>" + userDetails.FirstName + " " + userDetails.LastName + "</strong></h2>");
+        //    sb.Append("<br />");
+        //    sb.Append("<div></div>");
+        //    sb.Append("<strong>Date: </strong>" + DateTime.Now.ToString("dd-MM-yyyy"));
+        //    sb.Append("<br />");
+        //    sb.Append("<br />");
+        //    sb.Append("<table border='5' cellpadding='0' cellspacing='10' width='100%'><tr><td>&nbsp;</td></tr></table>");
+        //    sb.Append("<br />");
+        //    sb.Append("<br />");
+        //    sb.Append("<div>");
+        //    sb.Append("</div>");
+        //    sb.Append("<br />");
+        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+        //    sb.Append("<h3><strong>Objective Question Set</strong></h3>");
+        //    sb.Append("<br />");
+        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
 
-            foreach (var q in Que)
-            {
-                if (q.QuestionType == 1)
-                {
-                    QuesId += 1;
-                    sb.Append("  <div class='col-md-8' style='margin-top:30px'>");
-                    sb.Append("  <strong>Question " + QuesId + ":</strong> &nbsp;&nbsp;");
-                    sb.Append("" + q.QuestionDescription + "");
-                    sb.Append(" </div>");
-                    sb.Append(" </div>");
-                    sb.Append("  <div class='row'>");
-                    sb.Append("   <div class='col-md-8' style='margin-top:20px'>");
-                    sb.Append("  <strong>Option 1:</strong> &nbsp;&nbsp;");
-                    sb.Append("" + q.Option1 + "");
-                    sb.Append(" </div>");
-                    sb.Append(" </div>");
-                    sb.Append(" <div class='row'>");
-                    sb.Append("<div class='col-md-8' style='margin-top:20px'>");
-                    sb.Append("  <strong>Option 2:</strong> &nbsp;&nbsp;");
-                    sb.Append("" + q.Option2 + "");
-                    sb.Append("  </div>");
-                    sb.Append(" </div>");
-                    sb.Append(" <div class='row'>");
-                    sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
-                    sb.Append("  <strong>Option 3:</strong> &nbsp;&nbsp;");
-                    sb.Append("" + q.Option3 + "");
-                    sb.Append("  </div>");
-                    sb.Append("  </div>");
-                    sb.Append("   <div class='row'>");
-                    sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
-                    sb.Append("  <strong>Option 4:</strong> &nbsp; &nbsp;");
-                    sb.Append("" + q.Option4 + "");
-                    sb.Append("  </div>");
-                    sb.Append("  </div>");
-                    sb.Append("  <div class='row'>");
-                    sb.Append("  <div class='col-md-8' style='margin-top:20px'>");
-                    sb.Append("   <strong>Correct Answer:</strong> &nbsp;&nbsp;");
-                    sb.Append("" + q.CorrectAnswer + "");
-                    sb.Append("<br />");
-                    sb.Append("   </div>");
-                    sb.Append(" </div>");
-                }
-            }
+        //    foreach (var q in Que)
+        //    {
+        //        if (q.QuestionType == 1)
+        //        {
+        //            QuesId += 1;
+        //            sb.Append("  <div class='col-md-8' style='margin-top:30px'>");
+        //            sb.Append("  <strong>Question " + QuesId + ":</strong> &nbsp;&nbsp;");
+        //            sb.Append("" + q.QuestionDescription + "");
+        //            sb.Append(" </div>");
+        //            sb.Append(" </div>");
+        //            sb.Append("  <div class='row'>");
+        //            sb.Append("   <div class='col-md-8' style='margin-top:20px'>");
+        //            sb.Append("  <strong>Option 1:</strong> &nbsp;&nbsp;");
+        //            sb.Append("" + q.Option1 + "");
+        //            sb.Append(" </div>");
+        //            sb.Append(" </div>");
+        //            sb.Append(" <div class='row'>");
+        //            sb.Append("<div class='col-md-8' style='margin-top:20px'>");
+        //            sb.Append("  <strong>Option 2:</strong> &nbsp;&nbsp;");
+        //            sb.Append("" + q.Option2 + "");
+        //            sb.Append("  </div>");
+        //            sb.Append(" </div>");
+        //            sb.Append(" <div class='row'>");
+        //            sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
+        //            sb.Append("  <strong>Option 3:</strong> &nbsp;&nbsp;");
+        //            sb.Append("" + q.Option3 + "");
+        //            sb.Append("  </div>");
+        //            sb.Append("  </div>");
+        //            sb.Append("   <div class='row'>");
+        //            sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
+        //            sb.Append("  <strong>Option 4:</strong> &nbsp; &nbsp;");
+        //            sb.Append("" + q.Option4 + "");
+        //            sb.Append("  </div>");
+        //            sb.Append("  </div>");
+        //            sb.Append("  <div class='row'>");
+        //            sb.Append("  <div class='col-md-8' style='margin-top:20px'>");
+        //            sb.Append("   <strong>Correct Answer:</strong> &nbsp;&nbsp;");
+        //            sb.Append("" + q.CorrectAnswer + "");
+        //            sb.Append("<br />");
+        //            sb.Append("   </div>");
+        //            sb.Append(" </div>");
+        //        }
+        //    }
 
-            sb.Append("<div></div><div></div>");
-            sb.Append("<br />");
-            sb.Append("<br />");
-            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
-            sb.Append("<h3><strong>Practical Question Set</strong></h3>");
-            sb.Append("<br />");
-            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
-            sb.Append("<br />");
+        //    sb.Append("<div></div><div></div>");
+        //    sb.Append("<br />");
+        //    sb.Append("<br />");
+        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+        //    sb.Append("<h3><strong>Practical Question Set</strong></h3>");
+        //    sb.Append("<br />");
+        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+        //    sb.Append("<br />");
 
-            QuesId = 0;
-            foreach (var q in Que)
-            {
-                if (q.QuestionType == 2)
-                {
-                    QuesId += 1;
-                    sb.Append("<div class='row'>");
-                    sb.Append("<div class='col-md-9' style='margin-top:30px'>");
-                    sb.Append("<strong>Question " + QuesId + ":</strong>&nbsp;");
-                    sb.Append("" + q.QuestionDescription + "");
-                    sb.Append("</div>");
-                    sb.Append("</div>");
-                    sb.Append("<div class='row'>");
-                    sb.Append("<div class='col-md-9' style='margin-top:30px'>");
-                    sb.Append("<strong>Answer:</strong> &nbsp;&nbsp;&nbsp;&nbsp;");
-                    sb.Append("" + HttpUtility.HtmlDecode(q.Answer) + "");
-                    sb.Append("<br />");
-                    sb.Append("<br />");
-                    sb.Append("</div>");
-                    sb.Append("</div>");
-                }
-            }
-            sb.Append("<br />");
-            sb.Append("<br />");
-            sb.Append("<div style='text-align:center'>***********************************************End***********************************************</div>");
+        //    QuesId = 0;
+        //    foreach (var q in Que)
+        //    {
+        //        if (q.QuestionType == 2)
+        //        {
+        //            QuesId += 1;
+        //            sb.Append("<div class='row'>");
+        //            sb.Append("<div class='col-md-9' style='margin-top:30px'>");
+        //            sb.Append("<strong>Question " + QuesId + ":</strong>&nbsp;");
+        //            sb.Append("" + q.QuestionDescription + "");
+        //            sb.Append("</div>");
+        //            sb.Append("</div>");
+        //            sb.Append("<div class='row'>");
+        //            sb.Append("<div class='col-md-9' style='margin-top:30px'>");
+        //            sb.Append("<strong>Answer:</strong> &nbsp;&nbsp;&nbsp;&nbsp;");
+        //            sb.Append("" + HttpUtility.HtmlDecode(q.Answer) + "");
+        //            sb.Append("<br />");
+        //            sb.Append("<br />");
+        //            sb.Append("</div>");
+        //            sb.Append("</div>");
+        //        }
+        //    }
+        //    sb.Append("<br />");
+        //    sb.Append("<br />");
+        //    sb.Append("<div style='text-align:center'>***********************************************End***********************************************</div>");
 
-            StringReader sr = new StringReader(sb.ToString());
-            filename = userDetails.FirstName + "_" + userDetails.FirstName + "_" + userDetails.UserId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
-            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
-            MemoryStream memoryStream = new MemoryStream();
-            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
-            pdfDoc.Open();
-            htmlparser.Parse(sr);
-            pdfDoc.Close();
-            return memoryStream.ToArray();
-        }
+        //    StringReader sr = new StringReader(sb.ToString());
+        //    filename = userDetails.FirstName + "_" + userDetails.FirstName + "_" + userDetails.UserId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+        //    Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+        //    HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+        //    MemoryStream memoryStream = new MemoryStream();
+        //    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
+        //    pdfDoc.Open();
+        //    htmlparser.Parse(sr);
+        //    pdfDoc.Close();
+        //    return memoryStream.ToArray();
+        //}
 
         #endregion
 
-        public ActionResult SubmittedTest(int UserId, int TestSuiteId)
-        {
-            try
-            {
+        //public ActionResult SubmittedTest(int UserId, int TestSuiteId)
+        //{
+        //    try
+        //    {
 
-                List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
-                List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
+        //        List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
+        //        List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
 
-                var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+        //        var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
 
-                var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(UserId, TestSuiteId);
-                if (userTestSuitDetails == null)
-                {
-                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
-                    return RedirectToAction("Candidates");
-                }
+        //        var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(UserId, TestSuiteId);
+        //        if (userTestSuitDetails == null)
+        //        {
+        //            TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
+        //            return RedirectToAction("Candidates");
+        //        }
 
-                var testSuitDetails = _testSuiteService.GetTestSuitById(TestSuiteId);
+        //        var testSuitDetails = _testSuiteService.GetTestSuitById(TestSuiteId);
 
-                if (testSuitDetails == null)
-                {
-                    TempData["ErrorMsg"] = "Test suite is not assigned to user.";
-                    return RedirectToAction("Candidates");
-                }
+        //        if (testSuitDetails == null)
+        //        {
+        //            TempData["ErrorMsg"] = "Test suite is not assigned to user.";
+        //            return RedirectToAction("Candidates");
+        //        }
 
-                SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
-                submittedTestViewModel.TestStatus = userDetails.TestStatus;
-                submittedTestViewModel.FirstName = userDetails.FirstName;
-                submittedTestViewModel.LastName = userDetails.LastName;
-                submittedTestViewModel.Duration = userTestSuitDetails.Duration;
-                submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
-                submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
-                submittedTestViewModel.UserId = userTestSuitDetails.UserApplicationId;
-                if(testSuitDetails.Position.HasValue)
-                {
-                    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
-                }
+        //        SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+        //        submittedTestViewModel.TestStatus = userDetails.TestStatus;
+        //        submittedTestViewModel.FirstName = userDetails.FirstName;
+        //        submittedTestViewModel.LastName = userDetails.LastName;
+        //        submittedTestViewModel.Duration = userTestSuitDetails.Duration;
+        //        submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
+        //        submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+        //        submittedTestViewModel.UserId = userTestSuitDetails.UserApplicationId;
+        //        //if(testSuitDetails.Position.HasValue)
+        //        //{
+        //        //    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
+        //        //}
 
-                foreach (var questionId in userTestSuitDetails.UserTestDetails)
-                {
+        //        foreach (var questionId in userTestSuitDetails.UserTestDetails)
+        //        {
 
-                    var question = _questionService.GetSingleQuestion(questionId.QuestionId);
-                    if (question.QuestionType == 1)
-                    {
-                        if (questionId.Mark != null && questionId.Mark > 0)
-                        {
-                            submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
-                        }
-                        submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+        //            var question = _questionService.GetSingleQuestion(questionId.QuestionId);
+        //            if (question.QuestionType == 1)
+        //            {
+        //                if (questionId.Mark != null && questionId.Mark > 0)
+        //                {
+        //                    submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+        //                }
+        //                submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
 
-                        objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
-                        {
-                            QuestionDescription = question.QuestionDescription,
-                            CorrectAnswer = GetOption(question.CorrectAnswer),
-                            SubmittedAnswer = GetOption(questionId.Answer),
-                            Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
-                        });
-                    }
-                    else
-                    {
-                        practicalQuestionList.Insert(0, new PracticalQuestionList()
-                        {
-                            QuestionId = questionId.QuestionId,
-                            QuestionDescription = question.QuestionDescription,
-                            SubmittedAnswer = questionId.Answer,
-                            CorrectAnwer = question.Answer,
-                            Weightage = question.Marks,
-                            EvaluatedMark = questionId.Mark,
-                        });
+        //                objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
+        //                {
+        //                    QuestionDescription = question.QuestionDescription,
+        //                    CorrectAnswer = GetOption(question.CorrectAnswer),
+        //                    SubmittedAnswer = GetOption(questionId.Answer),
+        //                    Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
+        //                });
+        //            }
+        //            else
+        //            {
+        //                practicalQuestionList.Insert(0, new PracticalQuestionList()
+        //                {
+        //                    QuestionId = questionId.QuestionId,
+        //                    QuestionDescription = question.QuestionDescription,
+        //                    SubmittedAnswer = questionId.Answer,
+        //                    CorrectAnwer = question.Answer,
+        //                    Weightage = question.Marks,
+        //                    EvaluatedMark = questionId.Mark,
+        //                });
 
-                    }
+        //            }
 
-                }
-                submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
-                submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
-                submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
-                submittedTestViewModel.practicalQuestionList = practicalQuestionList;
-                submittedTestViewModel.Status = userDetails.CandidateStatus;
-                if (userDetails.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-                {
-                    userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
-                    _userService.Update(userDetails);
-                }
+        //        }
+        //        submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
+        //        submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
+        //        submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
+        //        submittedTestViewModel.practicalQuestionList = practicalQuestionList;
+        //        submittedTestViewModel.Status = userDetails.CandidateStatus;
+        //        //if (userDetails.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+        //        //{
+        //        //    userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+        //        //    _userService.Update(userDetails);
+        //        //}
 
-                List<string> Receipient = new List<string>() { "Admin", "Panel" };
-                _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+        //        List<string> Receipient = new List<string>() { "Admin", "Panel" };
+        //        _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
 
-                return View(submittedTestViewModel);
+        //        return View(submittedTestViewModel);
 
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMsg"] = ex.Message;
-                return RedirectToAction("Candidates");
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["ErrorMsg"] = ex.Message;
+        //        return RedirectToAction("Candidates");
+        //    }
+        //}
 
         private string GetOption(string p)
         {
@@ -1088,104 +1086,104 @@ namespace Silicus.Ensure.Web.Controllers
             return p == null ? "" : optionSelect;
         }
 
-        [HttpPost]
-        public ActionResult SubmittedTest(FormCollection fm)
-        {
-            try
-            {
-                int count = 1;
+        //[HttpPost]
+        //public ActionResult SubmittedTest(FormCollection fm)
+        //{
+        //    try
+        //    {
+        //        int count = 1;
 
-                var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])), Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
+        //        var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])), Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
 
-                userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
-                userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
-                userTestSuitDetails.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
-                var userTestDetails = (from uDetails in userTestSuitDetails.UserTestDetails
-                                       join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
-                                       on uDetails.QuestionId equals question.Id
-                                       select uDetails).ToList();
+        //        userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
+        //        userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
+        //        userTestSuitDetails.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
+        //        var userTestDetails = (from uDetails in userTestSuitDetails.UserTestDetails
+        //                               join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
+        //                               on uDetails.QuestionId equals question.Id
+        //                               select uDetails).ToList();
 
-                foreach (var userTestDetail in userTestDetails)
-                {
-                    var currentUser = _userService.GetUserByEmail(User.Identity.Name);
-                    userTestDetail.MarkGivenByName = currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "";
-                    userTestDetail.MarkGivenBy = currentUser != null ? currentUser.UserId : 0;
-                    userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
-                    userTestDetail.MarkGivenDate = DateTime.Now;
+        //        foreach (var userTestDetail in userTestDetails)
+        //        {
+        //            var currentUser = _userService.GetUserByEmail(User.Identity.Name);
+        //            userTestDetail.MarkGivenByName = currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "";
+        //            userTestDetail.MarkGivenBy = currentUser != null ? currentUser.UserId : 0;
+        //            userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
+        //            userTestDetail.MarkGivenDate = DateTime.Now;
 
-                    _testSuiteService.UpdateUserTestDetails(userTestDetail);
-                    count++;
-                }
+        //            _testSuiteService.UpdateUserTestDetails(userTestDetail);
+        //            count++;
+        //        }
 
-                _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
-                var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
-                user.TestStatus = CandidateStatus.TestSubmitted.ToString();
-                user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
-                _userService.Update(user);
-            }
-            catch
-            {
-                throw;
-            }
-            return RedirectToAction("Candidates");
-        }
+        //        _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
+        //        //var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
+        //        //user.TestStatus = CandidateStatus.TestSubmitted.ToString();
+        //        //user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
+        //        //_userService.Update(user);
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //    return RedirectToAction("Candidates");
+        //}
 
         # region Mail Send
-        public ActionResult SendMail(int? id)
-        {
-            int UserId = 0;
-            if (id != null)
-            {
-                UserId = Convert.ToInt32(id);
-            }
-            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
+        //public ActionResult SendMail(int? id)
+        //{
+        //    int UserId = 0;
+        //    if (id != null)
+        //    {
+        //        UserId = Convert.ToInt32(id);
+        //    }
+        //   // var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+        //    var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
 
-            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+        //   // ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
 
-            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
-                                  join userTest in userTestSuitDetails.ToList()
-                                      on question.Id equals userTest.QuestionId
-                                  select question).ToList();
+        //    List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+        //                          join userTest in userTestSuitDetails.ToList()
+        //                              on question.Id equals userTest.QuestionId
+        //                          select question).ToList();
 
-            Que = Que.OrderBy(x => x.Id).ToList();
+        //    Que = Que.OrderBy(x => x.Id).ToList();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var body = "<p>Dear Admin,</p><p>The Online Test has been submitted for <strong>{0} {1}</strong> on " + DateTime.Now + ".</p> Please review, evatuate and add your valuable feedback of the Test in order to conduct first round of interview.<br /><p>Regards,</p><p>Ensure, IT Support</p><p>This is an auto-generated mail sent by Ensure. Please do not reply to this email.</p>";
-                    var message = new MailMessage();
-                    message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));
-                    message.From = new MailAddress("nish89.cse@gmail.com", "Ensure Team");
-                    message.Subject = "Test Submitted for " + userDetails.FirstName + " " + userDetails.LastName;
-                    message.Body = string.Format(body, userDetails.FirstName, userDetails.LastName);
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var body = "<p>Dear Admin,</p><p>The Online Test has been submitted for <strong>{0} {1}</strong> on " + DateTime.Now + ".</p> Please review, evatuate and add your valuable feedback of the Test in order to conduct first round of interview.<br /><p>Regards,</p><p>Ensure, IT Support</p><p>This is an auto-generated mail sent by Ensure. Please do not reply to this email.</p>";
+        //            var message = new MailMessage();
+        //            message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));
+        //            message.From = new MailAddress("nish89.cse@gmail.com", "Ensure Team");
+        //            message.Subject = "Test Submitted for " + userDetails.FirstName + " " + userDetails.LastName;
+        //            message.Body = string.Format(body, userDetails.FirstName, userDetails.LastName);
 
-                    string filename = "";
-                    byte[] byteInfo = generatePDF(id, out filename);
-                    MemoryStream ms = new MemoryStream(byteInfo);
-                    FileStream file = new FileStream(Server.MapPath("~\\Attachment") + "\\" + filename, FileMode.Create, FileAccess.Write);
-                    ms.WriteTo(file);
-                    file.Close();
-                    ms.Close();
+        //            string filename = "";
+        //            byte[] byteInfo = generatePDF(id, out filename);
+        //            MemoryStream ms = new MemoryStream(byteInfo);
+        //            FileStream file = new FileStream(Server.MapPath("~\\Attachment") + "\\" + filename, FileMode.Create, FileAccess.Write);
+        //            ms.WriteTo(file);
+        //            file.Close();
+        //            ms.Close();
 
-                    Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + filename);
-                    message.Attachments.Add(attachment);
-                    message.IsBodyHtml = true;
+        //            Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + filename);
+        //            message.Attachments.Add(attachment);
+        //            message.IsBodyHtml = true;
 
-                    using (var smtp = new SmtpClient())
-                    {
-                        smtp.Send(message);
-                        TempData["Success"] = "Mail Sent Successfully";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-            return RedirectToAction("ViewQuestion", "Admin", new { id = UserId });
-        }
+        //            using (var smtp = new SmtpClient())
+        //            {
+        //                smtp.Send(message);
+        //                TempData["Success"] = "Mail Sent Successfully";
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new Exception(ex.Message);
+        //        }
+        //    }
+        //    return RedirectToAction("ViewQuestion", "Admin", new { id = UserId });
+        //}
 
         #endregion
 

@@ -66,42 +66,42 @@ namespace Silicus.Ensure.Entities.Initializer
            //     IsDeleted = false
 
            // });
-            context.Add(new Project
-            {
-                ProjectDescription = "Landmark"
-            });
+            //context.Add(new Project
+            //{
+            //    ProjectDescription = "Landmark"
+            //});
 
-            context.Add(new Project
-            {
-                ProjectDescription = "MorningStar"
-            });
+            //context.Add(new Project
+            //{
+            //    ProjectDescription = "MorningStar"
+            //});
 
-            context.Add(new ProjectDetail
-            {
-                ProjectName = "Landmark",
-                Status = "Red"
-            });
+            //context.Add(new ProjectDetail
+            //{
+            //    ProjectName = "Landmark",
+            //    Status = "Red"
+            //});
 
-            context.Add(new ProjectDetail
-            {
-                ProjectName = "MorningStar",
-                Status = "Green"
-            });
+            //context.Add(new ProjectDetail
+            //{
+            //    ProjectName = "MorningStar",
+            //    Status = "Green"
+            //});
 
-            context.Add(new Manager
-            {
-                ManagerName = "Shailendra"
-            });
+            //context.Add(new Manager
+            //{
+            //    ManagerName = "Shailendra"
+            //});
 
-            context.Add(new Manager
-            {
-                ManagerName = "Sulekha"
-            });
+            //context.Add(new Manager
+            //{
+            //    ManagerName = "Sulekha"
+            //});
 
-            context.Add(new Position
-            {
-                PositionName = "Dot Net Developer"
-            });
+            //context.Add(new Position
+            //{
+            //    PositionName = "Dot Net Developer"
+            //});
 
             context.Add(new Tags
             {

@@ -15,6 +15,7 @@ using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Silicus.Ensure.Web.Models.JobVite;
+using Microsoft.AspNet.Identity;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -43,25 +44,32 @@ namespace Silicus.Ensure.Web.Controllers
             var userEmail = User.Identity.Name.Trim();
             if (!string.IsNullOrWhiteSpace(userEmail))
             {
-                var user = _userService.GetUserByEmail(userEmail);
-                if (user == null)
-                    return RedirectToAction("LogOff", "CandidateAccount");
-                else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-                {
-                    ViewBag.Status = 1;
-                    ViewBag.Msg = "You have already submitted your test.";
-                    return View("Welcome", new TestSuiteCandidateModel());
-                }
-                ViewBag.CandidateName = user.FirstName;
-                UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+                //var user = _userService.GetUserByEmail(userEmail);
+                //if (user == null)
+                //    return RedirectToAction("LogOff", "CandidateAccount");
+                //else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                //{
+                //    ViewBag.Status = 1;
+                //    ViewBag.Msg = "You have already submitted your test.";
+                //    return View("Welcome", new TestSuiteCandidateModel());
+                //}
+                // ViewBag.CandidateName = user.FirstName;
+                var userTestSuite = _testSuiteService.GetUserTestSuite(User.Identity.GetUserId());
                 if (userTestSuite == null)
                 {
                     ViewBag.Status = 1;
                     ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                     return View("Welcome", new TestSuiteCandidateModel());
                 }
-                ViewBag.ProfilePhotoPath = user.ProfilePhotoFilePath;
-                ViewBag.Status = 0;
+
+                return View("Welcome", new TestSuiteEmployeeModel() { EmployeeTestSuiteId = userTestSuite.EmployeeTestSuiteId, CandidateId = User.Identity.GetUserId().ToString(), EmployeeId =0 });
+
+                //// ViewBag.ProfilePhotoPath = user.ProfilePhotoFilePath;
+                // ViewBag.Status = 0;
+
+                //return RedirectToAction("OnlineTest","Test", new { EmployeeTestSuitId = userTestSuite.EmployeeTestSuiteId, employeeId = 0, CandidateId = User.Identity.GetUserId().ToString() });
+
+
             }
             return View();
         }
@@ -70,11 +78,11 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult TestSuiteAndCandidateDetails()
         {
             var userEmail = User.Identity.Name.Trim();
-            var user = _userService.GetUserByEmail(userEmail);
-            if (user == null)
-                return RedirectToAction("LogOff", "CandidateAccount");
+            //var user = null;//_userService.GetUserByEmail(userEmail);
+            //if (user == null)
+            //    return RedirectToAction("LogOff", "CandidateAccount");
 
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(0);
             if (userTestSuite != null)
             {
                 if (userTestSuite.RemainingTime > 0)
@@ -90,24 +98,24 @@ namespace Silicus.Ensure.Web.Controllers
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
-            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+          //  var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
 
-            testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
+            //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
 
-            return PartialView("_testSuiteAndCandidateDetails", testSuiteCandidateModel);
+            return PartialView("_testSuiteAndCandidateDetails", null);
         }
 
         [CustomAuthorize("Candidate")]
         public ActionResult ReadOnlyInstructions()
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction("LogOff", "CandidateAccount");
-            var userEmail = User.Identity.Name.Trim();
-            var user = _userService.GetUserByEmail(userEmail);
-            if (user == null)
-                return RedirectToAction("LogOff", "CandidateAccount");
+            //if (!ModelState.IsValid)
+            //    return RedirectToAction("LogOff", "CandidateAccount");
+            //var userEmail = User.Identity.Name.Trim();
+            //var user = _userService.GetUserByEmail(userEmail);
+            //if (user == null)
+            //    return RedirectToAction("LogOff", "CandidateAccount");
             return PartialView("ReadOnlyInstructions");
         }
 
@@ -118,35 +126,35 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("LogOff", "CandidateAccount");
 
             var userEmail = User.Identity.Name.Trim();
-            var user = _userService.GetUserByEmail(userEmail);
-            if (user == null)
-            {
-                ViewBag.Status = 1;
-                ViewBag.Msg = "User not found for online test, kindly contact admin.";
-                return View("Welcome", new TestSuiteCandidateModel());
-            }
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
-            if (userTestSuite == null)
-            {
-                ViewBag.Status = 1;
-                ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
-                return View("Welcome", new TestSuiteCandidateModel());
-            }
-            else if (user.CandidateStatus != CandidateStatus.TestAssigned.ToString())
-            {
-                ViewBag.Status = 1;
-                ViewBag.Msg = "You have already submitted your test.";
-                return View("Welcome", new TestSuiteCandidateModel());
-            }
-            TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
-            testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
-            testSuiteCandidateModel.UserId = user.UserApplicationId;
-            return View(testSuiteCandidateModel);
+            //var user = _userService.GetUserByEmail(userEmail);
+            //if (user == null)
+            //{
+            //    ViewBag.Status = 1;
+            //    ViewBag.Msg = "User not found for online test, kindly contact admin.";
+            //    return View("Welcome", new TestSuiteCandidateModel());
+            //}
+            //UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+            //if (userTestSuite == null)
+            //{
+            //    ViewBag.Status = 1;
+            //    ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
+            //    return View("Welcome", new TestSuiteCandidateModel());
+            //}
+            //else if (user.CandidateStatus != CandidateStatus.TestAssigned.ToString())
+            //{
+            //    ViewBag.Status = 1;
+            //    ViewBag.Msg = "You have already submitted your test.";
+            //    return View("Welcome", new TestSuiteCandidateModel());
+            //}
+            //TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+            //var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+            //testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
+            //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            //testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+            //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
+            //testSuiteCandidateModel.UserId = user.UserApplicationId;
+            return View();
         }
 
         private QuestionNavigationViewModel GetNavigationDetails(int userTestSuiteId)
@@ -178,7 +186,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
-            _userService.UpdateUserApplicationTestDetails(userId);
+            //_userService.UpdateUserApplicationTestDetails(userId);
 
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
@@ -190,12 +198,12 @@ namespace Silicus.Ensure.Web.Controllers
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId, userTestDetailId, answer);
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            var users = _userService.GetUserApplicationDetailsById(userId);
-            if (users != null)
-            {
-                var userDetails = _userService.GetUserById(users.UserId);
-                //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
-            }
+            //var users = _userService.GetUserApplicationDetailsById(userId);
+            //if (users != null)
+            //{
+            //    var userDetails = _userService.GetUserById(users.UserId);
+            //    //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+            //}
             return RedirectToAction("LogOff", "CandidateAccount");
         }
 
@@ -264,17 +272,17 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_AssignTest");
         }
 
-        public JsonResult GetCandidatesByRequisition([DataSourceRequest] DataSourceRequest request, int requisitionId)
-        {
-            var candidatesBusinessModel = _userService.GetCandidatesFromJobVite();
-            var candidatesViewModel = _mappingService.Map<List<JobViteCandidateBusinessModel>, List<JobViteCandidateViewModel>>(candidatesBusinessModel);
-            foreach (var candidate in candidatesViewModel)
-            {
-                candidate.CandidateJson = "";
-                candidate.CandidateJson = Newtonsoft.Json.JsonConvert.SerializeObject(candidate);
-            }
-            return Json(candidatesViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult GetCandidatesByRequisition([DataSourceRequest] DataSourceRequest request, int requisitionId)
+        //{
+        //    var candidatesBusinessModel = _userService.GetCandidatesFromJobVite();
+        //    var candidatesViewModel = _mappingService.Map<List<JobViteCandidateBusinessModel>, List<JobViteCandidateViewModel>>(candidatesBusinessModel);
+        //    foreach (var candidate in candidatesViewModel)
+        //    {
+        //        candidate.CandidateJson = "";
+        //        candidate.CandidateJson = Newtonsoft.Json.JsonConvert.SerializeObject(candidate);
+        //    }
+        //    return Json(candidatesViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        //}
 
         public JsonResult GetAllRequisitions([DataSourceRequest] DataSourceRequest request)
         {

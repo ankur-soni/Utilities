@@ -30,13 +30,13 @@ namespace Silicus.Ensure.Entities
             // Register Entities.
             Guard.ArgumentNotNull(modelBuilder, "modelBuilder");
 
-            modelBuilder.Configurations.Add(new OrganizationMap());
+            //modelBuilder.Configurations.Add(new OrganizationMap());
 
-            modelBuilder.Configurations.Add(new ProjectMap());
+            //modelBuilder.Configurations.Add(new ProjectMap());
 
-            modelBuilder.Configurations.Add(new ProjectDetailMap());
+            //modelBuilder.Configurations.Add(new ProjectDetailMap());
 
-            modelBuilder.Configurations.Add(new ManagerDetailMap());
+            //modelBuilder.Configurations.Add(new ManagerDetailMap());
 
             modelBuilder.Configurations.Add(new EmailAvailableMap());
             modelBuilder.Configurations.Add(new UserMap());
@@ -48,25 +48,25 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new UserTestDetailsMap());
             modelBuilder.Configurations.Add(new EmployeeTestSuiteMap());
             modelBuilder.Configurations.Add(new EmployeeTestDetailsMap());
-            modelBuilder.Configurations.Add(new PositionMap());
+            //modelBuilder.Configurations.Add(new PositionMap());
             modelBuilder.Configurations.Add(new PanelMap());
-            modelBuilder.Configurations.Add(new RecruiterMembersDetailMap());
-            modelBuilder.Configurations.Add(new PanelMebersDetailMap());
+           // modelBuilder.Configurations.Add(new RecruiterMembersDetailMap());
+           // modelBuilder.Configurations.Add(new PanelMebersDetailMap());
             modelBuilder.Configurations.Add(new TempPreviewTestMap());
             modelBuilder.Configurations.Add(new QuestionStatusDetailsMap());
             modelBuilder.Configurations.Add(new TechnologyMap());
 
 
             // Many-to-many example - can be moved to Map file as well.
-            modelBuilder.Entity<Asset>()
-            .HasMany<Category>(s => s.Categories)
-            .WithMany(c => c.Assets)
-            .Map(cs =>
-            {
-                cs.MapLeftKey("AssetId");
-                cs.MapRightKey("CategoryId");
-                cs.ToTable("AssetCategory");
-            });
+            //modelBuilder.Entity<Asset>()
+            //.HasMany<Category>(s => s.Categories)
+            //.WithMany(c => c.Assets)
+            //.Map(cs =>
+            //{
+            //    cs.MapLeftKey("AssetId");
+            //    cs.MapRightKey("CategoryId");
+            //    cs.ToTable("AssetCategory");
+            //});
 
             modelBuilder.Entity<UserTestSuite>()
                 .HasMany<UserTestDetails>(u => u.UserTestDetails)

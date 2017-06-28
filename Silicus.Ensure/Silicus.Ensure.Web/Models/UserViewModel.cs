@@ -11,6 +11,8 @@ namespace Silicus.Ensure.Web.Models
     {
         public int UserId { get; set; }
 
+        public string JobViteId { get; set; }
+
         [StringLength(50)]
         [Display(Name = "First name")]
         [Required(ErrorMessage = "First name is required.")]
@@ -63,47 +65,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Contact number is required.")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Contact number is not a valid phone number.")]
         public string ContactNumber { get; set; }
-
-        [StringLength(50)]
-        [Display(Name = "Client name")]
-        [Required(ErrorMessage = "Client name is required.")]
-        public string ClientName { get; set; }
-
-        [Required(ErrorMessage = "Technology is required.")]
-        public List<string> SkillTags { get; set; }
-      
-        public string Technology { get; set; }
-
-        [Required(ErrorMessage = "Total experience in years is required.")]
-        public int? TotalExperienceInYear { get; set; }
-
-        [Required(ErrorMessage = "Total experience in months is required.")]
-        public int? TotalExperienceInMonth { get; set; }
-
-        [Required(ErrorMessage = "Relevant experience in years is required.")]
-        public int? RelevantExperienceInYear { get; set; }
-
-        [Required(ErrorMessage = "Relevant experience in months is required.")]
-        public int? RelevantExperienceInMonth { get; set; }
-
-        [StringLength(50)]
-        [Display(Name = "Current company")]
-        [Required(ErrorMessage = "Current company is required.")]
-        public string CurrentCompany { get; set; }
-
-        [StringLength(50)]
-        [Display(Name = "Current title")]
-        [Required(ErrorMessage = "Current title is required.")]
-        public string CurrentTitle { get; set; }
-
-        public string ResumePath { get; set; }
-
-        public string ResumeName { get; set; }
-
-        public string ResumeDisplayName { get; set; }
-
-        public string Role { get; set; }
-
+        
         [Display(Name = "Gender")]
         [Required(ErrorMessage = "Gender is required.")]
         public string Gender { get; set; }
@@ -112,11 +74,9 @@ namespace Silicus.Ensure.Web.Models
 
         public string TestStatus { get; set; }
 
-        public int TestSuiteId { get; set; }
-
         public Guid IdentityUserId { get; set; }
 
-        public IList<Position> PositionList { get; set; }
+        // public IList<Position> PositionList { get; set; }
 
         public string Position { get; set; }
 
@@ -124,25 +84,11 @@ namespace Silicus.Ensure.Web.Models
 
         public string PanelName { get; set; }
 
-
         public string RecruiterName { get; set; }
 
 
-        public bool IsAdmin { get; set; }
 
-        public int UserApplicationId { get; set; }
-
-        public HttpPostedFileBase ResumeFile { get; set; }
-
-        public HttpPostedFileBase ProfilePhotoFile { get; set; }
-
-        public string ProfilePhotoFilePath { get; set; }
-
-        public bool IsCandidateReappear { get; set; }
-
-        public bool HasHistory { get; set; }
-
-        public DateTime ApplicationDate { get; set; }
+      
 
     }
 }

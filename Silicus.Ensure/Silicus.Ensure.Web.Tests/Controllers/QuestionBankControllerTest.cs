@@ -1,13 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Kendo.Mvc.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Silicus.Ensure.Models.DataObjects;
-using Silicus.Ensure.Services.Interfaces;
-using Silicus.Ensure.Web.Controllers;
 using Silicus.Ensure.Models.Constants;
-using System.Collections;
 using System.Linq;
 
 namespace Silicus.Ensure.Web.Tests.Controllers

@@ -30,10 +30,10 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITestSuiteService _testSuiteService;
         private readonly IUserService _userService;
         private readonly CommonController _commonController;
-        private readonly IPositionService _positionService;
+        //private readonly IPositionService _positionService;
         private readonly ITagsService _tagsService;
 
-        public EmployeeController(IQuestionService questionService, MappingService mappingService, UtilityContainer.Services.Interfaces.IUserService containerUserService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, ITestSuiteService testSuiteService, IUserService userService, CommonController commonController, IPositionService positionService, ITagsService tagsService)
+        public EmployeeController(IQuestionService questionService, MappingService mappingService, UtilityContainer.Services.Interfaces.IUserService containerUserService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, ITestSuiteService testSuiteService, IUserService userService, CommonController commonController,  ITagsService tagsService)
         {
             //_positionService = positionService;
             //_userService = userService;
@@ -50,7 +50,7 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService = testSuiteService;
             _userService = userService;
             _commonController = commonController;
-            _positionService = positionService;
+           // _positionService = positionService;
             _tagsService = tagsService;
         }
         // GET: Employee
@@ -404,9 +404,9 @@ namespace Silicus.Ensure.Web.Controllers
         //    return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         //}
 
-        private Position GetPosition(int positionId)
-        {
-            return _positionService.GetPositionById(positionId);
-        }
+        //private Position GetPosition(int positionId)
+        //{
+        //    return _positionService.GetPositionById(positionId);
+        //}
     }
 }

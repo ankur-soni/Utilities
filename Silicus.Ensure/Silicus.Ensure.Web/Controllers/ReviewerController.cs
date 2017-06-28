@@ -58,13 +58,13 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            var user = _userService.GetUserByUserApplicationId(UserApplicationId);
-            if (user == null)
-            {
-                ViewBag.Status = 1;
-                ViewBag.Msg = "User not found for online test, Kindly contact admin.";
-                return View("Welcome");
-            }
+            //var user = _userService.GetUserByUserApplicationId(UserApplicationId);
+            //if (user == null)
+            //{
+            //    ViewBag.Status = 1;
+            //    ViewBag.Msg = "User not found for online test, Kindly contact admin.";
+            //    return View("Welcome");
+            //}
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(UserApplicationId);
             if (userTestSuite == null)
             {
@@ -73,29 +73,29 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("Welcome");
             }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
-            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-            testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
-            testSuiteCandidateModel.UserId = user.UserId;
+            //var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            //testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
+            //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+            //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            //testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+            //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+            //testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
+            //testSuiteCandidateModel.UserId = user.UserId;
             CandidateStatus status;
 
-            if (Enum.TryParse(user.CandidateStatus, out status))
-            {
-                if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-                {
-                    var userRole = MvcApplication.getCurrentUserRoles();
-                    if (userRole.Contains(RoleName.Panel.ToString()))
-                    {
-                        user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
-                        _userService.Update(user);
-                    }
-                }
-                testSuiteCandidateModel.CandidateStatus = status;
-            }
+            //if (Enum.TryParse(user.CandidateStatus, out status))
+            //{
+            //    if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+            //    {
+            //        var userRole = MvcApplication.getCurrentUserRoles();
+            //        if (userRole.Contains(RoleName.Panel.ToString()))
+            //        {
+            //            user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+            //            _userService.Update(user);
+            //        }
+            //    }
+                //testSuiteCandidateModel.CandidateStatus = status;
+            //}
             return View(testSuiteCandidateModel);
 
             return View();
@@ -103,17 +103,17 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult LoadTestSummaryView(int userId, int UserTestSuiteId)
         {
-            var user = _userService.GetUserById(userId);
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
-            TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-            testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
-            testSuiteCandidateModel.UserId = user.UserId;
-            return PartialView("_reviewerTestSummaryAndCandidateDetails", testSuiteCandidateModel);
+            //var user = _userService.GetUserById(userId);
+           // UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+           // TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+           //// var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+           // testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+           // testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+           // testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+           // testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+           // testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
+            //testSuiteCandidateModel.UserId = user.UserId;
+            return PartialView("_reviewerTestSummaryAndCandidateDetails", null);
         }
 
         private TestSummaryViewModel GetTestSummary(int userTestSuiteId)
@@ -156,16 +156,16 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public JsonResult SumbmitCandidateResult(CandidateResultViewmodel candidateResultViewmodel)
         {
-            var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
-            user.CandidateStatus = candidateResultViewmodel.Status.ToString();
-            _userService.Update(user);
+          //  var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
+          //  user.CandidateStatus = candidateResultViewmodel.Status.ToString();
+          //  _userService.Update(user);
             var userTestSuitedetails = _testSuiteService.GetUserTestSuiteId(candidateResultViewmodel.UserTestSuiteId);
             userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
             userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
             _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
 
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + "", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
+          //  _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + "", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
 
             return Json(true);
         }
@@ -263,8 +263,8 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult LoadPreviewQuestion(int userId, int testSuiteId)
         {
-            int applicationDetailsId = _userService.GetUserLastestApplicationId(userId);
-            var testSuiteQuestionModel = PreviewTestSuiteQuestion(null, testSuiteId, (int)QuestionType.Objective, applicationDetailsId);
+           // int applicationDetailsId = _userService.GetUserLastestApplicationId(userId);
+            var testSuiteQuestionModel = PreviewTestSuiteQuestion(null, testSuiteId, (int)QuestionType.Objective, 0);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
@@ -278,9 +278,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetQuestionForPreview(int? testSuiteId, int questionId, int userId)
         {
-            int applicationDetails = _userService.GetUserLastestApplicationId(userId);
+          //  int applicationDetails = _userService.GetUserLastestApplicationId(userId);
             var questionType = _testSuiteService.GetQuestionType(questionId);
-            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, applicationDetails);
+            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, 0);
             return PartialView("_partialViewQuestion", testDetails);
         }
 
@@ -305,46 +305,46 @@ namespace Silicus.Ensure.Web.Controllers
         #endregion
 
         #region Print Data
-        public ActionResult CreateDocument(int userId, int userTestSuiteId)
-        {
-            var user = _userService.GetUserById(userId);
-            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            var questions = _testSuiteService.GetUserTestDetailsForPrint(userTestSuiteId);
-            var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
-            var exportModel = new ExportQuestionsViewModel
-            {
-                CandidateInfo = candidateInfo,
-                Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
-                Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
-            };
+        //public ActionResult CreateDocument(int userId, int userTestSuiteId)
+        //{
+        //   // var user = _userService.GetUserById(userId);
+        //    var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+        //    var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+        //    var questions = _testSuiteService.GetUserTestDetailsForPrint(userTestSuiteId);
+        //    var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
+        //    var exportModel = new ExportQuestionsViewModel
+        //    {
+        //        CandidateInfo = candidateInfo,
+        //        Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
+        //        Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
+        //    };
 
-            return View("Export", exportModel);
-        }
+        //    return View("Export", exportModel);
+        //}
 
-        public ActionResult PrintFromPreview(int candidateId,int testSuiteId)
-        {
-            var candidate = _userService.GetUserById(candidateId);
-            var candidateInfoBusinessModel = _userService.GetCandidateInfo(candidate);
-            var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+        //public ActionResult PrintFromPreview(int candidateId,int testSuiteId)
+        //{
+        //    var candidate = _userService.GetUserById(candidateId);
+        //    var candidateInfoBusinessModel = _userService.GetCandidateInfo(candidate);
+        //    var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
 
-            var viewerEmailId = User.Identity.Name;
-            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
-            var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidateId };
+        //    var viewerEmailId = User.Identity.Name;
+        //    var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+        //    TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
+        //    var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidateId };
           
-            _testSuiteService.GetPreview(previewTest);
-            var questions = _testSuiteService.GetUserTestDetailsByViewerIdForPrint(previewTest);
-            var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
-            var exportModel = new ExportQuestionsViewModel
-            {
-                CandidateInfo = candidateInfo,
-                Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
-                Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
-            };
+        //    _testSuiteService.GetPreview(previewTest);
+        //    var questions = _testSuiteService.GetUserTestDetailsByViewerIdForPrint(previewTest);
+        //    var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
+        //    var exportModel = new ExportQuestionsViewModel
+        //    {
+        //        CandidateInfo = candidateInfo,
+        //        Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
+        //        Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
+        //    };
 
-            return View("Export", exportModel);
-        }
+        //    return View("Export", exportModel);
+        //}
        
         #endregion
     }

@@ -18,15 +18,15 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IPanelService _panelService;
         private readonly ITagsService _tagService;
-        private readonly IPositionService _positionService;
+       // private readonly IPositionService _positionService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
         private readonly IEmailService _emailService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IRoleService _roleService;
-        public CommonController(IPanelService panelService, ITagsService tagService, IPositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, IEmailService emailService, Silicus.UtilityContainer.Services.Interfaces.IRoleService roleService)
+        public CommonController(IPanelService panelService, ITagsService tagService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, IEmailService emailService, Silicus.UtilityContainer.Services.Interfaces.IRoleService roleService)
         {
             _panelService = panelService;
             _tagService = tagService;
-            _positionService = positionService;
+            //_positionService = positionService;
             _containerUserService = containerUserService;
             _emailService = emailService;
             _roleService = roleService;
@@ -52,11 +52,11 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(taglist, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAllPositionDetails()
-        {
-            var positionlist = _positionService.GetPositionDetails().Where(y => y.IsDeleted != true).OrderByDescending(model => model.PositionId);
-            return Json(positionlist, JsonRequestBehavior.AllowGet);
-        }
+        //public ActionResult GetAllPositionDetails()
+        //{
+        //    var positionlist = _positionService.GetPositionDetails().Where(y => y.IsDeleted != true).OrderByDescending(model => model.PositionId);
+        //    return Json(positionlist, JsonRequestBehavior.AllowGet);
+        //}
 
 
         [HttpPost]

@@ -83,7 +83,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Special Instruction")]
         public string SpecialInstruction { get; set; }
 
-        public IList<Position> PositionList { get; set; }
+        //public IList<Position> PositionList { get; set; }
 
         public IList<TestSuiteTagViewModel> Tags { get; set; }
 

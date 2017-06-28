@@ -8,6 +8,6 @@ namespace Silicus.Ensure.Models.DataObjects
         public string CategoryName { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Asset> Assets { get; set; }
+        //public virtual ICollection<Asset> Assets { get; set; }
     }
 }

@@ -12,6 +12,13 @@
         SelectedMenu('#emp-assigned-test');
         SetNavigationMenuActive('AssignedTest');
     });
+
+    function StartTest(EmployeeTestSuiteId, EmployeeId) {
+        var newwindow = window.open("/Test/OnlineTest?EmployeeTestSuitId=" + EmployeeTestSuiteId + "&CandidateId=''&employeeId=" + EmployeeId, "_blank", "toolbar=yes,scrollbars=yes,resizable=no,top=0,left=0,width=" + $(window).width() + ",height=" + $(window).height());
+        $(newwindow).unload(function () {            
+                $("#EmployeeTestSuitGrid").data("kendoGrid").dataSource.read();
+        });
+    }
 </script>
 <div class="table-responsive M-B15">
 
@@ -45,7 +52,7 @@
                                                                         #").Title("Status").Width(250);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
-                                                                            <a href='/Employee/OnlineTest?EmployeeTestSuitId=#=EmployeeTestSuiteId#'>Start Test</a>
+                                                                            <a onclick='StartTest(#=EmployeeTestSuiteId#,#=EmployeeId#)'>Start Test</a>
                                                                         #}
                                                                         else if(StatusId==3) {#
                                                                             Test Submitted

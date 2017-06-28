@@ -580,24 +580,24 @@
                 $(subMenuSelector).addClass("active");
             }
         }
-        $(document).ready(function () {
-            var url = '/Technology/GetAllTechnologiesWithQuestionCount';
+        //$(document).ready(function () {
+        //    var url = '/Technology/GetAllTechnologiesWithQuestionCount';
 
-            $.getJSON(url, function (data) {
-                $.each(data, function (key, val) {
-                    if (val.Count > 0) {
-                        var technologies = '<li><span class="details"><a href="/QuestionReview/Index?technologyId=' + val.TechnologyId + '&IsReadyForReview=true' + '"><div class="mail-content"><span>' + val.TechnologyName + '</span>  <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
-                    }
-                    else {
-                        var technologies = '<li><span class="details"><a href="#"><div class="mail-content"><span>' + val.TechnologyName + '</span>   <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
-                    }//var user = '<tr><td>' + val.FirstName + '</td></tr>';
+        //    $.getJSON(url, function (data) {
+        //        $.each(data, function (key, val) {
+        //            if (val.Count > 0) {
+        //                var technologies = '<li><span class="details"><a href="/QuestionReview/Index?technologyId=' + val.TechnologyId + '&IsReadyForReview=true' + '"><div class="mail-content"><span>' + val.TechnologyName + '</span>  <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
+        //            }
+        //            else {
+        //                var technologies = '<li><span class="details"><a href="#"><div class="mail-content"><span>' + val.TechnologyName + '</span>   <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
+        //            }//var user = '<tr><td>' + val.FirstName + '</td></tr>';
 
-                    $('#TechnologyList').append(technologies);
+        //            $('#TechnologyList').append(technologies);
 
-                });
-            });
+        //        });
+        //    });
 
-        });
+        //});
     </script>
     <script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>

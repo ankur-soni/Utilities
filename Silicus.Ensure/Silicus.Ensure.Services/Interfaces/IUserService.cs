@@ -9,19 +9,19 @@ namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<UserBusinessModel> GetUserDetailsAll();
+        //IEnumerable<UserBusinessModel> GetUserDetailsAll();
 
-        IEnumerable<UserBusinessModel> GetUserDetails();
+       // IEnumerable<UserBusinessModel> GetUserDetails();
 
         int Add(UserBusinessModel User);
 
-        UserBusinessModel GetUserById(int userId);
+        //UserBusinessModel GetUserById(int userId);
 
-        void Update(UserBusinessModel User);
+       // void Update(UserBusinessModel User);
 
-        void Delete(int userId);
+       // void Delete(int userId);
 
-        UserBusinessModel GetUserByEmail(string email);
+       // UserBusinessModel GetUserByEmail(string email);
 
         IEnumerable<User> GetUserByRole(string role);
 
@@ -31,25 +31,25 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestSuite> GetAllTestSuiteDetails();
 
-        UserApplicationDetails GetUserApplicationDetailsById(int userApplicationId);
+        //UserApplicationDetails GetUserApplicationDetailsById(int userApplicationId);
 
-        void UpdateUserApplicationTestDetails(int UserApplicationDetailsId);
+       // void UpdateUserApplicationTestDetails(int UserApplicationDetailsId);
 
         CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user);
 
-        UserBusinessModel GetUserByUserApplicationId(int UserApplicationDetailId);
+       // UserBusinessModel GetUserByUserApplicationId(int UserApplicationDetailId);
 
-        IEnumerable<UserBusinessModel> GetCandidates(string firstName, string lastName, DateTime dob);
+        //IEnumerable<UserBusinessModel> GetCandidates(string firstName, string lastName, DateTime dob);
 
-        void UpdateUserAndCreateNewApplication(UserBusinessModel userModel);
+        //void UpdateUserAndCreateNewApplication(UserBusinessModel userModel);
 
-        List<UserBusinessModel> GetUserWithAllApplicationDetails(int userId);
+        //List<UserBusinessModel> GetUserWithAllApplicationDetails(int userId);
 
-        List<UserBusinessModel> GetUserDetails(int userId);
+        //List<UserBusinessModel> GetUserDetails(int userId);
 
-        int GetUserLastestApplicationId(int userId);
+       // int GetUserLastestApplicationId(int userId);
 
-        List<JobViteCandidateBusinessModel> GetCandidatesFromJobVite();
+        //List<JobViteCandidateBusinessModel> GetCandidatesFromJobVite();
 
         List<RequisitionBusinessModel> GetAllRequistions();
     }

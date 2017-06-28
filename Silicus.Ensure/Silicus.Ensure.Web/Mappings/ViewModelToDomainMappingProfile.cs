@@ -26,8 +26,8 @@ namespace Silicus.Ensure.Web.Mappings
         protected override void Configure()
         {
             Mapper.CreateMap<Model, EntityA>();
-            Mapper.CreateMap<UserViewModel, UserBusinessModel>()
-                 .ForMember(dest => dest.Technology, opt => opt.MapFrom(s => s.SkillTags != null ? string.Join(",", s.SkillTags.ToArray()) : ""));
+            //Mapper.CreateMap<UserViewModel, UserBusinessModel>()
+            //     .ForMember(dest => dest.Technology, opt => opt.MapFrom(s => s.SkillTags != null ? string.Join(",", s.SkillTags.ToArray()) : ""));
             Mapper.CreateMap<TestSuiteViewModel, TestSuite>();//.ForMember(o => o., b => b.MapFrom(z => z.FirstName + " " + z.LastName));
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();//.ForMember(o => o.PositionName, Enum.Parse(Competency,"1").ToString();
             Mapper.CreateMap<QuestionModel, Question>();
@@ -38,12 +38,12 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<UserTestSuite, TestSuiteCandidateModel>();
             Mapper.CreateMap<TestSuiteQuestionModel, object>();
             Mapper.CreateMap<object, TestSuiteQuestionModel>();
-            Mapper.CreateMap<PanelMemberDetailViewModel, PanelMemberDetail>()
-                .ForMember(dest => dest.PanelIds, opt => opt.MapFrom(s => (String.Join(",", s.Panel))));
+            //Mapper.CreateMap<PanelMemberDetailViewModel, PanelMemberDetail>()
+            //    .ForMember(dest => dest.PanelIds, opt => opt.MapFrom(s => (String.Join(",", s.Panel))));
             Mapper.CreateMap<PanelMemberDetailViewModel, UserDetailViewModel>();
 
-            Mapper.CreateMap<RecruiterMemberDetailViewModel, RecruiterMembersDetail>()
-                .ForMember(dest => dest.TagIds, opt => opt.MapFrom(s => (String.Join(",", s.Tag))));
+            //Mapper.CreateMap<RecruiterMemberDetailViewModel, RecruiterMembersDetail>()
+            //    .ForMember(dest => dest.TagIds, opt => opt.MapFrom(s => (String.Join(",", s.Tag))));
             Mapper.CreateMap<RecruiterMemberDetailViewModel, UserDetailViewModel>();
 
             Mapper.CreateMap<ContainerUserViewModel, Silicus.UtilityContainer.Models.DataObjects.User>();

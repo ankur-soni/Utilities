@@ -28,6 +28,7 @@ namespace Silicus.Ensure.Web.Models
         public int EmployeeTestSuiteId { get; set; }
         public int TestSuiteId { get; set; }
         public int EmployeeId { get; set; }
+        public string CandidateId { get; set; }
         public int ObjectiveCount { get; set; }
         public int PracticalCount { get; set; }
         public int Duration { get; set; }

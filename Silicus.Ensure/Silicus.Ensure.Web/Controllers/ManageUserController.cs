@@ -23,7 +23,7 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
-        private readonly IPositionService _positionService;
+       // private readonly IPositionService _positionService;
         private readonly IPanelMemberService _panelMemberService;
         private readonly IRecruiterMeberService _recruiterMeberService;
 
@@ -53,9 +53,9 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ManageUserController(IUserService userService, MappingService mappingService, PositionService positionService, IPanelMemberService panelMemberService, IRecruiterMeberService recruiterMeberService)
+        public ManageUserController(IUserService userService, MappingService mappingService,  IPanelMemberService panelMemberService, IRecruiterMeberService recruiterMeberService)
         {
-            _positionService = positionService;
+            //_positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
             _panelMemberService = panelMemberService;
@@ -67,215 +67,215 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult LoadView(int UserId, string UserRoleName)
-        {
-            string viewName = "";
-            UserViewModel userViewModel = SetUserModel(UserId, UserRoleName);
-            if (UserRoleName.ToLower() == RoleName.Admin.ToString().ToLower() || UserRoleName.ToLower() == RoleName.Panel.ToString().ToLower())
-                viewName = "_partialAddUserView";
-            else if (UserRoleName.ToLower() == RoleName.Candidate.ToString().ToLower())
-                viewName = "_partialAddCandidateUserView";
+        //public ActionResult LoadView(int UserId, string UserRoleName)
+        //{
+        //    string viewName = "";
+        //    UserViewModel userViewModel = SetUserModel(UserId, UserRoleName);
+        //    if (UserRoleName.ToLower() == RoleName.Admin.ToString().ToLower() || UserRoleName.ToLower() == RoleName.Panel.ToString().ToLower())
+        //        viewName = "_partialAddUserView";
+        //    else if (UserRoleName.ToLower() == RoleName.Candidate.ToString().ToLower())
+        //        viewName = "_partialAddCandidateUserView";
 
-            return View(viewName, userViewModel);
-        }
+        //    return View(viewName, userViewModel);
+        //}
 
-        public ActionResult AssignPanelToUserView(UserDetailViewModel userDetailViewModel)
-        {
-            if (userDetailViewModel != null)
-            {
-                var PanelMemberDetails = _panelMemberService.GetPanelMeberDetails(userDetailViewModel.UserId);
+        //public ActionResult AssignPanelToUserView(UserDetailViewModel userDetailViewModel)
+        //{
+        //    if (userDetailViewModel != null)
+        //    {
+        //        var PanelMemberDetails = _panelMemberService.GetPanelMeberDetails(userDetailViewModel.UserId);
 
-                var PanelMemberViewModel = _mappingService.Map<PanelMemberDetail, PanelMemberDetailViewModel>(PanelMemberDetails);
+        //        var PanelMemberViewModel = _mappingService.Map<PanelMemberDetail, PanelMemberDetailViewModel>(PanelMemberDetails);
 
-                if (PanelMemberViewModel == null)
-                {
-                    PanelMemberViewModel = _mappingService.Map<UserDetailViewModel, PanelMemberDetailViewModel>(userDetailViewModel);
-                }
-                return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
-            }
-            return null;
-        }
+        //        if (PanelMemberViewModel == null)
+        //        {
+        //            PanelMemberViewModel = _mappingService.Map<UserDetailViewModel, PanelMemberDetailViewModel>(userDetailViewModel);
+        //        }
+        //        return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
+        //    }
+        //    return null;
+        //}
 
-        public ActionResult AssignPanelToUser(PanelMemberDetailViewModel panelMemberDetailViewModel)
-        {
-            bool issuccess = false;
-            if (panelMemberDetailViewModel != null)
-            {
-                var panelMember= _mappingService.Map<PanelMemberDetailViewModel,PanelMemberDetail >(panelMemberDetailViewModel);
-                issuccess=_panelMemberService.UpesertPanelMeberDetail(panelMember);
-               // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
-            }
-            return Json(issuccess,JsonRequestBehavior.AllowGet);
-        }
-
-
-        public ActionResult AssignTypeToUserView(UserDetailViewModel userDetailViewModel)
-        {
-            if (userDetailViewModel != null)
-            {
-                var RecruiterMeberDetails = _recruiterMeberService.GetRecruiterMeberDetails(userDetailViewModel.UserId);
-
-                var RecruiterMeberViewModel = _mappingService.Map<RecruiterMembersDetail, RecruiterMemberDetailViewModel>(RecruiterMeberDetails);
-
-                if (RecruiterMeberViewModel == null)
-                {
-                    RecruiterMeberViewModel = _mappingService.Map<UserDetailViewModel, RecruiterMemberDetailViewModel>(userDetailViewModel);
-                }
-                return PartialView(@"~\Views\ManageUser\_AssignType.cshtml", RecruiterMeberViewModel);
-            }
-            return null;
-        }
-
-        public ActionResult AssignTypeToUser(RecruiterMemberDetailViewModel recruiterMeberViewModel)
-        {
-            bool issuccess = false;
-            if (recruiterMeberViewModel != null)
-            {
-                var recruiterMember = _mappingService.Map<RecruiterMemberDetailViewModel, RecruiterMembersDetail>(recruiterMeberViewModel);
-                issuccess = _recruiterMeberService.UpesertRecruiterMeberDetail(recruiterMember);
-                // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
-            }
-            return Json(issuccess, JsonRequestBehavior.AllowGet);
-        }
+        //public ActionResult AssignPanelToUser(PanelMemberDetailViewModel panelMemberDetailViewModel)
+        //{
+        //    bool issuccess = false;
+        //    if (panelMemberDetailViewModel != null)
+        //    {
+        //        var panelMember= _mappingService.Map<PanelMemberDetailViewModel,PanelMemberDetail >(panelMemberDetailViewModel);
+        //        issuccess=_panelMemberService.UpesertPanelMeberDetail(panelMember);
+        //       // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
+        //    }
+        //    return Json(issuccess,JsonRequestBehavior.AllowGet);
+        //}
 
 
-        public ActionResult AddUser(int UserId, string RoleN)
-        {
-            return View(SetUserModel(UserId, RoleN));
-        }
+        //public ActionResult AssignTypeToUserView(UserDetailViewModel userDetailViewModel)
+        //{
+        //    if (userDetailViewModel != null)
+        //    {
+        //        var RecruiterMeberDetails = _recruiterMeberService.GetRecruiterMeberDetails(userDetailViewModel.UserId);
 
-        private UserViewModel SetUserModel(int UserId, string UserRoleName)
-        {
-            UserViewModel userViewModel = new UserViewModel();
-            try
-            {
-                userViewModel.UserId = UserId;
+        //        var RecruiterMeberViewModel = _mappingService.Map<RecruiterMembersDetail, RecruiterMemberDetailViewModel>(RecruiterMeberDetails);
 
-                if (userViewModel.UserId != 0)
-                {
-                    var userList = _userService.GetUserDetails();
-                    var user = userList.FirstOrDefault(x => x.UserId == userViewModel.UserId);
-                    userViewModel = _mappingService.Map<UserBusinessModel, UserViewModel>(user);
-                }
-                else if (TempData["UserViewModel"] != null)
-                {
-                    userViewModel = TempData.Peek("UserViewModel") as UserViewModel;
-                    TempData["UserViewModel"] = userViewModel;
-                }
-                var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-                userViewModel.PositionList = positionDetails.ToList();
-            }
-            catch (Exception ex)
-            {
-                userViewModel.ErrorMessage = ex.Message;
-            }
+        //        if (RecruiterMeberViewModel == null)
+        //        {
+        //            RecruiterMeberViewModel = _mappingService.Map<UserDetailViewModel, RecruiterMemberDetailViewModel>(userDetailViewModel);
+        //        }
+        //        return PartialView(@"~\Views\ManageUser\_AssignType.cshtml", RecruiterMeberViewModel);
+        //    }
+        //    return null;
+        //}
 
-            return userViewModel;
-        }
+        //public ActionResult AssignTypeToUser(RecruiterMemberDetailViewModel recruiterMeberViewModel)
+        //{
+        //    bool issuccess = false;
+        //    if (recruiterMeberViewModel != null)
+        //    {
+        //        var recruiterMember = _mappingService.Map<RecruiterMemberDetailViewModel, RecruiterMembersDetail>(recruiterMeberViewModel);
+        //        issuccess = _recruiterMeberService.UpesertRecruiterMeberDetail(recruiterMember);
+        //        // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
+        //    }
+        //    return Json(issuccess, JsonRequestBehavior.AllowGet);
+        //}
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public async Task<ActionResult> SaveUser(UserViewModel userViewModel, HttpPostedFileBase files)
-        {
-            string actionErrorName = "AddUser";
-            string controllerName = "ManageUser";
-            try
-            {
-                if (userViewModel.UserId != 0)
-                {
-                    UpdateUserMethod(userViewModel, files);
-                }
-                else
-                {
-                    userViewModel = await CreateUserMethod(userViewModel, files);
 
-                    if (!string.IsNullOrWhiteSpace(userViewModel.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = userViewModel.UserId, RoleN = userViewModel.Role }); }
+        //public ActionResult AddUser(int UserId, string RoleN)
+        //{
+        //    return View(SetUserModel(UserId, RoleN));
+        //}
 
-                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(userViewModel);
-                    organizationUserDomainModel.IsDeleted = false;
-                    userViewModel.UserId = _userService.Add(organizationUserDomainModel);
-                    TempData["Success"] = "User created successfully!";
+        //private UserViewModel SetUserModel(int UserId, string UserRoleName)
+        //{
+        //    UserViewModel userViewModel = new UserViewModel();
+        //    try
+        //    {
+        //        userViewModel.UserId = UserId;
 
-                }
+        //        if (userViewModel.UserId != 0)
+        //        {
+        //            var userList = _userService.GetUserDetails();
+        //            var user = userList.FirstOrDefault(x => x.UserId == userViewModel.UserId);
+        //            userViewModel = _mappingService.Map<UserBusinessModel, UserViewModel>(user);
+        //        }
+        //        else if (TempData["UserViewModel"] != null)
+        //        {
+        //            userViewModel = TempData.Peek("UserViewModel") as UserViewModel;
+        //            TempData["UserViewModel"] = userViewModel;
+        //        }
+        //        //var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+        //        //userViewModel.PositionList = positionDetails.ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        userViewModel.ErrorMessage = ex.Message;
+        //    }
 
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                userViewModel.ErrorMessage = ex.Message;
-                TempData["UserViewModel"] = userViewModel;
-                ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                return RedirectToAction(actionErrorName, controllerName, new { UserId = userViewModel.UserId, RoleN = userViewModel.Role });
+        //    return userViewModel;
+        //}
 
-            }
-            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-            return RedirectToAction("Index");
-        }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public async Task<ActionResult> SaveUser(UserViewModel userViewModel, HttpPostedFileBase files)
+        //{
+        //    string actionErrorName = "AddUser";
+        //    string controllerName = "ManageUser";
+        //    try
+        //    {
+        //        if (userViewModel.UserId != 0)
+        //        {
+        //            UpdateUserMethod(userViewModel, files);
+        //        }
+        //        else
+        //        {
+        //            userViewModel = await CreateUserMethod(userViewModel, files);
+
+        //            if (!string.IsNullOrWhiteSpace(userViewModel.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = userViewModel.UserId, RoleN = userViewModel.Role }); }
+
+        //            var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(userViewModel);
+        //            organizationUserDomainModel.IsDeleted = false;
+        //            userViewModel.UserId = _userService.Add(organizationUserDomainModel);
+        //            TempData["Success"] = "User created successfully!";
+
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError("", ex.Message);
+        //        userViewModel.ErrorMessage = ex.Message;
+        //        TempData["UserViewModel"] = userViewModel;
+        //        ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+        //        return RedirectToAction(actionErrorName, controllerName, new { UserId = userViewModel.UserId, RoleN = userViewModel.Role });
+
+        //    }
+        //    ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+        //    return RedirectToAction("Index");
+        //}
 
         /// <summary>
         /// update user 
         /// </summary>
         /// <param name="vuser"></param>
         /// <param name="files"></param>
-        private void UpdateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
-        {
-            var user = _userService.GetUserById(vuser.UserId);
-            if (files != null && vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
-            {
-                vuser.ResumePath = GetFilePath(files);
-            }
-            if (user != null)
-            {
-                vuser.Role = user.Role;
-                var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
-                organizationUserDomainModel.TestStatus = user.TestStatus;
-                organizationUserDomainModel.IsDeleted = false;
-                _userService.Update(organizationUserDomainModel);
-                TempData["Success"] = "User updated successfully.";
-            }
+        //private void UpdateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
+        //{
+        //    var user = _userService.GetUserById(vuser.UserId);
+        //    if (files != null && vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
+        //    {
+        //        vuser.ResumePath = GetFilePath(files);
+        //    }
+        //    if (user != null)
+        //    {
+        //        vuser.Role = user.Role;
+        //        var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
+        //        organizationUserDomainModel.TestStatus = user.TestStatus;
+        //        organizationUserDomainModel.IsDeleted = false;
+        //        _userService.Update(organizationUserDomainModel);
+        //        TempData["Success"] = "User updated successfully.";
+        //    }
 
-        }
+        //}
         /// <summary>
         /// Create user
         /// </summary>
         /// <param name="vuser"></param>
         /// <param name="files"></param>
         /// <returns></returns>
-        private async Task<UserViewModel> CreateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
-        {
-            var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
-            if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
-            {
-                vuser.TestStatus = CandidateStatus.New.ToString();
-                vuser.CandidateStatus = CandidateStatus.TestAssigned.ToString();
-            }
+        //private async Task<UserViewModel> CreateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
+        //{
+        //    var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
+        //    if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
+        //    {
+        //        vuser.TestStatus = CandidateStatus.New.ToString();
+        //        vuser.CandidateStatus = CandidateStatus.TestAssigned.ToString();
+        //    }
 
-            vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
-            vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
-            var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
-            if (userResult.Succeeded)
-            {
-                vuser.IdentityUserId = new Guid(user.Id);
-                if (files != null)
-                {
-                    vuser.ResumePath = GetFilePath(files);
-                }
-                var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", result.Errors.First());
-                    ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                }
+        //    vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
+        //    vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
+        //    var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
+        //    if (userResult.Succeeded)
+        //    {
+        //        vuser.IdentityUserId = new Guid(user.Id);
+        //        if (files != null)
+        //        {
+        //            vuser.ResumePath = GetFilePath(files);
+        //        }
+        //        var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
+        //        if (!result.Succeeded)
+        //        {
+        //            ModelState.AddModelError("", result.Errors.First());
+        //            ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+        //        }
 
-            }
-            else
-            {
-                ModelState.AddModelError("", userResult.Errors.First());
-                vuser.ErrorMessage = userResult.Errors.First();
-                TempData["UserViewModel"] = vuser;
-                ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-            }
-            return vuser;
-        }
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", userResult.Errors.First());
+        //        vuser.ErrorMessage = userResult.Errors.First();
+        //        TempData["UserViewModel"] = vuser;
+        //        ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+        //    }
+        //    return vuser;
+        //}
         /// <summary>
         /// Return file path
         /// </summary>

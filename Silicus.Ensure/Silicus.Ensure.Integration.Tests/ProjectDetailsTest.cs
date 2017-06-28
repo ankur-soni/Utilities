@@ -35,41 +35,41 @@ namespace Silicus.Ensure.Integration.Tests
         //    }
         //}
 
-        [TestMethod]
-        public void AddNotification_NotificationAdded_AddNotificationInDb()
-        {
-            var projectDetailService = _kernel.Get<IProjectDetailService>();
+        //[TestMethod]
+        //public void AddNotification_NotificationAdded_AddNotificationInDb()
+        //{
+        //    var projectDetailService = _kernel.Get<IProjectDetailService>();
 
-            var target = new ProjectController(projectDetailService);
+        //    var target = new ProjectController(projectDetailService);
 
-            // Act
-            target.CreateProject(new ProjectDetail
-            {
-                ProjectName = "Katana",
-                Status = "Green"
-            });
+        //    // Act
+        //    target.CreateProject(new ProjectDetail
+        //    {
+        //        ProjectName = "Katana",
+        //        Status = "Green"
+        //    });
 
-            target.CreateProject(new ProjectDetail
-            {
-                ProjectName = "KRE",
-                Status = "Yello"
-            });
+        //    target.CreateProject(new ProjectDetail
+        //    {
+        //        ProjectName = "KRE",
+        //        Status = "Yello"
+        //    });
 
-            var data = target.GetProjectDetails(new DataSourceRequest()) as JsonResult;
-            var actualList = ((DataSourceResult) (data.Data)).Data as List<ProjectDetail>;
+        //    var data = target.GetProjectDetails(new DataSourceRequest()) as JsonResult;
+        //    var actualList = ((DataSourceResult) (data.Data)).Data as List<ProjectDetail>;
 
-            //Assert
-            Assert.AreEqual(2, actualList.Count);
-        }
+        //    //Assert
+        //    Assert.AreEqual(2, actualList.Count);
+        //}
 
-        private void DeleteExistingDataFromDb(IDataContext dataContext)
-        {
-            var projectDetails = dataContext.Query<ProjectDetail>().ToList();
+        //private void DeleteExistingDataFromDb(IDataContext dataContext)
+        //{
+        //    var projectDetails = dataContext.Query<ProjectDetail>().ToList();
 
-            if (projectDetails.Count > 0)
-            {
-                dataContext.DeleteAll(projectDetails);
-            }
-        }
+        //    if (projectDetails.Count > 0)
+        //    {
+        //        dataContext.DeleteAll(projectDetails);
+        //    }
+        //}
     }
 }

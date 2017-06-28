@@ -144,7 +144,11 @@ namespace Silicus.Ensure.Services
 
         public void Send(MailMessage message)
         {
-            smtpClient.Send(message);
+            using (SmtpClient smtpClient = new SmtpClient())
+            {
+                smtpClient.Send(message);
+            }
+               
         }
 
         public void SendMail(object message)

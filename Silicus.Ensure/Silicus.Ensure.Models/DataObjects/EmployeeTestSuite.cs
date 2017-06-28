@@ -12,6 +12,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int EmployeeId { get; set; }
 
+        public string CandidateID { get; set; }
+
         public int ObjectiveCount { get; set; }
 
         public int PracticalCount { get; set; }

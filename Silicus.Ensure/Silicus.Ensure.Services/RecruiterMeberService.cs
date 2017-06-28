@@ -18,25 +18,25 @@ namespace Silicus.Ensure.Services
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
 
-         public RecruiterMembersDetail GetRecruiterMeberDetails(int userId)
-        {
-            return _context.Query<RecruiterMembersDetail>().FirstOrDefault(x => x.UserId == userId);
-        }
+        // public RecruiterMembersDetail GetRecruiterMeberDetails(int userId)
+        //{
+        //    return _context.Query<RecruiterMembersDetail>().FirstOrDefault(x => x.UserId == userId);
+        //}
 
-         public bool UpesertRecruiterMeberDetail(RecruiterMembersDetail recruiterMembersDetail)
-        {
-            var recruiterMenber = _context.Query<RecruiterMembersDetail>().FirstOrDefault(x => x.UserId == recruiterMembersDetail.UserId);
-            if (recruiterMenber==null)
-            {
-                _context.Add(recruiterMembersDetail);
-            }
-            else
-            {
-                recruiterMembersDetail.Id = recruiterMenber.Id;
-                _context.Update(recruiterMembersDetail);
-            }
+        // public bool UpesertRecruiterMeberDetail(RecruiterMembersDetail recruiterMembersDetail)
+        //{
+        //    var recruiterMenber = _context.Query<RecruiterMembersDetail>().FirstOrDefault(x => x.UserId == recruiterMembersDetail.UserId);
+        //    if (recruiterMenber==null)
+        //    {
+        //        _context.Add(recruiterMembersDetail);
+        //    }
+        //    else
+        //    {
+        //        recruiterMembersDetail.Id = recruiterMenber.Id;
+        //        _context.Update(recruiterMembersDetail);
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
     }
 }

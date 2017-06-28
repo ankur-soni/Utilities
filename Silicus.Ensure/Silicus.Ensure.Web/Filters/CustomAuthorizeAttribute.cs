@@ -22,25 +22,30 @@ namespace Silicus.Ensure.Web.Filters
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
 
-            bool authorize = false;
+            bool authorize = true;
 
-            if (allowedroles.Contains(RoleName.Candidate.ToString()))
+            if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                var commondbContext = new SilicusIpDataContext(ConfigurationManager.ConnectionStrings["SilicusIpDataContext"].ConnectionString);
-                var users = commondbContext.Query<User>().ToList();
-                var loggedInUser = HttpContext.Current.User.Identity.Name; 
-                authorize = users.Find(x => x.Email.ToLower() == loggedInUser.ToLower()) != null;
+                return true;
             }
-            else
-            {
-                var userRoles = MvcApplication.getCurrentUserRoles();
-                if(userRoles.Count>0)
-                {
-                    authorize = allowedroles.Intersect(userRoles).Any();
-                }
-            }
-           
-            return authorize;
+
+                //if (allowedroles.Contains(RoleName.Candidate.ToString()))
+                //{
+                //    var commondbContext = new SilicusIpDataContext(ConfigurationManager.ConnectionStrings["SilicusIpDataContext"].ConnectionString);
+                //    var users = commondbContext.Query<User>().ToList();
+                //    var loggedInUser = HttpContext.Current.User.Identity.Name; 
+                //    authorize = users.Find(x => x.Email.ToLower() == loggedInUser.ToLower()) != null;
+                //}
+                //else
+                //{
+                //    var userRoles = MvcApplication.getCurrentUserRoles();
+                //    if(userRoles.Count>0)
+                //    {
+                //        authorize = allowedroles.Intersect(userRoles).Any();
+                //    }
+                //}
+
+                return false;
         }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {

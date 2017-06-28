@@ -6,66 +6,105 @@ using System.Threading.Tasks;
 
 namespace Silicus.Ensure.Models.JobVite
 {
+     public class APIResponse
+    {
+        public List<JobViteCandidateBusinessModel> candidates { get; set; }
+        public int total { get; set; }
+    }
+
+    //public class HiringManager
+    //{
+    //    public string employeeId { get; set; }
+    //    public string firstName { get; set; }
+    //    public string lastName { get; set; }
+    //    public string userId { get; set; }
+    //    public string userName { get; set; }
+    //}
+
+    public class PrimaryHiringManager
+    {
+        public string employeeId { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string userId { get; set; }
+        public string userName { get; set; }
+    }
+
+    public class Recruiter
+    {
+        public string employeeId { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string userId { get; set; }
+        public string userName { get; set; }
+    }
+
+    public class Job
+    {
+        public string company { get; set; }
+        public List<object> customField { get; set; }
+        public string department { get; set; }
+        public string eId { get; set; }
+        public List<HiringManager> hiringManagers { get; set; }
+        public string jobType { get; set; }
+        public string location { get; set; }
+        public PrimaryHiringManager primaryHiringManager { get; set; }
+        public List<Recruiter> recruiters { get; set; }
+        public string requisitionId { get; set; }
+        public string subsidiaryId { get; set; }
+        public string title { get; set; }
+    }
+
     public class Resume
     {
-        public string Content { get; set; }
-        public string Name { get; set; }
-        public string Format { get; set; }
-    }
-    public class Coverletter
-    {
-        public string Content { get; set; }
-        public string Name { get; set; }
-        public string Format { get; set; }
-    }
-
-    public class Attachment
-    {
-        public string Content { get; set; }
-        public string Name { get; set; }
-        public string Format { get; set; }
-    }
-
-    public class CustomField
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public string content { get; set; }
+        public string format { get; set; }
+        public string name { get; set; }
     }
 
     public class Application
     {
-        public string EId { get; set; }
-        public string WorkflowState { get; set; }
-        public string WorkStatus { get; set; }
-        public string Disposition { get; set; }
-        public string Source { get; set; }
-        public string SourceType { get; set; }
-        public string Gender { get; set; }
-        public string Race { get; set; }
-        public string VeteranStatus { get; set; }
-        public string JobviteChannel { get; set; }
-        public string Comments { get; set; }
-        //public Resume Resume { get; set; }
-        //public Coverletter Coverletter { get; set; }
-        //public List<Attachment> Attachments { get; set; }
-        public List<CustomField> CustomField { get; set; }
+        public List<object> customField { get; set; }
+        public string eId { get; set; }
+        public string gender { get; set; }
+        public bool hasArtifacts { get; set; }
+        public Job job { get; set; }
+        public string jobviteChannel { get; set; }
+        public long lastUpdatedDate { get; set; }
+        public string race { get; set; }
+        public Resume resume { get; set; }
+        public long sentDate { get; set; }
+        public string source { get; set; }
+        public string sourceType { get; set; }
+        public string veteranStatus { get; set; }
+        public string workflowState { get; set; }
     }
 
     public class JobViteCandidateBusinessModel
     {
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        //public string HomePhone { get; set; }
-        //public string WorkPhone { get; set; }
-        //public string Mobile { get; set; }
-        //public string Address { get; set; }
-        //public string Address2 { get; set; }
-        //public string City { get; set; }
-        //public string State { get; set; }
-        //public string Country { get; set; }
-        //public string PostalCode { get; set; }
-        public string Title { get; set; }
-        public Application Application { get; set; }
+        public string address { get; set; }
+        public string address2 { get; set; }
+        public Application application { get; set; }
+        public string city { get; set; }
+        public string companyName { get; set; }
+        public string country { get; set; }
+        public string countryCode { get; set; }
+        public string countryName { get; set; }
+        public string eId { get; set; }
+        public string email { get; set; }
+        public string firstName { get; set; }
+        public string homePhone { get; set; }
+        public string lastName { get; set; }
+        public string location { get; set; }
+        public string mobile { get; set; }
+        public string postalCode { get; set; }
+        public string state { get; set; }
+        public string stateCode { get; set; }
+        public string stateName { get; set; }
+        public string title { get; set; }
+        public string workPhone { get; set; }
+        public string workStatus { get; set; }
+
+        
     }
 }

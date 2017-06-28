@@ -111,7 +111,7 @@ namespace Silicus.Ensure.Services
 
         public void DeleteEmployeeTestSuite(EmployeeTestSuite EmployeeTestSuite)
         {
-            if (EmployeeTestSuite.EmployeeId > 0)
+            if (EmployeeTestSuite.EmployeeId > 0 || EmployeeTestSuite.CandidateID != "0")
             {
                 _context.Delete(EmployeeTestSuite);
             }
@@ -758,9 +758,9 @@ namespace Silicus.Ensure.Services
         }
 
 
-        public UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId)
+        public EmployeeTestSuite GetUserTestSuite(string userId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId && x.TestSuiteId == testsuitId).FirstOrDefault();
+            return _context.Query<EmployeeTestSuite>().Where(x => x.CandidateID == userId).FirstOrDefault();
         }
 
         public List<int> GetAllUserIdsForTestSuite(int testSuiteId)

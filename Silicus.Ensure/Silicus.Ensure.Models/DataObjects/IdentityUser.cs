@@ -11,6 +11,12 @@ namespace Silicus.Ensure.Models.DataObjects
 {
     public class ApplicationUser : IdentityUser
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        //public string Email { get; set; }
+        public string Position { get; set; }
+        public string JobViteId { get; set; }
+
         public DateTime? LastActivityDate { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

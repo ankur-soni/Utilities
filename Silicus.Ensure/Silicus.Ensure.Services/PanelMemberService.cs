@@ -18,25 +18,25 @@ namespace Silicus.Ensure.Services
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
 
-        public PanelMemberDetail GetPanelMeberDetails(int userId)
-        {
-            return _context.Query<PanelMemberDetail>().FirstOrDefault(x => x.UserId == userId);
-        }
+        //public PanelMemberDetail GetPanelMeberDetails(int userId)
+        //{
+        //    return _context.Query<PanelMemberDetail>().FirstOrDefault(x => x.UserId == userId);
+        //}
 
-        public bool UpesertPanelMeberDetail(PanelMemberDetail panelMemberDetail)
-        {
-            var panelMenber = _context.Query<PanelMemberDetail>().FirstOrDefault(x => x.UserId == panelMemberDetail.UserId);
-            if (panelMenber==null)
-            {
-                _context.Add(panelMemberDetail);
-            }
-            else
-            {
-                panelMemberDetail.Id = panelMenber.Id;
-                _context.Update(panelMemberDetail);
-            }
+        //public bool UpesertPanelMeberDetail(PanelMemberDetail panelMemberDetail)
+        //{
+        //    var panelMenber = _context.Query<PanelMemberDetail>().FirstOrDefault(x => x.UserId == panelMemberDetail.UserId);
+        //    if (panelMenber==null)
+        //    {
+        //        _context.Add(panelMemberDetail);
+        //    }
+        //    else
+        //    {
+        //        panelMemberDetail.Id = panelMenber.Id;
+        //        _context.Update(panelMemberDetail);
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
     }
 }

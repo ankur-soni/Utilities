@@ -27,9 +27,10 @@ namespace Silicus.Ensure.Services
         public void SendEmailAsync(string emailId, string subject, string body)
         {
             var msg = PrepareMessage(emailId, subject, body);
-            SendEmailDelegate sd = new SendEmailDelegate(_smtpClient.Send);
-            AsyncCallback cb = new AsyncCallback(SendEmailResponse);
-            sd.BeginInvoke(msg, cb, sd); 
+            //SendEmailDelegate sd = new SendEmailDelegate(_smtpClient.Send);
+            //AsyncCallback cb = new AsyncCallback(SendEmailResponse);
+            //sd.BeginInvoke(msg, cb, sd); 
+            _smtpClient.Send(msg);
         }        
 
         private static void SendEmailResponse(IAsyncResult ar)

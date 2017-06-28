@@ -1,5 +1,5 @@
 ﻿@using Kendo.Mvc.UI;
-
+@model Silicus.Ensure.Web.Models.TestSuiteEmployeeModel
 <style>
     .box {
         background: #fff;
@@ -14,6 +14,66 @@
     ViewBag.Title = "Welcome";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
+
+<script>
+
+    $(document).ready(function () {
+
+        $('body').toggleClass('aside-menu-hidden');
+        $('#gearBtn a').removeClass('activeBtn');
+
+        $('.close').on('click', function() {
+            $('#welcomeAlert').css('visibility','hidden');
+            //$('#warning').css('color','red');
+        });
+
+
+
+        @*if(@ViewBag.Status==1){
+            $("#myModal").modal();
+            $("#msgContent").text("@ViewBag.Msg");
+            $('.aside-menu').remove();
+        }else{
+            $('#btnAddMoreTime').hide();
+        }*@
+        $('#objective-test>a,#practical-test>a').addClass('disabled');
+        $('#gearBtn').hide();
+
+
+        $("#btnStartTest").on("click",function(){
+
+
+            if ($("#Terms").prop('checked') == true) {
+               // window.open("/Test/OnlineTest?EmployeeTestSuitId=@Model.EmployeeTestSuiteId&CandidateId=@Model.CandidateId&employeeId=@Model.EmployeeId", "", "fullscreen")
+                var newwindow =  window.open("/Test/OnlineTest?EmployeeTestSuitId=@Model.EmployeeTestSuiteId&CandidateId=@Model.CandidateId&employeeId=@Model.EmployeeId", "_blank", "toolbar=yes,scrollbars=yes,resizable=no,top=0,left=0,width=" + $(window).width() + ",height=" + $(window).height());
+                $(newwindow).unload(function () {
+                    if(@Model.EmployeeId == 0)
+                        window.location.replace( "/CandidateAccount/LogOff");
+                });
+
+                v@*ar wnd = $("#Details").kendoWindow({
+                            title: "Assign Test",
+                            actions: ["Minimize", "Maximize", "Close"],
+                            content: "/Test/OnlineTest?EmployeeTestSuitId=@Model.EmployeeTestSuiteId&CandidateId=@Model.CandidateId&employeeId=@Model.EmployeeId",
+                            visible: false,
+                            modal: true,
+                            height: "300px",
+                            width: "500px"
+                        }).data("kendoWindow");
+
+                        wnd.center();
+                        wnd.open();*@
+
+            } else {
+                var text= "Please agree with the Terms & Conditions of Online Test Instructions.";
+                ShowSweetAlertWithoutCancel( "Warning!",text,"warning");
+            }
+
+        });
+    });
+</script>
+
+<div id="Details"></div>
 @{if (!string.IsNullOrWhiteSpace(ViewBag.ProfilePhotoPath))
     {
         <script>
@@ -81,10 +141,12 @@
 
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="M-L30">
-                            @(Html.Kendo().Button()
-                                        .Name("btnStart")
-                                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnClick"))
-                                        .Content("Start online test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))
+                            taaa
+                            <button type="button" class="btn btn-lg btn-start" id="btnStartTest">Start online test</button>
+                            @*@(Html.Kendo().Button()
+                                .Name("btnStart")
+                                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnTappa"))
+                                .Content("Start online test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))*@
                         </div>
                     </div>
                 </div>
@@ -106,41 +168,4 @@ else
 }
 
 
-<script>
-
-    $(document).ready(function () {
-
-        $('body').toggleClass('aside-menu-hidden');
-        $('#gearBtn a').removeClass('activeBtn');
-
-        $('.close').on('click', function() {
-            $('#welcomeAlert').css('visibility','hidden');
-            //$('#warning').css('color','red');
-        });
-
-
-
-        if(@ViewBag.Status==1){
-            $("#myModal").modal();
-            $("#msgContent").text("@ViewBag.Msg");
-            $('.aside-menu').remove();
-        }else{
-            $('#btnAddMoreTime').hide();
-        }
-        $('#objective-test>a,#practical-test>a').addClass('disabled');
-        $('#gearBtn').hide();
-    });
-
-    function OnClick() {
-
-        if ($("#Terms").prop('checked') == true) {
-            window.location.href = "/Candidate/OnlineTest";
-        } else {
-            var text= "Please agree with the Terms & Conditions of Online Test Instructions.";
-            ShowSweetAlertWithoutCancel( "Warning!",text,"warning");
-        }
-
-    }
-
-</script>
 

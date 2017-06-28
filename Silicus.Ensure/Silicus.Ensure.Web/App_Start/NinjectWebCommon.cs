@@ -67,8 +67,8 @@ namespace Silicus.Ensure.Web
                 .WithConstructorArgument("className", string.Empty);
 
             kernel.Bind<IDataContextFactory>().To<DataContextFactory>();
-            kernel.Bind<IProjectDetailService>().To<ProjectDetailService>();
-            kernel.Bind<IProjectService>().To<ProjectService>();
+            //kernel.Bind<IProjectDetailService>().To<ProjectDetailService>();
+            //kernel.Bind<IProjectService>().To<ProjectService>();
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRolesService>().To<RolesService>();
             kernel.Bind<IMappingService>().To<MappingService>();
@@ -88,7 +88,7 @@ namespace Silicus.Ensure.Web
             kernel.Bind<IAuditManager>().To<AuditManager>();
             kernel.Bind<ITagsService>().To<TagService>();
             kernel.Bind<ITestSuiteService>().To<TestSuiteService>();
-            kernel.Bind<IPositionService>().To<PositionService>();
+            //kernel.Bind<IPositionService>().To<PositionService>();
             kernel.Bind<IPanelMemberService>().To<PanelMemberService>();
             kernel.Bind<IRecruiterMeberService>().To<RecruiterMeberService>();
             kernel.Bind<IPanelService>().To<PanelService>()

@@ -86,7 +86,6 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("Welcome", "Candidate");
             }
         }
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
@@ -107,17 +106,17 @@ namespace Silicus.Ensure.Web.Controllers
 
                         if (isCandidate)
                         {
-                            var candidate = _userService.GetUserByEmail(model.UserName);
-                            if (candidate == null)
-                            {
-                                ModelState.AddModelError("", "No user exists.Please contact administrator.");
-                                return View(model);
-                            }
-                            else if (candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-                            {
-                                ModelState.AddModelError("", "You have already submitted your test.");
-                                return View(model);
-                            }                            
+                            //var candidate = _userService.GetUserByEmail(model.UserName);
+                            //if (candidate == null)
+                            //{
+                            //    ModelState.AddModelError("", "No user exists.Please contact administrator.");
+                            //    return View(model);
+                            //}
+                            //else if (candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                            //{
+                            //    ModelState.AddModelError("", "You have already submitted your test.");
+                            //    return View(model);
+                            //}                            
                         }
 
                         var isPanel = await UserManager.IsInRoleAsync(user.Id, RoleName.Panel.ToString());
@@ -170,6 +169,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             return RedirectToAction("Dashboard", "User");
         }
+
         private string GetUserIdentifiableString(string userName)
         {
             return Session.SessionID + "-" + userName;
@@ -197,7 +197,7 @@ namespace Silicus.Ensure.Web.Controllers
             _cookieHelper.ClearAllCookies();
             AuthenticationManager.SignOut();
 
-            return RedirectToAction("Login");
+            return RedirectToAction("Login","CandidateAccount");
         }
 
     }

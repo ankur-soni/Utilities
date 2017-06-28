@@ -21,16 +21,16 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITestSuiteService _testSuiteService;
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
-        private readonly IPositionService _positionService;
+        //private readonly IPositionService _positionService;
         private readonly IUserService _userService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
         private readonly CommonController _commonController;
-        public TestSuiteController(ITestSuiteService testSuiteService, ITagsService tagsService, IMappingService mappingService, IPositionService positionService, IUserService userService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
+        public TestSuiteController(ITestSuiteService testSuiteService, ITagsService tagsService, IMappingService mappingService, IUserService userService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
         {
             _testSuiteService = testSuiteService;
             _tagsService = tagsService;
             _mappingService = mappingService;
-            _positionService = positionService;
+            //_positionService = positionService;
             _userService = userService;
             _containerUserService = containerUserService;
             _commonController = commonController;
@@ -46,14 +46,14 @@ namespace Silicus.Ensure.Web.Controllers
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
-                if (item.Position.HasValue)
-                {
-                    item.PositionName = GetPosition((int)item.Position.Value) == null ? "deleted from master" : GetPosition((int)item.Position.Value).PositionName;
-                }
-                else
-                {
-                    item.PositionName = "Not assigned";
-                }
+                //if (item.Position.HasValue)
+                //{
+                //    item.PositionName = GetPosition((int)item.Position.Value) == null ? "deleted from master" : GetPosition((int)item.Position.Value).PositionName;
+                //}
+                //else
+                //{
+                //    item.PositionName = "Not assigned";
+                //}
                 
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
@@ -66,10 +66,10 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        private Position GetPosition(int positionId)
-        {
-            return _positionService.GetPositionById(positionId);
-        }
+        //private Position GetPosition(int positionId)
+        //{
+        //    return _positionService.GetPositionById(positionId);
+        //}
 
         public ActionResult List()
         {
@@ -83,12 +83,12 @@ namespace Silicus.Ensure.Web.Controllers
             //return View("AddTestSuite", testSuite);
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+           // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
 
             if (testSuiteId == 0)
             {
                 ViewBag.Type = "New";
-                testSuite.PositionList = positionDetails.ToList();
+               // testSuite.PositionList = positionDetails.ToList();
                 return View("AddTestSuite", testSuite);
             }
             else
@@ -102,7 +102,7 @@ namespace Silicus.Ensure.Web.Controllers
                     //{
                     //    viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
                     //}
-                    viewModels.PositionList = positionDetails.ToList();
+                    //viewModels.PositionList = positionDetails.ToList();
                     List<TestSuiteTagViewModel> testSuiteTags;
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
                     viewModels.Tags = testSuiteTags;
@@ -195,81 +195,81 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ActionResult Copy(int testSuiteId = 0)
-        {
-            TestSuiteViewModel testSuite = new TestSuiteViewModel();
-            List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
-            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            if (testSuiteId == 0)
-            {
-                return View(testSuite);
-            }
-            else
-            {
-                var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).ToArray();
-                var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
-                if (viewModels != null)
-                {
-                    //if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
-                    //{
-                    //    viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
-                    //}
-                    ViewBag.Type = "Copy";
-                    viewModels.IsCopy = true;
-                    viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
-                    List<TestSuiteTagViewModel> testSuiteTags;
-                    GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
-                    viewModels.Tags = testSuiteTags;
-                    viewModels.PositionList = positionDetails.ToList();
-                }
-                return View("AddTestSuite", viewModels);
-            }
-        }
+        //public ActionResult Copy(int testSuiteId = 0)
+        //{
+        //    TestSuiteViewModel testSuite = new TestSuiteViewModel();
+        //    List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
+        //    var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+        //  //  var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+        //    if (testSuiteId == 0)
+        //    {
+        //        return View(testSuite);
+        //    }
+        //    else
+        //    {
+        //        var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).ToArray();
+        //        var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
+        //        if (viewModels != null)
+        //        {
+        //            //if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
+        //            //{
+        //            //    viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
+        //            //}
+        //            ViewBag.Type = "Copy";
+        //            viewModels.IsCopy = true;
+        //            viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
+        //            List<TestSuiteTagViewModel> testSuiteTags;
+        //            GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
+        //            viewModels.Tags = testSuiteTags;
+        //            viewModels.PositionList = positionDetails.ToList();
+        //        }
+        //        return View("AddTestSuite", viewModels);
+        //    }
+        //}
 
-        public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
-        {
-            var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower()
-                                                        && (x.TestStatus == Convert.ToString(CandidateStatus.New))).ToArray();
-            var viewModels = _mappingService.Map<UserBusinessModel[], UserViewModel[]>(userlist);
+        //public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
+        //{
+        //    var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower()
+        //                                                && (x.TestStatus == Convert.ToString(CandidateStatus.New))).ToArray();
+        //    var viewModels = _mappingService.Map<UserBusinessModel[], UserViewModel[]>(userlist);
 
-            int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
-            DataSourceResult result = viewModels.ToDataSourceResult(request);
-            return Json(result);
-        }
+        //    int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
+        //    DataSourceResult result = viewModels.ToDataSourceResult(request);
+        //    return Json(result);
+        //}
 
-        public ActionResult AssignTest(string users, int testSuiteId)
-        {
-            string mailsubject = "";
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-            var alreadyAssignedTestSuites = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);
-            UserTestSuite userTestSuite;
-            if (!string.IsNullOrWhiteSpace(users))
-            {
-                foreach (var item in users.Split(','))
-                {
-                    userTestSuite = new UserTestSuite();
-                    userTestSuite.UserApplicationId = Convert.ToInt32(item);
-                    if (!alreadyAssignedTestSuites.Contains(userTestSuite.UserApplicationId))
-                    {
-                        userTestSuite.TestSuiteId = testSuiteId;
-                        _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                        var selectUser = _userService.GetUserDetails().Where(model => model.UserApplicationId == Convert.ToInt32(item)).FirstOrDefault();
-                        selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
-                        selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
-                        _userService.Update(selectUser);
-                        List<string> receipient = new List<string>() { "Admin", "Panel" };
-                        mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
-                        _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", receipient, selectUser.FirstName + " " + selectUser.LastName);
-                    }
-                }
-                return Json(1);
-            }
-            else
-            {
-                return Json(-1);
-            }
-        }
+        //public ActionResult AssignTest(string users, int testSuiteId)
+        //{
+        //    string mailsubject = "";
+        //    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+        //    var alreadyAssignedTestSuites = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);
+        //    UserTestSuite userTestSuite;
+        //    if (!string.IsNullOrWhiteSpace(users))
+        //    {
+        //        foreach (var item in users.Split(','))
+        //        {
+        //            userTestSuite = new UserTestSuite();
+        //            userTestSuite.UserApplicationId = Convert.ToInt32(item);
+        //            if (!alreadyAssignedTestSuites.Contains(userTestSuite.UserApplicationId))
+        //            {
+        //                userTestSuite.TestSuiteId = testSuiteId;
+        //                _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+        //                var selectUser = _userService.GetUserDetails().Where(model => model.UserApplicationId == Convert.ToInt32(item)).FirstOrDefault();
+        //                selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
+        //                selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
+        //                _userService.Update(selectUser);
+        //                List<string> receipient = new List<string>() { "Admin", "Panel" };
+        //                mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+        //                _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", receipient, selectUser.FirstName + " " + selectUser.LastName);
+        //            }
+        //        }
+        //        return Json(1);
+        //    }
+        //    else
+        //    {
+        //        return Json(-1);
+        //    }
+        //}
 
         public ActionResult TestSuiteUserView(int testSuiteId = 0)
         {
