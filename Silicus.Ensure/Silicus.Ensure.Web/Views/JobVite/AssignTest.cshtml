@@ -1,0 +1,91 @@
+﻿@model Silicus.Ensure.Web.Models.JobVite.AssignTestViewModel
+@using Kendo.Mvc.UI;
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+@using (Ajax.BeginForm("SaveCandidateAndAssignTest", "JobVite", null, new AjaxOptions { OnSuccess = "OnSuccess", HttpMethod = "POST" }, new { id = "AssignTestForm" }))
+{
+    <div class="form-horizontal">
+        <div class="container-fluid">
+            <div class="row margin-bottom-10">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label>Candidate First Name</label>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-6">
+                    @Html.DisplayFor(m => m.CandidateFirstName)
+                    @Html.HiddenFor(m => m.CandidateFirstName)
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label>Candidate Last Name</label>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-6">
+                    @Html.DisplayFor(m => m.CandidateLastName)
+                    @Html.HiddenFor(m => m.CandidateLastName)
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label>Candidate Email</label>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-6">
+                    @Html.TextBoxFor(m => m.CandidateEmail)
+                    @Html.HiddenFor(m => m.CandidateEmail)
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label>JobVite Refrence Number</label>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-6">
+                    @Html.DisplayFor(m => m.CandidateJobViteId)
+                    @Html.HiddenFor(m => m.CandidateJobViteId)
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label>Position</label>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-6">
+                    @Html.DisplayFor(m => m.CandidatePosition)
+                    @Html.HiddenFor(m => m.CandidatePosition)
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label>Test Suite</label>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-6">
+                    @(Html.Kendo().DropDownListFor(m => m.TestSuiteId).Name("TestSuiteId")
+          .DataTextField("TestSuiteName")
+          .DataValueField("TestSuiteId")
+          .OptionLabel("--Select--")
+          .DataSource(source => source
+          .Custom()
+          .Transport(transport => transport
+                .Read(read =>
+                {
+                    read.Url("/TestSuite/GetTestSuiteDetails/");
+                })
+          )
+          .Schema(schema => schema
+                .Data("Data")
+                .Total("Total")
+                .Errors("errors")
+           )
+      )
+          .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(m => m.TestSuiteId)
+                </div>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="pull-right">
+                    <button type="submit" style="width:70px;" class="btn green">Save</button>
+                    <button type="button" class="btn btn-default" onclick="$('#Details').data('kendoWindow').close()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

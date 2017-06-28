@@ -1,0 +1,76 @@
+﻿@model List<Silicus.Ensure.Web.Models.UserViewModel>
+
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Candidate List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function TestDetail(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var url = "/JobVite/AssignTest/?FirstName=" + dataItem.FirstName + "&LastName=" + dataItem.LastName + "&Email=" + dataItem.Email + "&jobviteId=" + dataItem.JobViteId + "&position=" + dataItem.Position + "";
+        var wnd = $("#Details").kendoWindow({
+            title: "Assign Test",
+            actions: ["Minimize", "Maximize", "Close"],
+            content: url,
+            visible: false,
+            modal: true
+        }).data("kendoWindow");
+        
+        wnd.center();
+        wnd.open();
+    }
+
+    function OnSuccess() {
+        alert("called");
+        $('#Details').data('kendoWindow').close();
+    }
+</script>
+
+<div id="Details"></div>
+<div>
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>
+    (Model).Name("CandidateGrid")
+    .Columns(columns =>
+    {
+        //columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);
+        columns.Bound(p => p.UserId).Hidden(true);
+        columns.Bound(c => c.FirstName).Title("First Name");
+        columns.Bound(p => p.LastName).Title("Last Name");
+        columns.Bound(c => c.Email).Title("Email");
+        columns.Bound(p => p.CandidateStatus);
+        columns.Bound(p => p.JobViteId);
+        columns.Bound(p => p.Position);
+        columns.Command(cmd =>
+        {
+            cmd.Custom("Test Details").Click("TestDetail");
+            cmd.Custom("Test Result").Click("TestDetail");
+
+        });
+
+    })
+    .DataSource(dataSource => dataSource.Ajax().Model(model =>
+    {
+        model.Id(p => p.Email);
+        model.Field(p => p.Email).Editable(false);
+
+    }).ServerOperation(false)
+      .Read(read => read.Action("GetCandidates", "JobVite"))
+    //.Create(update => update.Action("CreateUser", "User"))
+    //.Update(update => update.Action("UpdateUser", "User"))
+    //.Destroy(update => update.Action("DeleteUser", "User"))
+    .PageSize(100))
+
+    .Pageable(pager => { pager.PageSizes(false); })
+    .Sortable()
+    .HtmlAttributes(new { style = "height: 70vh;" })
+    .Scrollable(scrollable => scrollable.Virtual(true))
+    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+    .Resizable(resizing => resizing.Columns(true))
+    )
+
+
+</div>
