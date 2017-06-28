@@ -69,7 +69,7 @@
                                        {
                                            model.Id(p => p.EmployeeTestSuiteId);
                                            model.Field(p => p.EmployeeId).Editable(false);
-                                       }).Group(g => g.Add(c => c.StatusId))
+                                       })
 
                                        .Read(read => read.Action("GetTestSuitsforEvaluation", "Admin"))
 

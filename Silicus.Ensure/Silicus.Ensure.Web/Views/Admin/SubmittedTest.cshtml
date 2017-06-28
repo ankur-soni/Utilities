@@ -105,7 +105,7 @@
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
                                     <tr>
-                                        <td><pre class="prettyprint lang-cs">@Html.Raw(@oQuestion.QuestionDescription)</pre></td>
+                                        <td><pre class="prettyprint lang-cs">@(@oQuestion.QuestionDescription)</pre></td>
                                         <td>@oQuestion.SubmittedAnswer</td>
                                         <td>@oQuestion.CorrectAnswer</td>
                                         <td>@oQuestion.Result</td>
@@ -129,7 +129,7 @@
                                     Practical question @i:
                                 </div>
                                 <div class="col-md-8">
-                                    <pre class="prettyprint lang-cs">  @Html.Raw(pQuestion.QuestionDescription)</pre>
+                                    <pre class="prettyprint lang-cs">@(pQuestion.QuestionDescription)</pre>
                                 </div>
                             </div>
 
@@ -138,11 +138,7 @@
                                     Correct answer
                                 </div>
                                 <div class="col-md-8">
-                                    <pre class="prettyprint lang-cs">
-                                    <span id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)">
-                                        @pQuestion.CorrectAnwer
-                                    </span>
-                                    </pre>
+                                    <pre class="prettyprint lang-cs"><span id="@(pQuestion.CorrectAnwer + i)" name="@(pQuestion.CorrectAnwer + i)">@pQuestion.CorrectAnwer</span></pre>
                                 </div>
                             </div>
 
@@ -151,11 +147,7 @@
                                     Submitted answer
                                 </div>
                                 <div class="col-md-8">
-                                    <pre class="prettyprint lang-cs">
-                                    <span id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)">
-                                        @pQuestion.SubmittedAnswer
-                                    </span>
-                                    </pre>
+                                    <pre class="prettyprint lang-cs"><span id="@(pQuestion.SubmittedAnswer + i)" name="@(pQuestion.SubmittedAnswer + i)">@pQuestion.SubmittedAnswer</span></pre>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -164,7 +156,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input class="form-control valid" data-val="true"
-                                           id="@Html.Raw(" weightage" + i)" name="@Html.Raw(" weightage" + i)" type="text"
+                                           id="@(" weightage" + i)" name="@(" weightage" + i)" type="text"
                                            value="@pQuestion.Weightage" aria-required="true" style="width:87%;" readonly="readonly"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
@@ -176,7 +168,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
-                                           id="@Html.Raw(" emarks"+i)" name="@Html.Raw(" emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
+                                           id="@(" emarks"+i)" name="@(" emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
                                            value="@pQuestion.EvaluatedMark" aria-required="true" style="width:87%"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
@@ -208,7 +200,9 @@
                                 Evaluation Feedback
                             </div>
                             <div class="col-md-7">
-                                @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)
+                                <textarea cols="20" id="EvaluatedFeedBack" name="EvaluatedFeedBack"
+                                          rows="5" data-role="editor" autocomplete="off" style="width:87%;background: #eee; color: #333;" class="k-content k-raw-content">@Model.EvaluatedFeedBack</textarea>
+                                @* @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)*@
                             </div>
                         </div>
                         <div class="col-md-12" style="margin-top:10px">
@@ -216,32 +210,41 @@
                                 Status
                             </div>
                             <div class="col-md-7">
-                                @if (Convert.ToInt32(Model.Status) > (int)CandidateStatus.TestSubmitted)
+                                @if (Model.Status == ((int)CandidateStatus.UnderEvaluation).ToString() || Model.Status == ((int)CandidateStatus.TestSubmitted).ToString())
                                 {
-                                    Html.DisplayFor(m => m.Status);
+                                    @(Html.Kendo().DropDownListFor(m => m.Status)
+                                        .Name("Status")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .BindTo(new List<SelectListItem>
+                                            () {
+                                            new SelectListItem(){
+                                            Text="--Select--",
+                                            Value="0"
+                                            },
+                                            new SelectListItem(){
+                                            Text=CandidateStatus.Selected.ToString(),
+                                            Value=((int)CandidateStatus.Selected).ToString()
+                                            },
+                                            new SelectListItem(){
+                                            Text=CandidateStatus.Rejected.ToString(),
+                                            Value=((int)CandidateStatus.Rejected).ToString()
+                                            }
+                                            }).HtmlAttributes(new { style = "width: 100%" })
+                                    )
+                                    @Html.ValidationMessageFor(m => m.Status)
+
                                 }
                                 else
                                 {
-                                    @(Html.Kendo().DropDownListFor(m => m.Status)
-                            .Name("Status")
-                            .DataTextField("Text")
-                            .DataValueField("Value")
-                            .BindTo(new List<SelectListItem>
-                                () {
-                                new SelectListItem(){
-                                Text="--Select--",
-                                Value="0"
-                                },
-                                new SelectListItem(){
-                                Text=CandidateStatus.Selected.ToString(),
-                                Value=((int)CandidateStatus.Selected).ToString()
-                                },
-                                new SelectListItem(){
-                                Text=CandidateStatus.Rejected.ToString(),
-                                Value=((int)CandidateStatus.Rejected).ToString()
-                                }
-                                }).HtmlAttributes(new { style = "width: 100%" }))
-                                    @Html.ValidationMessageFor(m => m.Status)
+                                    if (Model.Status == ((int)CandidateStatus.Selected).ToString())
+                                    {
+                                        <span>Test Passed</span>
+                                    }
+                                    if (Model.Status == ((int)CandidateStatus.Rejected).ToString())
+                                    {
+                                        <span>Test Failed</span>
+                                    }
                                 }
                             </div>
                         </div>
@@ -254,9 +257,9 @@
                         .HtmlAttributes(new { type = "button" })
                         .Events(e => e.Click("OnCancel"))
                         .Content("Cancel"))
-                            @* @if (Model.Status == CandidateStatus.UnderEvaluation.ToString() || Model.Status == CandidateStatus.TestSubmitted.ToString())*@
+                            @if (Model.Status == ((int)CandidateStatus.UnderEvaluation).ToString() || Model.Status == ((int)CandidateStatus.TestSubmitted).ToString())
                             {
-                            <input type="submit" style="width:70px;" value="Save" class="k-button k-button-icontext" id="btnSave" />
+                                <input type="submit" style="width:70px;" value="Save" class="k-button k-button-icontext" id="btnSave" />
                             }
                         </div>
                     </div>
@@ -270,7 +273,7 @@
     $(document).ready(function () {
         EvaluateTotalResult();
         prettyPrint();
-        if (!('@Model.Status' == '@CandidateStatus.UnderEvaluation.ToString()' || '@Model.Status' == '@CandidateStatus.TestSubmitted.ToString()')) {
+        if (!('@Model.Status' == '@(((int)CandidateStatus.UnderEvaluation).ToString())' || '@Model.Status' == '@(((int)CandidateStatus.TestSubmitted).ToString())')) {
             $('form input[type="text"]').prop("disabled", true);
             $('textarea').prop("disabled", true);
         }
