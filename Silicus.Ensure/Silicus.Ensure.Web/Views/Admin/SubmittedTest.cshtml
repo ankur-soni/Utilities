@@ -10,6 +10,7 @@
 <link href="~/Content/prettify.css" rel="stylesheet" />
 <script src="~/Scripts/prettify.js"></script>
 <style>
+    .borderBottom{border-bottom:1px solid #ddd; }
     .M-B50{margin-bottom:50px!important;}
     #pracQuestion .table-bordered > tbody > tr > td, #eval .table-bordered > tbody > tr > td{border:none;}
     .k-icon.k-i-cancel{display:none;}
@@ -150,27 +151,19 @@
                                 <tr>
                                     <td>Practical question @i:</td>
                                     <td>
-                                        <pre class="prettyprint lang-cs">  @pQuestion.QuestionDescription</pre>
+                                        <pre class="prettyprint lang-cs">@pQuestion.QuestionDescription</pre>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Correct answer</td>
                                     <td>
-                                        <pre class="prettyprint lang-cs">
-                                        <span id="@(pQuestion.CorrectAnwer + i)" name="@(pQuestion.CorrectAnwer + i)">
-                                        @pQuestion.CorrectAnwer
-                                    </span>
-                                    </pre>
+                                        <pre class="prettyprint lang-cs"><span id="@(pQuestion.CorrectAnwer + i)" name="@(pQuestion.CorrectAnwer + i)">@pQuestion.CorrectAnwer</span></pre>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Submitted answer</td>
                                     <td>
-                                        <pre class="prettyprint lang-cs">
-                                        <span id="@(pQuestion.SubmittedAnswer + i)" name="@(pQuestion.SubmittedAnswer + i)">
-                                        @pQuestion.SubmittedAnswer
-                                    </span>
-                                    </pre>
+                                        <pre class="prettyprint lang-cs"><span id="@(pQuestion.SubmittedAnswer + i)" name="@(pQuestion.SubmittedAnswer + i)">@pQuestion.SubmittedAnswer</span></pre>
                                     </td>
                                 </tr>
                                 <tr>
@@ -178,19 +171,20 @@
                                     <td>
                                         <input class="form-control valid" data-val="true"
                                                id="@(" weightage" + i)" name="@(" weightage" + i)" type="text"
-                                               value="@pQuestion.Weightage" aria-required="true" style="width:100%;" readonly="readonly"
+                                               value="@pQuestion.Weightage" aria-required="true" style="width:30%;" readonly="readonly"
                                                aria-invalid="false" aria-describedby="Emarks-error">
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr class="borderBottom" style="height: 70px;">
                                     <td>Evaluated marks</td>
                                     <td>
                                         <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
                                                id="@(" emarks"+i)" name="@(" emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
-                                               value="@pQuestion.EvaluatedMark" aria-required="true" style="width:100%"
+                                               value="@pQuestion.EvaluatedMark" aria-required="true" style="width:30%"
                                                aria-invalid="false" aria-describedby="Emarks-error">
                                     </td>
                                 </tr>
+                                
                             }
                         </table>
                     </fieldset>
@@ -204,7 +198,7 @@
                                 <td>
                                     <input class="form-control"
                                            id="TotalMarksObtained" name="TotalMarksObtained" type="text"
-                                           value="@Model.TotalMarksObtained" style="width:100%;" readonly="readonly" />
+                                           value="@Model.TotalMarksObtained" style="width:30%;" readonly="readonly" />
                                 </td>
                             </tr>
                             <tr>
