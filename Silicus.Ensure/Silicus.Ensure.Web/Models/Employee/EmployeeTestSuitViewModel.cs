@@ -35,6 +35,8 @@ namespace Silicus.Ensure.Web.Models.Employee
     {
         public int UserId { get; set; }
 
+        public int EmployeeTestSuiteId { get; set; }
+
         public string EmployeeId { get; set; }
 
         public string EmpName { get; set; }

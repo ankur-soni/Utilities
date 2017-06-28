@@ -27,6 +27,8 @@ using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Web.Models.Test;
 using Silicus.Ensure.Web.Filters;
 using System.Globalization;
+using Microsoft.AspNet.Identity;
+using Silicus.Ensure.Web.Models.Employee;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -499,26 +501,26 @@ namespace Silicus.Ensure.Web.Controllers
         //    }
         //}
 
-        private void GetTestSuiteTags(TestSuite testSuite, out List<TestSuiteTagViewModel> testSuiteTags)
-        {
-            TestSuiteTagViewModel testSuiteTagViewModel;
-            testSuiteTags = new List<TestSuiteTagViewModel>();
-            var tagList = _tagsService.GetTagsDetails();
-            string[] tags = testSuite.PrimaryTags.Split(',');
-            string[] weights = testSuite.Weights.Split(',');
-            string[] proficiency = testSuite.Proficiency.Split(',');
+        //private void GetTestSuiteTags(TestSuite testSuite, out List<TestSuiteTagViewModel> testSuiteTags)
+        //{
+        //    TestSuiteTagViewModel testSuiteTagViewModel;
+        //    testSuiteTags = new List<TestSuiteTagViewModel>();
+        //    var tagList = _tagsService.GetTagsDetails();
+        //    string[] tags = testSuite.PrimaryTags.Split(',');
+        //    string[] weights = testSuite.Weights.Split(',');
+        //    string[] proficiency = testSuite.Proficiency.Split(',');
 
-            for (int i = 0; i < tags.Length; i++)
-            {
-                testSuiteTagViewModel = new TestSuiteTagViewModel();
-                testSuiteTagViewModel.TagId = Convert.ToInt32(tags[i]);
-                testSuiteTagViewModel.TagName = tagList.Where(x => x.TagId == testSuiteTagViewModel.TagId).Select(x => x.TagName).SingleOrDefault();
-                testSuiteTagViewModel.Weightage = Convert.ToInt32(weights[i]);
-                testSuiteTagViewModel.Proficiency = Convert.ToInt32(proficiency[i]);
-                testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
-                testSuiteTags.Add(testSuiteTagViewModel);
-            }
-        }
+        //    for (int i = 0; i < tags.Length; i++)
+        //    {
+        //        testSuiteTagViewModel = new TestSuiteTagViewModel();
+        //        testSuiteTagViewModel.TagId = Convert.ToInt32(tags[i]);
+        //        testSuiteTagViewModel.TagName = tagList.Where(x => x.TagId == testSuiteTagViewModel.TagId).Select(x => x.TagName).SingleOrDefault();
+        //        testSuiteTagViewModel.Weightage = Convert.ToInt32(weights[i]);
+        //        testSuiteTagViewModel.Proficiency = Convert.ToInt32(proficiency[i]);
+        //        testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
+        //        testSuiteTags.Add(testSuiteTagViewModel);
+        //    }
+        //}
         //public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         //{
         //    string mailsubject = "";
@@ -977,102 +979,139 @@ namespace Silicus.Ensure.Web.Controllers
 
         #endregion
 
-        //public ActionResult SubmittedTest(int UserId, int TestSuiteId)
-        //{
-        //    try
-        //    {
+        public ActionResult SubmittedTest(int EmployeeTestSuitId)
+        {
+            try
+            {
 
-        //        List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
-        //        List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
+                List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
+                List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
 
-        //        var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+                //var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
 
-        //        var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(UserId, TestSuiteId);
-        //        if (userTestSuitDetails == null)
-        //        {
-        //            TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
-        //            return RedirectToAction("Candidates");
-        //        }
+                var userTestSuitDetails = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuitId);
+                if (userTestSuitDetails == null)
+                {
+                    //TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
+                    return RedirectToAction("Candidates");
+                }
 
-        //        var testSuitDetails = _testSuiteService.GetTestSuitById(TestSuiteId);
+                var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
 
-        //        if (testSuitDetails == null)
-        //        {
-        //            TempData["ErrorMsg"] = "Test suite is not assigned to user.";
-        //            return RedirectToAction("Candidates");
-        //        }
+                if (testSuitDetails == null)
+                {
+                    TempData["ErrorMsg"] = "Test suite is not assigned to user.";
+                    return RedirectToAction("Candidates");
+                }
 
-        //        SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
-        //        submittedTestViewModel.TestStatus = userDetails.TestStatus;
-        //        submittedTestViewModel.FirstName = userDetails.FirstName;
-        //        submittedTestViewModel.LastName = userDetails.LastName;
-        //        submittedTestViewModel.Duration = userTestSuitDetails.Duration;
-        //        submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
-        //        submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
-        //        submittedTestViewModel.UserId = userTestSuitDetails.UserApplicationId;
-        //        //if(testSuitDetails.Position.HasValue)
-        //        //{
-        //        //    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
-        //        //}
+                SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.Status = userTestSuitDetails.StatusId.ToString();
+                //submittedTestViewModel.FirstName = userDetails.FirstName;
+                //submittedTestViewModel.LastName = userDetails.LastName;
+                submittedTestViewModel.Duration = userTestSuitDetails.Duration;
+                submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
+                submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+                submittedTestViewModel.UserId = userTestSuitDetails.CandidateID;
+                submittedTestViewModel.TestSuiteId = EmployeeTestSuitId;
+                //if(testSuitDetails.Position.HasValue)
+                //{
+                //    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
+                //}
 
-        //        foreach (var questionId in userTestSuitDetails.UserTestDetails)
-        //        {
+                foreach (var questionId in userTestSuitDetails.EmployeeTestDetails)
+                {
 
-        //            var question = _questionService.GetSingleQuestion(questionId.QuestionId);
-        //            if (question.QuestionType == 1)
-        //            {
-        //                if (questionId.Mark != null && questionId.Mark > 0)
-        //                {
-        //                    submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
-        //                }
-        //                submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+                    var question = _questionService.GetSingleQuestion(questionId.QuestionId);
+                    if (question.QuestionType == 1)
+                    {
+                        if (questionId.Mark != null && questionId.Mark > 0)
+                        {
+                            submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                        }
+                        submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
 
-        //                objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
-        //                {
-        //                    QuestionDescription = question.QuestionDescription,
-        //                    CorrectAnswer = GetOption(question.CorrectAnswer),
-        //                    SubmittedAnswer = GetOption(questionId.Answer),
-        //                    Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
-        //                });
-        //            }
-        //            else
-        //            {
-        //                practicalQuestionList.Insert(0, new PracticalQuestionList()
-        //                {
-        //                    QuestionId = questionId.QuestionId,
-        //                    QuestionDescription = question.QuestionDescription,
-        //                    SubmittedAnswer = questionId.Answer,
-        //                    CorrectAnwer = question.Answer,
-        //                    Weightage = question.Marks,
-        //                    EvaluatedMark = questionId.Mark,
-        //                });
+                        objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
+                        {
+                            QuestionDescription = question.QuestionDescription,
+                            CorrectAnswer = GetOption(question.CorrectAnswer),
+                            SubmittedAnswer = GetOption(questionId.Answer),
+                            Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
+                        });
+                    }
+                    else
+                    {
+                        practicalQuestionList.Insert(0, new PracticalQuestionList()
+                        {
+                            QuestionId = questionId.QuestionId,
+                            QuestionDescription = question.QuestionDescription,
+                            SubmittedAnswer = questionId.Answer,
+                            CorrectAnwer = question.Answer,
+                            Weightage = question.Marks,
+                            EvaluatedMark = questionId.Mark,
+                        });
 
-        //            }
+                    }
 
-        //        }
-        //        submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
-        //        submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
-        //        submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
-        //        submittedTestViewModel.practicalQuestionList = practicalQuestionList;
-        //        submittedTestViewModel.Status = userDetails.CandidateStatus;
-        //        //if (userDetails.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-        //        //{
-        //        //    userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
-        //        //    _userService.Update(userDetails);
-        //        //}
+                }
+                submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
+                submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
+                submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
+                submittedTestViewModel.practicalQuestionList = practicalQuestionList;
+                //submittedTestViewModel.Status = userTestSuitDetails.StatusId;
+                //if (userDetails.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                //{
+                //    userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+                //    _userService.Update(userDetails);
+                //}
 
-        //        List<string> Receipient = new List<string>() { "Admin", "Panel" };
-        //        _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+                List<string> Receipient = new List<string>() { "Admin", "Panel" };
+              //  _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
 
-        //        return View(submittedTestViewModel);
+                return View(submittedTestViewModel);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["ErrorMsg"] = ex.Message;
-        //        return RedirectToAction("Candidates");
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = ex.Message;
+                return RedirectToAction("Candidates");
+            }
+        }
+
+        public ActionResult ReviewAssignedTest()
+        {
+            //return View("EmployeeList");
+            return View("ReviewAssigedTest");
+        }
+
+        public ActionResult GetTestSuitsforEvaluation([DataSourceRequest] DataSourceRequest request)
+        {
+            var userlist = _containerUserService.GetAllUsers();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false);
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts=>ts.StatusId >= (int)CandidateStatus.TestSubmitted);
+
+            var TestResults = (from tests in TestSuits
+                               join users in userlist
+                               on tests.EmployeeId equals users.ID
+                               join testDetail in testSuitelist
+                                on tests.TestSuiteId equals testDetail.TestSuiteId
+                               select new EmployeeTestResultViewModel
+                               {
+                                   UserId = users.ID,
+                                   EmployeeId = users.EmployeeID,
+                                   EmpName = users.DisplayName,
+                                   MaxScore = tests.MaxScore,
+                                   MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum(),
+                                   TestSuitId = tests.TestSuiteId,
+                                   EmployeeTestSuiteId = tests.EmployeeTestSuiteId,
+                                   TestSuitName = testDetail.TestSuiteName,
+                                   AttemptDate = tests.AttemptDate,
+                                   StatusId = tests.StatusId
+                               }).ToList();
+
+            DataSourceResult result = TestResults.ToDataSourceResult(request);
+            return Json(result);
+
+        }
 
         private string GetOption(string p)
         {
@@ -1086,47 +1125,49 @@ namespace Silicus.Ensure.Web.Controllers
             return p == null ? "" : optionSelect;
         }
 
-        //[HttpPost]
-        //public ActionResult SubmittedTest(FormCollection fm)
-        //{
-        //    try
-        //    {
-        //        int count = 1;
+        [HttpPost]
+        public ActionResult SubmittedTest(FormCollection fm)
+        {
+            try
+            {
+                int count = 1;
+                var userTestSuitDetails = _testSuiteService.GetEmployeeTestSuiteById(Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
+                //var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])), Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
 
-        //        var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])), Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
+                userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
+                userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
+                userTestSuitDetails.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
+                var userTestDetails = (from uDetails in userTestSuitDetails.EmployeeTestDetails
+                                       join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
+                                       on uDetails.QuestionId equals question.Id
+                                       select uDetails).ToList();
 
-        //        userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
-        //        userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
-        //        userTestSuitDetails.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
-        //        var userTestDetails = (from uDetails in userTestSuitDetails.UserTestDetails
-        //                               join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
-        //                               on uDetails.QuestionId equals question.Id
-        //                               select uDetails).ToList();
+                foreach (var userTestDetail in userTestDetails)
+                {
+                    //var currentUser =  (User.Identity.Name);
+                    userTestDetail.MarkGivenByName = User.Identity.Name ;
+                    //userTestDetail.MarkGivenBy = User.Identity.GetUserId();
+                    userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
+                    userTestDetail.MarkGivenDate = DateTime.Now;
 
-        //        foreach (var userTestDetail in userTestDetails)
-        //        {
-        //            var currentUser = _userService.GetUserByEmail(User.Identity.Name);
-        //            userTestDetail.MarkGivenByName = currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "";
-        //            userTestDetail.MarkGivenBy = currentUser != null ? currentUser.UserId : 0;
-        //            userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
-        //            userTestDetail.MarkGivenDate = DateTime.Now;
+                    _testSuiteService.UpdateEmployeeTestDetails(userTestDetail);
+                    count++;
+                }
 
-        //            _testSuiteService.UpdateUserTestDetails(userTestDetail);
-        //            count++;
-        //        }
-
-        //        _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
-        //        //var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
-        //        //user.TestStatus = CandidateStatus.TestSubmitted.ToString();
-        //        //user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
-        //        //_userService.Update(user);
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //    return RedirectToAction("Candidates");
-        //}
+                _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
+                //var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
+                //user.TestStatus = CandidateStatus.TestSubmitted.ToString();
+                //user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
+                userTestSuitDetails.StatusId = Convert.ToInt32(Request.Form["Status"]);
+                _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
+                //_userService.Update(user);
+            }
+            catch
+            {
+                throw;
+            }
+            return RedirectToAction("ReviewAssignedTest");
+        }
 
         # region Mail Send
         //public ActionResult SendMail(int? id)

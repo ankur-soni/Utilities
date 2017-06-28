@@ -1,0 +1,86 @@
+﻿@model Silicus.Ensure.Web.Models.Employee.EmployeeTestSuitViewModel
+@using Silicus.Ensure.Models.Constants;
+@using Kendo.Mvc.UI;
+@using System.Linq
+@{
+    ViewBag.Title = "AssigedTest";
+}
+
+<h2>Assiged Tests</h2>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('#emp-assigned-test');
+        SetNavigationMenuActive('AssignedTest');
+    });
+
+    function StartEvaluationofTest(EmployeeTestSuiteId) {
+        alert(EmployeeTestSuiteId);
+        window.location.href = "/Admin/SubmittedTest?EmployeeTestSuitId=" + EmployeeTestSuiteId;
+    }
+
+</script>
+<div class="table-responsive M-B15">
+
+   
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Employee.EmployeeTestSuitViewModel>().Name("EmployeeTestSuitGrid")
+
+         .Columns(columns =>
+         {
+             columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(200);
+             columns.Bound(p => p.EmployeeTestSuiteId).Title("Requisition id").Width(100);
+             columns.Bound(p => p.Duration).ClientTemplate(@"#=Duration# Mins");
+             //columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
+             columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0? MarksObtained : 'NA'#");
+             columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
+             columns.Bound(p => p.StatusId).ClientTemplate(@"
+                                                                        #if(StatusId==2){#
+                                                                            Test assigned
+                                                                        #}
+                                                                        else if(StatusId==3) {#
+                                                                            Test submitted
+                                                                        #}
+                                                                        else if(StatusId==4) {#
+                                                                            Under evaluation
+                                                                        #}
+                                                                        else if(StatusId==7) {#
+                                                                           On hold
+                                                                        #}
+                                                                        else{#
+                                                                            #=StatusId#
+                                                                        #}
+                                                                        #").Title("Status").Width(250);
+             columns.Bound(p => p.StatusId).ClientTemplate(@"
+                                                                        #if(StatusId==3){#
+                                                                            <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Start Evaluation</a>
+                                                                        #}                                                                        
+                                                                        else{#
+                                                                            <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Review Evaluation</a>
+                                                                        #}
+                                                                        #").Title("Test Action");})
+                                       .DataSource(dataSource => dataSource
+                                       .Ajax()
+                                       .Model(model =>
+                                       {
+                                           model.Id(p => p.EmployeeTestSuiteId);
+                                           model.Field(p => p.EmployeeId).Editable(false);
+                                       }).Group(g => g.Add(c => c.StatusId))
+
+                                       .Read(read => read.Action("GetTestSuitsforEvaluation", "Admin"))
+
+                                       .PageSize(100)
+                                       .ServerOperation(true)
+                                       )
+                                       .HtmlAttributes(new { style = "height: 70vh;" })
+                                       .Pageable(p => p.PageSizes(false))
+                                        .Scrollable(scrollable => scrollable.Virtual(true))
+                                       .Sortable()
+                                       .Resizable(resizing => resizing.Columns(true))
+        )
+
+
+   
+
+</div>
+
+
+

@@ -7,7 +7,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int i = 0;
 }
-
+<link href="~/Content/prettify.css" rel="stylesheet" />
+<script src="~/Scripts/prettify.js"></script>
 
 <div class="main-content">
     <div style="height:750px;overflow:scroll">
@@ -15,6 +16,7 @@
         {
             @Html.HiddenFor(x => x.UserId)
             @Html.HiddenFor(x => x.TestSuiteId)
+
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
             <div class="fluid mt20">
                 <fieldset>
@@ -103,7 +105,7 @@
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
                                     <tr>
-                                        <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                        <td><pre class="prettyprint lang-cs">@Html.Raw(@oQuestion.QuestionDescription)</pre></td>
                                         <td>@oQuestion.SubmittedAnswer</td>
                                         <td>@oQuestion.CorrectAnswer</td>
                                         <td>@oQuestion.Result</td>
@@ -127,7 +129,7 @@
                                     Practical question @i:
                                 </div>
                                 <div class="col-md-8">
-                                    @Html.Raw(pQuestion.QuestionDescription)
+                                    <pre class="prettyprint lang-cs">  @Html.Raw(pQuestion.QuestionDescription)</pre>
                                 </div>
                             </div>
 
@@ -136,11 +138,11 @@
                                     Correct answer
                                 </div>
                                 <div class="col-md-8">
-                                    <textarea cols="20" id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)"
-                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #eee; color: #333;" class="k-content k-raw-content">
+                                    <pre class="prettyprint lang-cs">
+                                    <span id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)">
                                         @pQuestion.CorrectAnwer
-                                    </textarea>
-
+                                    </span>
+                                    </pre>
                                 </div>
                             </div>
 
@@ -149,11 +151,11 @@
                                     Submitted answer
                                 </div>
                                 <div class="col-md-8">
-                                    <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
-                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #eee; color: #333;" class="k-content k-raw-content">
+                                    <pre class="prettyprint lang-cs">
+                                    <span id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)">
                                         @pQuestion.SubmittedAnswer
-                                    </textarea>
-
+                                    </span>
+                                    </pre>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -214,7 +216,13 @@
                                 Status
                             </div>
                             <div class="col-md-7">
-                                @(Html.Kendo().DropDownListFor(m => m.Status)
+                                @if (Convert.ToInt32(Model.Status) > (int)CandidateStatus.TestSubmitted)
+                                {
+                                    Html.DisplayFor(m => m.Status);
+                                }
+                                else
+                                {
+                                    @(Html.Kendo().DropDownListFor(m => m.Status)
                             .Name("Status")
                             .DataTextField("Text")
                             .DataValueField("Value")
@@ -222,22 +230,23 @@
                                 () {
                                 new SelectListItem(){
                                 Text="--Select--",
-                                Value="--Select--"
+                                Value="0"
                                 },
                                 new SelectListItem(){
                                 Text=CandidateStatus.Selected.ToString(),
-                                Value=CandidateStatus.Selected.ToString()
+                                Value=((int)CandidateStatus.Selected).ToString()
                                 },
                                 new SelectListItem(){
                                 Text=CandidateStatus.Rejected.ToString(),
-                                Value=CandidateStatus.Rejected.ToString()
+                                Value=((int)CandidateStatus.Rejected).ToString()
                                 }
                                 }).HtmlAttributes(new { style = "width: 100%" }))
-                                @Html.ValidationMessageFor(m => m.Status)
+                                    @Html.ValidationMessageFor(m => m.Status)
+                                }
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="  margin-top: 1%; ">
+                    <div class="row" style=" margin-top 1%; ">
                         <div class="col-md-6"></div>
                         <div class="col-md-2 col-md-offset-4">
                             @(Html.Kendo().Button()
@@ -245,9 +254,9 @@
                         .HtmlAttributes(new { type = "button" })
                         .Events(e => e.Click("OnCancel"))
                         .Content("Cancel"))
-                            @if (Model.Status == CandidateStatus.UnderEvaluation.ToString() || Model.Status == CandidateStatus.TestSubmitted.ToString())
+                            @* @if (Model.Status == CandidateStatus.UnderEvaluation.ToString() || Model.Status == CandidateStatus.TestSubmitted.ToString())*@
                             {
-                                <input type="submit" style="width:70px;"  value="Save" class="k-button k-button-icontext" id="btnSave" />
+                            <input type="submit" style="width:70px;" value="Save" class="k-button k-button-icontext" id="btnSave" />
                             }
                         </div>
                     </div>
@@ -260,6 +269,7 @@
 <script>
     $(document).ready(function () {
         EvaluateTotalResult();
+        prettyPrint();
         if (!('@Model.Status' == '@CandidateStatus.UnderEvaluation.ToString()' || '@Model.Status' == '@CandidateStatus.TestSubmitted.ToString()')) {
             $('form input[type="text"]').prop("disabled", true);
             $('textarea').prop("disabled", true);
@@ -281,6 +291,6 @@
         $('#TotalMarksObtained').val(mark)
     }
     function OnCancel() {
-        window.location.href = "/Admin/Candidates";
+        window.location.href = "/Admin/ReviewAssignedTest";
     }
 </script>
