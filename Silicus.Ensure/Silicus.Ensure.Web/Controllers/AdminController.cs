@@ -836,146 +836,163 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #region Create PDF
 
-        //public ActionResult CreatePDF(int? id)
-        //{
-        //    var filename = "";
-        //    byte[] byteInfo = generatePDF(id, out filename);
-        //    Response.ContentType = "application/pdf";
-        //    Response.AddHeader("Content-Disposition", "inline;filename=" + filename);
-        //    Response.BinaryWrite(byteInfo);
-        //    return new EmptyResult();
-        //}
+        public ActionResult CreatePDF(int id)
+        {
+            var filename = "";
+            byte[] byteInfo = generatePDF(id, out filename);
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", "inline;filename=" + filename);
+            Response.BinaryWrite(byteInfo);
+            return new EmptyResult();
+        }
 
-        //public Byte[] generatePDF(int? id, out string filename)
-        //{
-        //    int UserId = 0;
-        //    int QuesId = 0;
-        //    if (id != null)
-        //    {
-        //        UserId = Convert.ToInt32(id);
-        //    }
+        private Byte[] generatePDF(int id, out string filename)
+        {
+            int UserId = 0;
+            int QuesId = 0;
+            if (id != null)
+            {
+                UserId = Convert.ToInt32(id);
+            }
 
-        //    var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
-        //    var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
+            //var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+            var userTestSuit = _testSuiteService.GetEmployeeTestSuiteById(id);
+            var userTestSuitDetails = userTestSuit.EmployeeTestDetails;
 
-        //    ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+            //var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
 
-        //    List<Question> Que = (from question in _questionService.GetQuestion().ToList()
-        //                          join userTest in userTestSuitDetails.ToList()
-        //                              on question.Id equals userTest.QuestionId
-        //                          select question).ToList();
+            string fname, lname;
+            if (userTestSuit.EmployeeId > 0)
+            {
+                var user = _containerUserService.GetAllUsers().Where(u => u.ID == userTestSuit.EmployeeId).FirstOrDefault();
+                fname = user != null ? user.FirstName : "";
+                lname = user != null ? user.LastName : "";
+            }
+            else
+            {
+                var user = UserManager.FindById(userTestSuit.CandidateID);
+                fname = user != null ? user.FirstName : "";
+                lname = user != null ? user.LastName : "";
+            }
+            ViewBag.FNameLName = fname + lname;
 
-        //    Que = Que.OrderBy(x => x.Id).ToList();
+            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+                                  join userTest in userTestSuitDetails.ToList()
+                                      on question.Id equals userTest.QuestionId
+                                  select question).ToList();
 
-        //    StringBuilder sb = new StringBuilder();
+            Que = Que.OrderBy(x => x.Id).ToList();
 
-        //    sb.Append("<h2>Question Set for " + "<strong>" + userDetails.FirstName + " " + userDetails.LastName + "</strong></h2>");
-        //    sb.Append("<br />");
-        //    sb.Append("<div></div>");
-        //    sb.Append("<strong>Date: </strong>" + DateTime.Now.ToString("dd-MM-yyyy"));
-        //    sb.Append("<br />");
-        //    sb.Append("<br />");
-        //    sb.Append("<table border='5' cellpadding='0' cellspacing='10' width='100%'><tr><td>&nbsp;</td></tr></table>");
-        //    sb.Append("<br />");
-        //    sb.Append("<br />");
-        //    sb.Append("<div>");
-        //    sb.Append("</div>");
-        //    sb.Append("<br />");
-        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
-        //    sb.Append("<h3><strong>Objective Question Set</strong></h3>");
-        //    sb.Append("<br />");
-        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            StringBuilder sb = new StringBuilder();
 
-        //    foreach (var q in Que)
-        //    {
-        //        if (q.QuestionType == 1)
-        //        {
-        //            QuesId += 1;
-        //            sb.Append("  <div class='col-md-8' style='margin-top:30px'>");
-        //            sb.Append("  <strong>Question " + QuesId + ":</strong> &nbsp;&nbsp;");
-        //            sb.Append("" + q.QuestionDescription + "");
-        //            sb.Append(" </div>");
-        //            sb.Append(" </div>");
-        //            sb.Append("  <div class='row'>");
-        //            sb.Append("   <div class='col-md-8' style='margin-top:20px'>");
-        //            sb.Append("  <strong>Option 1:</strong> &nbsp;&nbsp;");
-        //            sb.Append("" + q.Option1 + "");
-        //            sb.Append(" </div>");
-        //            sb.Append(" </div>");
-        //            sb.Append(" <div class='row'>");
-        //            sb.Append("<div class='col-md-8' style='margin-top:20px'>");
-        //            sb.Append("  <strong>Option 2:</strong> &nbsp;&nbsp;");
-        //            sb.Append("" + q.Option2 + "");
-        //            sb.Append("  </div>");
-        //            sb.Append(" </div>");
-        //            sb.Append(" <div class='row'>");
-        //            sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
-        //            sb.Append("  <strong>Option 3:</strong> &nbsp;&nbsp;");
-        //            sb.Append("" + q.Option3 + "");
-        //            sb.Append("  </div>");
-        //            sb.Append("  </div>");
-        //            sb.Append("   <div class='row'>");
-        //            sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
-        //            sb.Append("  <strong>Option 4:</strong> &nbsp; &nbsp;");
-        //            sb.Append("" + q.Option4 + "");
-        //            sb.Append("  </div>");
-        //            sb.Append("  </div>");
-        //            sb.Append("  <div class='row'>");
-        //            sb.Append("  <div class='col-md-8' style='margin-top:20px'>");
-        //            sb.Append("   <strong>Correct Answer:</strong> &nbsp;&nbsp;");
-        //            sb.Append("" + q.CorrectAnswer + "");
-        //            sb.Append("<br />");
-        //            sb.Append("   </div>");
-        //            sb.Append(" </div>");
-        //        }
-        //    }
+            sb.Append("<h2>Question Set for " + "<strong>" + fname + " " + lname + "</strong></h2>");
+            sb.Append("<br />");
+            sb.Append("<div></div>");
+            sb.Append("<strong>Date: </strong>" + DateTime.Now.ToString("dd-MM-yyyy"));
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<table border='5' cellpadding='0' cellspacing='10' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<div>");
+            sb.Append("</div>");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<h3><strong>Objective Question Set</strong></h3>");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
 
-        //    sb.Append("<div></div><div></div>");
-        //    sb.Append("<br />");
-        //    sb.Append("<br />");
-        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
-        //    sb.Append("<h3><strong>Practical Question Set</strong></h3>");
-        //    sb.Append("<br />");
-        //    sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
-        //    sb.Append("<br />");
+            foreach (var q in Que)
+            {
+                if (q.QuestionType == 1)
+                {
+                    QuesId += 1;
+                    sb.Append("  <div class='col-md-8' style='margin-top:30px'>");
+                    sb.Append("  <strong>Question " + QuesId + ":</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.QuestionDescription + "");
+                    sb.Append(" </div>");
+                    sb.Append(" </div>");
+                    sb.Append("  <div class='row'>");
+                    sb.Append("   <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 1:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.Option1 + "");
+                    sb.Append(" </div>");
+                    sb.Append(" </div>");
+                    sb.Append(" <div class='row'>");
+                    sb.Append("<div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 2:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.Option2 + "");
+                    sb.Append("  </div>");
+                    sb.Append(" </div>");
+                    sb.Append(" <div class='row'>");
+                    sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 3:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.Option3 + "");
+                    sb.Append("  </div>");
+                    sb.Append("  </div>");
+                    sb.Append("   <div class='row'>");
+                    sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 4:</strong> &nbsp; &nbsp;");
+                    sb.Append("" + q.Option4 + "");
+                    sb.Append("  </div>");
+                    sb.Append("  </div>");
+                    sb.Append("  <div class='row'>");
+                    sb.Append("  <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("   <strong>Correct Answer:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.CorrectAnswer + "");
+                    sb.Append("<br />");
+                    sb.Append("   </div>");
+                    sb.Append(" </div>");
 
-        //    QuesId = 0;
-        //    foreach (var q in Que)
-        //    {
-        //        if (q.QuestionType == 2)
-        //        {
-        //            QuesId += 1;
-        //            sb.Append("<div class='row'>");
-        //            sb.Append("<div class='col-md-9' style='margin-top:30px'>");
-        //            sb.Append("<strong>Question " + QuesId + ":</strong>&nbsp;");
-        //            sb.Append("" + q.QuestionDescription + "");
-        //            sb.Append("</div>");
-        //            sb.Append("</div>");
-        //            sb.Append("<div class='row'>");
-        //            sb.Append("<div class='col-md-9' style='margin-top:30px'>");
-        //            sb.Append("<strong>Answer:</strong> &nbsp;&nbsp;&nbsp;&nbsp;");
-        //            sb.Append("" + HttpUtility.HtmlDecode(q.Answer) + "");
-        //            sb.Append("<br />");
-        //            sb.Append("<br />");
-        //            sb.Append("</div>");
-        //            sb.Append("</div>");
-        //        }
-        //    }
-        //    sb.Append("<br />");
-        //    sb.Append("<br />");
-        //    sb.Append("<div style='text-align:center'>***********************************************End***********************************************</div>");
+                }
+            }
 
-        //    StringReader sr = new StringReader(sb.ToString());
-        //    filename = userDetails.FirstName + "_" + userDetails.FirstName + "_" + userDetails.UserId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
-        //    Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-        //    HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
-        //    MemoryStream memoryStream = new MemoryStream();
-        //    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
-        //    pdfDoc.Open();
-        //    htmlparser.Parse(sr);
-        //    pdfDoc.Close();
-        //    return memoryStream.ToArray();
-        //}
+            sb.Append("<div></div><div></div>");
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<h3><strong>Practical Question Set</strong></h3>");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<br />");
+
+            QuesId = 0;
+            foreach (var q in Que)
+            {
+                if (q.QuestionType == 2)
+                {
+                    QuesId += 1;
+                    sb.Append("<div class='row' style='page-break-before: always'>");
+                    sb.Append("<div class='col-md-9' style='margin-top:30px'>");
+                    sb.Append("<strong>Question " + QuesId + ":</strong>&nbsp;");
+                    sb.Append("" + q.QuestionDescription + "");
+                    sb.Append("</div>");
+                    sb.Append("</div>");
+                    sb.Append("<div class='row'>");
+                    sb.Append("<div class='col-md-9' style='margin-top:30px'>");
+                    sb.Append("<strong>Answer:</strong> &nbsp;&nbsp;&nbsp;&nbsp;");
+                    sb.Append("" + HttpUtility.HtmlDecode(q.Answer) + "");
+                    sb.Append("<br />");
+                    sb.Append("<br />");
+                    sb.Append("</div>");
+                    sb.Append("</div>");
+                }
+            }
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<div style='text-align:center'>***********************************************End***********************************************</div>");
+
+            StringReader sr = new StringReader(sb.ToString());
+            filename = fname + "_" + lname + "_" + userTestSuit.EmployeeTestSuiteId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
+            pdfDoc.Open();
+            htmlparser.Parse(sr);
+            pdfDoc.Close();
+            return memoryStream.ToArray();
+        }
 
         #endregion
 
