@@ -227,7 +227,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
-           // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             //ViewBag.PositionListItem = from item in positionDetails
             //                           select new SelectListItem()
             //                           {
@@ -245,7 +245,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             DateTime dob;
             DateTime.TryParseExact(dobString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob);
-           // var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
+            // var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
             //var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
             return PartialView("_CadidateGrid", null);
         }
@@ -488,7 +488,7 @@ namespace Silicus.Ensure.Web.Controllers
         //            if (position != null)
         //                testSuiteViewModel.PositionName = position.PositionName;
         //        }
-                
+
         //        List<TestSuiteTagViewModel> testSuiteTags;
         //        GetTestSuiteTags(testSuitDetails, out testSuiteTags);
         //        testSuiteViewModel.Tags = testSuiteTags;
@@ -990,10 +990,26 @@ namespace Silicus.Ensure.Web.Controllers
                 //var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
 
                 var userTestSuitDetails = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuitId);
+
+                SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+
+                if (userTestSuitDetails.EmployeeId > 0)
+                {
+                    var user = _containerUserService.GetAllUsers().Where(u => u.ID == userTestSuitDetails.EmployeeId).FirstOrDefault();
+                    submittedTestViewModel.FirstName = user != null ? user.FirstName : "";
+                    submittedTestViewModel.LastName = user != null ? user.LastName : "";
+                }
+                else
+                {
+                    var user = UserManager.FindById(userTestSuitDetails.CandidateID); 
+                    submittedTestViewModel.FirstName = user != null ? user.FirstName : "";
+                    submittedTestViewModel.LastName = user != null ? user.LastName : "";
+                }
+
                 if (userTestSuitDetails == null)
                 {
                     //TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
-                    return RedirectToAction("Candidates");
+                    return RedirectToAction("ReviewAssignedTest");
                 }
 
                 var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
@@ -1004,10 +1020,8 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("Candidates");
                 }
 
-                SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+
                 submittedTestViewModel.Status = userTestSuitDetails.StatusId.ToString();
-                //submittedTestViewModel.FirstName = userDetails.FirstName;
-                //submittedTestViewModel.LastName = userDetails.LastName;
                 submittedTestViewModel.Duration = userTestSuitDetails.Duration;
                 submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
                 submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
@@ -1065,7 +1079,7 @@ namespace Silicus.Ensure.Web.Controllers
                 //}
 
                 List<string> Receipient = new List<string>() { "Admin", "Panel" };
-              //  _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+                //  _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
 
                 return View(submittedTestViewModel);
 
@@ -1073,7 +1087,7 @@ namespace Silicus.Ensure.Web.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = ex.Message;
-                return RedirectToAction("Candidates");
+                return RedirectToAction("ReviewAssignedTest");
             }
         }
 
@@ -1087,26 +1101,60 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userlist = _containerUserService.GetAllUsers();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false);
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts=>ts.StatusId >= (int)CandidateStatus.TestSubmitted);
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.StatusId >= (int)CandidateStatus.TestSubmitted);
 
-            var TestResults = (from tests in TestSuits
-                               join users in userlist
-                               on tests.EmployeeId equals users.ID
-                               join testDetail in testSuitelist
-                                on tests.TestSuiteId equals testDetail.TestSuiteId
-                               select new EmployeeTestResultViewModel
-                               {
-                                   UserId = users.ID,
-                                   EmployeeId = users.EmployeeID,
-                                   EmpName = users.DisplayName,
-                                   MaxScore = tests.MaxScore,
-                                   MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum(),
-                                   TestSuitId = tests.TestSuiteId,
-                                   EmployeeTestSuiteId = tests.EmployeeTestSuiteId,
-                                   TestSuitName = testDetail.TestSuiteName,
-                                   AttemptDate = tests.AttemptDate,
-                                   StatusId = tests.StatusId
-                               }).ToList();
+            //var TestResults = (from tests in TestSuits
+            //                   join testDetail in testSuitelist
+            //                    on tests.TestSuiteId equals testDetail.TestSuiteId
+            //                   select new EmployeeTestResultViewModel
+            //                   {
+            //                       //UserId = users.ID,
+            //                       EmployeeId = tests.EmployeeId.ToString(),
+            //                       // UserId = tests.CandidateID,
+            //                       // EmpName = users.DisplayName,
+            //                       MaxScore = tests.MaxScore,
+            //                       MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum(),
+            //                       TestSuitId = tests.TestSuiteId,
+            //                       EmployeeTestSuiteId = tests.EmployeeTestSuiteId,
+            //                       TestSuitName = testDetail.TestSuiteName,
+            //                       AttemptDate = tests.AttemptDate,
+            //                       StatusId = tests.StatusId
+            //                   }).ToList();
+
+            var TestResults = new List<EmployeeTestResultViewModel>();
+
+            foreach (var tests in TestSuits)
+            {
+                var currentTs = new EmployeeTestResultViewModel();
+
+                currentTs.MaxScore = tests.MaxScore;
+                currentTs.MaxScore = tests.MaxScore;
+                currentTs.MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum();
+                currentTs.TestSuitId = tests.TestSuiteId;
+                currentTs.EmployeeTestSuiteId = tests.EmployeeTestSuiteId;
+
+                var testDetail = testSuitelist.Where(ts => ts.TestSuiteId == tests.TestSuiteId).FirstOrDefault();
+                if (testDetail != null)
+                    currentTs.TestSuitName = testDetail.TestSuiteName;
+
+                currentTs.AttemptDate = tests.AttemptDate;
+                currentTs.StatusId = tests.StatusId;
+
+                if (tests.EmployeeId > 0)
+                {
+                    var user = userlist.Where(u => u.ID == tests.EmployeeId).FirstOrDefault();
+                    if (user != null)
+                        currentTs.EmpName = user.FirstName + " " + user.LastName;
+                }
+                else
+                {
+                    var user = UserManager.FindById(tests.CandidateID);
+                    if (user != null)
+                        currentTs.EmpName = user.FirstName + " " + user.LastName;
+                }
+                TestResults.Add(currentTs);
+
+            }
 
             DataSourceResult result = TestResults.ToDataSourceResult(request);
             return Json(result);
@@ -1145,7 +1193,7 @@ namespace Silicus.Ensure.Web.Controllers
                 foreach (var userTestDetail in userTestDetails)
                 {
                     //var currentUser =  (User.Identity.Name);
-                    userTestDetail.MarkGivenByName = User.Identity.Name ;
+                    userTestDetail.MarkGivenByName = User.Identity.Name;
                     //userTestDetail.MarkGivenBy = User.Identity.GetUserId();
                     userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
                     userTestDetail.MarkGivenDate = DateTime.Now;

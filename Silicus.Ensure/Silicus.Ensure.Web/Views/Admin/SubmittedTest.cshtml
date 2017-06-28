@@ -268,27 +268,24 @@
     </div>
 </div>
 <script>
-   $(document).ready(function () {
-       var title = $('.page-title').text();
-       $('#CurrentPageTitle').text(title);
-
-       EvaluateTotalResult();
-       prettyPrint();
-       if (!('@Model.Status' == '@CandidateStatus.UnderEvaluation.ToString()' || '@Model.Status' == '@CandidateStatus.TestSubmitted.ToString()')) {
-           $('form input[type="text"]').prop("disabled", true);
-           $('textarea').prop("disabled", true);
-       }
-   });
-   $(function () {
-       $("form").kendoValidator();
-   });
-   function EvaluateTotalResult() {
-       var mark = 0;
-       $(".PracticalMarks").each(function () {
-           if ($(this).val() != '') {
-               mark = parseInt(mark) + parseInt($(this).val());
-           }
-       });
+    $(document).ready(function () {
+        EvaluateTotalResult();
+        prettyPrint();
+        if (!('@Model.Status' == '@(((int)CandidateStatus.UnderEvaluation).ToString())' || '@Model.Status' == '@(((int)CandidateStatus.TestSubmitted).ToString())')) {
+            $('form input[type="text"]').prop("disabled", true);
+            $('textarea').prop("disabled", true);
+        }
+    });
+    $(function () {
+        $("form").kendoValidator();
+    });
+    function EvaluateTotalResult() {
+        var mark = 0;
+        $(".PracticalMarks").each(function () {
+            if ($(this).val() != '') {
+                mark = parseInt(mark) + parseInt($(this).val());
+            }
+        });
 
        mark = parseInt(mark) + parseInt($('#ObjectiveQuestionResult').val());
 
