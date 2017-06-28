@@ -7,32 +7,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script>
-    function TestDetail(e) {
-        e.preventDefault();
-        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-        var url = "/JobVite/AssignTest/?FirstName=" + dataItem.FirstName + "&LastName=" + dataItem.LastName + "&Email=" + dataItem.Email + "&jobviteId=" + dataItem.JobViteId + "&position=" + dataItem.Position + "";
-        var wnd = $("#Details").kendoWindow({
-            title: "Assign Test",
-            actions: ["Minimize", "Maximize", "Close"],
-            content: url,
-            visible: false,
-            modal: true
-        }).data("kendoWindow");
-        
-        wnd.center();
-        wnd.open();
-    }
 
-    function OnSuccess() {
-        alert("called");
-        $('#Details').data('kendoWindow').close();
-    }
-</script>
-
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-title">
+            Candidate List
+        </h1>
+    </div>
+</div>
 <div id="Details"></div>
-<div>
-    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>
+<div class="row">
+    <div class="col-sm-12">
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>
     (Model).Name("CandidateGrid")
     .Columns(columns =>
     {
@@ -70,7 +56,78 @@
     .Scrollable(scrollable => scrollable.Virtual(true))
     .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
     .Resizable(resizing => resizing.Columns(true))
-    )
+        )
 
-
+    </div>
 </div>
+
+
+<div id="AssignTest" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="550" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <form action="" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Assign Test</h4>
+        </div>
+        <div class="modal-body popUp-modalbody">
+                        @Html.Partial("~/Views/JobVite/AssignTest.cshtml")
+                        
+        </div>
+        <div class="modal-footer">
+            <button type="submit" style="width:70px;" class="btn green">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#Details').data('kendoWindow').close()">Cancel</button>
+        </div>
+
+    </form>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var title = $('.page-title').text();
+        $('#CurrentPageTitle').text(title);
+
+        SelectedMenu('#candidate-assignTest');
+        $("#candidate-submenu").css("display", "block");
+        $("#candidate-link a span.arrow").addClass("open");
+       
+    });
+</script>
+<script>
+    function TestDetail(e) {
+       
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var urllink = "/JobVite/AssignTest/?FirstName=" + dataItem.FirstName + "&LastName=" + dataItem.LastName + "&Email=" + dataItem.Email + "&jobviteId=" + dataItem.JobViteId + "&position=" + dataItem.Position + "";
+        $.ajax({
+            url: urllink,
+            type: "GET",
+            contentType: 'application/json; charset=utf-8',
+           // data: JSON.stringify({ time: time, EmployeeTestSuiteId: EmployeeTestSuiteId }),
+            success: function () {
+                debugger;
+                $('#AssignTest').modal('show');
+            },
+            error: function () {
+            }
+        });
+        e.preventDefault();
+        //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //var url = "/JobVite/AssignTest/?FirstName=" + dataItem.FirstName + "&LastName=" + dataItem.LastName + "&Email=" + dataItem.Email + "&jobviteId=" + dataItem.JobViteId + "&position=" + dataItem.Position + "";
+        //var wnd = $("#Details").kendoWindow({
+        //    title: "Assign Test",
+        //    actions: ["Minimize", "Maximize", "Close"],
+        //    content: url,
+        //    visible: false,
+        //    modal: true
+        //}).data("kendoWindow");
+
+        //wnd.center();
+        //wnd.open();
+    }
+
+    function OnSuccess() {
+        alert("called");
+        $('#Details').data('kendoWindow').close();
+    }
+</script>
+
