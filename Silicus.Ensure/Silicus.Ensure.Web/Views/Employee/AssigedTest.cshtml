@@ -6,24 +6,34 @@
     ViewBag.Title = "AssigedTest";
 }
 
-<h2>Assiged Tests</h2>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-title">
+            Assigned Test
+        </h1>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
+        var title = $('.page-title').text();
+        $('#CurrentPageTitle').text(title);
+
         SelectedMenu('#emp-assigned-test');
         SetNavigationMenuActive('AssignedTest');
     });
 
     function StartTest(EmployeeTestSuiteId, EmployeeId) {
         var newwindow = window.open("/Test/OnlineTest?EmployeeTestSuitId=" + EmployeeTestSuiteId + "&CandidateId=''&employeeId=" + EmployeeId, "_blank", "toolbar=yes,scrollbars=yes,resizable=no,top=0,left=0,width=" + $(window).width() + ",height=" + $(window).height());
-        $(newwindow).unload(function () {            
+        $(newwindow).unload(function () {
                 $("#EmployeeTestSuitGrid").data("kendoGrid").dataSource.read();
         });
     }
 </script>
+
 <div class="table-responsive M-B15">
 
-   
-        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Employee.EmployeeTestSuitViewModel>().Name("EmployeeTestSuitGrid")
+
+            @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Employee.EmployeeTestSuitViewModel>().Name("EmployeeTestSuitGrid")
 
          .Columns(columns =>
          {
@@ -79,12 +89,12 @@
                                         .Scrollable(scrollable => scrollable.Virtual(true))
                                        .Sortable()
                                        .Resizable(resizing => resizing.Columns(true))
-        )
+            )
 
 
-   
 
-</div>
+
+        </div>
 
 
 
