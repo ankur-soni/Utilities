@@ -13,8 +13,14 @@
         SetNavigationMenuActive('AssignedTest');
     });
 
+    function GeneratePDF(EmployeeTestSuiteId)
+    {
+     
+        window.open('/Admin/CreatePDF?id='+ EmployeeTestSuiteId );
+    }
+
     function StartEvaluationofTest(EmployeeTestSuiteId) {
-        
+
         window.location.href = "/Admin/SubmittedTest?EmployeeTestSuitId=" + EmployeeTestSuiteId;
     }
 
@@ -28,7 +34,7 @@
          {
              columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(200);
              columns.Bound(p => p.EmpName).Title("Candidate Name");
-            // columns.Bound(p => p.Duration).ClientTemplate(@"#=Duration# Mins");
+             columns.Bound(p => p.MaxScore).Title("Total Marks");//.ClientTemplate(@"#=Duration# Mins");
              //columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
              columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0 && StatusId > 3 ? MarksObtained : 'NA'#");
              columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
@@ -58,11 +64,15 @@
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==3){#
                                                                             <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Start Evaluation</a>
+                                                                                /
+                                                                            <a onclick='GeneratePDF(#=EmployeeTestSuiteId#)'>View QuestionSet(PDF)</a>
                                                                         #}                                                                        
                                                                         else{#
                                                                             <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Review Evaluation</a>
+                                                                          /
+                                                                            <a onclick='GeneratePDF(#=EmployeeTestSuiteId#)'>View QuestionSet(PDF)</a>
                                                                         #}
-                                                                        #").Title("Test Action");})
+                                                                        #").Title("Test Action").Width(300);})
                                        .DataSource(dataSource => dataSource
                                        .Ajax()
                                        .Model(model =>
