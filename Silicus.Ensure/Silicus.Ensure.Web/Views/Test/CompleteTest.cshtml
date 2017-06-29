@@ -1,35 +1,75 @@
-﻿<div class="row">
-    <div class="col-sm-12">
-        <div class="main-content" id="main">
-            <div id="welcomeAlert" class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="custom-alert">
-                        @*<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>*@
-                        <span>Welcome <b>@ViewBag.CandidateName</b> to Silicus Online Exam Portal</span>
+﻿@{
+    Layout = null;
+}
+<!-- Bootstrap styles -->
+<link href="~/Content/css/Bootstrap/3.3.1/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/css/Bootstrap/3.3.1/bootstrap.css" rel="stylesheet" />
+<style>
+    body {
+        background: #fafafa;
+    }
+
+    .btn-primary, btn-primary:hover, btn-primary:active, btn-primary:focus {
+        color: #fff;
+        background-color: #36c6d3 !important;
+        border-color: #36c6d3 !important;
+    }
+
+    h3 {
+        color: #5d5d5d;
+        font-weight: 600;
+    }
+
+    .M-B15 {
+        margin-bottom: 15px;
+    }
+
+    .box {
+        background: #fff;
+        padding: 10px;
+        width: auto;
+        height: auto;
+        box-shadow: 1px 1px 3px #888888;
+    }
+
+    .f1 {
+        padding: 20px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-4 col-sm-offset-4">
+        <div class="box" style="margin-top:25%;">
+            <div class="f1" id="main">
+                <div id="welcomeAlert" class="row M-B15">
+                    <div class="col-sm-12">
+                        <div class="custom-alert">
+                            @*<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>*@
+                            <h3>Welcome <b>@ViewBag.CandidateName</b> to Silicus Online Exam Portal!</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="M-B15" id="warning">Please go through the online test instructions before you commence the test.</div>
+                <div class="row M-B15">
+                    <div class="col-sm-12">
+                        <div class="" id="warning"><span>Please go through the online test instructions before you commence the test.</span></div>
+                    </div>
                 </div>
-
-                <div class="col-sm-10 col-sm-offset-1">
-
-                   Thanks for Completing the test.
-
-
+                <div class="row M-B15">
+                    <div class="col-sm-12">
+                        <span>Thanks for Completing the test.</span>
+                    </div>
                 </div>
-               
-
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="M-L30">
-                        taaa
-                        <button type="button" class="btn btn-lg btn-start" id="btnstopTest" onclick="self.close();">Close window</button>
-                        @*@(Html.Kendo().Button()
-                            .Name("btnStart")
-                            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnTappa"))
-                            .Content("Start online test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))*@
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary" id="btnstopTest" onclick="self.close();">Close window</button>
+                            @*@(Html.Kendo().Button()
+                                .Name("btnStart")
+                                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnTappa"))
+                                .Content("Start online test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))*@
+                        </div>
                     </div>
                 </div>
             </div>
