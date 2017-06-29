@@ -8,6 +8,8 @@
 }
 
 <style>
+    .syncLog{float: left;margin-left: 15px;}
+    .textArea{width:100%;height:100px;resize:none;}
     .btn-primary, btn-primary:hover, btn-primary:active, btn-primary:focus {
         color: #fff;
         background-color: #36c6d3 !important;
@@ -97,58 +99,83 @@
             <h4 class="modal-title">Sync Dialog</h4>
         </div>
         <div class="modal-body popUp-modalbody">
-           <div class="row M-B20">
-               <div class="col-sm-12">
-                   <div class="col-sm-5">
-                       <div class="p20">
-                            <span class="logo-text">Ensure</span>
-                       </div>
-                   </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ensureTojobvite" aria-controls="home" role="tab" data-toggle="tab">Ensure to Jobvite</a></li>
+                <li role="presentation"><a href="#jobviteToensure" aria-controls="profile" role="tab" data-toggle="tab">Jobvite to Ensure</a></li>
 
-                   <div class="col-sm-1">
-                       <div class="">
-                           <a href="#" type="button" class="btn btn-primary" style="margin-top: 40px;"><i class="fa fa-angle-double-left fa-2x" style="padding:5px;" aria-hidden="true"></i></a>
-</div>
-                    </div>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="ensureTojobvite">
+                    <div id="ensureTojobvite" class="row M-B20">
+                        <div class="col-sm-12">
+                            <div class="col-sm-5">
+                                <div class="p20">
+                                    <span class="logo-text">Ensure</span>
+                                </div>
+                            </div>
 
-                   <div class="col-sm-5">
-                       <div class="p20">
-                            <span class="logo-text">Jobvite</span>
-                       </div>
-                    </div>
-               </div>
-           </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="col-sm-5">
-                        <div class="p20">
-                            <span class="logo-text">Jobvite</span>
+                            <div class="col-sm-1">
+                                <div class="">
+                                    <a href="#" type="button" class="btn btn-primary" style="margin-top: 40px;cursor:default;"><i class="fa fa-angle-double-left fa-2x" style="padding:5px;" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <div class="p20">
+                                    <span class="logo-text">Jobvite</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <div class="">
-                            <a href="#" type="button" class="btn btn-primary" style="margin-top: 40px;"><i class="fa fa-angle-double-right fa-2x" style="padding:5px;" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="p20">
-                            <span class="logo-text">Ensure</span>
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+                                <button type="submit" style="width:70px;" class="btn green">Sync</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div role="tabpanel" class="tab-pane" id="jobviteToensure">
+                    <div id="jobviteToensure" class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-5">
+                                <div class="p20">
+                                    <span class="logo-text">Jobvite</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="">
+                                    <a href="#" type="button" class="btn btn-primary" style="margin-top: 40px;cursor:default;"><i class="fa fa-angle-double-right fa-2x" style="padding:5px;" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="p20">
+                                    <span class="logo-text">Ensure</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+                                <button type="submit" style="width:70px;" class="btn green">Sync</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="submit" style="width:70px;" class="btn green">Save</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#Details').data('kendoWindow').close()">Cancel</button>
-        </div>
+       <div class="modal-footer">
+           <label class="syncLog">Sync Log:</label>
+           <div class="col-sm-12">
+               <textarea class="textArea"></textarea>
+           </div>
+       </div>
 
     </form>
 </div>
 
 
 <script>
-    $(document).ready(function () {
+    
         var title = $('.page-title').text();
         $('#CurrentPageTitle').text(title);
 
