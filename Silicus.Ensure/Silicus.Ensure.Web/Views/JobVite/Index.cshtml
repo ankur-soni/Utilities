@@ -33,7 +33,7 @@
         columns.Command(cmd =>
         {
             cmd.Custom("Test Details").Click("TestDetail");
-            cmd.Custom("Test Result").Click("TestDetail");
+            cmd.Custom("Test Result").Click("TestResult");
 
         });
 
@@ -79,7 +79,23 @@
 
     </form>
 </div>
+<div id="syncDialog" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="550" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <form action="" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Sync Dialog</h4>
+        </div>
+        <div class="modal-body popUp-modalbody">
+           test data
 
+        </div>
+        <div class="modal-footer">
+            <button type="submit" style="width:70px;" class="btn green">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#Details').data('kendoWindow').close()">Cancel</button>
+        </div>
+
+    </form>
+</div>
 
 
 <script>
@@ -110,6 +126,7 @@
             error: function () {
             }
         });
+      
         e.preventDefault();
         //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
         //var url = "/JobVite/AssignTest/?FirstName=" + dataItem.FirstName + "&LastName=" + dataItem.LastName + "&Email=" + dataItem.Email + "&jobviteId=" + dataItem.JobViteId + "&position=" + dataItem.Position + "";
@@ -124,7 +141,11 @@
         //wnd.center();
         //wnd.open();
     }
+    function TestResult(e) {
 
+        $('#syncDialog').modal('show');
+
+    };
     function OnSuccess() {
         alert("called");
         $('#Details').data('kendoWindow').close();
