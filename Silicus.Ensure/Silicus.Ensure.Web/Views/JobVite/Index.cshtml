@@ -7,7 +7,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<style>
+    .btn-primary, btn-primary:hover, btn-primary:active, btn-primary:focus {
+        color: #fff;
+        background-color: #36c6d3 !important;
+        border-color: #36c6d3 !important;
+    }
+    .p20{padding: 20px 20px 20px 20px;}
+    .logo-text{
+        font-size:49px;
+        font-weight:600;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <h1 class="page-title">
@@ -86,8 +97,46 @@
             <h4 class="modal-title">Sync Dialog</h4>
         </div>
         <div class="modal-body popUp-modalbody">
-           test data
+           <div class="row M-B20">
+               <div class="col-sm-12">
+                   <div class="col-sm-5">
+                       <div class="p20">
+                            <span class="logo-text">Ensure</span>
+                       </div>
+                   </div>
 
+                   <div class="col-sm-1">
+                       <div class="">
+                           <a href="#" type="button" class="btn btn-primary" style="margin-top: 40px;"><i class="fa fa-angle-double-left fa-2x" style="padding:5px;" aria-hidden="true"></i></a>
+</div>
+                    </div>
+
+                   <div class="col-sm-5">
+                       <div class="p20">
+                            <span class="logo-text">Jobvite</span>
+                       </div>
+                    </div>
+               </div>
+           </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-5">
+                        <div class="p20">
+                            <span class="logo-text">Jobvite</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="">
+                            <a href="#" type="button" class="btn btn-primary" style="margin-top: 40px;"><i class="fa fa-angle-double-right fa-2x" style="padding:5px;" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="p20">
+                            <span class="logo-text">Ensure</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="submit" style="width:70px;" class="btn green">Save</button>
