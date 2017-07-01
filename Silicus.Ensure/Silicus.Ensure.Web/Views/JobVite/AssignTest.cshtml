@@ -133,6 +133,42 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    <label class="">Reviewer Name<span style="color:red">*</span></label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    @(Html.Kendo().DropDownListFor(m => m.ReviewerId).Name("ReviewerId")
+  .DataTextField("DisplayName")
+  .DataValueField("ID")
+  .OptionLabel("--Select--")
+  .DataSource(source => source
+  .Custom()
+  .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Url("/Common/GetPanelDetails/");
+        })
+  )
+  //.Schema(schema => schema
+  //      .Data("Data")
+  //      .Total("Total")
+  //      .Errors("errors")
+  // )
+)
+
+                    )
+                    @Html.ValidationMessageFor(m => m.ReviewerId)
+
+                </div>
+            </div>
+        </div>
         <div class="modal-footer">
             <button type="submit" style="width:70px;" class="btn green">Save</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

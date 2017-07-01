@@ -21,7 +21,7 @@ namespace Silicus.Ensure.Web.Models.Employee
         public int TotalQuestionCount { get; set; }
         public int DurationInMin { get; set; }
         public DateTime? AttemptDate { get; set; }
-       
+
         public int ExtraCount { get; set; }
         public string SpecialInstruction { get; set; }
         public QuestionNavigationViewModel NavigationDetails { get; set; }
@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Web.Models.Employee
 
         public string EmpName { get; set; }
 
-        public int MaxScore { get; set;}
+        public int MaxScore { get; set; }
 
         public decimal? MarksObtained { get; set; }
 
@@ -49,6 +49,9 @@ namespace Silicus.Ensure.Web.Models.Employee
 
         public string TestSuitName { get; set; }
 
+        public string ReviewerName { get; set; }
+
+        public DateTime? ReviewDate { get; set; }
         public DateTime? AttemptDate { get; set; }
 
         public int StatusId { get; set; }

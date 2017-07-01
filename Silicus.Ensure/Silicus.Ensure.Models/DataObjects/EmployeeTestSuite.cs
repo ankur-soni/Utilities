@@ -16,6 +16,10 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int ObjectiveCount { get; set; }
 
+        public int? ReviewerId { get; set; }
+
+        public DateTime? ReviewDate { get; set; }
+
         public int PracticalCount { get; set; }
 
         public int MaxScore { get; set; }

@@ -48,6 +48,8 @@
              //columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
              columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0 && StatusId > 3 ? MarksObtained : 'NA'#");
              columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
+             columns.Bound(p => p.ReviewerName).Title("Reviewer Name");
+             columns.Bound(p => p.ReviewDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
                                                                             Test assigned

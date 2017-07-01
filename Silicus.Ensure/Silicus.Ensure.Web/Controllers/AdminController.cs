@@ -29,6 +29,7 @@ using Silicus.Ensure.Web.Filters;
 using System.Globalization;
 using Microsoft.AspNet.Identity;
 using Silicus.Ensure.Web.Models.Employee;
+using System.Web.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -43,6 +44,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly IUserService _userService;
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IRoleService _roleService;
         //private readonly IPositionService _positionService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
 
@@ -72,7 +74,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController, Silicus.UtilityContainer.Services.Interfaces.IRoleService roleService)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -81,6 +83,7 @@ namespace Silicus.Ensure.Web.Controllers
             _questionService = questionService;
             _userService = userService;
             //_positionService = positionService;
+            _roleService = roleService;
             _logger = logger;
             _containerUserService = containerUserService;
             _commonController = commonController;
@@ -1125,12 +1128,21 @@ namespace Silicus.Ensure.Web.Controllers
             var ReviewType = (int)Session["ReviewType"];
             if (ReviewType ==1)
             {
-                TestSuits = TestSuits.Where(t => t.EmployeeId > 0).ToList();
+                TestSuits = TestSuits.Where(t => t.EmployeeId > 0);
             }
             if (ReviewType == 2)
             {
-                TestSuits = TestSuits.Where(t => t.EmployeeId == 0).ToList();
+                TestSuits = TestSuits.Where(t => t.EmployeeId == 0);
             }
+            var userEmailId = User.Identity.Name;
+            var Currentuser = _containerUserService.FindUserByEmail(userEmailId);
+            
+            var utilityId = GetUtilityId();
+            var roleDetails = _roleService.GetRoleByRoleName("Admin");
+            var AdminUserList = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList();
+
+            if (! AdminUserList.Any(u=>u.ID == Currentuser.ID))
+                TestSuits = TestSuits.Where(t => t.ReviewerId.Value.ToString() == User.Identity.GetUserId()).ToList();
 
             var TestResults = new List<EmployeeTestResultViewModel>();
 
@@ -1150,6 +1162,11 @@ namespace Silicus.Ensure.Web.Controllers
 
                 currentTs.AttemptDate = tests.AttemptDate;
                 currentTs.StatusId = tests.StatusId;
+                currentTs.ReviewDate = tests.ReviewDate;
+                var Reviweruser = userlist.Where(u => u.ID == tests.ReviewerId).FirstOrDefault();
+                if (Reviweruser != null)
+                    currentTs.ReviewerName = Reviweruser.FirstName + " " + Reviweruser.LastName;
+                 
 
                 if (tests.EmployeeId > 0)
                 {
@@ -1170,6 +1187,17 @@ namespace Silicus.Ensure.Web.Controllers
             DataSourceResult result = TestResults.ToDataSourceResult(request);
             return Json(result);
 
+        }
+
+        private int GetUtilityId()
+        {
+            var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
+            if (string.IsNullOrWhiteSpace(utilityProductId))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return Convert.ToInt32(utilityProductId);
         }
 
         private string GetOption(string p)
@@ -1213,11 +1241,15 @@ namespace Silicus.Ensure.Web.Controllers
                     count++;
                 }
 
-                _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
+               // _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
                 //var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
                 //user.TestStatus = CandidateStatus.TestSubmitted.ToString();
                 //user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
                 userTestSuitDetails.StatusId = Convert.ToInt32(Request.Form["Status"]);
+                var userEmailId = User.Identity.Name;
+                var user = _containerUserService.FindUserByEmail(userEmailId);
+                userTestSuitDetails.ReviewerId = user.ID;
+                userTestSuitDetails.ReviewDate = DateTime.Now;
                 _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
                 //_userService.Update(user);
             }

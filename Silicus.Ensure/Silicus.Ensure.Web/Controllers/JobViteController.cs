@@ -183,6 +183,7 @@ namespace Silicus.Ensure.Web.Controllers
             userTestSuite.EmployeeId = 0;
             userTestSuite.CandidateID = user.Id;
             userTestSuite.TestSuiteId = model.TestSuiteId;
+            userTestSuite.ReviewerId = model.ReviewerId;
             userTestSuite.StatusId = (int)CandidateStatus.TestAssigned;
             _testSuiteService.AssignEmployeeSuite(userTestSuite, testSuiteDetails);
             user.CandidateStatus = CandidateStatus.TestAssigned.ToString();

@@ -21,6 +21,8 @@ namespace Silicus.Ensure.Web.Models.JobVite
         [Required(ErrorMessage = "TestSuite is required")]
         public int TestSuiteId { get; set; }
 
+        [Required(ErrorMessage = "Reviewer is required")]
+        public int ReviewerId { get; set; }
         //[Required(ErrorMessage = "Candidate is required")]
         //public List<string> CandidatesJson { get; set; }
     }

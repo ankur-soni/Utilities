@@ -34,11 +34,10 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetPanelDetails()
         {
-            var panellist = _panelService.GetPanelDetails();
-            if (panellist.Any())
-            {
-                panellist = panellist.OrderByDescending(model => model.PanelId);
-            }
+            var utilityId = GetUtilityId();
+            var roleDetails = _roleService.GetRoleByRoleName("Panel");
+            var panellist = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList(); 
+            
             return Json(panellist, JsonRequestBehavior.AllowGet);
         }
 
