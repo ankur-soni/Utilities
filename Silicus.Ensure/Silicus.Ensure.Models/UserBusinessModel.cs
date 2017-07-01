@@ -13,6 +13,8 @@ namespace Silicus.Ensure.Models
         [Key]
         public int UserId { get; set; }
 
+        public string JobViteId { get; set; }
+
         public string FirstName { get; set; }
 
         public string MiddleName { get; set; }
@@ -35,41 +37,41 @@ namespace Silicus.Ensure.Models
 
         public string RequisitionId { get; set; }
 
-        public string CurrentLocation { get; set; }
+        //public string CurrentLocation { get; set; }
 
-        public DateTime DOB { get; set; }
+        //public DateTime DOB { get; set; }
 
-        public string ContactNumber { get; set; }
+        //public string ContactNumber { get; set; }
 
-        public string ClientName { get; set; }
+        //public string ClientName { get; set; }
 
-        public string Technology { get; set; }
+        //public string Technology { get; set; }
 
-        public int TotalExperienceInYear { get; set; }
+        //public int TotalExperienceInYear { get; set; }
 
-        public int TotalExperienceInMonth { get; set; }
+        //public int TotalExperienceInMonth { get; set; }
 
-        public int RelevantExperienceInYear { get; set; }
+        //public int RelevantExperienceInYear { get; set; }
 
-        public int RelevantExperienceInMonth { get; set; }
+        //public int RelevantExperienceInMonth { get; set; }
 
-        public string CurrentCompany { get; set; }
+        //public string CurrentCompany { get; set; }
 
-        public string CurrentTitle { get; set; }
+        //public string CurrentTitle { get; set; }
 
         public string CandidateStatus { get; set; }
 
-        public string TestStatus { get; set; }
+       // public string TestStatus { get; set; }
 
         public string PanelId { get; set; }
 
         public string PanelName { get; set; }
 
-        public string ResumePath { get; set; }
+        //public string ResumePath { get; set; }
 
-        public string ResumeName { get; set; }
+        //public string ResumeName { get; set; }
 
-        public string ProfilePhotoFilePath { get; set; }
+        //public string ProfilePhotoFilePath { get; set; }
 
         public Guid IdentityUserId { get; set; }
 
@@ -77,9 +79,9 @@ namespace Silicus.Ensure.Models
 
         public int UserApplicationId { get; set; }
 
-        public bool IsCandidateReappear { get; set; }
+        //public bool IsCandidateReappear { get; set; }
 
-        public bool HasHistory { get; set; }
+        //public bool HasHistory { get; set; }
 
         public string RecruiterId { get; set; }
 

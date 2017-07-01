@@ -25,39 +25,29 @@ namespace Silicus.Ensure.Services
             //_positionService = positionService;
         }
 
-        //public IEnumerable<UserBusinessModel> GetUserDetailsAll()
-        //{          
-        //    List<UserBusinessModel> userModel = new List<UserBusinessModel>();
-        //    var users = _context.Query<User>();
-        //    //var panelMeberDetails = _context.Query<PanelMemberDetail>();
-        //    //var recruiterMeberDetails = _context.Query<RecruiterMembersDetail>();
-        //    foreach (var user in users)
-        //    {
-        //        //var objUser = UserToBusinessModel(user);
-        //        int panelId = 0;
-        //        //if (int.TryParse(objUser.PanelId, out panelId))
-        //        //{
-        //        //    var panelDetails = panelMeberDetails.FirstOrDefault(y => y.UserId == panelId);
-        //        //    if (panelDetails != null)
-        //        //        objUser.PanelName = panelDetails.LastName + " " + panelDetails.FirstName;
-        //        //}
-        //        //int RecruiterMemberId;
-        //        //if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
-        //        //{
-        //        //    var recruiterDetails = recruiterMeberDetails.FirstOrDefault(y => y.UserId == RecruiterMemberId);
-        //        //    if (recruiterDetails != null)
-        //        //        objUser.RecruiterName = recruiterDetails.LastName + " " + recruiterDetails.FirstName;
-        //        //}
+        public IEnumerable<UserBusinessModel> GetUserDetailsAll()
+        {
+            List<UserBusinessModel> userModel = new List<UserBusinessModel>();
+            var users = _context.Query<User>();
 
+            //var candidateList = (from candidate in users
 
-        //        userModel.Add(objUser);
-        //    }
-        //    return userModel;
-        //}
+            //                     select new UserBusinessModel()
+            //                     {
+            //                         FirstName = candidate.FirstName,
+            //                         LastName = candidate.LastName,
+            //                         Email = candidate.Email,
+            //                         CandidateStatus = candidate.,
+            //                         JobViteId = candidate.application.eId,
+            //                         Position = candidate.application.job.title
+            //                     }).ToList();
+
+            return userModel;
+        }
 
         //public IEnumerable<UserBusinessModel> GetUserDetails()
         //{
-            
+
         //    return GetUserDetailsAll();
         //}
 
@@ -243,19 +233,19 @@ namespace Silicus.Ensure.Services
                           }).ToList();
             return result;
         }
-        public CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user)
-        {
-            return new CandidateInfoBusinessModel
-            {
-                Name = user.FirstName + " " + user.LastName,
-                DOB = user.DOB,
-                RequisitionId = user.RequisitionId,
-                Position = user.Position,
-                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth),
-                TotalExperienceInMonth = user.TotalExperienceInMonth,
-                TotalExperienceInYear = user.TotalExperienceInYear
-            };
-        }
+        //public CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user)
+        //{
+        //    return new CandidateInfoBusinessModel
+        //    {
+        //        Name = user.FirstName + " " + user.LastName,
+        //        DOB = user.DOB,
+        //        RequisitionId = user.RequisitionId,
+        //        Position = user.Position,
+        //        TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth),
+        //        TotalExperienceInMonth = user.TotalExperienceInMonth,
+        //        TotalExperienceInYear = user.TotalExperienceInYear
+        //    };
+        //}
 
 
         //private List<UserBusinessModel> UserToMutipleApplicationsBusinessModel(User user)
@@ -388,7 +378,7 @@ namespace Silicus.Ensure.Services
             {
                 user = new User();
             }
-            user.DateOfBirth = objUser.DOB;
+           // user.DateOfBirth = objUser.DOB;
             user.Email = objUser.Email;
             user.FirstName = objUser.FirstName;
             user.Gender = objUser.Gender;
@@ -396,8 +386,8 @@ namespace Silicus.Ensure.Services
             user.LastName = objUser.LastName;
             user.MiddleName = objUser.MiddleName;
             user.UserId = objUser.UserId;
-            user.CurrentLocation = objUser.CurrentLocation;
-            user.ContactNumber = objUser.ContactNumber;
+            //user.CurrentLocation = objUser.CurrentLocation;
+           // user.ContactNumber = objUser.ContactNumber;
             //user.ProfilePhotoFilePath = objUser.ProfilePhotoFilePath;
             //UserApplicationDetails applicationDetails;
             //if (user.UserApplicationDetails != null && user.UserApplicationDetails.Count > 0 && !objUser.IsCandidateReappear)

@@ -309,6 +309,6 @@
         $('#TotalMarksObtained').val(mark)
     }
     function OnCancel() {
-        window.location.href = "/Admin/ReviewAssignedTest";
+        window.location.href = '/Admin/ReviewAssignedTest?ReviewType=@((int)Session["ReviewType"])';
     }
 </script>

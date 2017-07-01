@@ -1,22 +1,29 @@
-﻿@model Silicus.Ensure.Web.Models.Employee.EmployeeTestSuitViewModel
+﻿@model int
 @using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 @using System.Linq
 @{
-    ViewBag.Title = "AssigedTest";
+    ViewBag.Title = "Review Assiged Test";
 }
 
-<h2>Review Tests</h2>
 <script>
     $(document).ready(function () {
-        SelectedMenu('#emp-assigned-test');
-        SetNavigationMenuActive('AssignedTest');
+        if ('@Model' == '1') {
+            $("#empsubmenu").css("display", "block");
+            $("#employee-link a span.arrow").addClass("open");
+            SelectedMenu('#employee-reviewTest');
+        }
+        else {
+            $("#candidate-submenu").css("display", "block");
+            $("#candidate-link a span.arrow").addClass("open");
+            SelectedMenu('#candidate-reviewTest');
+        }
+        SetNavigationMenuActive('ReviewAssignedTest');        
     });
 
-    function GeneratePDF(EmployeeTestSuiteId)
-    {
-     
-        window.open('/Admin/CreatePDF?id='+ EmployeeTestSuiteId );
+    function GeneratePDF(EmployeeTestSuiteId) {
+
+        window.open('/Admin/CreatePDF?id=' + EmployeeTestSuiteId);
     }
 
     function StartEvaluationofTest(EmployeeTestSuiteId) {
@@ -25,15 +32,18 @@
     }
 
 </script>
+
+<h1 class="page-title">Review Tests</h1>
+
 <div class="table-responsive M-B15">
 
-   
-        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Employee.EmployeeTestResultViewModel>().Name("EmployeeTestSuitGrid")
+
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Employee.EmployeeTestResultViewModel>().Name("EmployeeTestSuitGrid")
 
          .Columns(columns =>
          {
              columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(200);
-             columns.Bound(p => p.EmpName).Title("Candidate Name");
+             columns.Bound(p => p.EmpName).Title(Model == 2 ? "Candidate Name" : "Employee Name");
              columns.Bound(p => p.MaxScore).Title("Total Marks");//.ClientTemplate(@"#=Duration# Mins");
              //columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
              columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0 && StatusId > 3 ? MarksObtained : 'NA'#");
@@ -66,13 +76,14 @@
                                                                             <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Start Evaluation</a>
                                                                                 /
                                                                             <a onclick='GeneratePDF(#=EmployeeTestSuiteId#)'>View QuestionSet(PDF)</a>
-                                                                        #}                                                                        
+                                                                        #}
                                                                         else{#
                                                                             <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Review Evaluation</a>
                                                                           /
                                                                             <a onclick='GeneratePDF(#=EmployeeTestSuiteId#)'>View QuestionSet(PDF)</a>
                                                                         #}
-                                                                        #").Title("Test Action").Width(300);})
+                                                                        #").Title("Test Action").Width(300);
+         })
                                        .DataSource(dataSource => dataSource
                                        .Ajax()
                                        .Model(model =>
@@ -91,10 +102,10 @@
                                         .Scrollable(scrollable => scrollable.Virtual(true))
                                        .Sortable()
                                        .Resizable(resizing => resizing.Columns(true))
-        )
+    )
 
 
-   
+
 
 </div>
 

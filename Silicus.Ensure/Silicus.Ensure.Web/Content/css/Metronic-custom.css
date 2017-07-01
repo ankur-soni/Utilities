@@ -125,20 +125,20 @@ i.fa.fa-save{display:none;}
 /*End of popup style*/
 
 /*Kendo icons sprite setting*/
-.k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
-span.k-icon.k-i-close{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: -48px -16px;}
+.k-i-calendar:hover{background-image: url('Default/sprite.png');background-position: -32px -176px;}
+span.k-icon.k-i-close{background-image: url(Default/sprite.png);border-color: transparent;background-position: -48px -16px;}
 
-.k-widget.k-window span.k-icon.k-i-close{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);background-position: -32px -16px;}
-.k-widget.k-window span.k-icon.k-i-close:hover{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);background-position: -48px -16px;}
+.k-widget.k-window span.k-icon.k-i-close{background-image: url(Default/sprite.png);background-position: -32px -16px;}
+.k-widget.k-window span.k-icon.k-i-close:hover{background-image: url(Default/sprite.png);background-position: -48px -16px;}
 
-.k-state-hover>*>.k-i-arrow-s{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -32px;}
-.k-state-hover>*>.k-i-calendar{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: -32px -176px;}
+.k-state-hover>*>.k-i-arrow-s{background-image: url(Default/sprite.png);border-color: transparent;background-position: 0px -32px;}
+.k-state-hover>*>.k-i-calendar{background-image: url(Default/sprite.png);border-color: transparent;background-position: -32px -176px;}
 
-.k-link:not(.k-state-disabled):hover>.k-i-arrow-e{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -16px;}
-.k-link:not(.k-state-disabled):hover>.k-i-arrow-w{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -48px;}
+.k-link:not(.k-state-disabled):hover>.k-i-arrow-e{background-image: url(Default/sprite.png);border-color: transparent;background-position: 0px -16px;}
+.k-link:not(.k-state-disabled):hover>.k-i-arrow-w{background-image: url(Default/sprite.png);border-color: transparent;background-position: 0px -48px;}
 
-.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-n{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -3px;}
-.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-s{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -35px;}
+.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-n{background-image: url(Default/sprite.png);border-color: transparent;background-position: 0px -3px;}
+.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-s{background-image: url(Default/sprite.png);border-color: transparent;background-position: 0px -35px;}
 
 /*End of sprite setting*/
 #questionGrids.k-grid td{

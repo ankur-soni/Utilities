@@ -1108,10 +1108,12 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ActionResult ReviewAssignedTest()
+        public ActionResult ReviewAssignedTest(int ReviewType)
         {
-            //return View("EmployeeList");
-            return View("ReviewAssigedTest");
+            if (ReviewType > 0 && ReviewType < 3)
+                Session["ReviewType"] = ReviewType;
+
+            return View("ReviewAssigedTest", ReviewType);
         }
 
         public ActionResult GetTestSuitsforEvaluation([DataSourceRequest] DataSourceRequest request)
@@ -1120,23 +1122,15 @@ namespace Silicus.Ensure.Web.Controllers
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false);
             var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.StatusId >= (int)CandidateStatus.TestSubmitted);
 
-            //var TestResults = (from tests in TestSuits
-            //                   join testDetail in testSuitelist
-            //                    on tests.TestSuiteId equals testDetail.TestSuiteId
-            //                   select new EmployeeTestResultViewModel
-            //                   {
-            //                       //UserId = users.ID,
-            //                       EmployeeId = tests.EmployeeId.ToString(),
-            //                       // UserId = tests.CandidateID,
-            //                       // EmpName = users.DisplayName,
-            //                       MaxScore = tests.MaxScore,
-            //                       MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum(),
-            //                       TestSuitId = tests.TestSuiteId,
-            //                       EmployeeTestSuiteId = tests.EmployeeTestSuiteId,
-            //                       TestSuitName = testDetail.TestSuiteName,
-            //                       AttemptDate = tests.AttemptDate,
-            //                       StatusId = tests.StatusId
-            //                   }).ToList();
+            var ReviewType = (int)Session["ReviewType"];
+            if (ReviewType ==1)
+            {
+                TestSuits = TestSuits.Where(t => t.EmployeeId > 0).ToList();
+            }
+            if (ReviewType == 2)
+            {
+                TestSuits = TestSuits.Where(t => t.EmployeeId == 0).ToList();
+            }
 
             var TestResults = new List<EmployeeTestResultViewModel>();
 
@@ -1231,7 +1225,8 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 throw;
             }
-            return RedirectToAction("ReviewAssignedTest");
+            var ReviewType = (int)Session["ReviewType"];
+            return RedirectToAction("ReviewAssignedTest", new { ReviewType = ReviewType });
         }
 
         # region Mail Send
@@ -1292,8 +1287,7 @@ namespace Silicus.Ensure.Web.Controllers
         //}
 
         #endregion
-
-
+            
         [HttpPost]
         public JsonResult SessionTimeout()
         {

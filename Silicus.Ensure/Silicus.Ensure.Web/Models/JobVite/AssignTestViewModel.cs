@@ -13,7 +13,7 @@ namespace Silicus.Ensure.Web.Models.JobVite
         public string CandidateEmail { get; set; }
         public string CandidatePosition { get; set; }
         public string CandidateJobViteId { get; set; }
-
+        public int existingAssignedTest { get; set; }
 
         //[Required(ErrorMessage ="Requisition is required")]
         //public int RequisitionId { get; set; }

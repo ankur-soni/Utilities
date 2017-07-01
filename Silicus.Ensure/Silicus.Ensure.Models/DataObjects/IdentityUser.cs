@@ -17,6 +17,8 @@ namespace Silicus.Ensure.Models.DataObjects
         public string Position { get; set; }
         public string JobViteId { get; set; }
 
+        public string CandidateStatus { get; set; }
+
         public DateTime? LastActivityDate { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

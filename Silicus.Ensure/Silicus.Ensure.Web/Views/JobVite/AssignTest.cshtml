@@ -2,125 +2,141 @@
 @using Kendo.Mvc.UI;
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnoverrideTest").on("click", function () {
+            $("#DivOverrideMessage").hide();
+            $("#AssignTestDiv").removeClass("hidden");
+        });
+    });
+</script>
 
 @using (Ajax.BeginForm("SaveCandidateAndAssignTest", "JobVite", null, new AjaxOptions { OnSuccess = "OnSuccess", HttpMethod = "POST" }, new { id = "AssignTestForm" }))
 {
-    
+    if (Model.existingAssignedTest > 0)
+    {
+        <div id="DivOverrideMessage">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        There is already a TestSuit assigned to current Candidate.
+                        <br />
+                        Do you want to replace that?
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-               
-                <label class="">Candidate First Name<span style="color:red">*</span></label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="width:70px;" class="btn green" id="btnoverrideTest">Yes</button>
+                <button type="button" style="width:70px;" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>John</label>
-                @Html.DisplayFor(m => m.CandidateFirstName)
-                @Html.HiddenFor(m => m.CandidateFirstName)
-               
+    }
+
+    <div class='@(Model.existingAssignedTest > 0 ? "hidden" : " ")' id="AssignTestDiv">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    <label class="">Candidate First Name</label>
+                </div>
             </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label>@Model.CandidateFirstName</label>
+
+                    @Html.HiddenFor(m => m.CandidateFirstName)
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    <label class="">Candidate Last Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label>@Html.DisplayFor(m => m.CandidateLastName)</label>
+
+                    @Html.HiddenFor(m => m.CandidateLastName)
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    <label class="">Candidate Email</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label>@Html.DisplayFor(m => m.CandidateEmail)</label>
+                    @Html.HiddenFor(m => m.CandidateEmail)
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    <label class="">JobVite Refrence Number</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label>@Html.DisplayFor(m => m.CandidateJobViteId)</label>
+
+                    @Html.HiddenFor(m => m.CandidateJobViteId)
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    <label class="">Test Suite<span style="color:red">*</span></label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+
+                    @(Html.Kendo().DropDownListFor(m => m.TestSuiteId).Name("TestSuiteId")
+  .DataTextField("TestSuiteName")
+  .DataValueField("TestSuiteId")
+  .OptionLabel("--Select--")
+  .DataSource(source => source
+  .Custom()
+  .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Url("/TestSuite/GetTestSuiteDetails/");
+        })
+  )
+  .Schema(schema => schema
+        .Data("Data")
+        .Total("Total")
+        .Errors("errors")
+   )
+)
+
+                    )
+                    @Html.ValidationMessageFor(m => m.TestSuiteId)
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" style="width:70px;" class="btn green">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
 
-                <label class="">Candidate Last Name<span style="color:red">*</span></label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>Doe</label>
-                @Html.DisplayFor(m => m.CandidateLastName)
-                @Html.HiddenFor(m => m.CandidateLastName)
-
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-
-                <label class="">Candidate Email<span style="color:red">*</span></label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>Johndoe@gmail.com</label>
-                @*@Html.TextBoxFor(m => m.CandidateEmail)*@
-                @Html.HiddenFor(m => m.CandidateEmail)
-
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-
-                <label class="">JobVite Refrence Number<span style="color:red">*</span></label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>34555</label>
-               @Html.DisplayFor(m => m.CandidateJobViteId)
-            @Html.HiddenFor(m => m.CandidateJobViteId)
-
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-
-                <label class="">Position<span style="color:red">*</span></label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>.Net Developer</label>
-                @Html.DisplayFor(m => m.CandidatePosition)
-                @Html.HiddenFor(m => m.CandidatePosition)
-
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-
-                <label class="">Test Suite<span style="color:red">*</span></label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>Test Suit 1</label>
-                @(Html.Kendo().DropDownListFor(m => m.TestSuiteId).Name("TestSuiteId")
-          .DataTextField("TestSuiteName")
-          .DataValueField("TestSuiteId")
-          .OptionLabel("--Select--")
-          .DataSource(source => source
-          .Custom()
-          .Transport(transport => transport
-                .Read(read =>
-                {
-                    read.Url("/TestSuite/GetTestSuiteDetails/");
-                })
-          )
-          .Schema(schema => schema
-                .Data("Data")
-                .Total("Total")
-                .Errors("errors")
-           )
-      )
-          
-                )
-                @Html.ValidationMessageFor(m => m.TestSuiteId)
-
-            </div>
-        </div>
-    </div>
-   
 }

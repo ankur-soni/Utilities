@@ -15,6 +15,7 @@ namespace Silicus.Ensure.Web.Models
         }
 
         public DbSet<UserTokenCache> UserTokenCacheList { get; set; }
+
     }
 
     public class UserTokenCache
