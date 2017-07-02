@@ -45,6 +45,10 @@ namespace Silicus.Ensure.Web.Models
 
         public int PracticalQuestionCount { get; set; }
 
+        public string ReviewerName { get; set; }
+
+        public DateTime? ReviewDate { get; set; }
+
         public List<ObjectiveQuestionList> objectiveQuestionList { get; set; }
 
         public List<PracticalQuestionList> practicalQuestionList { get; set; }

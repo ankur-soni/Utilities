@@ -1012,10 +1012,10 @@ namespace Silicus.Ensure.Web.Controllers
                 var userTestSuitDetails = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuitId);
 
                 SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
-
+                var userList = _containerUserService.GetAllUsers();
                 if (userTestSuitDetails.EmployeeId > 0)
                 {
-                    var user = _containerUserService.GetAllUsers().Where(u => u.ID == userTestSuitDetails.EmployeeId).FirstOrDefault();
+                    var user = userList.Where(u => u.ID == userTestSuitDetails.EmployeeId).FirstOrDefault();
                     submittedTestViewModel.FirstName = user != null ? user.FirstName : "";
                     submittedTestViewModel.LastName = user != null ? user.LastName : "";
                 }
@@ -1047,6 +1047,13 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
                 submittedTestViewModel.UserId = userTestSuitDetails.CandidateID;
                 submittedTestViewModel.TestSuiteId = EmployeeTestSuitId;
+                submittedTestViewModel.ReviewDate = userTestSuitDetails.ReviewDate;
+                if(userTestSuitDetails.ReviewerId != null && userTestSuitDetails.ReviewerId > 0)
+                {
+                   var reviwer = userList.Where(u => u.ID == userTestSuitDetails.ReviewerId).FirstOrDefault();
+                    submittedTestViewModel.ReviewerName = reviwer != null ? reviwer.FirstName  + " " + reviwer.LastName : "";
+                }
+               
                 //if(testSuitDetails.Position.HasValue)
                 //{
                 //    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";

@@ -66,10 +66,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(m => m.Postion):
+                                       Evaluation for
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.DisplayFor(m => m.Postion, new { @class = "form-control" })
+                                       @((int)Session["ReviewType"] == 1? "Internal Employee" : "External Candidate")
                                     </div>
                                 </div>
                             </div>
@@ -101,21 +101,22 @@
                     <div class="row">
                         <div class="col-md-12 M-B20 row">
                             <div class="col-sm-3">
-                                Objective question result
-                            </div>
-                            <div class="col-sm-1">
-                                <input class="form-control valid" data-val="true"
-                                       id="ObjectiveQuestionResult" name="ObjectiveQuestionResult" type="text"
-                                       value="@Model.ObjectiveQuestionResult" tyle="width:100%;" readonly="readonly" />
-                            </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-3">
-                                Objective question marks
+                                Objective question Total Marks
                             </div>
                             <div class="col-sm-1">
                                 <input class="form-control valid" data-val="true"
                                        id="ObjectiveQuestionMarks" name="ObjectiveQuestionMarks" type="text"
                                        value="@Model.ObjectiveQuestionMarks" tyle="width:100%;" readonly="readonly" />
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-3">
+                                Objective question Obtained marks
+                            </div>
+                            <div class="col-sm-1">
+                                <input class="form-control valid" data-val="true"
+                                       id="ObjectiveQuestionResult" name="ObjectiveQuestionResult" type="text"
+                                       value="@Model.ObjectiveQuestionResult" tyle="width:100%;" readonly="readonly" />
+                                
                             </div>
                             <div class="col-sm-2"></div>
                         </div>
@@ -263,6 +264,26 @@
                                 </td>
                             </tr>
                         </table>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 row">
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(m => m.ReviewerName):
+                                    </div>
+                                    <div class="col-md-6">
+                                        @Html.DisplayFor(m => m.ReviewerName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(m => m.ReviewDate):
+                                    </div>
+                                    <div class="col-md-6">
+                                        @Html.DisplayFor(m => m.ReviewDate, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="pull-right">
@@ -291,6 +312,16 @@
         if (!('@Model.Status' == '@(((int)CandidateStatus.UnderEvaluation).ToString())' || '@Model.Status' == '@(((int)CandidateStatus.TestSubmitted).ToString())')) {
             $('form input[type="text"]').prop("disabled", true);
             $('textarea').prop("disabled", true);
+        }
+        if ('@(Session["ReviewType"])' == '1') {
+            $("#empsubmenu").css("display", "block");
+            $("#employee-link a span.arrow").addClass("open");
+            SelectedMenu('#employee-reviewTest');
+        }
+        else {
+            $("#candidate-submenu").css("display", "block");
+            $("#candidate-link a span.arrow").addClass("open");
+            SelectedMenu('#candidate-reviewTest');
         }
     });
     $(function () {
