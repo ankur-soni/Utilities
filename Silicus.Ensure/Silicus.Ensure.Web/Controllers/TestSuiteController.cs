@@ -12,10 +12,11 @@ using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Web.Models.Test;
+using Silicus.Ensure.Web.Filters;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize]
+    [CustomAuthorize("Admin", "Panel", "Recruiter","Candidate")]
     public class TestSuiteController : Controller
     {
         private readonly ITestSuiteService _testSuiteService;

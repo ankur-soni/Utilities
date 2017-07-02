@@ -43,11 +43,11 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<Silicus.UtilityContainer.Models.DataObjects.User, ContainerUserViewModel>();
             //Mapper.CreateMap<PanelMemberDetail, PanelMemberDetailViewModel>()
             //    .ForMember(dest => dest.Panel, opt => opt.MapFrom(s => (s.PanelIds.Split(','))));
-            Mapper.CreateMap<UserDetailViewModel, PanelMemberDetailViewModel>();
+            //Mapper.CreateMap<UserDetailViewModel, PanelMemberDetailViewModel>();
 
             //Mapper.CreateMap<RecruiterMembersDetail, RecruiterMemberDetailViewModel>()
             //    .ForMember(dest => dest.Tag, opt => opt.MapFrom(s => (s.TagIds.Split(','))));
-            Mapper.CreateMap<UserDetailViewModel, RecruiterMemberDetailViewModel>();
+            //Mapper.CreateMap<UserDetailViewModel, RecruiterMemberDetailViewModel>();
 
             Mapper.CreateMap<Silicus.UtilityContainer.Models.DataObjects.User, UserDetailViewModel>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(s => (s.EmailAddress)))

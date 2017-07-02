@@ -33,7 +33,7 @@ using System.Web.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize]
+    [CustomAuthorize("Admin","Panel", "Recruiter")]
     public class AdminController : Controller
     {
         private readonly IEmailService _emailService;
@@ -225,33 +225,31 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         #region Candidate
-        [CustomAuthorize("Admin", "Panel", "Recruiter")]
-        public ActionResult Candidates()
-        {
+        //[CustomAuthorize("Admin", "Panel", "Recruiter")]
+        //public ActionResult Candidates()
+        //{
 
-            List<string> roles = MvcApplication.getCurrentUserRoles();
-            // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            //ViewBag.PositionListItem = from item in positionDetails
-            //                           select new SelectListItem()
-            //                           {
-            //                               Text = item.PositionName,
-            //                               Value = item.PositionName
+        //    List<string> roles = MvcApplication.getCurrentUserRoles();
+        //    // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+        //    //ViewBag.PositionListItem = from item in positionDetails
+        //    //                           select new SelectListItem()
+        //    //                           {
+        //    //                               Text = item.PositionName,
+        //    //                               Value = item.PositionName
 
-            //                           };
-            return View();
-        }
+        //    //                           };
+        //    return View();
+        //}
 
-
-
-        [HttpPost]
-        public ActionResult GetCandidateGrid(string firstName, String lastName, string dobString)
-        {
-            DateTime dob;
-            DateTime.TryParseExact(dobString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob);
-            // var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
-            //var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
-            return PartialView("_CadidateGrid", null);
-        }
+        //[HttpPost]
+        //public ActionResult GetCandidateGrid(string firstName, String lastName, string dobString)
+        //{
+        //    DateTime dob;
+        //    DateTime.TryParseExact(dobString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob);
+        //    // var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
+        //    //var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
+        //    return PartialView("_CadidateGrid", null);
+        //}
 
         //public ActionResult GetCandidateProfile(int userId)
         //{
@@ -308,33 +306,33 @@ namespace Silicus.Ensure.Web.Controllers
 
         //}
 
-        private string GetSkills(string technology)
-        {
-            var skills = "";
-            if (!string.IsNullOrWhiteSpace(technology))
-            {
-                var skillIdsAsStrings = technology.Split(',');
-                var skillIds = new List<int>();
-                foreach (var skill in skillIdsAsStrings)
-                {
-                    int skillId;
-                    if (int.TryParse(skill, out skillId))
-                    {
-                        skillIds.Add(skillId);
-                    }
-                }
-                var skilllNames = _tagsService.GetTagNames(skillIds);
-                skills = string.Join(", ", skilllNames);
-            }
-            return skills;
-        }
+        //private string GetSkills(string technology)
+        //{
+        //    var skills = "";
+        //    if (!string.IsNullOrWhiteSpace(technology))
+        //    {
+        //        var skillIdsAsStrings = technology.Split(',');
+        //        var skillIds = new List<int>();
+        //        foreach (var skill in skillIdsAsStrings)
+        //        {
+        //            int skillId;
+        //            if (int.TryParse(skill, out skillId))
+        //            {
+        //                skillIds.Add(skillId);
+        //            }
+        //        }
+        //        var skilllNames = _tagsService.GetTagNames(skillIds);
+        //        skills = string.Join(", ", skilllNames);
+        //    }
+        //    return skills;
+        //}
 
-        public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
-        {
-            ViewBag.CurrentUser = UserId;
-            ViewBag.IsReassign = IsReassign;
-            return PartialView("SelectCandidatesSuit");
-        }
+        //public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
+        //{
+        //    ViewBag.CurrentUser = UserId;
+        //    ViewBag.IsReassign = IsReassign;
+        //    return PartialView("SelectCandidatesSuit");
+        //}
 
         //public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request, int UserId)
         //{
@@ -376,12 +374,12 @@ namespace Silicus.Ensure.Web.Controllers
         //    //}
         //}
 
-        public ActionResult AssignPanel(int UserId, int IsReassign = 0)
-        {
-            ViewBag.CurrentUser = UserId;
-            ViewBag.IsReassign = IsReassign;
-            return PartialView("_partialSelctPanelList");
-        }
+        //public ActionResult AssignPanel(int UserId, int IsReassign = 0)
+        //{
+        //    ViewBag.CurrentUser = UserId;
+        //    ViewBag.IsReassign = IsReassign;
+        //    return PartialView("_partialSelctPanelList");
+        //}
 
         //public ActionResult AssignPanelCandidate(string PUserId, int UserId, int IsReAssign = 0)
         //{
@@ -407,12 +405,12 @@ namespace Silicus.Ensure.Web.Controllers
         //    }
         //}
 
-        public ActionResult AssignRecruiter(int UserId, int IsReassign = 0)
-        {
-            ViewBag.CurrentUser = UserId;
-            ViewBag.IsReassign = IsReassign;
-            return PartialView("_partialSelectRecruiterList");
-        }
+        //public ActionResult AssignRecruiter(int UserId, int IsReassign = 0)
+        //{
+        //    ViewBag.CurrentUser = UserId;
+        //    ViewBag.IsReassign = IsReassign;
+        //    return PartialView("_partialSelectRecruiterList");
+        //}
 
         //public ActionResult GetRecruiterDetails([DataSourceRequest] DataSourceRequest request, int UserId)
         //{
@@ -999,11 +997,11 @@ namespace Silicus.Ensure.Web.Controllers
 
         #endregion
 
+        [CustomAuthorize("Admin", "Panel", "Recruiter")]
         public ActionResult SubmittedTest(int EmployeeTestSuitId)
         {
             try
             {
-
                 List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
                 List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
 
@@ -1118,6 +1116,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
+        [CustomAuthorize("Admin", "Panel", "Recruiter")]
         public ActionResult ReviewAssignedTest(int ReviewType)
         {
             if (ReviewType > 0 && ReviewType < 3)
@@ -1143,12 +1142,13 @@ namespace Silicus.Ensure.Web.Controllers
             }
             var userEmailId = User.Identity.Name;
             var Currentuser = _containerUserService.FindUserByEmail(userEmailId);
-            
-            var utilityId = GetUtilityId();
-            var roleDetails = _roleService.GetRoleByRoleName("Admin");
-            var AdminUserList = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList();
 
-            if (! AdminUserList.Any(u=>u.ID == Currentuser.ID))
+            //var utilityId = GetUtilityId();
+            //var roleDetails = _roleService.GetRoleByRoleName("Admin");
+            //var AdminUserList = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList();
+
+            List<string> roles = MvcApplication.getCurrentUserRoles();
+            if (! roles.Any(r=>r == "Admin"))
                 TestSuits = TestSuits.Where(t => t.ReviewerId.Value.ToString() == User.Identity.GetUserId()).ToList();
 
             var TestResults = new List<EmployeeTestResultViewModel>();
@@ -1196,16 +1196,16 @@ namespace Silicus.Ensure.Web.Controllers
 
         }
 
-        private int GetUtilityId()
-        {
-            var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
-            if (string.IsNullOrWhiteSpace(utilityProductId))
-            {
-                throw new ArgumentNullException();
-            }
+        //private int GetUtilityId()
+        //{
+        //    var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
+        //    if (string.IsNullOrWhiteSpace(utilityProductId))
+        //    {
+        //        throw new ArgumentNullException();
+        //    }
 
-            return Convert.ToInt32(utilityProductId);
-        }
+        //    return Convert.ToInt32(utilityProductId);
+        //}
 
         private string GetOption(string p)
         {
@@ -1220,6 +1220,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize("Admin", "Panel", "Recruiter")]
         public ActionResult SubmittedTest(FormCollection fm)
         {
             try

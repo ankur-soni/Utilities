@@ -74,38 +74,38 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        [CustomAuthorize("Candidate")]
-        public ActionResult TestSuiteAndCandidateDetails()
-        {
-            var userEmail = User.Identity.Name.Trim();
-            //var user = null;//_userService.GetUserByEmail(userEmail);
-            //if (user == null)
-            //    return RedirectToAction("LogOff", "CandidateAccount");
+        //[CustomAuthorize("Candidate")]
+        //public ActionResult TestSuiteAndCandidateDetails()
+        //{
+        //    var userEmail = User.Identity.Name.Trim();
+        //    //var user = null;//_userService.GetUserByEmail(userEmail);
+        //    //if (user == null)
+        //    //    return RedirectToAction("LogOff", "CandidateAccount");
 
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(0);
-            if (userTestSuite != null)
-            {
-                if (userTestSuite.RemainingTime > 0)
-                {
-                    userTestSuite.Duration = userTestSuite.RemainingTime;
-                }
-                else
-                {
-                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
-                    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                }
-            }
+        //    UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(0);
+        //    if (userTestSuite != null)
+        //    {
+        //        if (userTestSuite.RemainingTime > 0)
+        //        {
+        //            userTestSuite.Duration = userTestSuite.RemainingTime;
+        //        }
+        //        else
+        //        {
+        //            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
+        //            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+        //        }
+        //    }
 
-            TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
-          //  var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+        //    TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+        //    testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
+        //  //  var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+        //    //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
 
-            //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
+        //    //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+        //    //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
 
-            return PartialView("_testSuiteAndCandidateDetails", null);
-        }
+        //    return PartialView("_testSuiteAndCandidateDetails", null);
+        //}
 
         [CustomAuthorize("Candidate")]
         public ActionResult ReadOnlyInstructions()
@@ -119,158 +119,158 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("ReadOnlyInstructions");
         }
 
-        [CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
-        public ActionResult OnlineTest()
-        {
-            if (!ModelState.IsValid)
-                return RedirectToAction("LogOff", "CandidateAccount");
+        //[CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
+        //public ActionResult OnlineTest()
+        //{
+        //    if (!ModelState.IsValid)
+        //        return RedirectToAction("LogOff", "CandidateAccount");
 
-            var userEmail = User.Identity.Name.Trim();
-            //var user = _userService.GetUserByEmail(userEmail);
-            //if (user == null)
-            //{
-            //    ViewBag.Status = 1;
-            //    ViewBag.Msg = "User not found for online test, kindly contact admin.";
-            //    return View("Welcome", new TestSuiteCandidateModel());
-            //}
-            //UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
-            //if (userTestSuite == null)
-            //{
-            //    ViewBag.Status = 1;
-            //    ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
-            //    return View("Welcome", new TestSuiteCandidateModel());
-            //}
-            //else if (user.CandidateStatus != CandidateStatus.TestAssigned.ToString())
-            //{
-            //    ViewBag.Status = 1;
-            //    ViewBag.Msg = "You have already submitted your test.";
-            //    return View("Welcome", new TestSuiteCandidateModel());
-            //}
-            //TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            //var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            //testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
-            //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            //testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
-            //testSuiteCandidateModel.UserId = user.UserApplicationId;
-            return View();
-        }
+        //    var userEmail = User.Identity.Name.Trim();
+        //    //var user = _userService.GetUserByEmail(userEmail);
+        //    //if (user == null)
+        //    //{
+        //    //    ViewBag.Status = 1;
+        //    //    ViewBag.Msg = "User not found for online test, kindly contact admin.";
+        //    //    return View("Welcome", new TestSuiteCandidateModel());
+        //    //}
+        //    //UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+        //    //if (userTestSuite == null)
+        //    //{
+        //    //    ViewBag.Status = 1;
+        //    //    ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
+        //    //    return View("Welcome", new TestSuiteCandidateModel());
+        //    //}
+        //    //else if (user.CandidateStatus != CandidateStatus.TestAssigned.ToString())
+        //    //{
+        //    //    ViewBag.Status = 1;
+        //    //    ViewBag.Msg = "You have already submitted your test.";
+        //    //    return View("Welcome", new TestSuiteCandidateModel());
+        //    //}
+        //    //TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+        //    //var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+        //    //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+        //    //testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
+        //    //testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+        //    //testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+        //    //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
+        //    //testSuiteCandidateModel.UserId = user.UserApplicationId;
+        //    return View();
+        //}
 
-        private QuestionNavigationViewModel GetNavigationDetails(int userTestSuiteId)
-        {
-            var navigationDetailsBusinessModel = _testSuiteService.GetNavigationDetails(userTestSuiteId);
-            var navigationDetails = _mappingService.Map<QuestionNavigationBusinessModel, QuestionNavigationViewModel>(navigationDetailsBusinessModel);
-            return navigationDetails;
-        }
+        //private QuestionNavigationViewModel GetNavigationDetails(int userTestSuiteId)
+        //{
+        //    var navigationDetailsBusinessModel = _testSuiteService.GetNavigationDetails(userTestSuiteId);
+        //    var navigationDetails = _mappingService.Map<QuestionNavigationBusinessModel, QuestionNavigationViewModel>(navigationDetailsBusinessModel);
+        //    return navigationDetails;
+        //}
 
-        public ActionResult LoadQuestion(int userTestSuiteId)
-        {
-            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Objective);
-            return PartialView("_partialViewQuestion", testSuiteQuestionModel);
-        }
+        //public ActionResult LoadQuestion(int userTestSuiteId)
+        //{
+        //    TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Objective);
+        //    return PartialView("_partialViewQuestion", testSuiteQuestionModel);
+        //}
 
-        public ActionResult GetQuestionDetails(QuestionDetailsViewModel questionDetails)
-        {
-            questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
-            questionDetails.Answer = HttpUtility.UrlDecode(questionDetails.Answer);
-            UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
-            var testSuiteQuestionModel = TestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
-            ModelState.Clear();
-            return PartialView("_partialViewQuestion", testSuiteQuestionModel);
-        }
-
-
-
-        public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
-        {
-            // Update last question answer of test.
-            answer = HttpUtility.HtmlDecode(answer);
-            //_userService.UpdateUserApplicationTestDetails(userId);
-
-            // Update total time utilization for test back to UserTestSuite.
-            TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
-            UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
-            testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
-            testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
-            _testSuiteService.UpdateUserTestSuite(testSuit);
-
-            // Calculate marks on test submit.
-            CalculateMarks(userTestSuiteId, userTestDetailId, answer);
-            List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            //var users = _userService.GetUserApplicationDetailsById(userId);
-            //if (users != null)
-            //{
-            //    var userDetails = _userService.GetUserById(users.UserId);
-            //    //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
-            //}
-            return RedirectToAction("LogOff", "CandidateAccount");
-        }
-
-        [HttpPost]
-        public JsonResult AddMoreTime(int count, int userTestSuiteId)
-        {
-            count = count + 1;
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
-            userTestSuite.ExtraCount = count;
-            _testSuiteService.UpdateUserTestSuite(userTestSuite);
-            return Json(count);
-        }
+        //public ActionResult GetQuestionDetails(QuestionDetailsViewModel questionDetails)
+        //{
+        //    questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
+        //    questionDetails.Answer = HttpUtility.UrlDecode(questionDetails.Answer);
+        //    UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
+        //    var testSuiteQuestionModel = TestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
+        //    ModelState.Clear();
+        //    return PartialView("_partialViewQuestion", testSuiteQuestionModel);
+        //}
 
 
-        [HttpPost]
-        public JsonResult UpdateTimeCounter(int time, int userTestSuiteId)
-        {
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
-            if (userTestSuite != null)
-            {
-                int remainingTime = time / 60;
-                userTestSuite.RemainingTime = remainingTime;
-                _testSuiteService.UpdateUserTestSuite(userTestSuite);
-            }
-            return Json(1);
-        }
 
-        private void UpdateAnswer(string answer, int? userTestDetailId)
-        {
-            UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
-            userTestDetails.Answer = answer;
-            _testSuiteService.UpdateUserTestDetails(userTestDetails);
-        }
+        //public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
+        //{
+        //    // Update last question answer of test.
+        //    answer = HttpUtility.HtmlDecode(answer);
+        //    //_userService.UpdateUserApplicationTestDetails(userId);
 
-        private TestDetailsViewModel TestSuiteQuestion(int? questionId, int? userTestSuiteId, int questionType)
-        {
-            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
-            var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
-            testDetails = testDetails ?? new TestDetailsViewModel();
-            return testDetails;
-        }
+        //    // Update total time utilization for test back to UserTestSuite.
+        //    TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
+        //    UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+        //    testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
+        //    testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
+        //    _testSuiteService.UpdateUserTestSuite(testSuit);
 
-        private void CalculateMarks(int userTestSuiteId, int? userLastQuestionDetailId, string answer)
-        {
-            List<UserTestDetails> userTestDetails = _testSuiteService.GetUserTestDetailsListByUserTestSuitId(userTestSuiteId).ToList();
-            foreach (UserTestDetails testDetail in userTestDetails)
-            {
-                if (testDetail.TestDetailId == userLastQuestionDetailId)
-                    testDetail.Answer = answer;
-                Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
-                if (question.QuestionType == 1)
-                {
-                    if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim().Contains(testDetail.Answer.Trim()))
-                        testDetail.Mark = question.Marks;
-                    else
-                        testDetail.Mark = 0;
-                }
+        //    // Calculate marks on test submit.
+        //    CalculateMarks(userTestSuiteId, userTestDetailId, answer);
+        //    List<string> Receipient = new List<string>() { "Admin", "Panel" };
+        //    //var users = _userService.GetUserApplicationDetailsById(userId);
+        //    //if (users != null)
+        //    //{
+        //    //    var userDetails = _userService.GetUserById(users.UserId);
+        //    //    //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+        //    //}
+        //    return RedirectToAction("LogOff", "CandidateAccount");
+        //}
 
-                _testSuiteService.UpdateUserTestDetails(testDetail);
-            }
-        }
+        //[HttpPost]
+        //public JsonResult AddMoreTime(int count, int userTestSuiteId)
+        //{
+        //    count = count + 1;
+        //    UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+        //    userTestSuite.ExtraCount = count;
+        //    _testSuiteService.UpdateUserTestSuite(userTestSuite);
+        //    return Json(count);
+        //}
+
+
+        //[HttpPost]
+        //public JsonResult UpdateTimeCounter(int time, int userTestSuiteId)
+        //{
+        //    UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+        //    if (userTestSuite != null)
+        //    {
+        //        int remainingTime = time / 60;
+        //        userTestSuite.RemainingTime = remainingTime;
+        //        _testSuiteService.UpdateUserTestSuite(userTestSuite);
+        //    }
+        //    return Json(1);
+        //}
+
+        //private void UpdateAnswer(string answer, int? userTestDetailId)
+        //{
+        //    UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
+        //    userTestDetails.Answer = answer;
+        //    _testSuiteService.UpdateUserTestDetails(userTestDetails);
+        //}
+
+        //private TestDetailsViewModel TestSuiteQuestion(int? questionId, int? userTestSuiteId, int questionType)
+        //{
+        //    TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
+        //    var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
+        //    testDetails = testDetails ?? new TestDetailsViewModel();
+        //    return testDetails;
+        //}
+
+        //private void CalculateMarks(int userTestSuiteId, int? userLastQuestionDetailId, string answer)
+        //{
+        //    List<UserTestDetails> userTestDetails = _testSuiteService.GetUserTestDetailsListByUserTestSuitId(userTestSuiteId).ToList();
+        //    foreach (UserTestDetails testDetail in userTestDetails)
+        //    {
+        //        if (testDetail.TestDetailId == userLastQuestionDetailId)
+        //            testDetail.Answer = answer;
+        //        Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
+        //        if (question.QuestionType == 1)
+        //        {
+        //            if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim().Contains(testDetail.Answer.Trim()))
+        //                testDetail.Mark = question.Marks;
+        //            else
+        //                testDetail.Mark = 0;
+        //        }
+
+        //        _testSuiteService.UpdateUserTestDetails(testDetail);
+        //    }
+        //}
 
         #region Assign Test
-        public ActionResult AssignTest()
-        {
-            return PartialView("_AssignTest");
-        }
+        //public ActionResult AssignTest()
+        //{
+        //    return PartialView("_AssignTest");
+        //}
 
         //public JsonResult GetCandidatesByRequisition([DataSourceRequest] DataSourceRequest request, int requisitionId)
         //{
@@ -284,12 +284,12 @@ namespace Silicus.Ensure.Web.Controllers
         //    return Json(candidatesViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         //}
 
-        public JsonResult GetAllRequisitions([DataSourceRequest] DataSourceRequest request)
-        {
-            var requistionsBusinessModel = _userService.GetAllRequistions();
-            var requistionsViewModel = _mappingService.Map<List<RequisitionBusinessModel>, List<RequisitionViewModel>>(requistionsBusinessModel);
-            return Json(requistionsViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult GetAllRequisitions([DataSourceRequest] DataSourceRequest request)
+        //{
+        //    var requistionsBusinessModel = _userService.GetAllRequistions();
+        //    var requistionsViewModel = _mappingService.Map<List<RequisitionBusinessModel>, List<RequisitionViewModel>>(requistionsBusinessModel);
+        //    return Json(requistionsViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        //}
 
         //public ActionResult SaveCandidateAndAssignTest(AssignTestViewModel assignTestViewModel)
         //{

@@ -5,6 +5,7 @@ using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
 using System;
@@ -18,7 +19,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    ///[Authorize(Roles = "Admin")]
+    [CustomAuthorize("Admin")]
     public class ManageUserController : Controller
     {
         private readonly IUserService _userService;

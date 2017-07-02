@@ -53,6 +53,12 @@
                                                                         else if(StatusId==4) {#
                                                                             Under evaluation
                                                                         #}
+                                                                        else if(StatusId==5) {#
+                                                                            Test Passed
+                                                                        #}
+                                                                        else if(StatusId==6) {#
+                                                                            Test Failed
+                                                                        #}
                                                                         else if(StatusId==7) {#
                                                                            On hold
                                                                         #}
@@ -64,11 +70,9 @@
                                                                         #if(StatusId==2){#
                                                                             <a onclick='StartTest(#=EmployeeTestSuiteId#,#=EmployeeId#)'>Start Test</a>
                                                                         #}
-                                                                        else if(StatusId==3) {#
-                                                                            Test Submitted
-                                                                        #}
+                                                                        
                                                                         else{#
-                                                                            --------------
+                                                                            NA
                                                                         #}
                                                                         #").Title("Test Action");})
                                        .DataSource(dataSource => dataSource

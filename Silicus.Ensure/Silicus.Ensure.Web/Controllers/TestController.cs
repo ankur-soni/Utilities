@@ -2,6 +2,7 @@
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Web.Models.Test;
@@ -13,6 +14,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [CustomAuthorize("Admin", "Panel","Employee","Candidate")]
     public class TestController : Controller
     {
         private readonly IQuestionService _questionService;
@@ -50,8 +52,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return View();
         }
-
-      
+              
         public ActionResult OnlineTest(int EmployeeTestSuitId,int employeeId, string CandidateId)
         {
             var userEmailId = User.Identity.Name;

@@ -40,11 +40,11 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<object, TestSuiteQuestionModel>();
             //Mapper.CreateMap<PanelMemberDetailViewModel, PanelMemberDetail>()
             //    .ForMember(dest => dest.PanelIds, opt => opt.MapFrom(s => (String.Join(",", s.Panel))));
-            Mapper.CreateMap<PanelMemberDetailViewModel, UserDetailViewModel>();
+            //Mapper.CreateMap<PanelMemberDetailViewModel, UserDetailViewModel>();
 
             //Mapper.CreateMap<RecruiterMemberDetailViewModel, RecruiterMembersDetail>()
             //    .ForMember(dest => dest.TagIds, opt => opt.MapFrom(s => (String.Join(",", s.Tag))));
-            Mapper.CreateMap<RecruiterMemberDetailViewModel, UserDetailViewModel>();
+            //Mapper.CreateMap<RecruiterMemberDetailViewModel, UserDetailViewModel>();
 
             Mapper.CreateMap<ContainerUserViewModel, Silicus.UtilityContainer.Models.DataObjects.User>();
             Mapper.CreateMap<UserDetailViewModel, Silicus.UtilityContainer.Models.DataObjects.User>()
