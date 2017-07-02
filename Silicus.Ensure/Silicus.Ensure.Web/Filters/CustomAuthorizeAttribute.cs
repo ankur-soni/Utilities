@@ -27,9 +27,10 @@ namespace Silicus.Ensure.Web.Filters
             
             bool authorize = false;
 
-            if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!(HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated))
             {
-                base.OnAuthorization(filterContext);
+                var isCandidateActions = filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(CandidateAttribute), true) || filterContext.ActionDescriptor.IsDefined(typeof(CandidateAttribute), true);
+                filterContext.Result = new HttpUnauthorizedResult();
             }
             else
             {

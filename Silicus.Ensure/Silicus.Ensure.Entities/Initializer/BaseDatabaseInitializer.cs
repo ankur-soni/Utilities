@@ -120,7 +120,7 @@ namespace Silicus.Ensure.Entities.Initializer
             context.Add(new TestSuite
             {
                 TestSuiteName = "Dot Net Developer",
-                Position = 1,
+                //Position = 1,
                 Duration = 30,
                 Competency = 2,
                 IsDeleted = false,
@@ -134,7 +134,7 @@ namespace Silicus.Ensure.Entities.Initializer
             context.Add(new TestSuite
             {
                 TestSuiteName = "MVC Developer",
-                Position = 1,
+                //Position = 1,
                 Duration = 30,
                 Competency = 2,
                 IsDeleted = false,

@@ -52,9 +52,9 @@
                         </div>
                         <div class="col-md-4">
                             @Html.RadioButtonFor(model => model.IsExternal, true) Yes
-                            @Html.RadioButtonFor(model=>model.IsExternal, false) No 
+                            @Html.RadioButtonFor(model => model.IsExternal, false) No
                             @*<div id="IsExtenalError"></div>*@
-                            @Html.ValidationMessageFor(model => model.IsExternal,"", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.IsExternal, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -75,30 +75,30 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-md-2 col-sm-2 col-xs-12">
-                            @Html.LabelFor(model => model.Position)
-                        </div>
-                        <div class="col-md-4 col-sm-8 col-xs-9">
-                            @(Html.Kendo().DropDownListFor(m => m.Position)
-                                    .DataTextField("PositionName")
-                                    .DataValueField("PositionId")
-                                    .OptionLabel("--Select--")
-                                            .DataSource(source =>
-                                            {
-                                                source.Read(read =>
+                    @*<div class="form-group">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                @Html.LabelFor(model => model.Position)
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-9">
+                                @(Html.Kendo().DropDownListFor(m => m.Position)
+                                        .DataTextField("PositionName")
+                                        .DataValueField("PositionId")
+                                        .OptionLabel("--Select--")
+                                                .DataSource(source =>
                                                 {
-                                                    read.Action("GetAllPositionDetails", "Common");
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetAllPositionDetails", "Common");
+                                                    })
+                                                    .ServerFiltering(false);
                                                 })
-                                                .ServerFiltering(false);
-                                            })
-                                    .HtmlAttributes(new { style = "width: 100%" }))
-                            @*@Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })*@
-                        </div>
-                        <div class="col-md-4 col-sm-2 col-xs-2">
-                            <a href="#" onclick="addPosition();"><span class="btn green"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
-                        </div>
-                    </div>
+                                        .HtmlAttributes(new { style = "width: 100%" }))
+                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4 col-sm-2 col-xs-2">
+                                <a href="#" onclick="addPosition();"><span class="btn green"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
+                            </div>
+                        </div>*@
 
                     <div class="form-group">
                         <div class="col-md-2">
@@ -321,388 +321,388 @@
 
 @Scripts.Render("~/bundles/jqueryval")
 <script>
-                    $(document).ready(function () {
-                        SetNavigationMenuActive('TestSuite');
-                        $('#addPositionPopup').on('hidden.bs.modal', function () {
-                            $('.field-validation-error').hide();
-                        });
-                    });
-                    function onCancelClick() {
-                        window.onbeforeunload = null;
-                        $(window).unbind('unload');
-                        redirectToTestSuiteList();
-                    }
-                    function redirectToTestSuiteList() {
-                        window.location = '@Url.Action("List", "TestSuite")';
-                    }
-                    function createControls() {
-                        $("input.tagAutoComplete").kendoAutoComplete({
-                            dataSource: {
-                                serverFiltering: false,
-                                transport: {
-                                    read: "/Common/GetAllTagDetails"
-                                }
-                            },
-                            filter: "contains",
-                            dataTextField: "TagName",
-                            dataValueField: "TagId",
-                            minLength: 1,
-                            seperator: ","
+    $(document).ready(function () {
+        SetNavigationMenuActive('TestSuite');
+        //$('#addPositionPopup').on('hidden.bs.modal', function () {
+        //    $('.field-validation-error').hide();
+        //});
+    });
+    function onCancelClick() {
+        window.onbeforeunload = null;
+        $(window).unbind('unload');
+        redirectToTestSuiteList();
+    }
+    function redirectToTestSuiteList() {
+        window.location = '@Url.Action("List", "TestSuite")';
+    }
+    function createControls() {
+        $("input.tagAutoComplete").kendoAutoComplete({
+            dataSource: {
+                serverFiltering: false,
+                transport: {
+                    read: "/Common/GetAllTagDetails"
+                }
+            },
+            filter: "contains",
+            dataTextField: "TagName",
+            dataValueField: "TagId",
+            minLength: 1,
+            seperator: ","
 
-                        });
+        });
 
-                        $("input.proficiencyDropDown").kendoDropDownList({
-                            dataTextField: "name",
-                            dataValueField: "id",
-                            required: true,
-                            dataSource: [
-                                { name: '--Select--', id: '' },
-                                { name: '@Convert.ToString(Proficiency.Beginner)', id: '@Convert.ToInt32(Proficiency.Beginner)' },
-                                { name: '@Convert.ToString(Proficiency.Intermediate)', id: '@Convert.ToInt32(Proficiency.Intermediate)' },
-                                { name: '@Convert.ToString(Proficiency.Expert)', id: '@Convert.ToInt32(Proficiency.Expert)' }
-                            ]
-                        });
+        $("input.proficiencyDropDown").kendoDropDownList({
+            dataTextField: "name",
+            dataValueField: "id",
+            required: true,
+            dataSource: [
+                { name: '--Select--', id: '' },
+                { name: '@Convert.ToString(Proficiency.Beginner)', id: '@Convert.ToInt32(Proficiency.Beginner)' },
+                { name: '@Convert.ToString(Proficiency.Intermediate)', id: '@Convert.ToInt32(Proficiency.Intermediate)' },
+                { name: '@Convert.ToString(Proficiency.Expert)', id: '@Convert.ToInt32(Proficiency.Expert)' }
+            ]
+        });
 
-                        $('.key-numeric').keypress(function (e) {
-                            var verified = (e.which == 8 || e.which == undefined || e.which == 0) ? null : String.fromCharCode(e.which).match(/[^0-9]/);
-                            if (verified) { e.preventDefault(); }
-                        });
-                    }
+        $('.key-numeric').keypress(function (e) {
+            var verified = (e.which == 8 || e.which == undefined || e.which == 0) ? null : String.fromCharCode(e.which).match(/[^0-9]/);
+            if (verified) { e.preventDefault(); }
+        });
+    }
 
-                    function formatOfCustomControl(rowno) {
-                        return '<div class="form-group">' +
-                                    '<div class="col-md-2 col-sm-2 col-xs-12 col-lg-2"> <span style="color:red;"></span></div>' +
-                                    '<div class="col-md-2 col-sm-2 col-xs-12 M-T10">' +
-                                        '<input type="text" id="Tag_' + rowno + '" name="Tag_' + rowno + '" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag">' +
-                                    '</div>' +
-                                    '<div class="col-md-2 col-sm-2 col-xs-12 M-T10">' +
-                                        '<input type="text" id="Weightage_' + rowno + '" name="Weightage_' + rowno + '" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />' +
-                                    '</div>' +
-                                    '<div class="col-md-2 col-sm-3 col-xs-12 M-T10">' +
-                                        '<input type="text" id="Proficiency_' + rowno + '" name="Proficiency_' + rowno + '" data-val="true" data-val-required="Efficiency is required." class="proficiencyDropDown" />' +
-                                    '</div>' +
-                        '<div class="col-md-2 col-sm-3 col-xs-12 M-T10">' +
+    function formatOfCustomControl(rowno) {
+        return '<div class="form-group">' +
+                    '<div class="col-md-2 col-sm-2 col-xs-12 col-lg-2"> <span style="color:red;"></span></div>' +
+                    '<div class="col-md-2 col-sm-2 col-xs-12 M-T10">' +
+                        '<input type="text" id="Tag_' + rowno + '" name="Tag_' + rowno + '" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag">' +
+                    '</div>' +
+                    '<div class="col-md-2 col-sm-2 col-xs-12 M-T10">' +
+                        '<input type="text" id="Weightage_' + rowno + '" name="Weightage_' + rowno + '" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />' +
+                    '</div>' +
+                    '<div class="col-md-2 col-sm-3 col-xs-12 M-T10">' +
+                        '<input type="text" id="Proficiency_' + rowno + '" name="Proficiency_' + rowno + '" data-val="true" data-val-required="Efficiency is required." class="proficiencyDropDown" />' +
+                    '</div>' +
+        '<div class="col-md-2 col-sm-3 col-xs-12 M-T10">' +
 
-                            '<span data-val="' + rowno + '" style="margin-right:5px;" class="addbtn btn green"><i class="fa fa-plus" aria-hidden="true"></i></span>' +
+            '<span data-val="' + rowno + '" style="margin-right:5px;" class="addbtn btn green"><i class="fa fa-plus" aria-hidden="true"></i></span>' +
 
-                            '<span data-val="' + rowno + '" style="margin-right:5px;" class="removebtn btn green"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
-                        '</div>' +
-                    '</div>';
-                    }
+            '<span data-val="' + rowno + '" style="margin-right:5px;" class="removebtn btn green"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
+        '</div>' +
+    '</div>';
+    }
 
-                    function validateWeightage(input, params) {
-                        $('span[id ^= "Weightage_"]').hide();
-                        $('span[id ^= "Proficiency_"]').hide();
-                        $('span[id ^= "Tag_"]').hide();
-                        var sum = 0;
-                        if (input.hasClass("WeightageField")) {
-                            input.attr("data-Weightage-msg", "Weightage sum must be 100.");
-                            $summands = $(".WeightageField");
-                            $summands.each(function () {
-                                var value = Number($(this).val());
-                                if (!isNaN(value)) sum += value;
-                            });
-                            return sum === 100;
-                        }
-                        return true;
-                    }
-                    function isTestSuiteNameAvailable(testSuiteName) {
-                        var isAvailable = true;
-                        if (testSuiteName) {
-                            $.ajax({
-                                type: "POST",
-                                url: '/TestSuite/IsTestSuiteNameAvailable',
-                                data: { testSuiteName: testSuiteName },
-                                async: false,
-                                success: function (returndata) {
-                                    isAvailable = returndata;
-                                    return returndata;
-                                }
-                            });
-                        }
+    function validateWeightage(input, params) {
+        $('span[id ^= "Weightage_"]').hide();
+        $('span[id ^= "Proficiency_"]').hide();
+        $('span[id ^= "Tag_"]').hide();
+        var sum = 0;
+        if (input.hasClass("WeightageField")) {
+            input.attr("data-Weightage-msg", "Weightage sum must be 100.");
+            $summands = $(".WeightageField");
+            $summands.each(function () {
+                var value = Number($(this).val());
+                if (!isNaN(value)) sum += value;
+            });
+            return sum === 100;
+        }
+        return true;
+    }
+    function isTestSuiteNameAvailable(testSuiteName) {
+        var isAvailable = true;
+        if (testSuiteName) {
+            $.ajax({
+                type: "POST",
+                url: '/TestSuite/IsTestSuiteNameAvailable',
+                data: { testSuiteName: testSuiteName },
+                async: false,
+                success: function (returndata) {
+                    isAvailable = returndata;
+                    return returndata;
+                }
+            });
+        }
+        return isAvailable;
+    }
+
+    $(function () {
+        SetNavigationMenuActive('TestSuite');
+        createControls();
+
+        $("#frmAddTestSuite").kendoValidator({
+            rules: {
+                Weightage: function (input, params) {
+                    return validateWeightage(input, params);
+                },
+                TestSuiteName: function (input, params) {
+                    if (input.is("[name=TestSuiteName]")) {
+                        input.attr("data-TestSuiteName-msg", "Test suite name already exist.");
+                        var isAvailable = isTestSuiteNameAvailable(input.val());
                         return isAvailable;
                     }
+                    return true;
+                }//,
+                //IsExternal: function (input, params) {
+                //    //debugger
+                //    if (input.is("[name=IsExternal]") && !input.is(":checked")) {
+                //        input.attr("data-IsExternal-msg", "IsExternal required.");
+                //        input.attr("class", "k-invalid");
+                //        return false;
+                //    }
+                //    return true;
+                //}
+            }
+        });
 
-                    $(function () {
-                        SetNavigationMenuActive('TestSuite');
-                        createControls();
+        $("#OptionalQuestion").change(function () {
+            var oQuestion = parseInt(100) - parseInt($(this).val());
+            $("#PracticalQuestion").val(parseInt(oQuestion));
+        });
+        $("#PracticalQuestion").change(function () {
+            var oQuestion = parseInt(100) - parseInt($(this).val());
+            $("#OptionalQuestion").val(parseInt(oQuestion));
+        });
 
-                        $("#frmAddTestSuite").kendoValidator({
-                            rules: {
-                                Weightage: function (input, params) {
-                                    return validateWeightage(input, params);
-                                },
-                                TestSuiteName: function (input, params) {
-                                    if (input.is("[name=TestSuiteName]")) {
-                                        input.attr("data-TestSuiteName-msg", "Test suite name already exist.");
-                                        var isAvailable = isTestSuiteNameAvailable(input.val());
-                                        return isAvailable;
-                                    }
-                                    return true;
-                                }//,
-                                //IsExternal: function (input, params) {
-                                //    //debugger
-                                //    if (input.is("[name=IsExternal]") && !input.is(":checked")) {
-                                //        input.attr("data-IsExternal-msg", "IsExternal required.");
-                                //        input.attr("class", "k-invalid");
-                                //        return false;
-                                //    }
-                                //    return true;
-                                //}
-                            }
-                        });
+        $("#TagCustomControl").on("click", ".addbtn", function () {
+            var rowno = eval($(this).attr('data-val'));
+            var control = formatOfCustomControl(rowno + 1);
+            $("#TagCustomControl").append(control);
+            $(".addbtn[data-val=" + rowno + "]").hide();
+            if (rowno > 1)
+                $(".removebtn[data-val=" + rowno + "]").hide();
+            createControls();
+        });
 
-                        $("#OptionalQuestion").change(function () {
-                            var oQuestion = parseInt(100) - parseInt($(this).val());
-                            $("#PracticalQuestion").val(parseInt(oQuestion));
-                        });
-                        $("#PracticalQuestion").change(function () {
-                            var oQuestion = parseInt(100) - parseInt($(this).val());
-                            $("#OptionalQuestion").val(parseInt(oQuestion));
-                        });
-
-                        $("#TagCustomControl").on("click", ".addbtn", function () {
-                            var rowno = eval($(this).attr('data-val'));
-                            var control = formatOfCustomControl(rowno + 1);
-                            $("#TagCustomControl").append(control);
-                            $(".addbtn[data-val=" + rowno + "]").hide();
-                            if (rowno > 1)
-                                $(".removebtn[data-val=" + rowno + "]").hide();
-                            createControls();
-                        });
-
-                        $("#TagCustomControl").on("click", ".removebtn", function () {
-                            var $btn = $(this);
-                            $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', '&nbsp;Delete')).then(function (confirmed) {
-                                if (confirmed) {
-                                    var rowno = eval($btn.attr('data-val')) - 1;
-                                    $(".addbtn[data-val=" + rowno + "]").show();
-                                    if (rowno > 1)
-                                        $(".removebtn[data-val=" + rowno + "]").show();
-                                    var div = $btn.closest('.form-group');
-                                    $(div).remove();
-                                }
-                            });
+        $("#TagCustomControl").on("click", ".removebtn", function () {
+            var $btn = $(this);
+            $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', '&nbsp;Delete')).then(function (confirmed) {
+                if (confirmed) {
+                    var rowno = eval($btn.attr('data-val')) - 1;
+                    $(".addbtn[data-val=" + rowno + "]").show();
+                    if (rowno > 1)
+                        $(".removebtn[data-val=" + rowno + "]").show();
+                    var div = $btn.closest('.form-group');
+                    $(div).remove();
+                }
+            });
 
 
-                        });
+        });
 
-                        $("#btnSave").click(function () {
-                            window.onbeforeunload = null;
-                            var sum = 0;
-                            $summands = $(".WeightageField");
-                            $summands.each(function () {
-                                var value = Number($(this).val());
-                                if (!isNaN(value)) sum += value;
-                            });
-                            var validatable = $("form").kendoValidator().data("kendoValidator");
+        $("#btnSave").click(function () {
+            window.onbeforeunload = null;
+            var sum = 0;
+            $summands = $(".WeightageField");
+            $summands.each(function () {
+                var value = Number($(this).val());
+                if (!isNaN(value)) sum += value;
+            });
+            var validatable = $("form").kendoValidator().data("kendoValidator");
 
-                            //if (!($("#IsExternal").is(':checked'))) {
-                            //    $("#IsExtenalError").html("Is External is required.");
-                            //}
-                            //else {
-                            //    $("#IsExtenalError").html("");
-                            //}
+            //if (!($("#IsExternal").is(':checked'))) {
+            //    $("#IsExtenalError").html("Is External is required.");
+            //}
+            //else {
+            //    $("#IsExtenalError").html("");
+            //}
 
-                            if (validatable.validate()) {
-                                if (sum != 100) {
-                                    toastr.error("Weightage sum must be 100.")
-                                }
-                                else {
-                                    tags = '';
-                                    var TestSuiteId = $("#TestSuiteId").val();
-                                    var IsCopy = $("#IsCopy").val();
-                                    var TestSuiteName = $("#TestSuiteName").val();
-                                    var Duration = $("#Duration").val();
-                                    var Position = $("#Position").val();
-                                    var Competency = $("#Competency").val();
-                                    var ProjectName = $("#ProjectName").val();
-                                    var FromExperience = $("#FromExperience").val();
-                                    var ToExperience = $("#ToExperience").val();
-                                    var OptionalQuestion = $("#OptionalQuestion").val();
-                                    var PracticalQuestion = $("#PracticalQuestion").val();
-                                    var Status = $("#Status").val();
-                                    var SpecialInstruction = $("#SpecialInstruction").val();
-                                    var IsExternal = $('input[name=IsExternal]:checked').val();
-                                    var Weights = '';
-                                    var Proficiency = '';
-
-
-                                    $('#TagCustomControl input.tagAutoComplete').each(function () {
-                                        if (tags == '') {
-                                            tags += $(this).val();
-                                        }
-                                        else {
-                                            tags += "," + $(this).val();
-                                        }
-                                    })
-
-                                    $('#TagCustomControl input.WeightageField').each(function () {
-                                        if (Weights == '') {
-                                            Weights += $(this).val();
-                                        }
-                                        else {
-                                            Weights += "," + $(this).val();
-                                        }
-                                    })
-
-                                    $('#TagCustomControl input.proficiencyDropDown').each(function () {
-                                        if (Proficiency == '') {
-                                            Proficiency += $(this).val();
-                                        }
-                                        else {
-                                            Proficiency += "," + $(this).val();
-                                        }
-                                    })
-
-                                    $.ajax(
-                                    {
-                                        type: "POST",
-                                        url: "Save",
-                                        data: {
-                                            TestSuiteId: TestSuiteId,
-                                            IsCopy: IsCopy,
-                                            TestSuiteName: TestSuiteName,
-                                            Duration: Duration,
-                                            Position: Position,
-                                            Competency: Competency,
-                                            PrimaryTagNames: tags,
-                                            Weights: Weights,
-                                            Proficiency: Proficiency,
-                                            ProjectName: ProjectName,
-                                            Status: Status,
-                                            FromExperience: FromExperience,
-                                            ToExperience: ToExperience,
-                                            OptionalQuestion: OptionalQuestion,
-                                            PracticalQuestion: PracticalQuestion,
-                                            SpecialInstruction: SpecialInstruction,
-                                            IsExternal: IsExternal
-                                        },
-                                        success: function (response) {
-                                            if (response != null && response.status == "success") {
-                                                $("#SuccessModel").modal();
-                                                if (IsCopy == "True") {
-                                                    ShowMessage("Test suite copy created successfully.", 1);
-                                                    redirectToTestSuiteList();
-                                                }
-                                                else if (TestSuiteId == 0) {
-                                                    ShowMessage("Test suite created successfully.", 1);
-                                                    redirectToTestSuiteList();
-                                                }
-                                                else {
-                                                    ShowMessage("Test suite updated successfully.", 1);
-                                                    redirectToTestSuiteList();
-                                                }
-                                            } else {
-                                                ShowMessage(response.message, 0);
-                                            }
-                                        },
-                                        error: function (response) {
-                                            ShowMessage("error!");
-
-                                        }
-                                    });
-                                }
-                            }
-                        });
-
-                    });
-                    function isTagNameAvailable(existingName, updatedName) {
-                        var isAvailable = true;
-                        if (existingName != updatedName) {
-                            $.ajax({
-                                type: "POST",
-                                url: '/Positions/IsDuplicatePositionName',
-                                async: false,
-                                data: { PositionName: updatedName },
-                                success: function (returndata) {
-                                    if (returndata == true) {
-                                        isAvailable = true;
-                                    }
-                                    else {
-                                        isAvailable = false;
-                                    }
-                                }
-                            });
-                        }
-                        return isAvailable;
-                    }
+            if (validatable.validate()) {
+                if (sum != 100) {
+                    toastr.error("Weightage sum must be 100.")
+                }
+                else {
+                    tags = '';
+                    var TestSuiteId = $("#TestSuiteId").val();
+                    var IsCopy = $("#IsCopy").val();
+                    var TestSuiteName = $("#TestSuiteName").val();
+                    var Duration = $("#Duration").val();
+                    var Position = $("#Position").val();
+                    var Competency = $("#Competency").val();
+                    var ProjectName = $("#ProjectName").val();
+                    var FromExperience = $("#FromExperience").val();
+                    var ToExperience = $("#ToExperience").val();
+                    var OptionalQuestion = $("#OptionalQuestion").val();
+                    var PracticalQuestion = $("#PracticalQuestion").val();
+                    var Status = $("#Status").val();
+                    var SpecialInstruction = $("#SpecialInstruction").val();
+                    var IsExternal = $('input[name=IsExternal]:checked').val();
+                    var Weights = '';
+                    var Proficiency = '';
 
 
-                    function addPosition() {
-                        $("#PositionForm").kendoValidator({
-                            rules: {
-                                tagNamevalidation: function (input, params) {
-                                    if (input.is("[name='PositionName']") && input.val() != "") {
-                                        var bool = isTagNameAvailable("", input.val());
-                                        if (!bool) {
-                                            input.attr("data-tagNamevalidation-msg", "Position name already exist.");
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                }
-                            }
-                        });
-                        $('#PositionName').val('');
-                        $("#addPositionPopup").modal('show');
-                    }
-
-                    function savePosition() {
-                        if ($("#PositionForm").valid()) {
-                            $.ajax({
-                                type: "POST",
-                                url: '/Positions/PositionSave',
-                                data: $('#PositionForm').serialize(),
-                                success: function (returndata) {
-                                    $("#addPositionPopup").modal('hide');
-                                    var $PositionSelect = $('#Position').data('kendoDropDownList');
-                                    var multidata = $PositionSelect.dataSource.data();
-                                    multidata.unshift(returndata);
-                                    $("#PositionForm").trigger("reset");
-                                    $PositionSelect.value(returndata.PositionId);
-                                    $('#SavePositionButton').attr('disabled', false);
-
-                                }
-                            });
-
+                    $('#TagCustomControl input.tagAutoComplete').each(function () {
+                        if (tags == '') {
+                            tags += $(this).val();
                         }
                         else {
-                            $('#PositionForm').submit();
+                            tags += "," + $(this).val();
                         }
-                    }
-                    var dataItem1; //This should be Global variable
-                    function onSelectTag(e) {
-                        var selectedValue = this.dataItem(e.item.index()).TagName;
-                        if (selectedValue != null) {
-                            this.dataItem(e.item.index()).TagName = selectedValue;
+                    })
+
+                    $('#TagCustomControl input.WeightageField').each(function () {
+                        if (Weights == '') {
+                            Weights += $(this).val();
                         }
+                        else {
+                            Weights += "," + $(this).val();
+                        }
+                    })
+
+                    $('#TagCustomControl input.proficiencyDropDown').each(function () {
+                        if (Proficiency == '') {
+                            Proficiency += $(this).val();
+                        }
+                        else {
+                            Proficiency += "," + $(this).val();
+                        }
+                    })
+
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: "Save",
+                        data: {
+                            TestSuiteId: TestSuiteId,
+                            IsCopy: IsCopy,
+                            TestSuiteName: TestSuiteName,
+                            Duration: Duration,
+                            Position: Position,
+                            Competency: Competency,
+                            PrimaryTagNames: tags,
+                            Weights: Weights,
+                            Proficiency: Proficiency,
+                            ProjectName: ProjectName,
+                            Status: Status,
+                            FromExperience: FromExperience,
+                            ToExperience: ToExperience,
+                            OptionalQuestion: OptionalQuestion,
+                            PracticalQuestion: PracticalQuestion,
+                            SpecialInstruction: SpecialInstruction,
+                            IsExternal: IsExternal
+                        },
+                        success: function (response) {
+                            if (response != null && response.status == "success") {
+                                $("#SuccessModel").modal();
+                                if (IsCopy == "True") {
+                                    ShowMessage("Test suite copy created successfully.", 1);
+                                    redirectToTestSuiteList();
+                                }
+                                else if (TestSuiteId == 0) {
+                                    ShowMessage("Test suite created successfully.", 1);
+                                    redirectToTestSuiteList();
+                                }
+                                else {
+                                    ShowMessage("Test suite updated successfully.", 1);
+                                    redirectToTestSuiteList();
+                                }
+                            } else {
+                                ShowMessage(response.message, 0);
+                            }
+                        },
+                        error: function (response) {
+                            ShowMessage("error!");
+
+                        }
+                    });
+                }
+            }
+        });
+
+    });
+    function isTagNameAvailable(existingName, updatedName) {
+        var isAvailable = true;
+        if (existingName != updatedName) {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/IsDuplicatePositionName',
+                async: false,
+                data: { PositionName: updatedName },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
                     }
-                    function onAdditionalData() {
-                        return {
-                            text: $("#TagName").val()
-                        };
+                    else {
+                        isAvailable = false;
                     }
+                }
+            });
+        }
+        return isAvailable;
+    }
+
+
+    //function addPosition() {
+    //    $("#PositionForm").kendoValidator({
+    //        rules: {
+    //            tagNamevalidation: function (input, params) {
+    //                if (input.is("[name='PositionName']") && input.val() != "") {
+    //                    var bool = isTagNameAvailable("", input.val());
+    //                    if (!bool) {
+    //                        input.attr("data-tagNamevalidation-msg", "Position name already exist.");
+    //                        return false;
+    //                    }
+    //                }
+    //                return true;
+    //            }
+    //        }
+    //    });
+    //    $('#PositionName').val('');
+    //    $("#addPositionPopup").modal('show');
+    //}
+
+    //function savePosition() {
+    //    if ($("#PositionForm").valid()) {
+    //        $.ajax({
+    //            type: "POST",
+    //            url: '/Positions/PositionSave',
+    //            data: $('#PositionForm').serialize(),
+    //            success: function (returndata) {
+    //                $("#addPositionPopup").modal('hide');
+    //                var $PositionSelect = $('#Position').data('kendoDropDownList');
+    //                var multidata = $PositionSelect.dataSource.data();
+    //                multidata.unshift(returndata);
+    //                $("#PositionForm").trigger("reset");
+    //                $PositionSelect.value(returndata.PositionId);
+    //                $('#SavePositionButton').attr('disabled', false);
+
+    //            }
+    //        });
+
+    //    }
+    //    else {
+    //        $('#PositionForm').submit();
+    //    }
+    //}
+    var dataItem1; //This should be Global variable
+    function onSelectTag(e) {
+        var selectedValue = this.dataItem(e.item.index()).TagName;
+        if (selectedValue != null) {
+            this.dataItem(e.item.index()).TagName = selectedValue;
+        }
+    }
+    function onAdditionalData() {
+        return {
+            text: $("#TagName").val()
+        };
+    }
 
 
 </script>
 
 
-<div id="addPositionPopup" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
-    <form id="PositionForm" action="/Position/Save" method="post">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 id="panelModalHeader" class="modal-title">Add position</h4>
-        </div>
-        <div class="modal-body popUp-modalbody">
+@*<div id="addPositionPopup" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+        <form id="PositionForm" action="/Position/Save" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="panelModalHeader" class="modal-title">Add position</h4>
+            </div>
+            <div class="modal-body popUp-modalbody">
 
-            @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
-        </div>
-        <div class="modal-footer">
-            <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn green">Save</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        </div>
+                @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn green">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
 
-    </form>
-</div>
+        </form>
+    </div>*@
 

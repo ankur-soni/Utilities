@@ -8,6 +8,7 @@ namespace Silicus.Ensure.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            filters.Add(new AuthorizeAttribute());
         }
     }
 }

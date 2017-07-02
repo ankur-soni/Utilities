@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [CandidateAttribute]
     [CustomAuthorize("Admin", "Panel","Employee","Candidate")]
     public class TestController : Controller
     {

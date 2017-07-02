@@ -19,7 +19,8 @@ using Microsoft.AspNet.Identity;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize]
+    [CustomAuthorize("Candidate")]
+    [CandidateAttribute]
     public class CandidateController : Controller
     {
         private readonly IQuestionService _questionService;
@@ -59,7 +60,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     ViewBag.Status = 1;
                     ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
-                    return View("Welcome", new TestSuiteCandidateModel());
+                    return View("Welcome", new TestSuiteEmployeeModel());
                 }
 
                 return View("Welcome", new TestSuiteEmployeeModel() { EmployeeTestSuiteId = userTestSuite.EmployeeTestSuiteId, CandidateId = User.Identity.GetUserId().ToString(), EmployeeId =0 });

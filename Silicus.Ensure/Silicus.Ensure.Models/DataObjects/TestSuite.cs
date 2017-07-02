@@ -20,7 +20,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public Int32 Duration { get; set; }        
 
         //[Required(ErrorMessage = "Position is required.")]
-        public Int32? Position { get; set; }
+        //public Int32? Position { get; set; }
 
         [Required(ErrorMessage = "Competency is required.")]
         public Int32 Competency { get; set; }

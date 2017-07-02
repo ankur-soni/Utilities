@@ -49,7 +49,7 @@
              columns.Bound(p => p.EmpName).Title("Emp name");
              columns.Bound(p => p.EmployeeId).Title("EmployeeId");
              columns.Bound(p => p.MaxScore).Title("Total Marks");
-             columns.Bound(p => p.MarksObtained);
+             columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0? MarksObtained : 'NA'#"); ;
              columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
@@ -85,7 +85,7 @@
             }).Group(g => g.Add(c => c.TestSuitName))
 
             .Read(read => read.Action("GetTestSuitResult", "Employee")).ServerOperation(false)
-            
+
             .PageSize(100))
             .Pageable(pager => { pager.PageSizes(false); })
             .Sortable()
