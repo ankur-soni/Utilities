@@ -29,32 +29,33 @@ namespace Silicus.Ensure.Web.Filters
 
             if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                authorize = true;
-            }
-
-            if (allowedroles.Contains(RoleName.Candidate.ToString()) && HttpContext.Current.User.IsInRole("Candidate"))
-            {
-                authorize = true;
+                base.OnAuthorization(filterContext);
             }
             else
             {
-                var userRoles = MvcApplication.getCurrentUserRoles();
-                if (userRoles.Count > 0)
+                if (allowedroles.Contains(RoleName.Candidate.ToString()) && HttpContext.Current.User.IsInRole("Candidate"))
                 {
-                    authorize = allowedroles.Intersect(userRoles).Any();
+                    authorize = true;
                 }
                 else
-                    authorize = false;
-
-            }
-            if (!authorize)
-            {
-                filterContext.Result = new ViewResult
                 {
-                    ViewName = "~/Views/Error/Unauthorized.cshtml"
-                };
-            }
+                    var userRoles = MvcApplication.getCurrentUserRoles();
+                    if (userRoles.Count > 0)
+                    {
+                        authorize = allowedroles.Intersect(userRoles).Any();
+                    }
+                    else
+                        authorize = false;
 
+                }
+                if (!authorize)
+                {
+                    filterContext.Result = new ViewResult
+                    {
+                        ViewName = "~/Views/Error/Unauthorized.cshtml"
+                    };
+                }
+            }
             base.OnAuthorization(filterContext);
         }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

@@ -70,6 +70,8 @@ namespace Silicus.Ensure.Web
                    "~/Scripts/jquery.countdown.min.js"));
             bundles.Add(new StyleBundle("~/Content/TimerCSS").Include(
             "~/Content/jquery.countdown.css"));
+
+            
         }
 
     }

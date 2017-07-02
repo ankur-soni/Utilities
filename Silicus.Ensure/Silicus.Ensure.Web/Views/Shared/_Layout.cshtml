@@ -115,9 +115,9 @@
                                 <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                         <i class="fa fa-pencil-square-o"></i>
-                                        
+
                                     </a>
-                                   
+
                                     <ul class="dropdown-menu mailbox animated bounceInDown">
 
                                         <li class="external">
@@ -126,25 +126,25 @@
                                                     <b>Technologies</b>
                                                 </span>
                                             </h3>
-                                            
+
                                         </li>
                                         <li>
                                             <ul class="dropdown-menu-list scroller" style="height:100px;" data-handle-color="#637283">
 
-                                                    <span id="TechnologyList" class="message-center">
-                                                    </span>
+                                                <span id="TechnologyList" class="message-center">
+                                                </span>
                                             </ul>
                                         </li>
-                                            
 
-                                        </ul>
+
+                                    </ul>
                                     <!-- /.dropdown-messages -->
                                 </li>
                             }
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
-                        
+
                         <!-- BEGIN USER LOGIN DROPDOWN -->
                                 <li class="dropdown dropdown-user">
                                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -173,8 +173,8 @@
             </div>
             <!-- END HEADER -->
             @*<!-- BEGIN HEADER & CONTENT DIVIDER -->
-            <div class="clearfix"> </div>
-            <!-- END HEADER & CONTENT DIVIDER -->*@
+                <div class="clearfix"> </div>
+                <!-- END HEADER & CONTENT DIVIDER -->*@
             <!-- BEGIN CONTAINER -->
             <div class="loader-overlay" style="display:none;">
                 <div class="loader">
@@ -188,7 +188,7 @@
 
                     <div class="page-sidebar navbar-collapse collapse">
                         <!-- BEGIN SIDEBAR MENU -->
-                        
+
                         @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()) || role.Contains(RoleName.Employee.ToString()))
                         {
                             <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
@@ -200,31 +200,34 @@
                                     </div>
                                 </li>
                                 <!-- END SIDEBAR TOGGLER BUTTON -->
-                                @if (role.Contains(RoleName.Admin.ToString()))
+                                @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()) || role.Contains(RoleName.Recruiter.ToString()))
                                 {
                                     <li class="nav-item start" id="employee-link">
                                         <a href="#" class="nav-link nav-toggle">
                                             <i class="fa fa-user"></i>
                                             <span class="title">Employees</span>
-                                            
+
                                             <span class="arrow"></span>
                                         </a>
                                         <ul class="sub-menu page-sidebar-menu " id="empsubmenu">
-                                            <li class="nav-item start" id="emp-mark-test">
-                                                <a href="/Employee/MarkDashboard" class="nav-link">
-                                                    <i class="fa fa-dashboard" aria-hidden="true"></i>
-                                                    <span class="title">Test Results</span>
-                                                    <span class="selected"></span>                                                   
-                                                </a>
-                                            </li>
-                                            <li class="nav-item start" id="emp-assign-test">
-                                                <a href="/Employee/Index" class="nav-link nav-toggle">
-                                                    <i class="fa fa-user"></i>
-                                                    <span class="title">Assign Tests</span>
-                                                    <span class="selected"></span>
-                                                </a>
-                                            </li>
+                                            @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Recruiter.ToString()))
+                                            {
+                                                <li class="nav-item start" id="emp-mark-test">
+                                                    <a href="/Employee/MarkDashboard" class="nav-link">
+                                                        <i class="fa fa-dashboard" aria-hidden="true"></i>
+                                                        <span class="title">Test Results</span>
+                                                        <span class="selected"></span>
+                                                    </a>
+                                                </li>
 
+                                                <li class="nav-item start" id="emp-assign-test">
+                                                    <a href="/Employee/Index" class="nav-link nav-toggle">
+                                                        <i class="fa fa-user"></i>
+                                                        <span class="title">Assign Tests</span>
+                                                        <span class="selected"></span>
+                                                    </a>
+                                                </li>
+                                            }
                                             <li class="nav-item start" id="employee-reviewTest">
                                                 <a href="/Admin/ReviewAssignedTest?ReviewType=1" class="nav-link ">
                                                     <i class="fa fa-question" aria-hidden="true"></i>
@@ -232,8 +235,11 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </li>
 
+                                    </li>
+                                }
+                                @if (role.Contains(RoleName.Admin.ToString()))
+                                {
                                     <li class="nav-item start" id="user-mgmt-link">
                                         <a href="/ManageUser/Index" class="nav-link nav-toggle">
                                             <i class="fa fa-users"></i>
@@ -242,6 +248,7 @@
                                             @*<span class="arrow open"></span>*@
                                         </a>
                                     </li>
+
                                     <li class="nav-item start" id="setup-link">
                                         <a href="/Master/Index" class="nav-link nav-toggle">
                                             <i class="fa fa-gear"></i>
@@ -252,79 +259,82 @@
                                     </li>
                                 }
 
-                                @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()))
+                                @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
                                 {
-                                <li class="nav-item start" id="candidate-link">
-                                    <a href="/Admin/Candidates" class="nav-link nav-toggle">
-                                        <i class="fa fa-user"></i>
-                                        <span class="title">Candidate</span>
-                                        <span class="selected"></span>
-                                        <span class="arrow"></span>
-                                    </a>
-                                    <ul class="sub-menu" id="candidate-submenu">
-                                        <li class="nav-item start" id="candidate-assignTest">
-                                            <a href="/jobvite/index" class="nav-link ">
-                                                <i class="fa fa-list-ol" aria-hidden="true"></i>
-                                                <span class="title">Assign Test</span>
-                                                <span class="selected"></span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item start" id="candidate-reviewTest">
-                                            <a href="/Admin/ReviewAssignedTest?ReviewType=2" class="nav-link ">
-                                                <i class="fa fa-question" aria-hidden="true"></i>
-                                                <span class="title">Review Test</span>
-                                            </a>
-                                        </li>
+                                    <li class="nav-item start" id="candidate-link">
+                                        <a href="/Admin/Candidates" class="nav-link nav-toggle">
+                                            <i class="fa fa-user"></i>
+                                            <span class="title">Candidate</span>
+                                            <span class="selected"></span>
+                                            <span class="arrow"></span>
+                                        </a>
+                                        <ul class="sub-menu" id="candidate-submenu">
+                                            @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                                            {
+                                                <li class="nav-item start" id="candidate-assignTest">
+                                                    <a href="/jobvite/index" class="nav-link ">
+                                                        <i class="fa fa-list-ol" aria-hidden="true"></i>
+                                                        <span class="title">Assign Test</span>
+                                                        <span class="selected"></span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            <li class="nav-item start" id="candidate-reviewTest">
+                                                <a href="/Admin/ReviewAssignedTest?ReviewType=2" class="nav-link ">
+                                                    <i class="fa fa-question" aria-hidden="true"></i>
+                                                    <span class="title">Review Test</span>
+                                                </a>
+                                            </li>
 
-                                    </ul>
-                                </li>
+                                        </ul>
+                                    </li>
                                 }
 
                                 <li class="nav-item start" id="emp-assigned-test">
                                     <a href="/Employee/AssignedTest" class="nav-link nav-toggle">
                                         <i class="fa fa-book"></i>
                                         <span class="title">My Assigned Tests</span>
-                                        <span class="selected"></span>                                       
-                                    </a>
-                                </li>
-
-                              @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
-                              {
-
-                                <li class="nav-item start" id="questionbank-link">
-                                    <a href="#" class="nav-link nav-toggle">
-                                        <i class="fa fa-question-circle"></i>
-                                        <span class="title">Question Bank</span>
                                         <span class="selected"></span>
-                                        <span class="arrow"></span>
-                                    </a>
-                                    <ul class="sub-menu" id="questionbank-submenu">
-                                        <li class="nav-item start" id="question-bank-dashboard">
-                                            <a href="/QuestionBank/Dashboard" class="nav-link ">
-                                                <i class="fa fa-tachometer" aria-hidden="true"></i>
-                                                <span class="title">Dashboard</span>
-                                                <span class="selected"></span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item start" id="questionList-link">
-                                            <a href="/QuestionBank/QuestionBank" class="nav-link ">
-                                                <i class="fa fa-question" aria-hidden="true"></i>
-                                                <span class="title">Question List</span>
-
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item start" id="testsuite-link">
-                                    <a href="/TestSuite/List" class="nav-link nav-toggle">
-                                        <i class="fa fa-file-text-o"></i>
-                                        <span class="title">Test Suite</span>
-                                        <span class="selected"></span>
-                                        @*<span class="arrow open"></span>*@
                                     </a>
                                 </li>
-                              }
+
+                                @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                                {
+
+                                    <li class="nav-item start" id="questionbank-link">
+                                        <a href="#" class="nav-link nav-toggle">
+                                            <i class="fa fa-question-circle"></i>
+                                            <span class="title">Question Bank</span>
+                                            <span class="selected"></span>
+                                            <span class="arrow"></span>
+                                        </a>
+                                        <ul class="sub-menu" id="questionbank-submenu">
+                                            <li class="nav-item start" id="question-bank-dashboard">
+                                                <a href="/QuestionBank/Dashboard" class="nav-link ">
+                                                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                                    <span class="title">Dashboard</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item start" id="questionList-link">
+                                                <a href="/QuestionBank/QuestionBank" class="nav-link ">
+                                                    <i class="fa fa-question" aria-hidden="true"></i>
+                                                    <span class="title">Question List</span>
+
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item start" id="testsuite-link">
+                                        <a href="/TestSuite/List" class="nav-link nav-toggle">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <span class="title">Test Suite</span>
+                                            <span class="selected"></span>
+                                            @*<span class="arrow open"></span>*@
+                                        </a>
+                                    </li>
+                                }
 
                             </ul>
                         }
@@ -390,11 +400,11 @@
             </div>
             <!-- END FOOTER -->
         </div>
-                            }
-                            else
-                            {
-                                @RenderBody()
-                            }
+    }
+    else
+    {
+        @RenderBody()
+    }
 
     <!--Start Show Session Expire Warning Popup here -->
 
@@ -548,11 +558,11 @@
 
         $(document).ready(function () {
             pageContentSectionheight();
-            
+
         });
         $(window).resize(function () {
             pageContentSectionheight();
-            
+
         });
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
