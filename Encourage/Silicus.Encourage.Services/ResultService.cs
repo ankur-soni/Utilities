@@ -46,7 +46,8 @@ namespace Silicus.Encourage.Services
         public void SelectWinner(int nominationId, string winningComment, string hrAdminsFeedback, int adminId)
         {
             var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().SingleOrDefault(model => model.NominationId == nominationId);
-            var currentNomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(x => x.Id == shortlistedNomination.NominationId);
+            var currentNomination = shortlistedNomination != null ? _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(x => x.Id == shortlistedNomination.NominationId) : _encourageDatabaseContext
+                .Query<Nomination>().FirstOrDefault( x => x.Id == nominationId);
             if (currentNomination != null)
             {
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
