@@ -144,15 +144,24 @@
                 data: { awardId: awardId },
                 success: function (customDate) {
                     hideCustomLoader();
-                    if (selectedAwardFrequency == MON) {
-                        $("#Months").attr("disabled", false);
-                    }
                     $("#Months").val(customDate.Month);
                     $("#Years").val(customDate.Year);
                     $("#checkbox1").prop('checked', customDate.IsApplicable);
                     //$("#MonthToSubtract").val(customDate.MonthsToSubtract);
+                    if (selectedAwardFrequency == MON) {
+                        $("#Months").attr("disabled", false);
+                    }
+                    if (selectedAwardFrequency == YEAR) {
+                        $("#Months").val("");
+                    }
                     var currentDate = new Date();
                     var selectedYear = parseInt($("#Years").val());
+                    var selectedMonth = parseInt($("#Months").val());
+                    if ((selectedAwardFrequency === MON && currentDate.getFullYear() === selectedYear && (currentDate.getMonth() + 1) === selectedMonth) || (selectedAwardFrequency === YEAR && currentDate.getFullYear() === selectedYear)) {
+                        $("#reset-custom-date").attr("disabled", true);
+                    } else {
+                        $("#reset-custom-date").attr("disabled", false);
+                    }
                     if (currentDate.getFullYear() == selectedYear) {
                         $("#Months option").each(function () {
                             var data = $(this).val();
@@ -336,6 +345,7 @@
 
     function fillDefaultValuesGrid() {
         var awardId = $("#Awards").val();
+        var selectedAwardFrequency = getSelectedAwardFrequency(awardId);
         if (awardId > 0) {
             showCustomLoader();
             $.ajax({
@@ -346,6 +356,9 @@
                     $("#lblForAwardType").text(customDate.AwardName);
                     $("#lblForYear").text(customDate.Year);
                     $("#lblForMonth").text(customDate.MonthName);
+                    if (selectedAwardFrequency === YEAR) {
+                        $("#lblForMonth").text("--");
+                    }
                     // $("#lblIsApplicable").text(customDate.IsApplicable);
                     if (customDate.IsApplicable) {
                         $("#lblIsApplicable").text("Yes");

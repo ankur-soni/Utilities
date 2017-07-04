@@ -573,6 +573,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             var customDate = _customDateService.GetCustomDate(consolidatedNominationsViewModel.AwardId);
             var awards = _awardService.GetAllAwards();
+            var currentAwardFrequency = consolidatedNominationsViewModel.AwardId > 0 ? GetAwardFrequency(consolidatedNominationsViewModel.AwardId).Data.ToString() : "";
             if (consolidatedNominationsViewModel.AwardId == 0)
             {
                 consolidatedNominationsViewModel = new ConsolidatedNominationsViewModel();
@@ -613,7 +614,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     ReviewerName = reviewerObj != null ? reviewerObj.FirstName + " " + reviewerObj.LastName : ""
                 });
             }
-            var nominations = _encourageDatabaseContext.Query<Nomination>().Include(a => a.ManagerComments).Include(b => b.ReviewerComments).Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == consolidatedNominationsViewModel.AwardMonth && N.NominationDate.Value.Year == consolidatedNominationsViewModel.AwardYear && N.AwardId == consolidatedNominationsViewModel.AwardId).ToList();
+            var nominations = currentAwardFrequency == FrequencyCode.YEAR.ToString() ? _encourageDatabaseContext.Query<Nomination>().Include(a => a.ManagerComments).Include(b => b.ReviewerComments).Where(N => N.IsSubmitted == true && N.NominationDate.Value.Year == consolidatedNominationsViewModel.AwardYear && N.AwardId == consolidatedNominationsViewModel.AwardId).ToList() : _encourageDatabaseContext.Query<Nomination>().Include(a => a.ManagerComments).Include(b => b.ReviewerComments).Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == consolidatedNominationsViewModel.AwardMonth && N.NominationDate.Value.Year == consolidatedNominationsViewModel.AwardYear && N.AwardId == consolidatedNominationsViewModel.AwardId).ToList();
             foreach (var nomination in nominations)
             {
                 var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
