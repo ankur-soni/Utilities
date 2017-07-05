@@ -1,6 +1,7 @@
 ﻿using Silicus.Ensure.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,5 +33,8 @@ namespace Silicus.Ensure.Web.Models
         public List<int> SelectedEmployeeId { get; set; }
 
         public IEnumerable<TestSuite> TestSuitList { get; set; }
+
+        [Required(ErrorMessage = "Reviewer is required")]
+        public int ReviewerId { get; set; }
     }
 }

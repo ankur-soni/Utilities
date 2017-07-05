@@ -229,14 +229,12 @@
                                     {
                                         @(Html.Kendo().DropDownListFor(m => m.Status)
                                         .Name("Status")
+                                         .OptionLabel("--Select--")
                                         .DataTextField("Text")
                                         .DataValueField("Value")
                                         .BindTo(new List<SelectListItem>
                                             () {
-                                            new SelectListItem(){
-                                            Text="--Select--",
-                                            Value="0"
-                                            },
+                                           
                                             new SelectListItem(){
                                             Text=CandidateStatus.Selected.ToString(),
                                             Value=((int)CandidateStatus.Selected).ToString()

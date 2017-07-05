@@ -157,7 +157,11 @@ namespace Silicus.Ensure.Web.Controllers
                 };
 
                 if (employeeTestSuit != null)
+                {
                     model.existingAssignedTest = employeeTestSuit.EmployeeTestSuiteId;
+                    model.ReviewerId = employeeTestSuit.ReviewerId.Value;
+                    model.TestSuiteId = employeeTestSuit.TestSuiteId;
+                }
 
                 return PartialView("AssignTest", model);
             }

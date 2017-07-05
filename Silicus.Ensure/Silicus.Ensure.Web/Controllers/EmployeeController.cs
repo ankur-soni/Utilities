@@ -322,7 +322,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [HttpPost]
         [CustomAuthorize("Admin", "Recruiter")]
-        public ActionResult AssignEmployeeSuite(int SuiteId, List<int> UserList, int IsReAssign = 0)
+        public ActionResult AssignEmployeeSuite(int SuiteId, List<int> UserList,int reviewerId, int IsReAssign = 0)
         {
             // string mailsubject = "";
             //var updateCurrentUsers = _userService.GetUserById(UserId);
@@ -344,13 +344,14 @@ namespace Silicus.Ensure.Web.Controllers
             }
             //}
 
-            foreach (var UserId in UserList)
+            foreach (var UserId in UserList.Distinct())
             {
                 var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
                 EmployeeTestSuite userTestSuite = new EmployeeTestSuite();
                 userTestSuite.EmployeeId = UserId;
                 userTestSuite.TestSuiteId = SuiteId;
                 userTestSuite.CandidateID = "0";
+                userTestSuite.ReviewerId = reviewerId;
                 userTestSuite.StatusId = (int)CandidateStatus.TestAssigned;
                 _testSuiteService.AssignEmployeeSuite(userTestSuite, testSuiteDetails);
             }

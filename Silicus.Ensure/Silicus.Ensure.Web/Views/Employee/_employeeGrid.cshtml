@@ -6,8 +6,14 @@
     ViewBag.Title = "_employeeGrid";
 }
 <style>
-    #ddl-employee-list, #ddl-selectedEmployee-List{height:500px;}
-    .btn-grp-arrowWrapper{margin-top: 250px;margin-left:35%;}
+    #ddl-employee-list, #ddl-selectedEmployee-List {
+        height: 500px;
+    }
+
+    .btn-grp-arrowWrapper {
+        margin-top: 250px;
+        margin-left: 35%;
+    }
 </style>
 <div class="toolbar">
     <div class="row">
@@ -30,7 +36,39 @@
             </div>
         </div>
     </div>
-    
+    <div class="row">
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-1">
+            Reviewer
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <div class="form-group">
+                @(Html.Kendo().DropDownListFor(m => m.ReviewerId).Name("ReviewerId")
+        .Name("DDReviewerList")
+  .DataTextField("DisplayName")
+  .DataValueField("ID")
+  .OptionLabel("--Select--")
+  .DataSource(source => source
+  .Custom()
+  .Transport(transport => transport
+        .Read(read =>
+        {
+            read.Url("/Common/GetPanelDetails/");
+        })
+  )
+  //.Schema(schema => schema
+  //      .Data("Data")
+  //      .Total("Total")
+  //      .Errors("errors")
+  // )
+)
+
+                )
+                @Html.ValidationMessageFor(m => m.ReviewerId)
+
+
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -125,10 +163,11 @@
             $('#ddl-selectedEmployee-List').find('option').each(function () {
                 empArray.push($(this).val());
             });
-            
-            var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
 
-            if (empArray.length > 0 && testSuitData.value() > 0) {
+            var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
+            var DDReviewerListData = $("#DDReviewerList").data("kendoDropDownList");
+
+            if (empArray.length > 0 && testSuitData.value() > 0 && DDReviewerListData.value()) {
 
                 $('#myEmpModal').find('input[type=checkbox]:checked').removeAttr('checked');
                 $.ajax({
@@ -136,11 +175,11 @@
                     async: false,
                     url: "/Employee/AssignEmployeeSuite",
                     cache: false,
-                    data: { SuiteId: testSuitData.value(), UserList: empArray },
+                    data: { SuiteId: testSuitData.value(), UserList: empArray, reviewerId: DDReviewerListData.value() },
                     contenttype: "application/json; charset=utf-8",
                     success: function (returndata) {
-                        if (returndata == 1) { 
-                            ShowMessage("Test suite assigned successfully.", 1);                          
+                        if (returndata == 1) {
+                            ShowMessage("Test suite assigned successfully.", 1);
                             $(".loader-overlay").hide();
                         }
                     },
@@ -150,7 +189,7 @@
                 });
             }
             else {
-                toastr.error('Please select at least one test suite or Employee.')
+                toastr.error('Please select at least one Employee, test suite and Reviewer.')
                 $(".loader-overlay").hide();
             }
         });
@@ -170,14 +209,14 @@
     function getAssignedEmpID() {
         $("#ddl-employee-list").append($('#ddl-selectedEmployee-List').find('option'));
         $('#ddl-selectedEmployee-List').find('option').remove();
-       
+
         var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
         $.ajax({
             type: 'get',
             url: "/Employee/GetEmployeeassigedforTestSuits",
             data: { suitId: testSuitData.value() },
             success: function (empList) {
-              
+
                 var obj = $("#ddl-employee-list option");
                 var selectedEmp = new Array();
                 for (i = 0; i < obj.length; i++) {
@@ -185,7 +224,7 @@
                         if (obj[i].value == data) {
                             selectedEmp.push(obj[i]);
                             //$("#ddl-employee-list option[value='" + obj[i].value + "']").remove();
-                            
+
                         }
                     });
 
@@ -198,5 +237,5 @@
             }
         });
     }
-    
+
 </script>
