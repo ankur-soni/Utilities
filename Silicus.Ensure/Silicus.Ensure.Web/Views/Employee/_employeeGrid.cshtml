@@ -6,8 +6,26 @@
     ViewBag.Title = "_employeeGrid";
 }
 <style>
-    #ddl-employee-list, #ddl-selectedEmployee-List {
-        height: 500px;
+    .custom-search-input
+    {
+        height:501px;
+        border: 1px solid lightgray;
+    }
+    li.selected {
+        background-color: #efefef;
+    }
+
+    /*#input-group {
+        padding-right: 11px;
+    }*/
+
+    #search, #searchSelected {
+        height: 33px;
+    }
+
+    #ddl-employee-list, #ddl-selectedEmployee-list {
+        max-height: 500px;
+        overflow-y: scroll;
     }
 
     .btn-grp-arrowWrapper {
@@ -75,9 +93,30 @@
 <div class="row">
     @if (Request.IsAuthenticated)
     {
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <p class="font18">Employee List</p>
-            @Html.ListBox("ddl-employee-list", Model.EmployeeList, new { @class = "form-control" })
+
+            <div class="custom-search-input">
+                <div class="input-group col-md-12" id="input-group">
+                    <input id="search" type="text" class="form-control input-lg" placeholder="Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+                <ul class="list-group" id="ddl-employee-list">
+                    @foreach (var emp in Model.EmployeeList)
+                    {
+                        <li class="list-group-item" value="@emp.Value">
+                            <input type="checkbox" disabled/>
+                        @emp.Text
+                        </li>
+                    }
+
+                </ul>
+            </div>
+            @* @Html.ListBox("ddl-employee-list", Model.EmployeeList, new { @class = "form-control" })*@
         </div>
 
 
@@ -88,43 +127,25 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <p class="font18">Selected Employee</p>
-            <select multiple class="form-control" id="ddl-selectedEmployee-List"></select>
+            @*<select multiple class="form-control" id="ddl-selectedEmployee-List"></select>*@
+            <div class="custom-search-input">
+                <div class="input-group col-md-12" id="input-group">
+                    <input id="searchSelected" type="text" class="form-control input-lg" placeholder="Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+                <ul class="list-group" id="ddl-selectedEmployee-list">                  
+                    
+                </ul>
+            </div>
         </div>
 
 
-        @*@(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("EmployeeGrids")
-            .Columns(columns =>
-            {
-                columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);
-                columns.Bound(c => c.FullName).Title("Name");
-                columns.Bound(p => p.RoleName).Title("Role name");
-                columns.Bound(p => p.EmployeeId).Title("EmployeeId");
-                columns.Bound(p => p.Email);
-                //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','New') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
-                //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
-                //columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(650).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px;font-size:14px;text-transform:initial;' class='btn green' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' style='font-size:14px;text-transform:initial;' class='btn green' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
-
-            })
-               .DataSource(dataSource => dataSource.Ajax().Model(model =>
-               {
-                   model.Id(p => p.Email);
-                   model.Field(p => p.Email).Editable(false);
-               })
-
-               .Read(read => read.Action("GetUserDetails", "Employee")).ServerOperation(false)
-               //.Create(update => update.Action("CreateUser", "User"))
-               //.Update(update => update.Action("UpdateUser", "User"))
-               //.Destroy(update => update.Action("DeleteUser", "User"))
-               .PageSize(100))
-               .Pageable(pager => { pager.PageSizes(false); })
-               .Sortable()
-               .HtmlAttributes(new { style = "height: 70vh;" })
-                .Scrollable(scrollable => scrollable.Virtual(true))
-                 .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
-               //.Resizable(resizing => resizing.Columns(true))*@
-        //)
     }
 </div>
 <div class="row M-T20 M-B60">
@@ -134,34 +155,59 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('body').on('click', 'li', function () {          
+            $(this).find("input").prop("checked", !$(this).find("input").prop("checked"));
+            $(this).toggleClass('selected');
+        });       
+
+        $('#search').keyup(function () {
+            var current_query = $('#search').val().toLowerCase();
+            if (current_query !== "") {
+                $(".list-group li").hide();
+                $(".list-group li").each(function () {
+                    var current_keyword = $(this).text().toLowerCase();
+                    if (current_keyword.indexOf(current_query) >= 0) {
+                        $(this).show();
+                    };
+                });
+            } else {
+                $(".list-group li").show();
+            };
+        });
+
         $('#btnMovetoSelected').click(function (e) {
-            var selectedOpts = $('#ddl-employee-list option:selected');
+           
+            var selectedOpts = $('#ddl-employee-list li.selected');
             if (selectedOpts.length == 0) {
                 alert("Nothing to move.");
                 e.preventDefault();
             }
-            $('#ddl-selectedEmployee-List').append($(selectedOpts).clone());
-            $(selectedOpts).remove();
+            $('#ddl-selectedEmployee-list').append(selectedOpts);
+            $('#ddl-selectedEmployee-list li.selected').removeClass("selected");
+            $('#ddl-selectedEmployee-list li').find("input").removeProp("checked");
+            //$(selectedOpts).remove();
             e.preventDefault();
         });
 
         $('#btnMovetoNotSelected').click(function (e) {
-            var selectedOpts = $('#ddl-selectedEmployee-List option:selected');
+            var selectedOpts = $('#ddl-selectedEmployee-list li.selected');
             if (selectedOpts.length == 0) {
                 alert("Nothing to move.");
                 e.preventDefault();
             }
-            $('#ddl-employee-list').append($(selectedOpts).clone());
-            $(selectedOpts).remove();
+            $('#ddl-employee-list').append(selectedOpts);
+            $('#ddl-employee-list li.selected').removeClass("selected");
+            $('#ddl-employee-list li').find("input").removeProp("checked");
+            //$(selectedOpts).remove();
             e.preventDefault();
         });
 
         $("#Savebtn").bind("click", function () {
             showCustomLoader();
             var empArray = new Array();
-
-            $('#ddl-selectedEmployee-List').find('option').each(function () {
-                empArray.push($(this).val());
+            
+            $('#ddl-selectedEmployee-list li').each(function () {
+                empArray.push($(this).prop("value"));
             });
 
             var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
@@ -196,19 +242,19 @@
 
     });
 
-    function appendAndRemove(lstBoxId, selectedOpts, permission) {
-        $.each(selectedOpts, function (index, value) {
-            var fieldId = selectedOpts[index].value;
-            if ($(selectedOpts[index]).attr(permission) === 'true') {
-                $('#' + lstBoxId).append($(selectedOpts[index]).clone());
-                $(selectedOpts[index]).remove();
-            }
-        });
-    }
+    //function appendAndRemove(lstBoxId, selectedOpts, permission) {
+    //    $.each(selectedOpts, function (index, value) {
+    //        var fieldId = selectedOpts[index].value;
+    //        if ($(selectedOpts[index]).attr(permission) === 'true') {
+    //            $('#' + lstBoxId).append($(selectedOpts[index]).clone());
+    //            $(selectedOpts[index]).remove();
+    //        }
+    //    });
+    //}
 
     function getAssignedEmpID() {
-        $("#ddl-employee-list").append($('#ddl-selectedEmployee-List').find('option'));
-        $('#ddl-selectedEmployee-List').find('option').remove();
+        $("#ddl-employee-list").append($('#ddl-selectedEmployee-list li'));
+        $('#ddl-selectedEmployee-list').find('li').remove();
 
         var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
         $.ajax({
@@ -217,7 +263,7 @@
             data: { suitId: testSuitData.value() },
             success: function (empList) {
 
-                var obj = $("#ddl-employee-list option");
+                var obj = $("#ddl-employee-list li");
                 var selectedEmp = new Array();
                 for (i = 0; i < obj.length; i++) {
                     $.each(empList, function (index, data) {
@@ -229,7 +275,7 @@
                     });
 
                 }
-                $('#ddl-selectedEmployee-List').append(selectedEmp);
+                $('#ddl-selectedEmployee-list').append(selectedEmp);
 
             },
             error: function (er) {
