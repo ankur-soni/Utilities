@@ -6,11 +6,15 @@
     ViewBag.Title = "_employeeGrid";
 }
 <style>
-    .custom-search-input
-    {
-        height:501px;
+    .list-group-item {
+        padding: 3px 13px !important;
+    }
+
+    .custom-search-input {
+        height: 501px;
         border: 1px solid lightgray;
     }
+
     li.selected {
         background-color: #efefef;
     }
@@ -109,8 +113,8 @@
                     @foreach (var emp in Model.EmployeeList)
                     {
                         <li class="list-group-item" value="@emp.Value">
-                            <input type="checkbox" disabled/>
-                        @emp.Text
+                            <input type="checkbox" disabled />
+                            @emp.Text
                         </li>
                     }
 
@@ -139,9 +143,7 @@
                         </button>
                     </span>
                 </div>
-                <ul class="list-group" id="ddl-selectedEmployee-list">                  
-                    
-                </ul>
+                <ul class="list-group" id="ddl-selectedEmployee-list"></ul>
             </div>
         </div>
 
@@ -155,10 +157,10 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('body').on('click', 'li', function () {          
+        $('body').on('click', 'li', function () {
             $(this).find("input").prop("checked", !$(this).find("input").prop("checked"));
             $(this).toggleClass('selected');
-        });       
+        });
 
         $('#search').keyup(function () {
             var current_query = $('#search').val().toLowerCase();
@@ -176,7 +178,7 @@
         });
 
         $('#btnMovetoSelected').click(function (e) {
-           
+
             var selectedOpts = $('#ddl-employee-list li.selected');
             if (selectedOpts.length == 0) {
                 alert("Nothing to move.");
@@ -205,7 +207,7 @@
         $("#Savebtn").bind("click", function () {
             showCustomLoader();
             var empArray = new Array();
-            
+
             $('#ddl-selectedEmployee-list li').each(function () {
                 empArray.push($(this).prop("value"));
             });

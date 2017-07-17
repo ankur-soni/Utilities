@@ -72,51 +72,86 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<ActionResult> SyncCandidates()
         {
             StringBuilder syncLog = new StringBuilder();
             string baseAddress = "https://api.jobvite.com/api/v2/candidate?api=silicustechnologies_candidate_api_key&sc=c4b68fcb2c29aba71c6a5c418e39e912&wflowstate=New&format=json&city=Pune";
-            using (var httpClient = new HttpClient())
+
+            try
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                HttpResponseMessage response = await httpClient.GetAsync(baseAddress);
-                response.EnsureSuccessStatusCode();
-                syncLog.AppendLine("JobVite Connection Established");
-                string result = await response.Content.ReadAsStringAsync();
-                APIResponse businessunits = JsonConvert.DeserializeObject<APIResponse>(result);
-                syncLog.AppendLine("Candidate List Received");
-                var candidateList = (from candidate in businessunits.candidates
-
-                                     select new UserViewModel()
-                                     {
-                                         FirstName = candidate.firstName,
-                                         LastName = candidate.lastName,
-                                         Email = candidate.email,
-                                         CandidateStatus = candidate.application.workflowState,
-                                         JobViteId = candidate.application.eId,
-                                         Position = candidate.application.job.title
-                                     }).ToList();
-
-                foreach (var user in candidateList)
+                using (var httpClient = new HttpClient())
                 {
-                    ApplicationUser alreadyuser = UserManager.FindByEmail(user.Email);
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    HttpResponseMessage response = await httpClient.GetAsync(baseAddress);
+                    response.EnsureSuccessStatusCode();
+                    syncLog.AppendLine("JobVite Connection Established");
+                    string result = await response.Content.ReadAsStringAsync();
+                    APIResponse businessunits = JsonConvert.DeserializeObject<APIResponse>(result);
+                    var candidateList = (from candidate in businessunits.candidates
 
-                    if (alreadyuser == null)
-                    {
-                        alreadyuser = await CreateUserMethod(user);
-                        if (alreadyuser != null)
-                        {
-                            syncLog.AppendLine("User is created for -" + user.FirstName + " " + user.LastName + "(" + user.JobViteId + ")");
-                        }
-                    }
+                                         select new UserViewModel()
+                                         {
+                                             FirstName = candidate.firstName,
+                                             LastName = candidate.lastName,
+                                             Email = candidate.email,
+                                             CandidateStatus = candidate.application.workflowState,
+                                             JobViteId = candidate.application.eId,
+                                             Position = candidate.application.job.title
+                                         }).ToList();
 
-                    alreadyuser.CandidateStatus = user.CandidateStatus;
-                    UserManager.Update(alreadyuser);
+                    // return Json(result, JsonRequestBehavior.AllowGet);
+                    return Json(new { Items = candidateList });
                 }
-                syncLog.AppendLine("Sync Complete");
-                //DataSourceResult cList = candidateList.ToDataSourceResult(request);
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AdUserforCandidates(UserViewModel candidate)
+        {
+            StringBuilder syncLog = new StringBuilder();
+            try
+            {
+
+                if (candidate != null)
+                {
+                    if (candidate.Email == null)
+                    {
+                        syncLog.AppendLine("Skipping User for -" + candidate.FirstName + " " + candidate.LastName + "(" + candidate.JobViteId + ") as no valid email is present");
+                    }
+                    else
+                    {
+                        ApplicationUser alreadyuser = UserManager.FindByEmail(candidate.Email);
+
+                        if (alreadyuser == null)
+                        {
+                            alreadyuser = await CreateUserMethod(candidate);
+                            if (alreadyuser != null)
+                            {
+                                syncLog.AppendLine("User is created for -" + candidate.FirstName + " " + candidate.LastName + "(" + candidate.JobViteId + ")");
+                            }
+                        }
+
+                        alreadyuser.CandidateStatus = candidate.CandidateStatus;
+                        UserManager.Update(alreadyuser);
+                    }
+                }
+                //syncLog.AppendLine("Sync Complete");
+
+            }
+            catch (Exception ex)
+            {
+                syncLog.Append(ex.Message);
+                syncLog.Append(ex.InnerException);
+                syncLog.Append(ex.StackTrace);
                 return Json(syncLog.ToString(), JsonRequestBehavior.AllowGet);
             }
+            //DataSourceResult cList = candidateList.ToDataSourceResult(request);
+            return Json(syncLog.ToString(), JsonRequestBehavior.AllowGet);
 
         }
 
@@ -146,7 +181,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var user = UserManager.FindById(UserId);
                 var employeeTestSuit = _testSuiteService.GetEmployeeTestSuite().Where(x => x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned) && x.CandidateID == user.Id).FirstOrDefault();
-                
+
                 var model = new AssignTestViewModel()
                 {
                     CandidateFirstName = user.FirstName,

@@ -8,17 +8,35 @@
 }
 
 <style>
-    .syncLog{float: left;margin-left: 15px;}
-    .textArea{width:100%;height:100px;resize:none;}
+    .progress
+    {
+        height:20px!important;
+          text-indent: 0px!important;
+    }
+    .syncLog {
+        float: left;
+        margin-left: 15px;
+    }
+
+    .textArea {
+        width: 100%;
+        height: 100px;
+        resize: none;
+    }
+
     .btn-primary, btn-primary:hover, btn-primary:active, btn-primary:focus {
         color: #fff;
         background-color: #36c6d3 !important;
         border-color: #36c6d3 !important;
     }
-    .p20{padding: 20px 20px 20px 20px;}
-    .logo-text{
-        font-size:49px;
-        font-weight:600;
+
+    .p20 {
+        padding: 20px 20px 20px 20px;
+    }
+
+    .logo-text {
+        font-size: 49px;
+        font-weight: 600;
     }
 </style>
 <div class="row">
@@ -40,7 +58,7 @@
     (Model).Name("CandidateGrid")
     .Columns(columns =>
     {
-        //columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);        
+        //columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);
         columns.Bound(p => p.UserId).Hidden(true);
         columns.Bound(c => c.FirstName).Title("First Name");
         columns.Bound(p => p.LastName).Title("Last Name");
@@ -79,17 +97,17 @@
 
 
 <div id="AssignTest" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="550" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
-    
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Assign Test</h4>
-        </div>
-        <div class="modal-body popUp-modalbody" id="AssignTestBody">
-           
 
-        </div>
-        
-   
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Assign Test</h4>
+    </div>
+    <div class="modal-body popUp-modalbody" id="AssignTestBody">
+
+
+    </div>
+
+
 </div>
 
 <div id="syncDialog" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="550" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
@@ -124,8 +142,18 @@
                     <div class="pull-right">
                         <button type="button" style="width:70px;" class="btn green" id="btnJobViteSync">Sync</button>
                     </div>
+                   
                 </div>
-            </div>
+                <div class="col-sm-12">
+                    <br />
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0"
+                             aria-valuemin="0" aria-valuemax="100" style="width:0%" id="progressIndicator">
+                            0% Complete
+                        </div>
+                    </div>
+
+                </div>
         </div>
         <div class="modal-footer">
             <label class="syncLog">Sync Log:</label>
@@ -147,18 +175,56 @@
         $("#candidate-submenu").css("display", "block");
         $("#candidate-link a span.arrow").addClass("open");
 
-        $("#btnJobViteSync").on("click", function () {           
+        $("#btnJobViteSync").on("click", function () {
+            $("#syncLog").text(" ");
             $.ajax({
                 url: '/JobVite/SyncCandidates',
+                type: 'POST',
                 //data: { QuestionId: questionId, NextQuestionId: nextQuestionId, Status: status, TechnologyId: technologyId, questionStatusType: questionStatusType },
                 success: function (data) {
-                    $("#syncLog").text(data);
-                    $("#CandidateGrid").data("kendoGrid").dataSource.read();
+                    $("#progressIndicator").attr("aria-valuemax", data.Items.length);
+                    $("#progressIndicator").css("width", '0%');
+                    $("#progressIndicator").html('0% Complete');
+                    $("#progressIndicator").attr("aria-valuenow", 0);
 
+                     $(".loader-overlay").hide();
+                     $("#syncLog").text('Connection with JobVite server established\n Received the data from API\n');
+                     var candidatecnt = 1;
+                    for (i = 0; i < data.Items.length; i++) {                        
+                        $.ajax({
+                            url: '/JobVite/AdUserforCandidates',
+                            type: 'POST',
+                            datatype: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ candidate: data.Items[i] }),
+                            success: function (syncData) {
+                                $("#progressIndicator").attr("aria-valuenow", candidatecnt);
+                                $("#progressIndicator").css("width", '' + (candidatecnt / data.Items.length * 100) + '%');
+                                $("#progressIndicator").html('' + (candidatecnt / data.Items.length * 100).toFixed() + '% Complete');
+                                var logtext = $("#syncLog").text();
+                                $("#syncLog").text("");
+                                $("#syncLog").text(logtext + syncData);
+                                candidatecnt++;
+                                if (candidatecnt > data.Items.length) {
+                                    var logtext = $("#syncLog").text();
+                                    $("#syncLog").text("");
+                                    $("#syncLog").text(logtext + '\nSyncing data from API is completed');
+                                    $("#CandidateGrid").data("kendoGrid").dataSource.read();
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                $("#syncLog").text(xhr.responseText);
+                            }
+
+                        });
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#syncLog").text(xhr.responseText);
                 }
             });
         });
-        
+       
     });
 
     function TestDetail(e) {
@@ -178,15 +244,15 @@
             }
         });
 
-      
+
 
     }
     function TestResult(e) {
         $('#syncDialog').modal('show');
 
     };
-    function OnSuccess() {        
-        $('#AssignTest').modal("hide");       
+    function OnSuccess() {
+        $('#AssignTest').modal("hide");
         $("#CandidateGrid").data("kendoGrid").dataSource.read();
         toastr.success('Successfully Assigned the Test to the Candidate.');
         $("#AssignTestBody").html("");
