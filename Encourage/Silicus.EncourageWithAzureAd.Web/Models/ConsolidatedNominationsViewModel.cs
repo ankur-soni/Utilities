@@ -22,6 +22,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public int NominationId { get; set; }
         public string UserName { get; set; }
         public bool IsShortListed { get; set; }
+        public bool IsWinner { get; set; }
         public List<ManagerComment> ManagerComments { get; set; }           
         public List<ReviewerCommentViewModel> ReviewerComments { get; set; }        
     }

@@ -618,13 +618,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             foreach (var nomination in nominations)
             {
                 var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
-
+                var isWinner = false;
+                var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
+                if (checkResultStatus == 1)
+                {
+                    isWinner = true;
+                }
                 var submittednomination = new SubmittedNomination
                 {
                     NominationId = nomination.Id,
                     UserName = nominee != null ? nominee.FirstName + " " + nominee.LastName : "",
                     ManagerComments = nomination.ManagerComments.ToList(),
-                    ReviewerComments = new List<ReviewerCommentViewModel>()
+                    ReviewerComments = new List<ReviewerCommentViewModel>(),
+                    IsWinner = isWinner
                 };
 
                 submittednomination.IsShortListed = _encourageDatabaseContext.Query<Shortlist>().Any(s => s.NominationId == nomination.Id);

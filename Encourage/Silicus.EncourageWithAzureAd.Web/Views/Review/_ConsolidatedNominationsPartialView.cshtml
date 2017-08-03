@@ -98,13 +98,16 @@
                 </tr>
                 <tr>
                     <td>
+                        @{
+                            var displayText = nomination.IsWinner == true ? "Winner" : "Shortlisted";
+                        }
                         @if (!nomination.IsShortListed)
                         {
                             <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary btn-sm">Shortlist</button>
                         }
                         else
                         {
-                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">Shortlisted</button>
+                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">@displayText</button>
                         }
                     </td>
                     <td class="tblBorder">
