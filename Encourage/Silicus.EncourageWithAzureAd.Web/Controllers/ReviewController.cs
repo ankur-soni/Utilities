@@ -405,7 +405,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     default:
                     case "SOM":
                         var prevMonth = customDate;
-                        if (nominationDate.Year < prevMonth.Year && nominationDate.Month < prevMonth.Month)
+                        if (nominationDate.Year < prevMonth.Year)
                         {
                             isHistoricalNomination = true;
                         }
@@ -630,7 +630,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     UserName = nominee != null ? nominee.FirstName + " " + nominee.LastName : "",
                     ManagerComments = nomination.ManagerComments.ToList(),
                     ReviewerComments = new List<ReviewerCommentViewModel>(),
-                    IsWinner = isWinner
+                    IsWinner = isWinner,
+                    IsHistoricalNomination = IsHistoricalNomination(nomination)
                 };
 
                 submittednomination.IsShortListed = _encourageDatabaseContext.Query<Shortlist>().Any(s => s.NominationId == nomination.Id);

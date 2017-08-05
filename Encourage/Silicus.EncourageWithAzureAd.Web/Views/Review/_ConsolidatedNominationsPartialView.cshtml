@@ -100,14 +100,22 @@
                     <td>
                         @{
                             var displayText = nomination.IsWinner == true ? "Winner" : "Shortlisted";
+                            var isHistoricalNomination = nomination.IsHistoricalNomination;
+                            var titleText = "";
                         }
-                        @if (!nomination.IsShortListed)
+                        @if (!nomination.IsShortListed && !nomination.IsHistoricalNomination )
                         {
                             <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary btn-sm">Shortlist</button>
                         }
                         else
                         {
-                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">@displayText</button>
+                            if (!nomination.IsShortListed)
+                            {
+                                displayText = "Shortlist";
+                                titleText = "You can not select Winner or Shortlist Historical Nomination";
+
+                            }
+                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm" title="@titleText">@displayText</button>
                         }
                     </td>
                     <td class="tblBorder">

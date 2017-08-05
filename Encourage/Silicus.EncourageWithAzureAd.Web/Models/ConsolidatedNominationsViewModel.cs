@@ -24,7 +24,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool IsShortListed { get; set; }
         public bool IsWinner { get; set; }
         public List<ManagerComment> ManagerComments { get; set; }           
-        public List<ReviewerCommentViewModel> ReviewerComments { get; set; }        
+        public List<ReviewerCommentViewModel> ReviewerComments { get; set; }
+        public bool IsHistoricalNomination { get; set; }
     }
 
     public class ReviewerViewModel
