@@ -405,7 +405,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     default:
                     case "SOM":
                         var prevMonth = customDate;
-                        if (nominationDate.Year < prevMonth.Year)
+                        if ((nominationDate.Year < prevMonth.Year) || (nominationDate.Year == prevMonth.Year && nominationDate.Month < prevMonth.Month) )
                         {
                             isHistoricalNomination = true;
                         }
