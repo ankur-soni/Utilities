@@ -167,7 +167,7 @@
                     <ul id="awardsTabs" class="nav nav-tabs tabs-left">
                         @foreach (var award in Model.Awards)
                         {
-                            <li class="@(aIndex == 0 ? "active" : "")" data-awardId="@award.AwardId" onclick = "filterByData(this);">
+                            <li class="updateYears @(aIndex == 0 ? "active" : "")" data-awardId="@award.AwardId" onclick = "filterByData(this);">
                                 <a href="#winnerList" data-toggle="tab" aria-expanded="@(aIndex == 0 ? "true" : "false")">
                                     @award.AwardTitle
                                 </a>
@@ -486,17 +486,37 @@
     $("#4").delay(1000).fadeIn();
 
     function filterByData(element) {
-        var month = +$("#filterMonth").val();
-        var year = +$("#filterYear").val();
+        var allowedYears = [];
         var awardId;
-
         if (element != null) {
-            awardId = $(element).attr("data-awardId")
+            awardId = $(element).attr("data-awardId");
         } else {
             awardId = +$("#awardsTabs li.active").attr("data-awardId");
         }
-        
+        if ($(element).hasClass("updateYears")) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetCustomDateDetailsForAward", "Review")',
+                    data: { awardId: awardId },
+                    async: false,
+                    success: function (customDate) {
+                        $('#filterYear').empty();
+                        for (var i = 2010; i <= customDate.Year ; i++) {
+                            //alert(i);
+                            $('#filterYear').append("<option value=" + i + ">" + i + "</option>");
 
+                        }
+                    },
+                    error: function (error) {
+                        swal("Error", "Oops something went wrong!", "error");
+                        hideCustomLoader();
+                        console.log(error);
+                    }
+
+                });
+            }
+        var month = +$("#filterMonth").val();
+        var year = +$("#filterYear").val();
         showCustomLoader();
         $.ajax({
             type: "GET",
