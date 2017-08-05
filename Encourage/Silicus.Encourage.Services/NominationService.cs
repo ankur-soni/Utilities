@@ -505,7 +505,7 @@ namespace Silicus.Encourage.Services
                         allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.ManagerId == managerId &&
                             N.AwardId == awardId &&
-                            (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year <= toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
+                            (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year == toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
                         break;
 
                     case "PINNACLE":
