@@ -602,7 +602,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.RoleId == (int)Roles.Reviewer && x.UtilityId == utility.Id).ToList();
             }
           
-           // var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
 
             foreach (var reviewer in activeReviewers)
             {

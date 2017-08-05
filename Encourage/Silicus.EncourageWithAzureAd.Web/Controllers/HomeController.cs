@@ -54,19 +54,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
 
             var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utiltyName);
-
-            //if ((commonRoles.Count > 0))
-            //{
             dashboardViewModel.UserRoles = commonRoles;
-            //    _logger.Log("No. of roles are: " + commonRoles.Count);
-            //}
-            //else
-            //{
-            //    commonRoles.Add("User");
-            //    dashboardViewModel.UserRoles = commonRoles;
-            //    _logger.Log("Current user's role is User");
-            //}
-
             var typesOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
             var awardsList = new List<AwardViewModel>();
 
@@ -172,8 +160,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult LoginAs()
         {
             var usersWithMultipleRoles = _commonDbService.GetUserWithMultipleRoles();
-            //LoginAsViewModel loginAsVM = new LoginAsViewModel();
-            //loginAsVM.UsersWithMultipleRoles = new SelectList(usersWithMultipleRoles, "EmailAddress", "DisplayName");
             return View();
         }
 

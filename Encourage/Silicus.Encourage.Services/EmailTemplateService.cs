@@ -91,7 +91,6 @@ namespace Silicus.Encourage.Services
                 foreach (string email in ToEmailAddresses)
                 {
                     message.Bcc.Add(email);
-                   // message.To.Add(email);
                 }
                 message.IsBodyHtml = true;
                 try

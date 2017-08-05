@@ -82,7 +82,6 @@ namespace Silicus.Encourage.Services
                 {
                     customDatesForAward.Month = month;
                     customDatesForAward.Year = year;
-                   // customDatesForAward.MonthsToSubtract = monthsToSubtract;
                     customDatesForAward.IsApplicable = isApplicable;
                     _encourageDbcontext.Update(customDatesForAward);
                     return true;
@@ -91,7 +90,6 @@ namespace Silicus.Encourage.Services
                 {
                     customDatesForAward.Year = year;
                     customDatesForAward.IsApplicable = isApplicable;
-                    //customDatesForAward.MonthsToSubtract = monthsToSubtract;
                     _encourageDbcontext.Update(customDatesForAward);
                     return true;
                 }
