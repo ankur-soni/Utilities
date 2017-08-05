@@ -124,7 +124,7 @@
                 <div class="pull-right">
                     <ul style="margin-top:0px;">
                         <li>
-                            @Html.DropDownListFor(b => b.AwardId, Model.ListOfAwards, new { @class = "form-control filterChanged" })
+                            @Html.DropDownListFor(b => b.AwardId, Model.ListOfAwards, new { @class = "form-control filterChanged updateYears" })
                         </li>
                         <li>
                             @Html.DropDownListFor(a => a.AwardMonth, Enumerable.Range(1, 12).
@@ -304,6 +304,30 @@
     }
 
     $(".filterChanged").change(function () {
+        var allowedYears = [];
+        var awardId = parseInt($("#AwardId").val());
+       if( $(this).hasClass("updateYears"))
+        {
+           $.ajax({
+               type: "GET",
+               url: '@Url.Action("GetCustomDateDetailsForAward", "Review")',
+               data: { awardId: awardId },
+               success: function (customDate) {
+                   $('#AwardYear').empty();
+                   for (var i = 2010; i <= customDate.Year ; i++) {
+                       //alert(i);
+                       $('#AwardYear').append("<option value=" + i + ">" + i + "</option>");
+
+                   }
+               },
+               error: function (error) {
+                   swal("Error", "Oops something went wrong!", "error");
+                   hideCustomLoader();
+                   console.log(error);
+               }
+
+           });
+        }
         $("#nominationsFilterForm").submit();
     });
     var criteriaId;
