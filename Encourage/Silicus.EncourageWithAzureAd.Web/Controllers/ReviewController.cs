@@ -606,9 +606,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             foreach (var reviewer in activeReviewers)
             {
                 var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
+                var reviewerData = _encourageDatabaseContext.Query<Reviewer>().FirstOrDefault(x => x.UserId == reviewer.UserId);
+                var reviewerId = reviewerData != null ? reviewerData.Id : 0;
                 consolidatedNominationsViewModel.Reviewers.Add(new ReviewerViewModel
                 {
-                    Id = reviewer.Id,
+                    Id = reviewerId,
                     UserId = reviewer.UserId,
                     ReviewerName = reviewerObj != null ? reviewerObj.FirstName + " " + reviewerObj.LastName : ""
                 });
