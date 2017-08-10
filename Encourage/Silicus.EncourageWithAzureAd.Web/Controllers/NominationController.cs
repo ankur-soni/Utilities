@@ -765,7 +765,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 projectOrDept = _nominationService.GetDeptNameOfCurrentNomination(nominationId);
             }
 
-            var lockedAwards = _nominationService.GetNominationLockStatus();
+            var lockedAwards = _reviewService.GetReviewLockStatus();
             var isLocked = false;
             var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationId);
             foreach (var lockedAward in lockedAwards)
