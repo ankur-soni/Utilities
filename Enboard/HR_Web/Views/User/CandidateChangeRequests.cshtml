@@ -1,0 +1,168 @@
+﻿@*@model IEnumerable<Models.LoginDetails>*@
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<Data.CandidateChangeRequestsDetail>
+@{
+    ViewBag.Title = "User List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jquery")
+<style type="text/css">
+    th:hover:not([data-sort=disabled]) {
+        cursor: pointer;
+    }
+
+    table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
+        background: #428bca;
+    }
+
+    td > a:hover {
+        cursor: pointer;
+    }
+
+    .glyphicon.glyphicon-ok, .glyphicon.glyphicon-pencil, .glyphicon.glyphicon-trash, .glyphicon.glyphicon-remove, .glyphicon.glyphicon-info-sign {
+        color: rgb(0,175,236);
+        padding: 5px;
+    }
+
+        .glyphicon.glyphicon-ok:hover, .glyphicon.glyphicon-pencil:hover, .glyphicon.glyphicon-trash:hover, .glyphicon.glyphicon-remove:hover, .glyphicon.glyphicon-info-sign:hover {
+            color: #2e2e2e;
+        }
+</style>
+<div class="row">
+    <div class="form-users">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group tl-search-grp">
+                <table style="width: 100%;" class="custom-table">
+                    <tr>
+                        <td>
+                            <input class="form-control" id="focusedInput" type="text" placeholder="Search">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="clearSearch();"><i class="fa fa-eye"></i> View All</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box" id="divUserList">
+                @Html.Partial("~/Views/User/_partialCandidateChangeRequestsDetail.cshtml", Model)
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+<div id="myModalRequest" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close cancel-popup" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="hTitleDelete">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsgDelete">
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" id="yesButton" onclick="return changeRequestAction()" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-primary cancel-popup" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function changeRequestAction() {
+            var CandChangeReqID, Action;
+            var actiondata = $('#myModalRequest').data('action-data');
+            CandChangeReqID = actiondata.CandChangeReqID;
+            Action = actiondata.Action;
+            $.ajax({
+                type: "POST",
+                url: '/User/ChangeRequestAction',
+                data: JSON.stringify(actiondata),
+                contentType: "application/json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + " " + errorThrown);
+                    return false;
+                },
+                success: function (data) {
+                    if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                        HandleSessionTimeout();
+                        return;
+                    }
+                    else {
+                        if (data.Sucess) {
+                            $("#" + CandChangeReqID).remove();
+                            if ($("#userGrid tbody tr").length == 0) {
+                                $("#userGrid tbody").append('<tr><td style="text-align: center;" colspan="4">No Data Found</td></tr>');
+                            }
+
+                            toastr.success('Change request is ' + (Action ? 'approved successfully' : 'denied') + '.');
+                            $('#myModalRequest').hide();
+                        }
+                        else {
+                            toastr.error('Unable to ' + (Action ? 'approve' : 'deny') + ' this request.');
+                            $('#myModalRequest').hide();
+                        }
+                    }
+                }
+            });
+        }
+
+
+
+        $(".cancel-popup").click(function () {
+            $('#myModalRequest').hide();
+        });
+        function changeRequest(CandChangeReqID, Action) {
+            $("#hTitleDelete").html('Confirm Action');
+            $("#divMsgDelete").html('Do you want to ' + (Action ? 'approve' : 'deny') + ' this request?');
+            $('#myModalRequest').data('action-data', { CandChangeReqID: CandChangeReqID, Action: Action });
+            $('#myModalRequest').show();
+        }
+        function clearSearch() {
+            $('#focusedInput').val('');
+            sorting($('#hdnSortOrder').val(), $('#hdnIndex').val());
+        }
+        function sorting(sortOrder, pageIndex) {
+            var regex = /<[^>]*>|<|>|/g;
+            $.ajax({
+                type: "GET",
+                url: '/User/CandidateChangeRequests/',
+                data: {
+                    sortOrder: sortOrder,
+                    pageIndex: pageIndex,
+                    searchString: $('#focusedInput').val().toLowerCase().replace(regex, "").trim()
+                },
+                contentType: "application/json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + " " + errorThrown);
+                    return false;
+                },
+                success: function (data) {
+                    if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                        HandleSessionTimeout();
+                        return;
+                    }
+                    $("#divUserList").html('');
+                    $("#divUserList").html(data);
+                    //$(param).append('<span class="sign arrow up"></span>')
+                }
+            });
+        }
+        $('#focusedInput').bind('input propertychange', function () {
+            sorting($('#hdnSortOrder').val(), $('#hdnIndex').val());
+        });
+    </script>
+}

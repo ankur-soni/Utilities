@@ -1,0 +1,485 @@
+﻿@model Models.DocumentDetailListViewModel
+@using HR_Web.Utilities;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_EnboardLayout.cshtml";
+    var DocumentCategory = (SelectList)ViewBag.DocumentCategory;
+    var userId = ViewBag.userId;
+}
+<link href="~/Content/NewUI/css/bootstrap-responsive-tabs.css" rel="stylesheet" />
+<div class="containerInner">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-group uploadDocuments tabSection" id="accordion" role="tablist" aria-multiselectable="true">
+                <input type="hidden" value="@ViewBag.WebUrl" id="hdnUploadWebUrl" />
+                <input type="hidden" value="@ViewBag.WebUrlUploadedFolder" id="hdnWebUrlUploadedFolder" />
+                <input type="hidden" value="@ViewBag.DocumentPath" id="hdnDocumentPath" />
+                @Html.HiddenFor(m => m.PannelId, new { id = "hdnPannel" })
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Upload Documents
+                            </a>
+                            <!--<span class="userNote">You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files. </span> -->
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <ul class="nav nav-tabs responsive-tabs">
+                                <li class="@(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty)"><a href="#idProof">ID Proof <span id="badgeId" class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)"><a href="#adressProof">Address Proof <span id="badgeAdd" class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Education.ToString()) ? "active" : string.Empty)"><a href="#educational">Educational Documents <span id="badgeEdu" class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)"><a href="#emplyoment">Employment Documents <span id="badgeEmp"class="badge"></span> </a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane @(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty) " id="idProof">
+                                    @Html.Partial("_DocumentIdProofUpload")
+                                </div>
+                                <div class="tab-pane @(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)" id="adressProof">
+                                    @Html.Partial("_DocumentAddressProofUpload")
+                                </div>
+                                <div class="tab-pane @(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Education.ToString()) ? "active" : string.Empty)" id="educational">
+                                    @Html.Partial("_DocumentEducationProofUpload")
+                                </div>
+                                <div class="tab-pane @(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)" id="emplyoment">
+                                    @Html.Partial("_DocumentEmploymentDetails")
+                                </div>
+                            </div>
+                            <div class="row btnRow">
+                                <div class="col-md-12">
+                                    <a href="#" onclick="SaveClick();" class="btn-save">Save </a>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+                </div>
+               
+            </div>
+           
+        </div>
+        
+    </div>
+    <div class="row btnRow finalDetailsNext">
+        <div class="col-md-12">
+            <a href="#" onclick="NextClick();" class="btn-save mx-1">Next </a>
+        </div>
+    </div>
+</div>
+<div id="documentStatusImageModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnDocId" />
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="height: 8%;">
+                <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitle"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
+                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 100%; width:100%;"></iframe>
+                    <a id="docDownload" style="display:none;" target="_blank" href=""> Download Document </a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/NewJs/jquery.bootstrap-responsive-tabs.min.js"></script>
+<script>
+    var baseUrl = "@Url.Action("Index", "Document")";
+    function cancel() {
+        $('#documentStatusImageModal').hide();
+    }
+    function fnViewDoc(docId, docName, titleName) {;
+        $("#hdnDocId").val(docId);
+        var url = '@Url.Action("getImg", "Document")?id=' + docId;
+
+        var imgWithExt = docName.split('.');
+        if (imgWithExt[1] === 'docx' || imgWithExt[1] === 'doc') {
+            $("#hTitle").html(titleName);
+            $('#documentStatusImageModal').show();
+            $("#docDownload").attr('href', "/Document/getDocument/" + docId);
+            $('#documentStatusImageModal').find("iframe").hide();
+            $('#docDownload').show();
+        }
+        else {
+            $("#hTitle").html(titleName);
+            $('#documentStatusImageModal').find("#docDownload").hide();
+            $('#documentStatusImageModal').find("iframe").show();
+            $('#documentStatusImageModal').find("iframe").attr("src", url);
+            $('#documentStatusImageModal').show();
+        }
+    }
+    function SaveClick() {
+        var validation = true;
+
+        if ($("#idProof").hasClass('active')) {
+            var idProofMand = $("#idProof .docDescription span.mand").length
+            var addressProofMand = $("#adressProof .docDescription span.mand").length
+
+            if (idProofMand < 1) {
+                validation = false;
+                toastr.error('Please upload mandatory documents.');
+                return false;
+            }
+            else {
+                $("#badgeAdd").parent('a').click();
+                return false;
+            }
+        }
+
+        if ($("#adressProof").hasClass('active')) {
+            $("#badgeEdu").parent('a').click();
+            return false;
+        }
+
+        if ($("#emplyoment").hasClass('active')) {
+            var curemp = $("#emplyoment .company.current-company").find('.mand-field');
+            if ($(curemp).length === 0&& $("#emplyoment .company.non-current-company").find('.mand-field').length == 0)
+            {
+                location.href="@Url.Action("FinalStatus", "Document")";
+            }
+            else {
+                $(curemp).each(function () {
+                    if ($(this).closest('ul.docList').find('span.mand').length == 0) {
+                        validation = false;
+                        toastr.error('Please upload mandatory documents.');
+                        return false;
+
+                    }
+                    else {
+                        location.href="@Url.Action("FinalStatus", "Document")";
+                    }
+                });
+
+                $("#emplyoment .company.non-current-company").find('.mand-field').each(function () {
+                    if ($(this).closest('ul.docList').find('span.mand').length == 0) {
+                        validation = false;
+                        toastr.error('Please upload mandatory documents.');
+                    }
+                    else {
+                        location.href="@Url.Action("FinalStatus", "Document")";
+                    }
+                });
+            }
+
+        }
+        if ($("#educational").hasClass('active')) {
+            $("#educational .docName").each(function () {
+                var uploaddoc = $(this).closest('li').children('ul.docDescription').find('span.mand').length;
+                if (uploaddoc == 0) {
+                    validation = false;
+                    toastr.error('Please upload mandatory documents.');
+                    return false;
+                }
+               
+            });
+            if (validation) {
+                $("#badgeEmp").parent('a').click();
+                return false;
+            }
+        }
+
+
+
+        return validation;
+
+
+    }
+    function NextClick() {
+        var validation = true;
+
+        var idProofMand = $("#idProof .docDescription span.mand").length
+        var addressProofMand = $("#adressProof .docDescription span.mand").length
+
+        if (idProofMand < 1) {
+            validation = false;
+        }
+
+
+        $("#educational .docName").each(function () {
+            var uploaddoc = $(this).closest('li').children('ul.docDescription').find('span.mand').length;
+            if (uploaddoc == 0) {
+                validation = false;
+            }
+        });
+
+
+        $("#emplyoment .company.current-company").find('.mand-field').each(function () {
+            if ($(this).closest('ul.docList').find('span.mand').length == 0) {
+                validation = false;
+
+            }
+        });
+
+
+        $("#emplyoment .company.non-current-company").find('.mand-field').each(function () {
+            if ($(this).closest('ul.docList').find('span.mand').length == 0) {
+                validation = false;
+            }
+        });
+
+        if (!validation) {
+            toastr.error('Please upload mandatory documents.');
+            return validation;
+        }
+        else {
+            location.href="@Url.Action("FinalStatus", "Document")";
+        }
+
+    }
+
+
+    $(document).ready(function () {
+
+        if ('@ViewBag.IsSubmitted'.toLowerCase() === 'true') {
+            $('#collapseOne div.btn-upload').remove();
+            $("#collapseOne a.removeDoc").remove();
+        }
+
+
+        $('.responsive-tabs').responsiveTabs({
+            accordionOn: ['xs', 'sm'] // xs, sm, md, lg
+        });
+
+        $('.docList li').mouseenter(function () {
+            if ($('.docDescription', this).length < 1) {
+                $('.docUpload', this).css({ 'display': 'inline-block' });
+            }
+        });
+        $('.docList li').mouseleave(function () {
+            if ($('.docDescription', this).length < 1) {
+                $('.docUpload', this).css({ 'display': 'none' });
+            }
+        });
+
+        $('.addDocument').mouseenter(function () {
+            $('.userNote', this).css({ 'visibility': 'visible' });
+        }).mouseleave(function () {
+            $('.userNote', this).css({ 'visibility': 'hidden' });
+        });
+
+        var idcount = $("#idProof").find(".uploadName").length;
+        var addcount = $("#adressProof").find(".uploadName").length;
+        var educount = $("#educational").find(".uploadName").length;
+        var empcount = $("#emplyoment").find(".uploadName").length;
+        $("#badgeId").html(idcount).attr("title",  (idcount == 0 || idcount == 1)  ? idcount +" document uploaded" : idcount +" documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeAdd").html(addcount).attr("title", (addcount == 0 || addcount == 1) ? addcount+" document uploaded" :addcount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeEdu").html(educount).attr("title", (educount == 0 || educount == 1) ?educount+ " document uploaded" :educount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeEmp").html(empcount).attr("title", (empcount == 0 || empcount == 1) ? empcount+" document uploaded" :empcount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $(".badge").tooltip({
+            placement: "top"
+        });
+
+
+
+    });
+
+
+    function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
+        var data = { DocumentID: DocumentID, EmployementNo: EmployementNo };
+        if (DocumentID > 0) {
+            ajaxindicatorstart('Deleting file.. Please wait..');
+            $.ajax({
+                url: '/Document/DeleteUploadedDocuments/',
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status = true) {
+                        toastr.success('File deleted Sucessfully.');
+                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 500);
+                    }
+                    else {
+                        toastr.error('Unable to delete uploaded file.');
+                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 500);
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function (error) {
+                    ajaxindicatorstop();
+                    toastr.error(JSON.stringify(error.responseText.trim()));
+                }
+            });
+        }
+    }
+
+    function Reset(DocumentID, EmployementNo, EmploymentDetID) {
+
+        var SubDocCat_Pkforcontrol = DocumentID;
+        if (EmployementNo === null || EmployementNo === undefined || EmployementNo === '' || EmployementNo === "") {
+
+        }
+        else {
+            //Code change - Append EmploymentDetID for employment category document
+            var SubDocCat_Pkforcontrol = DocumentID + EmploymentDetID.toString();
+        }
+        toastr.warning("<button type='button' id='confirmationRevertYes' class='btn btn-default'>Yes</button>" +
+            "   <button type='button' id='confirmationRevertNo' class='btn btn-default'>No</button>", 'Do you want to delete this information?',
+              {
+                  closeButton: false,
+                  allowHtml: true,
+                  onShown: function (toast) {
+                      $("#confirmationRevertYes").click(function () {
+                          DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo);
+                          var rowid = "Idproof" + SubDocCat_Pkforcontrol;
+                          $('#' + rowid).empty();
+                          var uploadid = "Upload" + SubDocCat_Pkforcontrol;
+                          var control = $('#' + uploadid)
+                          control.replaceWith(control = control.clone(true));
+                          var cancelid = "groupbtn" + SubDocCat_Pkforcontrol;
+                          $('#' + cancelid).css('visibility', 'hidden');
+                      });
+                      $("#confirmationRevertYes").click(function () {
+                          this.fadeOut();
+                      });
+                  }
+              });
+    }
+
+    var tempId = -1;
+    function GetFilesNames(uploadid, DocCat_Pk, DocumentID, EmployementNo, EmploymentDetID, DocumentCategory) {
+        var flage = 0;
+        var EmploymentDetailID = "";
+        //Code change - append EmploymentDetailID to control id for employment category
+        if (EmployementNo === null || EmployementNo === undefined || EmployementNo === '' || EmployementNo === "") {
+        }
+        else {
+            EmploymentDetailID = EmploymentDetID.toString();
+        }
+
+        var rowid = "Idproof" + DocumentID + EmploymentDetailID;
+        var fileName = uploadid.files[0].name;
+        var fileExist = false;
+
+        $.ajax({
+            type: "GET",
+            url: '/Document/CheckDuplicateFileName',
+            data: { DocCat_Id: DocCat_Pk, DocumentID: DocumentID, fileName: fileName, EmploymentDetailID: EmploymentDetailID },
+            dataType: 'json',
+            async: false,
+            success: function (response) {
+                if (response == true) {
+                    fileExist = true;
+                    if (fileExist) {
+                        toastr.error('Document with same name already exist');
+                        return false;
+                    }
+
+                }
+                else {
+                    $.each($(uploadid).prop("files"), function (k, v) {
+                        if (uploadid.files[0].name.length <= 35) {
+                            //Code change - Modified save call as per the modified defination
+                            SaveUpload(DocCat_Pk, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, uploadid);
+                        }
+                        else {
+                            toastr.error('File Name charater limit should be less than 30');
+                            return false;
+                        }
+                    });
+
+                    if (flage == 1) {
+                        var cancelid = "groupbtn" + DocumentID + EmploymentDetailID;
+                        $('#' + cancelid).removeAttr("style");
+                    }
+                }
+            },
+            error: function (error) {
+                ajaxindicatorstop();
+                toastr.error(JSON.stringify(error.responseText.trim()));
+            }
+        });
+
+
+    }
+
+    function SaveUpload(DocCat_Id, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, FileId) {
+        if (EmploymentDetID === undefined) {
+            EmploymentDetID = "";
+        }
+
+        var SubDocCat_Pkforcontrol = DocumentID;
+        if (EmployementNo === null || EmployementNo === undefined || EmployementNo === '' || EmployementNo === "") {
+
+        }
+        else {
+            //Code change - Append EmploymentDetID for employment category document
+            SubDocCat_Pkforcontrol = DocumentID.toString() + EmploymentDetID.toString();
+        }
+
+        var formData = new FormData();
+        var uploadid = "Upload" + SubDocCat_Pkforcontrol;
+
+        var totalFiles = FileId.files.length;
+        var fileSize = 0;
+        if (totalFiles > 0) {
+
+            for (var i = 0; i < totalFiles; i++) {
+                var file = FileId.files[i];
+                console.log(file);
+                fileSize += file.size;
+                if ((fileSize / 1024) > 2048) {
+                    toastr.error('Please select file having size less than 2 MB.');
+                    return false;
+                }
+                formData.append("FileUpload", file);
+            }
+        }
+        else {
+            return false;
+        }
+
+        formData.append("DocCat_Id", DocCat_Id);
+        formData.append("DocumentID", DocumentID);
+        formData.append("DocumentCategory", DocumentCategory);
+        formData.append("EmploymentDetID", EmploymentDetID);
+        formData.append("EmployementNo", EmployementNo);
+
+        //Code change - Corrected Formatting
+        ajaxindicatorstart('Uploading.. Please wait..');
+        $.ajax({
+            type: "POST",
+            url: '/Document/SaveUploadedDocuments',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (response) {
+                array = [];
+                if (response.status == true) {
+                    var CurrDocId = response.CurrDocId;
+                    var SubDocCat_Pkforcontrol = DocumentID;
+
+                    var rowid = "Idproof" + SubDocCat_Pkforcontrol;
+                    var docids = response.CurrDocId.trim();
+                    var res = docids.split(" ");
+                    array = array.concat(res);
+                    var DocCategory = "'" + DocumentCategory + "'";
+
+                    ajaxindicatorstop();
+                    toastr.success('Document has been uploaded.');
+                    setTimeout(function () { window.location.href = baseUrl +(response.DocCatID == undefined ?"": "?DocCatID=" + response.DocCatID); }, 500);
+
+                }
+                else {
+                    ajaxindicatorstop();
+                    toastr.error('Unable to uploade file.');
+                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 500);
+                }
+            },
+            error: function (error) {
+                ajaxindicatorstop();
+                toastr.error(JSON.stringify(error.responseText.trim()));
+            }
+        });
+
+    }
+</script>

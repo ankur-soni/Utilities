@@ -1,0 +1,286 @@
+﻿@model PagedList.IPagedList<Models.DocDetailsModel>
+@using PagedList;
+@using PagedList.Mvc;
+@*<style>
+    .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+        background-color: none;
+    }
+
+    .table-striped > tbody > tr:nth-child(2n+1):not(.alert-success):not(.alert-danger) > td,
+    .table-striped > tbody > tr:nth-child(2n+1):not(.alert-success):not(.alert-danger) > th {
+        background-color: #f9f9f9;
+    }
+</style>*@
+
+
+@{
+    var downArrow = "~/images/down-arrow.png";
+    var upArrow = "~/images/up-arrow.png";
+    var downArrowPath = @Url.Content(downArrow);
+    var upArrowPath = @Url.Content(upArrow);
+}
+<style type="text/css">
+    th:hover:not([data-sort=disabled]) {
+        cursor: pointer;
+    }
+
+    table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
+        background: #428bca;
+    }
+    .glyphicon.glyphicon-download,.glyphicon.glyphicon-envelope {  color:rgb(0,175,236); padding:5px;    }
+    .glyphicon.glyphicon-download:hover, .glyphicon.glyphicon-envelope:hover {  color:#2e2e2e; text-decoration:none}
+</style>
+
+<div class="box-body table-responsive">
+    @if (Model.Count() > 0)
+    {
+        <table id="DocGrid" class="table table-bordered table-striped dataTable tablesorter" aria-describedby="example1_info">
+
+            <thead style="background-color:#428bca;color:white; ">
+                <tr>
+                    <th style="border-bottom-width: 3px; " onclick="javascript:sorting('@ViewBag.CandidateNameParm','@ViewBag.PageIndex');">
+                        Candidate Name @if (@ViewBag.CandidateNameParm == "CandidateName_DESC")
+                        {<i class="fa fa-sort-down"></i> }
+                        else
+                        {<i class="fa fa-sort-up"></i> }
+                    </th>
+                  
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+        int candidateCount = 1;
+        int approvedDocs = 0;
+        int rejecteddocs = 0;
+        string candidateName = "";
+        foreach (var user in Model)
+        {
+            var strTitleName = user.CandidateName + " : " + user.Maincategory + " - " + user.SubCategory;
+            if (candidateName != user.CandidateName)
+            {
+                candidateCount = Model.Count(n => n.CandidateName == user.CandidateName);
+                approvedDocs = Model.Count(n => n.CandidateName == user.CandidateName && n.IsVerify == true);
+                rejecteddocs = Model.Count(n=>n.CandidateName == user.CandidateName && n.IsVerify == false);
+            }
+
+            var strcolor = "";
+            if (user.IsVerify == true)
+            {
+                strcolor = "text-success";
+            }
+            else if (user.IsVerify == false)
+            {
+                strcolor = "text-danger";
+            }
+            @*<tr class="alert @strcolor">*@
+    @*<tr>*@
+        
+        <tr id="@user.UserId">
+                 
+        @if (candidateName != user.CandidateName)
+        {
+            if (user.isAllApproved)
+            {
+                <td onclick="return ShowUserDocumentDetails(@user.UserId)" rowspan="@candidateCount" style="vertical-align:middle;background-color:#c8ead8">@Html.Raw(user.CandidateName) </td>
+                  @*<td rowspan="@candidateCount" style="vertical-align:middle;background-color:#c8ead8">@Html.Raw(user.CandidateName) </td>*@
+            }
+            else if (user.isAllRejected)
+            {
+
+                <td onclick="return ShowUserDocumentDetails(@user.UserId)" rowspan="@candidateCount" style="vertical-align:middle;background-color:#ffe6e6">@Html.Raw(user.CandidateName) </td>
+                @*<td rowspan="@candidateCount" style="vertical-align:middle;background-color:#ffe6e6">@Html.Raw(user.CandidateName) </td>*@
+            }
+            else
+            {
+                <td onclick="return ShowUserDocumentDetails(@user.UserId)" rowspan="@candidateCount" style="vertical-align:middle;">@Html.Raw(user.CandidateName) </td>
+                @*<td rowspan="@candidateCount" style="vertical-align:middle;">@Html.Raw(user.CandidateName) </td>*@
+            }
+
+            @*<td rowspan="@candidateCount" style="vertical-align:middle;">@Html.Raw(user.CandidateName) </td>*@
+        }
+       
+    </tr>
+        candidateName = user.CandidateName;
+        }
+}
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <br />
+        <h4>No Records found</h4>
+    }
+
+  
+</div>
+
+
+
+@if (Model.PageCount > 1)
+{
+    @Html.PagedListPager(Model, Page => Url.Action("DocList", new { Page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.SearchString }))
+   
+    string sortOrder = ViewBag.CurrentSort;
+    int index = ViewBag.PageIndex != null ? ViewBag.PageIndex : 1;
+    @Html.Hidden("hdnSortOrder", sortOrder)
+    @Html.Hidden("hdnIndex", index)
+}
+
+
+
+@* Code change -  added new modal to show user document details *@
+
+<div id="modalUserDocumentDetails" class="modal fade in" aria-hidden="false" style="display:none; overflow-y: scroll; overflow-x:hidden">
+    <div class="modal-backdrop fade in" style="z-index:0;"></div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body pop-upNav" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divUserDocumentDetailsContent">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" style="margin-right:15px;" data-dismiss="modal" onclick="CloseUserDocumentDetails()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myMailModal" class="modal fade in" aria-hidden="false" style="display:none;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnUserId" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="ErrorDiv_Email" class="alert alert-danger" role="alert" style="display:none"> </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelMail()">x</button>
+                <h4 class="modal-title" id="mailTital">Send Email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                    <div class="form-group">
+                        <label class="control-label">To</label><span class="red">*</span>
+                        <input class="form-control" id="txtTo" type="text" placeholder="John.doe@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <input class="form-control" id="txtSubject" type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Body</label>
+
+                        <textarea id="txtBody" class="form-control" rows="4">This is the default test for mail body.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <input id="cbxAttachment" type="checkbox" checked="checked" name="attachment" value="Yes"> &nbsp; <label id="lblcheckbox">Attach documents</label>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="fnSendMail()">Send</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancelMail()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnDocId" />
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="height: 8%;">
+                <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitle"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
+                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 100%;"></iframe>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="funVerify(true)">Approve</button>
+                <button type="button" class="btn btn-primary" onclick="funVerify(false)">Reject</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModalImage" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnDocId" />
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="height: 8%;">
+                <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitleImg"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
+                    @*<iframe id="dociframe" src="#" scrolling="yes" style="height: 100%;"></iframe>*@
+                    <img id="docImg" src="#" style="height: 100%;">
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="funVerify(true)">Approve</button>
+                <button type="button" class="btn btn-primary" onclick="funVerify(false)">Reject</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    iframe {
+        width: 100%;
+    }
+</style>
+
+<script>
+  
+    @*Code change -  Adding below method for event on employee name click*@
+    function ShowUserDocumentDetails(UserId) {
+        
+        $("#hdnuserId").val(UserId);
+        ajaxindicatorstart("Loading...Please wait..");
+        $.ajax({
+            type: "GET",
+            url: '/User/GetUserDocumentDetails',
+            data: { userId: UserId },
+            dataType: 'html',
+            async: false,
+            success: function (data) {
+
+                $("#divUserDocumentDetailsContent").html("");
+                $("#divUserDocumentDetailsContent").html(data);
+                ajaxindicatorstop();
+            },
+            error: function (error) {
+                ajaxindicatorstop();
+                alert(JSON.stringify(error.responseText.trim()));
+            }
+        });
+        $('#modalUserDocumentDetails').show();
+        $(window).scrollTop($('#modalUserDocumentDetails').offset().top);
+
+    }
+    @*Code change -  Adding below method for event on close button click in user document detail popup*@
+    function CloseUserDocumentDetails() {
+
+        $('#modalUserDocumentDetails').hide();
+    }
+
+
+    </script>

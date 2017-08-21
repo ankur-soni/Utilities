@@ -1,0 +1,175 @@
+.LoginContainer .textLabel {
+    font-size: 18px;
+    font-weight: 400;
+    color: #8e8d8d;
+    margin-bottom: 0px;
+}
+.LoginContainer input {
+    border-radius: 3px!important;
+    height: 50px;
+    padding: 5px 10px;
+    font-size: 18px;
+}
+.LoginContainer .btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    padding: 10px 60px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    color: #fff;
+    background-color: #00adef;
+    border-color: #00adef;
+    text-decoration: none;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.LoginContainer .form-group {
+    margin-bottom: 20px!important;
+}
+.LoginContainer .forgotPasword a {
+    color: #4dbcf1!important;
+}
+.LoginContainer > div:first-child{
+	z-index:999;
+}
+.bottom-txt span {
+    text-align: center;
+    bottom: 0;
+    position: absolute;
+    padding: 15px;
+}
+.headerTitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: #000;
+    margin:30px 0px 0px 0px
+}
+.paraContent {
+    font-size: 16px;
+    font-weight: 400;
+    color: #777779;
+    line-height: 22px;
+    margin: 10px 0px 0px 0px;
+    text-align: justify;
+}
+.loginLeft {
+    background: url("../images/4X-login-bg.jpg") no-repeat center center / cover !important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+	box-shadow: 3px 0px 5px #b5b5b5;
+}
+.loginLogo{
+	width:200px;
+}
+.LoginContainer .loginContent {
+    top: 15%;
+}
+.loginRight {
+    background: #f1f1f1;
+    height: 100vh;
+    padding: 0;
+    
+}
+.loginRight .loginInner {
+    padding: 10%;
+    position: relative;
+}
+.loginSocailIcon {
+    position: fixed;
+    bottom: 10px;
+    display: block;
+    overflow: hidden;
+}
+.loginSocailIcon ul {
+    margin: 0px;
+    padding: 0px;
+}
+.loginSocailIcon a {
+    color: #777;
+}
+.copyRight {
+    position: fixed;
+    bottom: 10px;
+    font-size: 14px;
+	line-height:30px;
+}
+.copyRight a {
+    color: #777;
+    text-decoration: none;
+}
+.copyRight img{
+	margin-left:10px;
+	height:22px;
+}
+@media (max-width: 991px) {
+    body {
+        overflow: auto!important;
+    }
+    .loginLeft {
+        display: none;
+    }
+    body {
+        background: url("../images/4X-login-bg.jpg") no-repeat center center / cover !important;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 100vh;
+    }
+    .loginRight {
+        height: auto;
+        background: none;
+        box-shadow: none;
+    }
+    .loginInner {
+        background: none;
+        margin: 0px!important;
+        padding: 0px!important;
+        position: relative;
+        display: block;
+        overflow: hidden;
+    }
+    .loginMobileInner {
+        margin: 10%;
+        padding: 6%;
+        padding-bottom: 5%;
+        background: #f1f1f1;
+    }
+    .loginLogo {
+        text-align: center;
+		margin:0px auto;
+		
+    }
+    .LoginContainer .btn {
+        width: 100%;
+    }
+    .loginSocailIcon {
+        position: relative;
+		width:100px;
+		margin:0px auto;
+    }
+    .copyRight {
+        position: relative;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .headerTitle {
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 22px;
+    }
+    .forgotPasword {
+        text-align: center;
+    }
+}

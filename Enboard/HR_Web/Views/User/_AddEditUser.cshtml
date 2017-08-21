@@ -1,0 +1,387 @@
+﻿@model Models.AddEditUserModel
+@using MvcCheckBoxList.Model
+@{
+    ViewBag.Title = "AddEditUser";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    var DepartmentList = (SelectList)ViewBag.Departments;
+    var DesignationList = (SelectList)ViewBag.Designations;
+    var CountryCodeList = (SelectList)ViewBag.CountryCodeList;
+    var silicusLocations = (SelectList)ViewBag.silicusLocations;
+}
+ 
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+
+@*<link href="~/Content/themes/base/base.css" rel="stylesheet" />*@
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/EDP_Validations.js"></script>
+
+<div class="container-fluid">
+
+    <!-- Row start -->
+    @using (Html.BeginForm("AddEditUserDetails", "User", FormMethod.Post, new { id = "User_FormId" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <label id="lblError" class="text-danger"></label>
+        <div class="panel panel-primary" id="succdiv">
+            <div class="panel-heading clearfix">
+                <i class="icon-calendar"></i>
+                <h3 class="panel-title">User Details</h3>
+            </div>
+            @Html.HiddenFor(m => m.UserID)
+            @*Code change- Added new fields as per the new requirement*@
+            <div class="row">
+                <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1 col-sm-offset-1">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Label("First Name", new { @class = "" })<span class="red">*</span>
+                            @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName", maxlength = 15, @class = "form-control", placeholder = "First Name", tabindex = 1 })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <div class="genderCheckbox">
+                                <label>Gender</label> <span class="red">*</span>
+                                <div>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Gender, "Male", new { tabindex = 3, id = "rbtMale", name = "optradio" }) Male
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Gender, "Female", new { tabindex = 3, id = "rbtFemale", name = "optradio" }) Female
+                                    </label>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            
+                                @(Model.UserID != 0 ? @Html.Label("Joining Date", new { @class = "" }) : @Html.Label("Expected Joining Date", new { @class = "" })) <span class="red">*</span>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.JoiningDate, String.Format("{0:dd/MM/yyyy}", Model.JoiningDate), new { id = "txtJoiningDate", @class = "form-control", placeholder = "DD/MM/YYYY", tabindex = 5 })
+                                   
+                                    
+                                    <label class="input-group-addon btn" for="txtJoiningDate"><span class="fa fa-calendar"></span></label>
+                                </div>
+                            @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
+                        </div>
+
+                        @*Code change - Added temporary new fields*@
+                        <div class="form-group">
+                            @Html.Label("Requisition Id", new { @class = "" })
+                            @Html.TextBoxFor(m => m.RequisitionID, new { id = "txtRequisitionID", maxlength = 15, @class = "form-control", placeholder = "Requisition Id", tabindex = 8 })
+                            @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Project Name", new { @class = "" })
+                            @Html.TextBoxFor(m => m.ProjectName, new { id = "txtProjectName", maxlength = 15, @class = "form-control", placeholder = "Project Name", tabindex = 10 })
+                            @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Onboarding SPOC Name", new { @class = "" })
+                            @Html.TextBoxFor(m => m.OnboardingSPOCName, new { id = "txtOnboardingSPOCName", maxlength = 15, @class = "form-control", placeholder = "Onboarding SPOC Name", tabindex = 12 })
+                            @Html.ValidationMessageFor(model => model.OnboardingSPOCName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DepartmentID, new { @class = "" }) <span class="red">*</span>
+                            @Html.DropDownListFor(m => m.DepartmentID, DepartmentList, "", new { id = "ddlDepartment", @class = "form-control", placeholder = "Select Department", tabindex = 14 })
+                            @Html.ValidationMessageFor(model => model.DepartmentID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Education Category", new { @class = "" }) <span class="red">*</span>
+                            <div class="educationCategoryList">
+                                @Html.CheckBoxListFor(model => model.PostedEducationCategories.EducationCategoryIds,
+                                  model => model.AvailableEducationCategories,
+                                  educationcategory => educationcategory.Id,
+                                  educationcategory => educationcategory.Name,
+                                  model => model.SelectedEducationCategories,
+                                  Position.Vertical,
+                                  x => new { @class = "chkEducationCategory", tabindex = 16 })
+                                <label style="color:red" id="lblmsgEducationCategory"> </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-5 col-sm-5 col-xs-12">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @Html.Label("Last Name", new { @class = "" })<span class="red">*</span>
+                            @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName", maxlength = 15, @class = "form-control", placeholder = "Last Name", tabindex = 2 })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Email Address", new { @class = "" })<span class="red">*</span>
+                            @Html.TextBoxFor(m => m.Email, new { id = "txtEmail", @class = "form-control", placeholder = "John.Doe@silicus.com", tabindex = 4 })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Contact Number", new { @class = "" })<span class="red">*</span>
+                            <div class="input-group">
+                                @Html.DropDownListFor(m => m.CountryCode, CountryCodeList, "", new { style = "width:10em;", id = "PD_ddlCountryCode", @class = "form-control titleSelect ", placeholder = "Select Country Code", tabindex = 6 })
+                                @Html.TextBoxFor(m => m.ContactNumber, new { style = "width:20em;", id = "txtContactNumber", maxlength = 15, @class = "form-control numberSpace", placeholder = "Contact Number", tabindex = 7 })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Date Of Birth", new { @class = "" })<span class="red">*</span>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.DOB, String.Format("{0:dd/MM/yyyy}", Model.DOB), new { id = "txtDOB", placeholder = "DD/MM/YYYY", @class = "form-control", tabindex = 9 })
+                              
+                                <label class="input-group-addon btn" for="txtDOB"><span class="fa fa-calendar"></span></label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                        </div>
+                        <label id="lblComparegreaterDateError" class="text-danger" style="display:none;"> </label>
+
+                        <div class="form-group">
+                            @Html.Label("Joining Location", new { @class = "" })<span class="red">*</span>
+                            @Html.DropDownListFor(m => m.JoiningLocation, silicusLocations, "", new { id = "ddlJoiningLocation", @class = "form-control", placeholder = "Select Location", tabindex = 11 })
+                            @Html.ValidationMessageFor(model => model.JoiningLocation, "", new { @class = "text-danger" })
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.Label("Primary Skill", new { @class = "" })
+                            @Html.TextBoxFor(m => m.PrimarySkill, new { id = "txtPrimarySkill", maxlength = 15, @class = "form-control", placeholder = "Primary Skill", tabindex = 13 })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Recruiter Name", new { @class = "" })
+                            @Html.TextBoxFor(m => m.RecruiterName, new { id = "txtRecruiterName", maxlength = 15, @class = "form-control", placeholder = "RecruiterName", tabindex = 15 })
+                            @Html.ValidationMessageFor(model => model.RecruiterName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DesignationID, new { @class = "" }) <span class="red">*</span>
+                            @Html.DropDownListFor(m => m.DesignationID, DesignationList, "", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 17 })
+                            @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" id="btnSave" class="btn btn-save" tabindex="18"> <span class="glyphicon glyphicon-saved"></span>Save</a>
+        <a href="#" id="btnCancel" class="btn btn-cancel" tabindex="19" > <span class="glyphicon glyphicon-remove"></span> Cancel</a>
+    }
+</div>
+<script type="text/javascript">
+   
+    var dateToday = new Date();
+    var yrRange = dateToday.getFullYear() - 100 + ":" + (dateToday.getFullYear());
+
+    $(document).ready(function () {
+        //Hide message label
+        $("#lblmsgEducationCategory").hide();
+        $("#lblmsgEducationCategory").text("Please select Education Category");
+
+        $('#txtDOB').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            yearRange: yrRange,
+         
+            onSelect: function (dateText, inst) {
+                $('#lblComparegreaterDateError').text('');
+                if ($('#txtDOB').val() != '' || $('#txtDOB').val() != "" || $('#txtDOB').val() != null || $('#txtDOB').val().length != 0) {
+
+                    var date = $('#txtDOB').val();
+                    var arrDate = date.split("/");
+                    var today = new Date();
+                    useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
+
+                    var d = new Date(),
+                    date = d.getDate();
+                    n = d.getMonth(),
+
+                    y = d.getFullYear();
+
+                    if (arrDate[0] == date && arrDate[1] - 1 == n) {
+                        if (arrDate[2] > y) {
+                            $('#lblComparegreaterDateError').show();
+                            $('#lblComparegreaterDateError').text('Invalid Date of Birth');
+                            return false;
+                        }
+                        else {
+                            $('#lblComparegreaterDateError').text('');
+                            return true;
+                        }
+                    }
+
+
+                }
+            }
+           
+        });
+
+        $('#txtJoiningDate').datepicker({
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+        });
+
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+
+        //Datepicker validation 
+        //$('.hasDatepicker').attr('readonly', true);
+
+        //click event for check box list for education category
+        $(".chkEducationCategory").click(function () {
+            if ($("input[name='PostedEducationCategories.EducationCategoryIds']:checked").length != 0) {
+                //hide validation error message
+                $("#lblmsgEducationCategory").hide();
+            }
+        });
+
+        $('#btnSave').click(function () {
+           
+            //Education category validationsfor making it mandatory
+            if ($("input[name='PostedEducationCategories.EducationCategoryIds']:checked").length == 0)
+        {
+                //show validation error message
+                $("#lblmsgEducationCategory").show();
+                return false;
+            }
+
+            //Duplicate username validations
+            var isUserExists = false;
+            var firstName = $("#txtFirstName").val();
+            var lastName = $("#txtLastName").val();
+            var DOB = $("#txtDOB").val();
+            var userId = $("#UserID").val();
+            var userName = $("#txtEmail").val();
+
+            var data = { firstName: firstName, lastName: lastName, DOB: DOB, userId: userId, userName : userName };
+            $.ajax({
+                type: "GET",
+                url: "/User/IsFirstNameLastNameDOBDuplicateCheck",
+                data: data,
+                datatype: "json",
+                async: false,
+                success: function (result) {
+                    if (result == true) {
+                        alert("User already exists.");
+                        isUserExists = true;
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+
+            if (isUserExists == true) {
+                return false;
+            }
+          
+        var form = $('#User_FormId');
+        $.validator.unobtrusive.parse(form);
+            if (form.valid()) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                url: "/User/AddEditUserDetails",
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data.result) {
+                        $.ajax({
+                            url: "/User/GetUserList",
+                            cache: false,
+                            type: 'GET',
+                            data: {
+                                searchString: "",
+                            },
+                            success: function (data) {
+                                    window.location.reload();
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    });
+
+    $('#btnCancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            url: "/User/GetUserList",
+            cache: false,
+            type: 'GET',
+            data: {
+                searchString: "", 
+            },
+            success: function (data) {
+                    window.location.reload();
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+        });
+
+        $('#txtDOB').change(function () {
+           
+            $('#lblComparegreaterDateError').text('');      
+          
+        
+    });
+
+        alphabets($('#txtFirstName'));
+        alphabets($('#txtLastName'));
+    });
+
+
+    //Function for datepicker issue , restricting datetpicker in validating date.
+    $(function () {
+        $.validator.addMethod(
+            "date",
+            function (value, element) {
+                var bits = value.match(/([0-9]+)/gi), str;
+                if (!bits)
+                    return this.optional(element) || false;
+                str = bits[1] + '/' + bits[0] + '/' + bits[2];
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(str));
+            },
+            ""
+        );
+    });
+    numeric($('#txtContactNumber'));
+</script>

@@ -1,0 +1,88 @@
+﻿@model Models.LoginDetails
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<meta name="viewport" content="width=device-width" />
+<title>Login</title>
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+<link href="~/LoginContent/styles_for_login.css" rel="stylesheet" />
+<section id="logo">
+    <a href="#"><img src="/Images/Silicus.png" alt="" /></a>
+</section>
+<style>
+
+    /*body {
+    padding-top: 0!important;
+    padding-bottom: 20px;
+}*/
+
+/* Set padding to keep content from hitting the edges */
+/*.body-content {
+    padding-left: 0!important;
+    padding-right: 0!important;
+}*/
+
+
+ .label {
+   color:#6D6767;
+   font-size: inherit;
+   font-weight: bold !important;
+    }
+</style>
+<section class="container">
+    <section class="row">
+    @using (Html.BeginForm("Login", "User", FormMethod.Post, new { role = "login" }))
+        {
+        @Html.AntiForgeryToken()
+
+            <div class="col-md-12">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "label" })
+                    <span class="red">*</span>
+                </div>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="col-md-5">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label" })
+                    <span class="red">*</span>
+                </div>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    @*<input type="password" name="password" required class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="col-md-5"><label class="label">&nbsp;</label></div>
+                <div class="col-md-7">
+                    @*<button type="submit" name="go" class="btn btn-block">Sign In</button>*@
+                    <input type="submit" value="Sign In" class="btn btn-primary" />
+                    <p>@Html.ActionLink("Forgot Password", "ForgotPassword", "User")</p>
+                    @*<p><a href="#">Create account</a></p>*@
+
+                    @*</form>*@
+                </div>
+            </div>
+            }
+</section>
+ </section>
+        
+
+
+
+        @*@section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }*@

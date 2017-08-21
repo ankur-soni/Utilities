@@ -1,0 +1,103 @@
+﻿body {
+    /*padding-top: 140px;
+    padding-bottom: 20px;*/
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    /*padding-left: 15px;
+    padding-right: 15px;*/
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    /*max-width: 280px;*/
+}
+
+.red {
+color:#EA0D0D;
+}
+
+.logo {
+
+    padding-left: 70px;
+    padding-top: 10px;
+    height: 70px;
+    width: 115px;
+}
+.navbar-inverse {
+     background-color: #fff; 
+     border-color: #ffffff; 
+}
+
+.ui-datepicker
+{
+    z-index:99999 !important; 
+}
+
+/**************** tables ***************/
+.tableGrid{ width: 100%; border:none; background-color: #E7E3E5;}
+.tableGrid td { text-align:left; padding:8px;}
+.tableGrid tr.odd {
+        background-color: #eee;
+    }
+tr.tableGrid {
+        background-color: #2a4f70;
+        color: white;
+    }
+.tableGrid-selected{
+    background-color: #2a4f70;
+    color: white;
+}
+.odd.tableGrid-selected {background-color: #2a4f70!important;
+    color: white;
+}
+.tableGrid thead {
+        border-bottom: none;
+        color:#000;
+    }
+.tableGrid th {
+    text-align:left; 
+        padding: 8px;
+        font-size: 14px;
+        color:#000;
+        font-weight:bold;
+        background-color: #A0999C;
+    }
+.tableGrid thead a { color:#000;}
+.tableGrid td td {
+    padding: 0 10px !important;
+}
+
+.tbody {
+            height: 120px;
+            overflow-y: auto;
+        }
+.grid-bottom { background:#E2E2E2; height:35px;}
+
+/*Code change - Modified below code for footer change*/
+.pagination-container{margin-top:-20px;}
+
+.disabled {
+    opacity: 5;
+    background-color:grey;
+}
+
+.disabled {
+    opacity: 5;
+    background-color:grey;
+}
+
+.new-form-input .form-control
+{
+    margin-bottom: 5px;
+}

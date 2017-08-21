@@ -1,0 +1,792 @@
+﻿@model HR_Web.ViewModel.DocumentViewModel
+@{
+    ViewBag.Title = "EmployeeAttachments";
+    Layout = "";
+    var DocumentCategory = (SelectList)ViewBag.DocumentCategory;
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+    }
+
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+    iframe {
+        width: 100%;
+    }
+    .glyphicon.glyphicon-remove {  color:rgb(0,175,236); padding:5px;    }
+    .glyphicon.glyphicon-remove:hover{  color:#2e2e2e;text-decoration:none}
+</style>
+@Scripts.Render("~/bundles/jquery")
+@*@Scripts.Render("~/bundles/jqueryui")*@
+
+<div class="alert alert-info fade in">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>Note! </strong> File size should not be more than 2Mb. Upload documents in pdf, jpeg or jpg & png format only.
+</div>
+<input type="hidden" value="@ViewBag.WebUrl" id="hdnUploadWebUrl" />
+<input type="hidden" value="@ViewBag.WebUrlUploadedFolder" id="hdnWebUrlUploadedFolder" />
+<input type="hidden" value="@ViewBag.DocumentPath" id="hdnDocumentPath" />
+@Html.HiddenFor(m => m.PannelId, new { id = "hdnPannel" })
+<div id="accordion" role="tablist" aria-multiselectable="true" align="left">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" onclick="">
+                    Id Proof
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+
+            @*@using (Html.BeginForm("Upload", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+            @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
+            {
+
+                <table class="table table-condensed">
+                    @foreach (var item in Model.SubDocumentCategoryModelList)
+                    {
+                        if (item.DocCat_Id == 1)
+                        {
+                            <tr>
+                                <td></td>
+                                @if (@item.SubDocCat_Pk == 2)
+                                {
+                                    <td>@item.DocumentCategory<span class="red">  * </span></td>
+                                }
+                                else
+                                {
+                                    <td>@item.DocumentCategory</td>
+                                }
+
+                                <td>
+                                    <div class="fileUpload btn btn-primary">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>Upload</span>
+                                        <input id=@("Upload" + item.SubDocCat_Pk) type="file" name="file" hidden="@item.SubDocCat_Pk" class="upload uploadIDProof" onchange="GetFilesNames(this,@item.DocCat_Id,@item.SubDocCat_Pk,'','@item.DocumentCategory')" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <ol class="Idproofcls" id=@("Idproof" + item.SubDocCat_Pk)></ol>
+
+                                </td>
+                                <td>
+                                    <span style="visibility:hidden;" id="@("groupbtn" + item.SubDocCat_Pk)">
+                                        <span class="glyphicon glyphicon-ok" style="cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onclick="SaveUpload('@item.DocCat_Id','@item.SubDocCat_Pk','@item.DocumentCategory','','0')"></span>
+                                        &nbsp; <span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploaded file" id="@("Idproofcancel" + item.SubDocCat_Pk)" onclick="Reset(@item.SubDocCat_Pk,'')"></span>
+                                    </span>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+            }
+
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" onclick="">
+                    Address Proof
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            @*@using (Html.BeginForm("Upload", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+            @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
+            {
+                <table class="table table-condensed">
+                    @foreach (var item in Model.SubDocumentCategoryModelList)
+                    {
+                        if (item.DocCat_Id == 2)
+                        {
+                            <tr>
+                                <td></td>
+                                <td>@item.DocumentCategory</td>
+                                <td>
+                                    <div class="fileUpload btn btn-primary">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>Upload</span>
+                                        <input id=@("Upload" + item.SubDocCat_Pk) type="file" name="file" hidden="@item.SubDocCat_Pk" class="upload uploadIDProof" onchange="GetFilesNames(this,@item.DocCat_Id,@item.SubDocCat_Pk,'','@item.DocumentCategory')" />
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <ol class="Idproofcls" id=@("Idproof" + item.SubDocCat_Pk)></ol>
+                                </td>
+                                <td>
+                                    <span style="visibility:hidden;" id="@("groupbtn" + item.SubDocCat_Pk)">
+                                        <span class="glyphicon glyphicon-ok" style="cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onclick="SaveUpload('@item.DocCat_Id','@item.SubDocCat_Pk','@item.DocumentCategory','','0')"></span>
+                                        &nbsp; <span class="glyphicon glyphicon-remove" style="color:red;cursor: pointer;" title="Delete Uploaded file" id="@("Idproofcancel" + item.SubDocCat_Pk)" onclick="Reset(@item.SubDocCat_Pk,'')"></span>
+                                    </span>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+            }
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onclick="">
+                    Educational Documents
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            @*@using (Html.BeginForm("Upload", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+            @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
+            {
+
+                <table class="table table-condensed">
+                    @foreach (var item in Model.SubDocumentCategoryModelList)
+                    {
+                        if (item.DocCat_Id == 4)
+                        {
+                            <tr>
+                                <td></td>
+
+                                @*@if (@item.SubDocCat_Pk == 7 || @item.SubDocCat_Pk == 25)
+                                    {
+                                        <td>@item.DocumentCategory<span class="red">  * </span></td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.DocumentCategory</td>
+                                    }*@
+                                <td>@item.DocumentCategory</td>
+                                <td>
+                                    <div class="fileUpload btn btn-primary">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>Upload</span>
+                                        <input id=@("Upload" + item.SubDocCat_Pk) type="file" name="file" hidden="@item.SubDocCat_Pk" class="upload uploadIDProof" onchange="GetFilesNames(this,@item.DocCat_Id,@item.SubDocCat_Pk,'','@item.DocumentCategory')" />
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <ol class="Idproofcls" id=@("Idproof" + item.SubDocCat_Pk)></ol>
+                                </td>
+                                <td>
+                                    <span style="visibility:hidden;" id="@("groupbtn" + item.SubDocCat_Pk)">
+                                        <span class="glyphicon glyphicon-ok" style="cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onclick="SaveUpload('@item.DocCat_Id','@item.SubDocCat_Pk','@item.DocumentCategory','','0')"></span>
+                                        &nbsp; <span class="glyphicon glyphicon-remove" style=" color:red;cursor: pointer;" title="Delete Uploaded file" id="@("Idproofcancel" + item.SubDocCat_Pk)" onclick="Reset(@item.SubDocCat_Pk,'')"></span>
+                                    </span>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+            }
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingFour">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour" onclick="">
+                    Employment Documents
+                </a>
+            </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+
+            <div class="panel-body">
+                <div class="panel-body">
+                    <h4 class="panel-title"></h4>
+                    <div class="panel-group" id="accordion21">
+
+                        @if (Model.EmployementModelList.Count() > 0)
+                        {                          // var index = 0;
+
+                            foreach (var emp in Model.EmployementModelList)
+                            //for (int index = 0; index < Model.EmployementModelList.ToList().Count() ; ++index )
+                            {
+                                var EmployementNo = emp.EmployementNo;
+                                var arr = EmployementNo.Substring(13);
+                                var index = arr;
+                                <div class="panel">
+                                    <a data-toggle="collapse" data-parent="#accordion21" href="@("#collapseTwo" + index)">
+                                        @emp.CompanyName
+                                    </a>
+                                    <div id="@("collapseTwo" + index)" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            @*@using (Html.BeginForm("Upload", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+                                            @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
+                                            {
+                                                <table class="table table-condensed">
+                                                    @foreach (var item in Model.SubDocumentCategoryModelList)
+                                                    {
+                                                        if (item.DocCat_Id == 3)
+                                                        {
+                                                            if (item.SubDocCat_Pk < 120)
+                                                            {
+                                                                <tr>
+
+                                                                    @if (@item.SubDocCat_Pk == 12 || @item.SubDocCat_Pk == 15 || @item.SubDocCat_Pk == 16)
+                                                                    {
+                                                                        @*<td>@item.DocumentCategory<span class="red">  * </span></td>*@
+                                                                        <td>@item.DocumentCategory</td>
+                                                                    }
+                                                                    else if (@item.SubDocCat_Pk < 120)
+                                                                    {
+                                                                        <td>@item.DocumentCategory</td>
+                                                                    }
+                                                                    @if (@item.SubDocCat_Pk == 12 || @item.SubDocCat_Pk == 15 || @item.SubDocCat_Pk == 16 || @item.SubDocCat_Pk == 31 || @item.SubDocCat_Pk == 32)
+                                                                    {
+                                                                        <td>
+                                                                            <div class="fileUpload btn btn-primary">
+                                                                                <i class="glyphicon glyphicon-upload"></i>
+                                                                                <span>Upload</span>
+                                                                                <input id=@("Upload" + item.SubDocCat_Pk + (index)) type="file" name="file" hidden="@item.SubDocCat_Pk" class="upload uploadIDProof" onchange="GetFilesNames(this,@item.DocCat_Id,@item.SubDocCat_Pk,'@emp.EmployementNo','@item.DocumentCategory')" />
+                                                                            </div>
+                                                                        </td>
+                                                                    }
+                                                                    @if (@item.SubDocCat_Pk == 12 || @item.SubDocCat_Pk == 15 || @item.SubDocCat_Pk == 16 || @item.SubDocCat_Pk == 31 || @item.SubDocCat_Pk == 32)
+                                                                    {
+                                                                        <td>
+                                                                            <ol class="Idproofcls" id=@("Idproof" + item.SubDocCat_Pk + (index))></ol>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span style="visibility:hidden;" id="@("groupbtn" + item.SubDocCat_Pk + (index))">
+                                                                                <span class="glyphicon glyphicon-ok" style="cursor: pointer;" id="UD_IdProofSave" title="Save Uploded files" onclick="SaveUpload('@item.DocCat_Id','@item.SubDocCat_Pk','@item.DocumentCategory','@emp.EmployementNo','0')"></span>
+                                                                                &nbsp; <span class="glyphicon glyphicon-remove" style=" color:red;cursor: pointer;" title="Delete Uploded files" id="@("Idproofcancel" + item.SubDocCat_Pk + (index))" onclick="Reset(@item.SubDocCat_Pk,'@emp.EmployementNo')"></span>
+                                                                            </span>
+
+                                                                        </td>
+                                                                    }
+
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </table>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                // index++;
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnDocId" />
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="height: 8%;">
+                <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitle"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
+                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 100%;"></iframe>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModalImage" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnDocId" />
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="height: 8%;">
+                <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitleImg"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
+                    <img id="docImg" src="#" style="height: 100%;">
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModalInformation" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnSelectedID" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitleInfo"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsgInfo">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        debugger;
+        getDocuments();
+        //$("#collapseFour").collapse('show');
+        //$("#collapseTwo1").collapse('show');
+        //$("#collapseOne").collapse('hide');
+        //alert($("#hdnPannel").val());
+    });
+
+    function getDocuments()
+    {
+        clearAllOlBeforeLoad();
+        var SubDocuments = @Html.Raw(Json.Encode(Model.SubDocumentCategoryModelList));
+        var myArray=[];
+        for (var i = 0; i < SubDocuments.length; i++)
+        {
+            var DocumentsList = @Html.Raw(Json.Encode(Model.DocumentDetailModelList));
+            for (var j = 0; j < DocumentsList.length; j++)
+            {
+
+
+                if (SubDocuments[i].SubDocCat_Pk == DocumentsList[j].SubDocCat_Pk)
+                {
+
+                    var SubDocCat_Pkforcontrol=SubDocuments[i].SubDocCat_Pk;
+
+                    // if(DocumentsList[j].EmployementNo===null || DocumentsList[j].EmployementNo===undefined){
+                    if(DocumentsList[j].EmployementNo===null || DocumentsList[j].EmployementNo===undefined || DocumentsList[j].EmployementNo==='' || DocumentsList[j].EmployementNo===""){
+
+                    }
+                    else
+                    {
+                        //var arr= (DocumentsList[j].EmployementNo).substring(13)
+                        SubDocCat_Pkforcontrol = SubDocuments[i].SubDocCat_Pk;//+arr;
+                    }
+
+                    var rowid = "Idproof" + SubDocCat_Pkforcontrol;
+                    var Filename=DocumentsList[j].DocumentName;
+                    var DocFilePath=DocumentsList[j].FilePath;
+                    var DocId=DocumentsList[j].ID;
+                    var DocCat_Pk= Filename=DocumentsList[j].DocCat_Pk;
+                    var SubDocCat_Pk=DocumentsList[j].SubDocCat_Pk;
+                    var count = myArray.indexOf(DocId);
+                    if(count==-1)
+                    {
+                        //$('#' + rowid).append('<li><a href=#  onClick="fnViewDoc(' +DocId + ',' +"'"+ DocumentsList[j].DocumentName + "'"+','+ "'"+SubDocuments[i].DocumentCategory+"'"+');">'+DocumentsList[j].DocumentName+'  </a></li>')
+                        //                   .append('<td><span  id=groupbtn'+SubDocCat_Pk+'>')
+                        //                  .append('<span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+DocCat_Pk +"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+SubDocuments[i].DocumentCategory+"'"+');"></span>')
+                        //                  .append('&nbsp; <span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploaded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+DocId +"'"+ ','+"''"+');"></span>')
+                        //.append('</span></td></li>');
+
+                        //$('#' + rowid).append('<li id='+DocId+'><a href=#  onClick="fnViewDoc(' +DocId + ',' +"'"+ DocumentsList[j].DocumentName + "'"+','+ "'"+SubDocuments[i].DocumentCategory+"'"+');">'+DocumentsList[j].DocumentName+'  </a>&nbsp;&nbsp;&nbsp;<td><span  id=groupbtn'+SubDocCat_Pk+'><span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+DocCat_Pk +"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+SubDocuments[i].DocumentCategory+"'"+','+"''"+','+"'"+0+"'"+');"></span>&nbsp;<span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+DocId +"'"+ ','+"''"+');"></span></span></td></li>');
+                        $('#' + rowid).append('<li id='+DocId+'>'+DocumentsList[j].DocumentName+'&nbsp;&nbsp;&nbsp;<td><span id=groupbtn'+SubDocCat_Pk+' hidden>&nbsp;<span class="glyphicon glyphicon-remove" style=" color:red;cursor: pointer;" title="Delete Uploaded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+DocId +"'"+ ','+"''"+');"></span></span></td></li>');
+
+                    }
+                    myArray.push(DocId);
+                    var cancelid = "groupbtn" + SubDocCat_Pkforcontrol;
+                    $('#' + cancelid).removeAttr("style");
+
+                }
+            }
+        }
+    }
+
+
+    function clearAllOlBeforeLoad()
+    {
+        var SubDocuments = @Html.Raw(Json.Encode(Model.SubDocumentCategoryModelList));
+
+        for (var i = 0; i < SubDocuments.length; i++) {
+
+            if(SubDocuments[i].EmployementNo===null || SubDocuments[i].EmployementNo===undefined || SubDocuments[i].EmployementNo==='' || SubDocuments[i].EmployementNo===""){
+
+            }
+            else{
+                var name= SubDocuments[i].EmployementNo;
+                var arr= name.substring(13)
+                var SubDocCat_Pk = SubDocCat_Pk+arr;
+            }
+            var rowid = "Idproof" + SubDocuments[i].SubDocCat_Pk;
+            $('#' + rowid).empty();
+        }
+    }
+
+    function fnViewDoc(docId,docName,DocumentCategory)
+    {
+        var url = '@Url.Action("getImg", "Document")?id=' + docId;
+
+        var imgWithExt = docName.split('.');
+
+        if (imgWithExt[1] == "pdf") {
+            debugger;
+            $("#hTitle").html(DocumentCategory);
+            $('#myModal').find("iframe").attr("src", url);
+            $('#myModal').show();
+        }
+        else {
+            $("#hTitleImg").html(DocumentCategory);
+            $('#myModalImage').find("img").attr("src", url);
+            $('#myModalImage').show();
+        }
+    }
+
+    function cancel()
+    {
+        $('#myModal').hide();
+        $('#myModalImage').hide();
+
+        $('#myModalInformation').hide();
+        $("#ddlExprInYears").attr('selectedIndex', 2);
+        $("#ddlExprInYears").val('');
+        $("#ddlExprInMonths").val('');
+    }
+    var tempId = -1;
+    function GetFilesNames(id, DocCat_Pk, SubDocCat_Pk,EmployementNo,DocumentCategory)
+    {
+        debugger;
+        var flage = 0;
+        if(EmployementNo===null || EmployementNo===undefined || EmployementNo==='' || EmployementNo==="")
+        {
+        }
+        else
+        {
+            var arr= EmployementNo.substring(13)
+            var SubDocCat_Pk = SubDocCat_Pk+arr;
+        }
+        var rowid = "Idproof" + SubDocCat_Pk;
+        var uploadid = "Upload" + SubDocCat_Pk;
+        var fileName=document.getElementById(uploadid).files[0].name;
+        var fileExist=false;
+        $.ajax({
+            type: "GET",
+            url: '/Document/CheckDuplicateFileName',
+            data: { DocCat_Id:DocCat_Pk,SubDocCat_Pk:SubDocCat_Pk,fileName:fileName},
+            dataType: 'json',
+            async:false,
+            success: function (response)
+            {
+                debugger;
+                if (response== true)
+                {
+                    fileExist=true;
+                }
+            },
+            error: function (error) {
+                ajaxindicatorstop();
+                alert(JSON.stringify(error.responseText.trim()));
+            }
+        });
+
+        if(fileExist)
+        {
+            alert("Document with same name already exist");
+            return false;
+        }
+
+        //var i=0;
+        //$('#'+rowid+" li").each(function()
+        //{
+        //    debugger;
+        //    if(this.id<0)
+        //    {
+
+        //        var match = $(this).find("span #UD_IdProofSave").attr("onclick").split(',');
+
+
+
+        //        var DocCat_Id= match[0].split('(')[1].split('')[1]
+        //        var SubDocCat_Pk=  match[1].split('')[1]
+        //        var DocumentCategory=match[2];
+        //        var EmployementNo=match[3];
+        //        var tempid=match[4].split(')')[0];
+
+        //        SaveUpload(DocCat_Id, SubDocCat_Pk, DocumentCategory,EmployementNo,tempid);
+        //    }
+        //    i++;
+        //});
+
+        //$('#' + rowid).empty();
+        $.each($(id).prop("files"), function (k, v)
+        {
+            debugger;
+
+
+            // flage = 1;
+            //var filename = v['name'];
+            //var type = v['type'];
+            // var rowid = "Idproof" + SubDocCat_Pk;
+            //$('#' + rowid).append("<li>" + filename + "</li>")
+            //         .append('<td><span  id=groupbtn'+SubDocCat_Pk+'>')
+            //        .append('<span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+DocCat_Pk +"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+DocumentCategory+"'"+');"></span>')
+            //        .append('&nbsp; <span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+0+"'"+ ','+"''"+');"></span></span></td>');
+
+            // $('#' + rowid).append("<li id="+tempId+">" + filename + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td><span  id=groupbtn'+SubDocCat_Pk+'><td><span  id=groupbtn'+SubDocCat_Pk+'><span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+DocCat_Pk +"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+DocumentCategory+"'"+','+"''"+','+"'"+tempId+"'"+');"></span>&nbsp; <span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+tempId+"'"+ ','+"''"+');"></span></span></td></li>');
+
+            // tempId--;
+            var uploadid = "Upload" + SubDocCat_Pk;
+            if(document.getElementById(uploadid).files[0].name.length<=35)
+            {
+                SaveUpload(DocCat_Pk, SubDocCat_Pk, DocumentCategory,EmployementNo,tempId);
+            }
+            else
+            {
+                alert("File Name charater limit should be less than 30" );
+                return false;
+            }
+        });
+
+
+        if (flage == 1)
+        {
+            var cancelid = "groupbtn" + SubDocCat_Pk;
+            $('#' + cancelid).removeAttr("style");
+        }
+
+
+    }
+    function DeleteUpload(SubDocCat_Pk,SubDocCat_Pkforcontrol,EmployementNo)
+    {
+        debugger;
+        //var totalFiles = $('#' + "Idproof" + SubDocCat_Pkforcontrol);
+        //alert(SubDocCat_Pk>0);
+        var data={SubDocCat_Pk:SubDocCat_Pk,EmployementNo:EmployementNo};
+        //if($(totalFiles).children().length>0) {
+        if(SubDocCat_Pk>0)
+        {
+            //Code change - Corrected Formatting 
+            ajaxindicatorstart('Deleting file.. Please wait..');
+            $.ajax({
+
+                url: '/Document/DeleteUploadedDocuments/',
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                success: function (response) {
+                    if (response = true) {
+                        debugger;
+                        $("#hTitleInfo").html('File Status');
+                        $("#divMsgInfo").html('File deleted Sucessfully.');
+                        $("#"+SubDocCat_Pk).remove();
+                        $('#myModalInformation').delay(1000).fadeOut();
+                        //setTimeout(function () { window.location.reload() }, 1000);
+
+                    }
+                    else
+                    {
+                        $("#hTitleInfo").html('File Status');
+                        $("#divMsgInfo").html('Unable to delete uploaded file.');
+                        $('#myModalInformation').delay(1000).fadeOut();
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function (error) {
+                    ajaxindicatorstop();
+                }
+            });
+
+        }
+        else
+        {
+            $("#"+SubDocCat_Pk).remove();
+            $('#myModalInformation').delay(1000).fadeOut();
+            return false;
+        }
+
+
+    }
+    function Reset(SubDocCat_Pk,EmployementNo)
+    {
+        debugger;
+        var SubDocCat_Pkforcontrol=SubDocCat_Pk;
+        if(EmployementNo===null || EmployementNo===undefined || EmployementNo==='' || EmployementNo===""){
+
+        }
+        else{
+            var arr= EmployementNo.substring(13)
+            var SubDocCat_Pkforcontrol = SubDocCat_Pk+arr;
+        }
+
+        if(confirm("Are you sure you want to delete file?"))
+        {
+            DeleteUpload(SubDocCat_Pk,SubDocCat_Pkforcontrol,EmployementNo);
+            var rowid = "Idproof" + SubDocCat_Pkforcontrol;
+            $('#' + rowid).empty();
+            var uploadid = "Upload" + SubDocCat_Pkforcontrol;
+            var control = $('#' + uploadid)
+            control.replaceWith(control = control.clone(true));
+            var cancelid = "groupbtn" + SubDocCat_Pkforcontrol;
+            $('#' + cancelid).css('visibility', 'hidden');
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    function SaveUpload(DocCat_Id, SubDocCat_Pk, DocumentCategory,EmployementNo,tempid)
+    {
+        debugger;
+        var SubDocCat_Pkforcontrol=SubDocCat_Pk;
+        if(EmployementNo===null || EmployementNo===undefined || EmployementNo==='' || EmployementNo===""){
+
+        }
+        else{
+            var arr= EmployementNo.substring(13)
+            var SubDocCat_Pkforcontrol = SubDocCat_Pk;
+        }
+
+        debugger;
+        var formData = new FormData();
+
+        var uploadid = "Upload" + SubDocCat_Pkforcontrol;
+        //var totalFiles = $('#' + uploadid)
+        var totalFiles = document.getElementById(uploadid).files.length;
+        var fileSize = 0;
+        if (totalFiles > 0)
+            // if(tempid<0)
+        {
+
+            for (var i = 0; i < totalFiles; i++) {
+                var file = document.getElementById(uploadid).files[i];
+                console.log(file);
+                fileSize += file.size;
+                if((fileSize/1024) > 2048)
+                {
+                    alert("Please select file having size less than 2 MB.");
+                    return false;
+                }
+                formData.append("FileUpload", file);
+            }
+        }
+        else {
+            return false;
+        }
+
+        formData.append("DocCat_Id", DocCat_Id);
+        formData.append("SubDocCat_Pk", SubDocCat_Pk);
+        formData.append("DocumentCategory", DocumentCategory);
+        formData.append("EmployementNo", EmployementNo);
+        //Code change - Corrected Formatting 
+        ajaxindicatorstart('Uploading.. Please wait..');
+        $.ajax({
+            type: "POST",
+            url: '/Document/SaveUploadedDocuments',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response)
+            {
+                array  = [];
+                if (response.status == true)
+                {
+
+                    var CurrDocId=response.CurrDocId;
+                    var SubDocCat_Pkforcontrol=SubDocCat_Pk;
+
+                    if(EmployementNo===null || EmployementNo===undefined || EmployementNo==='' || EmployementNo==="")
+                    {
+
+                    }
+                    else
+                    {
+                        //var arr= (EmployementNo).substring(13)
+                        //SubDocCat_Pkforcontrol = SubDocCat_Pkforcontrol+arr;
+                    }
+                    debugger;
+                    var rowid = "Idproof" + SubDocCat_Pkforcontrol;
+                    var docids = response.CurrDocId.trim();
+                    var res=docids.split(" ");
+                    array = array.concat(res);
+                    var DocCategory= "'"+DocumentCategory+"'";
+                    var i=0;
+                    debugger;
+                    // $('#'+rowid+" li").each(function()
+                    // {
+                    //if(this.id==tempid && tempid<0)
+                    //{
+                    this.id=docids;
+                    //$(this).html('<a href=#  onClick="fnViewDoc(' +docids + ',' +"'"+ $(this).text().trim() + "'"+','+ "'"+DocumentCategory+"'"+');">'+$(this).text()+'</a>&nbsp;&nbsp;&nbsp;<td><span  id=groupbtn'+SubDocCat_Pk+'><span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+0+"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+DocumentCategory+"'"+','+"''"+','+"'"+0+"'"+');"></span>&nbsp;<span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+docids +"'"+ ','+"''"+');"></span></span></td>');
+
+                    // $('#' + rowid).append('<li id='+DocId+'><a href=#  onClick="fnViewDoc(' +DocId + ',' +"'"+ DocumentsList[j].DocumentName + "'"+','+ "'"+SubDocuments[i].DocumentCategory+"'"+');">'+DocumentsList[j].DocumentName+'  </a>&nbsp;&nbsp;&nbsp;<td><span  id=groupbtn'+SubDocCat_Pk+'><span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+DocCat_Pk +"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+SubDocuments[i].DocumentCategory+"'"+');"></span>&nbsp;<span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+DocId +"'"+ ','+"''"+');"></span></span></td></li>');
+
+                    // $('#' + rowid).append('<li id='+docids+'><a href=#  onClick="fnViewDoc(' +docids + ',' +"'"+ response.DocumentName + "'"+','+ "'"+DocumentCategory+"'"+');">'+response.DocumentName+'</a>&nbsp;&nbsp;&nbsp;<td><span  id=groupbtn'+SubDocCat_Pk+'><span class="glyphicon glyphicon-ok" style="color:green;cursor: pointer;" id="UD_IdProofSave" title="Save Uploded file" onClick="SaveUpload('+"'"+0+"'"+ ',' +"'"+ SubDocCat_Pk + "'"+','+ "'"+DocumentCategory+"'"+','+"''"+','+"'"+0+"'"+');"></span>&nbsp;<span class="glyphicon glyphicon-remove" style="color:red; cursor: pointer;" title="Delete Uploded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+docids +"'"+ ','+"''"+');"></span></span></td>');
+                    $('#' + rowid).append('<li id='+docids+'><a href=#">'+response.DocumentName+'</a>&nbsp;&nbsp;&nbsp;<td><span  id=groupbtn'+SubDocCat_Pk+'>&nbsp;<span class="glyphicon glyphicon-remove" style=" color:red;cursor: pointer;" title="Delete Uploaded file" id=Idproofcancel'+SubDocCat_Pk+' onclick="Reset('+"'"+docids +"'"+ ','+"''"+');"></span></span></td>');
+                    //}
+                    //i++;
+                    // });
+                    //setTimeout(function () { window.location.reload() }, 1000);
+                    //alert("File uploaded Successfully.");
+                    ajaxindicatorstop();
+                    $('input[type="file"]').val(null);
+                    $("#hTitleInfo").html('File Status');
+                    $("#divMsgInfo").html('Document has been uploaded.');
+                    $('#myModalInformation').show();
+                    $('#myModalInformation').delay(1000).fadeOut();
+
+                }
+                else
+                {
+                    $("#hTitleInfo").html('File Status');
+                    $("#divMsgInfo").html('Unable to upload file.');
+                    $('#myModalInformation').show();
+                    $('#myModalInformation').delay(5000).fadeOut();
+                    ajaxindicatorstop();
+
+                }
+            },
+            error: function (error) {
+                ajaxindicatorstop();
+                alert(JSON.stringify(error.responseText.trim()));
+            }
+        });
+
+    }
+</script>

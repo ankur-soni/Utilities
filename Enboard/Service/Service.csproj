@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{58449181-8E60-40E3-A285-14023FCC301F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Service</RootNamespace>
+    <AssemblyName>Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Concrete\BloodGroupService.cs" />
+    <Compile Include="Concrete\CandidateProgressDetailService.cs" />
+    <Compile Include="Concrete\CertificateService.cs" />
+    <Compile Include="Concrete\CityService.cs" />
+    <Compile Include="Concrete\ClassService.cs" />
+    <Compile Include="Concrete\CollegeService.cs" />
+    <Compile Include="Concrete\ContactService.cs" />
+    <Compile Include="Concrete\CountryService.cs" />
+    <Compile Include="Concrete\CurrencyService.cs" />
+    <Compile Include="Concrete\DisciplineService.cs" />
+    <Compile Include="Concrete\DocumentCategoryService.cs" />
+    <Compile Include="Concrete\DocumentCatNewService.cs" />
+    <Compile Include="Concrete\DocumentDetailsService.cs" />
+    <Compile Include="Concrete\DocumentService.cs" />
+    <Compile Include="Concrete\EducationCategoryService.cs" />
+    <Compile Include="Concrete\EducationDocumentCategoryMappingService.cs" />
+    <Compile Include="Concrete\EducationService.cs" />
+    <Compile Include="Concrete\EmployeeService.cs" />
+    <Compile Include="Concrete\EmployementService.cs" />
+    <Compile Include="Concrete\EmploymentCountService.cs" />
+    <Compile Include="Concrete\EmpSkillsService.cs" />
+    <Compile Include="Concrete\FamilyDetailsService.cs" />
+    <Compile Include="Concrete\LanguageService.cs" />
+    <Compile Include="Concrete\MaritalStatusService.cs" />
+    <Compile Include="Concrete\PersonalService.cs" />
+    <Compile Include="Concrete\ProfessionalDetailsService.cs" />
+    <Compile Include="Concrete\RelationService.cs" />
+    <Compile Include="Concrete\RoleService.cs" />
+    <Compile Include="Concrete\ServiceBase.cs" />
+    <Compile Include="Concrete\SkillSetService.cs" />
+    <Compile Include="Concrete\SpecializationService.cs" />
+    <Compile Include="Concrete\StateService.cs" />
+    <Compile Include="Concrete\SubDocumentCategoryService.cs" />
+    <Compile Include="Concrete\UniversityService.cs" />
+    <Compile Include="Concrete\DepartmentService.cs" />
+    <Compile Include="Concrete\DesignationService.cs" />
+    <Compile Include="Concrete\UserService.cs" />
+    <Compile Include="Interface\IBloodGroupService.cs" />
+    <Compile Include="Interface\ICandidateProgressDetailService.cs" />
+    <Compile Include="Interface\ICertificateService.cs" />
+    <Compile Include="Interface\ICityService.cs" />
+    <Compile Include="Interface\IClassService.cs" />
+    <Compile Include="Interface\ICollegeService.cs" />
+    <Compile Include="Interface\IContactService.cs" />
+    <Compile Include="Interface\ICountryService.cs" />
+    <Compile Include="Interface\ICurrencyService.cs" />
+    <Compile Include="Interface\IDisciplineService.cs" />
+    <Compile Include="Interface\IDocumentCategoryService.cs" />
+    <Compile Include="Interface\IDocumentCatNewService.cs" />
+    <Compile Include="Interface\IDocumentDetailsService.cs" />
+    <Compile Include="Interface\IDocumentService.cs" />
+    <Compile Include="Interface\IEducationCategoryService.cs" />
+    <Compile Include="Interface\IEducationDocumentCategoryMappingService.cs" />
+    <Compile Include="Interface\IEducationService.cs" />
+    <Compile Include="Interface\IEmployeeService.cs" />
+    <Compile Include="Interface\IEmployementService.cs" />
+    <Compile Include="Interface\IEmploymentCountService.cs" />
+    <Compile Include="Interface\IEmpSkillsService.cs" />
+    <Compile Include="Interface\IFamilyDetailsService.cs" />
+    <Compile Include="Interface\ILanguageservice.cs" />
+    <Compile Include="Interface\IMaritalStatusService.cs" />
+    <Compile Include="Interface\IPersonalService.cs" />
+    <Compile Include="Interface\IProfessionalDetailsService.cs" />
+    <Compile Include="Interface\IRelationService.cs" />
+    <Compile Include="Interface\IRoleService.cs" />
+    <Compile Include="Interface\IService.cs" />
+    <Compile Include="Interface\ISkillsetService.cs" />
+    <Compile Include="Interface\ISpecializationService.cs" />
+    <Compile Include="Interface\IStateService.cs" />
+    <Compile Include="Interface\ISubDocumentCategoryService.cs" />
+    <Compile Include="Interface\IUniversityService.cs" />
+    <Compile Include="Interface\IDepartmentService.cs" />
+    <Compile Include="Interface\IDesignationService.cs" />
+    <Compile Include="Interface\IUserService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{8e1ce289-9863-44a0-997f-aa9fb8534c36}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{c7dbe5fd-4974-4b63-ad77-8dfbc25b9a27}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{f224ac85-77b0-4b7b-8169-6a30a5c1e55a}</Project>
+      <Name>Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

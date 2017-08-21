@@ -1,0 +1,166 @@
+﻿@model Models.ManageEmployeeModel
+@{
+    ViewBag.Title = "Edit Professional Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Designation = (SelectList)ViewBag.Designation;
+    var Department = (SelectList)ViewBag.Department;
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/EDP_Validations.js"></script>
+
+<div class="container">
+  
+    <!-- Row start -->
+    @using (Html.BeginForm("EdiEmployee", "User", FormMethod.Post, new { id = "Professional_FormId" }))
+    {
+        @Html.AntiForgeryToken()
+   
+        <label id="lblError" class="text-danger"></label>
+    <div class="panel panel-primary" id="succdiv">
+        <div class="panel-heading clearfix">
+            <i class="icon-calendar"></i>
+            <h3 class="panel-title">Manage Employee Details</h3>
+        </div>
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.UserId)
+        <div class="row">
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.Label("Employee No", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.EmpNo, new { id = "txtEmployeeNo", @class = "form-control", placeholder = "Employee No", tabindex = 1 })
+                      
+                    </div>
+                  
+
+                    <div class="form-group">
+                        @Html.Label("Employee Name", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.EmpName, new { id = "txtEmployeName", @class = "form-control",  placeholder = "Employee Name", tabindex =2  })                      
+                    </div>
+                  
+                    <div class="form-group">
+                        @Html.Label("Designation", new { @class = "label" })
+                        @Html.DropDownListFor(m => m.DesignationID, Designation, "Select Designation", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 3 })
+                        @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+       
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.Label("Department", new { @class = "label" })
+                        @Html.DropDownListFor(m => m.DepartmentId, Department, "Select Department", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Department", tabindex = 4 })
+                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Total Experience In Years", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.TotalExprInYears, new { id = "txtExpinYear", placeholder = "Total Exp In Years", @class = "form-control", tabindex = 5 , maxlength=3})
+                        @Html.ValidationMessageFor(model => model.TotalExprInYears, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label( "Total Experience In Months", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.TotalExprInmonths, new { id = "txtExpinMonths", placeholder = "Total Exp In Months", @class = "form-control", tabindex = 5, maxlength = 2 })                  
+                        @Html.ValidationMessageFor(model => model.TotalExprInmonths, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+                    @*<input type="button" value="Add Education Details" class="btn-primary" id="ED_SaveId" />*@
+
+            <a href="#" id="btnSave" class="btn btn-primary" tabindex="14"><span class="glyphicon glyphicon-saved"></span> Save</a>
+            <a href="#" id="btnCancel" class="btn btn-primary" tabindex="15"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+    
+    }
+        </div>
+
+        
+
+
+<script type="text/javascript">
+   
+    $('#btnSave').click(function () {
+      
+        var form = $('#Professional_FormId');
+        $.validator.unobtrusive.parse(form);
+
+        if (form.valid()) {
+         
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({              
+                url: "/User/EditProffesionalDetails",
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data.result) {
+                        $.ajax({
+                            url: "/User/ManageEmployeeIndex",
+                            cache: false,
+                            type: 'GET',
+                            data: {
+                                searchString: "", // $('#focusedInput').val().trim().toLowerCase(),
+                            },
+                            success: function (data) {
+                                // $("#succdiv").(data);
+                                $("body").html(data);
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    });
+
+
+    $('#btnCancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            url: "/User/ManageEmployeeIndex",
+            cache: false,
+            type: 'GET',
+            data: {
+                searchString: "", // $('#focusedInput').val().trim().toLowerCase(),
+            },
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+
+
+
+
+</script>

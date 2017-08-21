@@ -1,0 +1,182 @@
+﻿
+@model Models.AddEmployeeModel
+@{
+    ViewBag.Title = "Add Offer Candidate To Employe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<div>
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <form class="form-users">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h3>Existing Employees</h3>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group tl-search-grp">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td>
+                                    <input class="form-control" id="txtSearchExistingEmployess" type="text" placeholder="Search">
+                                </td>
+
+                                <td>
+                                    <button type="button" class="btn btn-primary" id="btnSearchExistingEmplpoyees"><i class="fa fa-search"></i> Search</button>
+                                </td>
+
+                                <td>
+                                    <button type="button" class="btn btn-primary" id="btnViewAllEmployees"><i class="fa fa-eye"></i> View All</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="">
+                    <div id="divExistingEmployees" style="align-self:center;width:100%;">@Html.Partial("_DirectExitEmployeeList", Model.EmployeeDetailsList)</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnuserId" />
+    <input type="hidden" id="hdCurrentStatus" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h3 id="employeeName"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-6"><a>Employee Number</a><p id="Empno"></p></div>
+                <div class="col-md-6"><a>Date Of Birth</a><p id="DOB"></p></div>
+                <div class="col-md-6"><a>Employee Email</a><p id="employeeEmail"></p></div>
+                <div class="col-md-6"><a>Joining Date</a><p id="joiningDate"></p></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('#txtSearchExistingEmployess').bind('input propertychange', function () {
+            GetEmployeeList($('#txtSearchExistingEmployess').val().trim().toLowerCase());
+        })
+
+        function GetEmployeeList(Searchvalue) {
+            var data = { pageNo: 1, searchString: Searchvalue }
+
+            $.ajax({
+                type: "GET",
+                url: "/User/DirectExitEmployeeList",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+
+                    // $("#succdiv").(data);
+                    $("#divExistingEmployees").html(data);
+
+                },
+                error: function () {
+                    alert('some error occured')
+
+                }
+            });
+        }
+        //$('#txtSearchExistingEmployess').keydown(function (event) {
+
+
+
+        //});
+
+
+        $('#btnSearchExistingEmplpoyees').click(function (event) {
+
+            if ($('#txtSearchExistingEmployess').val()) {
+                ajaxindicatorstart('Loading.. please wait..');
+                var data = { pageNo: 1, searchString: $('#txtSearchExistingEmployess').val() }
+
+                $.ajax({
+                    type: "GET",
+                    url: "/User/EmployeeList",
+                    data: data,
+                    datatype: "html",
+                    success: function (data) {
+
+                        // $("#succdiv").(data);
+                        $("#divExistingEmployees").html(data);
+                        ajaxindicatorstop();
+                    },
+                    error: function () {
+                        alert('some error occured')
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+
+        });
+
+
+        $('#btnViewAllEmployees').click(function (event) {
+            $('#txtSearchExistingEmployess').val("");
+            ajaxindicatorstart('Loading.. please wait..');
+            var data = { pageNo: 1, searchString: "ALL" }
+
+            $.ajax({
+                type: "GET",
+                url: "/User/EmployeeList",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+
+                    // $("#succdiv").(data);
+                    $("#divExistingEmployees").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        });
+
+
+
+        $('#myModal').on('show.bs.modal', function () {
+            $('.container').addClass('blur');
+        })
+
+        $('#myModal').on('hide.bs.modal', function () {
+            $('.container').removeClass('blur');
+        })
+    });
+
+    function cancel() {
+        $('#myModal').hide();
+    }
+   
+</script>

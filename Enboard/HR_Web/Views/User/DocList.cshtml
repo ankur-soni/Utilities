@@ -1,0 +1,93 @@
+﻿@model PagedList.IPagedList<Models.DocDetailsModel>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "User Document List";
+}
+@Scripts.Render("~/bundles/jquery")
+<div class="row">
+    <form class="form-users">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <!--class="col-md-12 col-sm-12 col-xs-12">--><!--Change by Chetana-->
+            <div class="form-group tl-search-grp" style="width:360px">
+                <table style="width: 100%;" class="custom-table">
+                    <tr>
+                        <td>
+                            <input class="form-control" id="focusedInput" type="text" placeholder="Search">
+                        </td>
+                        <td>
+                            @*<div class="glyphicon glyphicon-search user-search-ico" id="searchList"></div>*@
+                            <button type="button" class="btn btn-primary" id="searchList"><i class="fa fa-search"></i> Search</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box" id="divDocList" style="max-height: 630px; overflow: auto;">
+                @Html.Partial("~/Views/User/_partialDocList.cshtml", Model)
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+    </form>
+
+</div>
+
+@*script for user defined functions*@
+<script type="text/javascript">
+    $(function ($) {
+        // event for search user
+        $('#searchList').click(function (event) {
+            if ($('#focusedInput').val() != "") {
+                GetUserList($('#focusedInput').val().trim().toLowerCase());
+            }
+            else {
+                if ($("#DocGrid > tbody > tr").length == 0)
+                    window.location.reload();
+            }
+        });
+    });
+
+    function viewAll() {
+        GetUserList("");
+        $("#focusedInput").val("");
+    }
+
+    $('#focusedInput').bind('input propertychange', function () {
+        
+        GetUserList($('#focusedInput').val().trim().toLowerCase());
+    })
+
+    function GetUserList(serchText) {
+
+        $.ajax({
+            type: "GET",
+            //url: rootUrl + 'User/UserList/',
+            url: '/User/GetDocList/',
+            data: {
+                searchString: serchText, // $('#focusedInput').val().trim().toLowerCase(),
+            },
+            contentType: "application/json",
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+                return false;
+            },
+            success: function (data) {
+                if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                    HandleSessionTimeout();
+                    return;
+                }
+                $("#divDocList").html('');
+                $("#divDocList").html(data);
+            }
+        });
+    }
+
+</script>
+

@@ -1,0 +1,447 @@
+﻿@model Models.FamilyDetails
+@{
+    ViewBag.Title = "FamilyDetails";
+    var RelationList = (SelectList)ViewBag.Relationship;
+    var DependentList = (SelectList)ViewBag.DependentList;
+    var GenderList = (SelectList)ViewBag.GenderList;
+    var BloodGroupList = (SelectList)ViewBag.BloodGroupList;
+    var CountryCodeList = (SelectList)ViewBag.CountryCodeList;
+    var msg = TempData["Message"] as Models.ErrorMessageModel;
+}
+@using (Html.BeginForm("FamilyDetails", "Family", FormMethod.Get, new { id = "Family_FormId" }))
+    {
+    @Html.AntiForgeryToken()
+    
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.RelationshipID) <span class="red">*</span>
+            @Html.DropDownListFor(m => m.RelationshipID, RelationList, "Select Relation", new { id = "ddlRelationGroup", @class = "form-control", placeholder = "p", tabindex = 1 })
+            <div>
+                <label style="color:red" id="lblmsgRelationship"> </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row addRow" style="display:none">
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "label labelfont" }) <span class="red">*</span>
+            @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName", placeholder = "First Name", @class = "form-control", tabindex = 2, @maxlength = "100" })
+            <div>
+                <label style="color:red" id="lblmsgFirstName"> @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })</label>
+            </div>
+        </div>
+        <div class="familyContact">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactNumber, new { @class = "label labelfont" }) <span class="red" id="spContactNumber">*</span>
+                <div class="input-group">
+                    @Html.DropDownListFor(m => m.CountryCode, CountryCodeList, "", new { id = "ddlCountryCode", @class = "form-control titleSelect", placeholder = "Select Country Code", tabindex = 4, })
+                    @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtContactNumber", placeholder = "Contact Number", @class = "form-control alphanumeric digit", tabindex = 5, @maxlength = "15" })
+
+                </div>
+                <label style="color:red" id="lblmsgContactNumber"> </label>
+            </div>
+        </div>
+        <div class="genderCheckbox childGender">
+            <label class="label" style="color: #777 !important;font-weight:normal;">Gender </label><span class="red">*</span>
+            <div>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "Male", new { tabindex = 6, id = "rbtMale", name = "optradio" }) Male
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "Female", new { tabindex = 6, id = "rbtFemale", name = "optradio" }) Female
+                </label>
+            </div>
+        </div>
+        <label style="color:red" id="lblGenderMsg"> @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+        </label>
+        
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "label labelfont" }) <span class="red">*</span>
+            @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName", placeholder = "Last Name", @class = "form-control", tabindex = 3, @maxlength = "100" })
+
+            <div>
+                <label style="color:red" id="lblmsgLastName"> @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" }) </label>
+            </div>
+        </div>
+        <div class="familyContact">
+            @Html.HiddenFor(x => x.IsEmergencyContact)
+            <div class="switchBox">
+                <label class="switch">
+                    <input type="checkbox" name="chkAdd" checked="@Model.IsEmergencyContact">
+                    <span class="slider round" tabindex="7"></span>
+                </label>
+
+                <span class="switchBoxTitle pull-left"> Emergency Contact </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="divDob" class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.DOB, new { @class = "label labelfont" }) <span class="red" id="spDOB">*</span>
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.DOB, String.Format("{0:dd/MM/yyyy}", Model.DOB), new { id = "txtDOB", placeholder = "", @class = "form-control", tabindex = 8, @maxlength = "14" })
+                <label class="input-group-addon btn" for="txtDOB">
+                    <span class="fa fa-calendar"></span>
+                </label>
+            </div>
+            <label id="lblComparefutureDateError" class="text-danger" style="display:none;"> </label>
+            <label style="color:red" id="lblmsgDOB"> </label>
+        </div>
+     
+    </div>
+</div>
+<div class="row btnRow">
+    <div class="col-md-12">
+        <button class="btn-reset cancelText" type="reset" tabindex="9"> Cancel </button>
+        <a class="btn-save" id="FD_Save" tabindex="9"> Save </a>
+    </div>
+</div>
+@Html.HiddenFor(m => m.FamDetID)
+@Html.HiddenFor(m => m.CreatedBy)
+@Html.HiddenFor(m => m.CreatedDate)
+}
+@if (msg != null)
+{
+    <script>
+        $(document).ready(function () {
+            if ('@TempData["Message"]' !== '') {
+                if ('@msg.MessageType' === 'success')
+                    toastr.success('@msg.Message');
+                else
+                    toastr.error('@msg.Message');
+            }
+        });
+
+    </script>
+}
+
+<script>
+    
+    $(document).ready(function () {
+
+        if ($('#IsEmergencyContact').val() !== '' && $('#IsEmergencyContact').val() === 'False') {
+            $('#IsCurrentEmployment').val('false');
+            $('input[name="chkAdd"]').prop('checked', false);
+        }
+
+        $(".switchBox input").click(function () {
+            if ($(this).is(":checked")) {
+                $('#IsEmergencyContact').val('true');
+            }
+            else {
+                $('#IsEmergencyContact').val('false');
+            }
+        });
+
+
+
+        //Added below line of code for client side validations
+        $.validator.unobtrusive.parse("#Family_FormId");
+
+        //Validations for DOB and Contact Number
+        //$("#lblmsgFullName").text("Please Enter Full Name");
+        $("#lblmsgFirstName").text("Please Enter First Name");
+        $("#lblmsgLastName").text("Please Enter Last Name");
+        
+        $("#lblmsgFirstName").hide();
+        $("#lblmsgLastName").hide();
+
+        $("#lblmsgContactNumber").text("Please enter Contact Number");
+        $("#lblmsgDOB").text("Please enter Date Of Birth");
+        $("#lblmsgRelationship").text("Please Select Relationship")
+        $("#lblmsgContactNumber").hide();
+        $("#lblmsgDOB").hide();
+        $("#spContactNumber").hide();
+        $("#spDOB").hide();
+        $("#lblmsgRelationship").hide();
+        $("#lblGenderMsg").text("Please Select Gender")
+        $("#lblGenderMsg").hide();
+        $(".childGender").hide();
+        //Datepicker for DOB
+        $('#txtDOB').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            yearRange: "-100:+0",
+            onSelect: function (dateText, inst) {
+
+                if ($("#txtDOB").val() != "") {
+                    $("#lblmsgDOB").hide();
+                }
+
+                $('#lblComparefutureDateError').text('');
+                if ($('#txtDOB').val() != '' || $('#txtDOB').val() != "" || $('#txtDOB').val() != null || $('#txtDOB').val().length != 0) {
+
+                    var date = $('#txtDOB').val();
+                    var arrDate = date.split("/");
+                    var today = new Date();
+                    useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
+
+                    var d = new Date(),
+                    date = d.getDate();
+                    n = d.getMonth(),
+
+                    y = d.getFullYear();
+
+                    if (arrDate[0] == date && arrDate[1] - 1 == n) {
+                        if (arrDate[2] > y) {
+                            $('#lblComparefutureDateError').show();
+                            $('#lblComparefutureDateError').text('Invalid Date of Birth');
+                            return false;
+                        }
+                        else {
+                            $('#lblComparefutureDateError').text('');
+                            return true;
+                        }
+                    }
+                }
+            }
+        });
+
+        //Function for datepicker issue , restricting datetpicker in validating date.
+        $(function () {
+            $.validator.addMethod(
+                "date",
+                function (value, element) {
+                    var bits = value.match(/([0-9]+)/gi), str;
+                    if (!bits)
+                        return this.optional(element) || false;
+                    str = bits[1] + '/' + bits[0] + '/' + bits[2];
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(str));
+                },
+                ""
+            );
+        });
+
+        //Datepicker validation 
+        //$('.hasDatepicker').attr('readonly', true);
+
+        //Change event for relationship dropdown
+        $("#ddlRelationGroup").change(function () {
+
+            //clear textboxes
+            $("#ddlCountryCode").val("");
+            $("#txtContactNumber").val("");
+            $("#txtDOB").val("");
+            $("#txtFullName").val("");
+            $("#spContactNumber").hide();
+            $("#spDOB").hide();
+            $("#lblmsgContactNumber").hide();
+            //$("#lblmsgFullName").hide();
+            $("#lblmsgLastName").hide();
+            $("#lblmsgFirstName").hide();
+            $("#lblmsgDOB").hide();
+            $("#lblmsgRelationship").hide();
+            $("#lblGenderMsg").hide();
+            
+            var relation = $("#ddlRelationGroup").val();
+            if (relation != 0) {
+
+                $(".addRow").show();
+
+                if (relation == 4) {
+                    $('.familyContact').hide();
+                    $(".childGender").show();
+                }
+                else {
+                    $(".childGender").hide();
+                    $('.familyContact').show();
+
+                    if (relation == 3) {
+                        $("#spContactNumber").show();
+                        $("#spDOB").show();
+                    }
+                    else {
+                        $("#spContactNumber").hide();
+                        $("#spDOB").hide();
+
+                        $("#lblmsgContactNumber").hide();
+                        $("#lblmsgDOB").hide();
+                    }
+                }
+
+            }
+            else { $(".addRow").hide(); }
+        });
+
+
+        $("#ddlCountryCode").change(function () {
+            if ($("#ddlCountryCode").val() != "" && $("#txtContactNumber").val() != "")
+            {
+                $("#lblmsgContactNumber").hide();
+            }
+        });
+
+        $("#txtContactNumber").change(function () {
+            if ($("#txtContactNumber").val() != "" && $("#ddlCountryCode").val() != "")
+            {
+                $("#lblmsgContactNumber").hide();
+            }
+        });
+
+      
+
+        //$("#txtFullName").change(function () {
+        //    if ($("#txtFullName").val() != "") {
+        //        $("#lblmsgFullName").hide();
+        //    }
+        //});
+
+        $("#txtFirstName").change(function () {
+            if ($("#txtFirstName").val() != "") {
+                $("#lblmsgFirstName").hide();
+            }
+        });
+
+
+        $("#txtLastName").change(function () {
+            if ($("#txtLastName").val() != "") {
+                $("#lblmsgLastName").hide();
+            }
+        });
+
+        //if ($("#rbtMale:checked").val() || $("#rbtFemale:checked").val()) {
+        //    $("#lblGenderMsg").hide();
+        //}
+
+        $('#rbtMale').on('click change', function (e) {
+            $("#lblGenderMsg").hide();
+        });
+
+        $('#rbtFemale').on('click change', function (e) {
+            $("#lblGenderMsg").hide();
+        });
+
+        //click event for save
+        $("#FD_Save").click(function () {
+            var relation = $("#ddlRelationGroup").val();
+            if (relation === "") {
+                $("#lblmsgRelationship").show();
+                return;
+            }
+            else { $("#lblmsgRelationship").hide(); }
+            
+            if (relation == 3)
+            {
+                var isSucess = true;
+                $("#spContactNumber").show();
+                $("#spDOB").show();
+
+                if ($("#ddlCountryCode").val() == "" || $("#txtContactNumber").val() == "") {
+                    $("#lblmsgContactNumber").show();
+                    isSucess = false;
+                }
+
+                if ($("#txtDOB").val() == "") {
+                    $("#lblmsgDOB").show();
+                    isSucess = false;
+                    
+                }
+                //if ($("#txtFullName").val() == "") {
+                //    $("#lblmsgFullName").show();
+                //    isSucess = false;
+                //}
+
+                if ($("#txtFirstName").val() == "") {
+                    $("#lblmsgFirstName").show();
+                    isSucess = false;
+                }
+
+                if ($("#txtLastName").val() == "") {
+                    $("#lblmsgLastName").show();
+                    isSucess = false;
+                }
+
+                if (!isSucess) {
+                    return;
+                }
+            } 
+            else if (relation == 4)
+            {
+                if ($("#txtFirstName").val() == "") {
+                    $("#lblmsgFirstName").show();
+                    isSucess = false;
+                }
+
+                if ($("#txtLastName").val() == "") {
+                    $("#lblmsgLastName").show();
+                    isSucess = false;
+                }
+                if ($("#txtDOB").val() == "") {
+                    $("#lblmsgDOB").show();
+                    isSucess = false;
+                }
+
+                if (!$("#rbtMale:checked").val() && !$("#rbtFemale:checked").val()) {
+                    $("#lblGenderMsg").show();
+                    isSucess = false;
+                    return false;
+                }
+            }
+            else {
+
+                if ($("#txtFirstName").val() == "") {
+                    $("#lblmsgFirstName").show();
+                    isSucess = false;
+                }
+
+                if ($("#txtLastName").val() == "") {
+                    $("#lblmsgLastName").show();
+                    isSucess = false;
+                    return;
+                }
+
+            }
+            if (isSucess == false)
+                return;
+
+            //Ajax call for save
+            var form = $('#Family_FormId');
+            //$('#lblError').text('');
+            $.validator.unobtrusive.parse(form);
+            if (form.valid() && $('#lblComparefutureDateError').text().trim() == '') {
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    url: "/Family/AddFamilyDetails",
+                    data: form.serialize(),
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        toastr.success("Family details added successfully!!");
+
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("FamilyDetails", "Family")';
+                        }, 1000);
+
+                    },
+                    error: function (request, status, error) {
+                        toastr.error(request.responseText);
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+
+        });
+
+    });
+
+
+    $("#ddlRelationGroup").change(function () {
+        if ($("#ddlRelationGroup :selected").text() == "Sibling" || $("#ddlRelationGroup :selected").text() == "Relative") {
+            $("#divDob").hide();
+        }
+        else {
+            $("#divDob").show();
+        }
+    });
+</script>

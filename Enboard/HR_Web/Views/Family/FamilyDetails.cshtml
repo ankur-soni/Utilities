@@ -1,0 +1,56 @@
+﻿@model PagedList.IPagedList<Models.FamilyHistory>
+@{
+    ViewBag.Title = "FamilyDetails";
+    Layout = "~/Views/Shared/_EnboardLayout.cshtml";
+}
+
+
+<div class="containerInner">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-group familyDetails tabSection" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#educationForm" aria-expanded="true">
+                                Add Family Details
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="educationForm" class="panel-collapse collapse in" role="tabpanel">
+                        <div class="panel-body">
+                            @Html.Partial("~/Views/Family/_NewFamilyDetails.cshtml", new Models.FamilyDetails())
+                        </div>
+                    </div>
+                </div>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var familyDetail in Model)
+                    {
+                        @Html.Partial("~/Views/Family/_FamilyDetailsList.cshtml", familyDetail)
+                    }
+
+                }
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row btnRow uploadDocumentsNext">
+        <div class="col-md-12">
+            <a href="/document/index" id="FD_Next" class="btn-save  mx-1" tabindex="21">Next</a>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('input.digit').on('input keyup', function (e) { $(this).val($(this).val().replace(/[^\d]/g, '')); });
+        if('@ViewBag.IsSubmitted'.toLowerCase() === 'true') {
+            $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save").attr('disabled', 'disabled');
+            $('#FD_Save').remove();
+            $("#accordion a.btn-reset,#accordion a.btn-delete").remove();
+            $("#accordion button").remove();
+        }
+    });
+</script>

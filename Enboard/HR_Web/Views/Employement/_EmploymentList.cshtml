@@ -1,0 +1,255 @@
+﻿@model PagedList.IPagedList<Models.EmploymetDetailsHistory>
+<style>.glyphicon.glyphicon-ok,.glyphicon.glyphicon-pencil,.glyphicon.glyphicon-trash,.glyphicon.glyphicon-remove,.glyphicon.glyphicon-info-sign  { color:rgb(0,175,236); padding:5px;}
+.glyphicon.glyphicon-ok:hover,.glyphicon.glyphicon-pencil:hover,.glyphicon.glyphicon-trash:hover,.glyphicon.glyphicon-remove:hover, .glyphicon.glyphicon-info-sign:hover { color:#2e2e2e;}
+    </style>
+
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+
+
+
+    }
+
+    
+   
+    <div class="box-body table-responsive">
+
+        <a href="#" onclick="AddEmploymentDetails();" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>  Add Employment Details</a>
+        <br />
+        <br />
+  
+    @if (Model.Count() > 0)
+    {
+        <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+            <thead style="background-color:#428bca;color:white; ">
+                <tr>
+                    <th>Company Name</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Designation</th>
+                    <th>Supervisor Name</th>
+                    <th>Current Employment</th>
+                    <th style="text-align:center;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>                       
+                        <td>@Html.Raw(user.CompanyName) </td>
+                        <td>@Html.Raw(user.FromDate)</td>
+                        <td>@Html.Raw(user.ToDate)</td>
+                        <td>@Html.Raw(user.Designation)</td>
+                        <td>@Html.Raw(user.SupervisiorName)</td>
+                        @if (@user.IsCurrentEmployment == true)
+                        {
+                            <td>Yes</td>
+                        }
+                        else
+                        {
+                        <td>No</td>}
+                        
+                        <td align="center">
+
+                           
+                            <span class="glyphicon glyphicon-pencil" style="color:green; cursor:pointer" title="Edit Details" onclick="EditEmploymentDetails(@user.EmploymentId);" ></span> @**@
+                            <span class="glyphicon glyphicon-info-sign" style=" color:green;cursor:pointer" title="View Details" onclick="ViewEmploymentDetails(@user.EmploymentId);"></span>
+                            <span class="glyphicon glyphicon-remove" style=" color:red;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.EmploymentId);"></span> @*onclick="return fnUpdateUser(@user.UserId,false)"*@
+                           
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <h4>No Records found</h4>
+    }
+</div>
+
+    <div style="padding-bottom:20px;">
+        <a href="#" id="FD_SaveData" class="btn btn-save" tabindex="23"><span class="glyphicon glyphicon-forward"></span> Next</a>
+
+        <a href="#" id="FD_Back" class="btn btn-primary" tabindex="22" style="float:right"><span class="fa fa-backward"></span> Back</a>
+    </div>
+
+
+    <div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                    <h4 class="modal-title" id="hTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsg">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="DeleteEmploymentDetails($('#hdnSelectedID').val())">Yes</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">No</button>
+                    <a href="#" id="ED_Back" class="btn btn-primary" tabindex="22" style="float:right"><span class="fa fa-backward"></span> Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModalInformation" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="hTitleInfo"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsgInfo">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="cancel()">Ok</button>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    
+   
+
+    /*new code*/
+    function AddEmploymentDetails()
+    {
+      
+        var data = { Id: 0 }
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/Employement/AddEditEmploymentDetails",
+                data: data,
+                success: function (data) {
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        //}
+
+    }
+
+    function ViewEmploymentDetails(ID) {
+   
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Employement/AddEditEmploymentDetails",
+            data: { Id: ID, IsReadOnly :true },
+            datatype: "html",
+            success: function (data) {
+                // $("#succdiv").(data);
+                $(".container .body-content").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+        //}
+
+    }
+
+    function EditEmploymentDetails(ID) {       
+     
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Employement/AddEditEmploymentDetails",
+            data: { Id: ID },
+            datatype: "html",
+            success: function (data) {
+                $(".container .body-content").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    }
+
+    /*new code*/
+
+    function DeleteIndex(ID)
+    {
+
+        $('#hdnSelectedID').val(ID);
+        $("#hTitle").html('Delete?');
+        $("#divMsg").html('Are you sure you want to delete this Record?');
+        $('#myModal').show();
+    }
+    function cancel() {
+        $('#myModal').hide();
+        $('#myModalInformation').hide();
+        $('#myModalCurrentEmployment').hide();
+    }
+  
+
+    function DeleteEmploymentDetails(ID) {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Employement/DeleteEmploymentDetails",
+            data: { Id: ID },
+            datatype: "json",
+            success: function (data) {
+                if(data)
+                {             
+                    $('#myModal').hide();
+                    $("#hTitleInfo").html('Deleted');
+                  $("#divMsgInfo").html('Record Deleted Successfully');
+                  $('#myModalInformation').show();
+              
+                  $.ajax({
+                      urlGrid:"/Employement/EmploymnetDetailsGrid",
+                      cache: false,
+                      type: 'GET',
+                      success: function (data) {
+                          $("body").html(data);
+                          ajaxindicatorstop();
+                      },
+                      error: function () {
+                          alert('some error occured')
+                          ajaxindicatorstop();
+                      }
+                  });
+
+                }
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });  
+
+    }
+
+</script>

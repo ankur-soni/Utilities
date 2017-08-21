@@ -1,0 +1,42 @@
+﻿
+@model Models.AddEditUserModel
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@using (Ajax.BeginForm("AddAdminUser", "User", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessForm" }, new { id = "frmAddAdminUser" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                First Name <span class="red">*</span>
+                @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName", placeholder = "First Name", @class = "form-control", @tabindex = 1 })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+            </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                Last Name <span class="red">*</span>
+                @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName", placeholder = "Last Name", @class = "form-control", @tabindex = 2 })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email) <span class="red">*</span>
+                @Html.TextBoxFor(m => m.Email, new { id = "txtEmail", placeholder = "Email", @class = "form-control", @tabindex = 3 })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password) <span class="red">*</span>
+                @Html.TextBoxFor(m => m.Password, new { id = "txtPassword", placeholder = "Password", @class = "form-control", @tabindex = 4 })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+

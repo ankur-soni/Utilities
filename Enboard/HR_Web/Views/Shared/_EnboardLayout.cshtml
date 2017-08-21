@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="https://www.silicus.com/images/favicon.ico">
+    <title> EnBoard </title>
+    <link href="../Content/NewUI/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/simple-line-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900" rel="stylesheet">
+    <!-- Latest compiled and minified CSS Bootstrap v3.3.7-->
+    <link rel="stylesheet" href="../Content/NewUI/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Content/NewUI/css/bootstrap-select.min.css">
+    <link href="../Content/NewUI/css/style.css" rel="stylesheet">
+    <!--custom style--->
+    <link href="../Content/NewUI/css/custom.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/mobile.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/scrollbar.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/toastr.min.css" rel="stylesheet" />
+    <script src="../Scripts/LoadIndicator.js"></script>
+
+    @Styles.Render("~/Content/jqueryuiStyle")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- for alert/notification msg-->
+    <script src="../Scripts/NewJs/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "positionClass": "toast-top-center",
+            "closeButton": true,
+        }
+    </script>
+
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed">
+    <!--header start here-->
+    <header class="app-header navbar">
+        <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button"><i class="fa fa-bars" aria-hidden="true"></i></button>
+        <a class="navbar-brand" href="#"></a>
+        <ul class="nav navbar-nav SearchBar">
+            <li class="hidden-md-down">
+                <div id="custom-search-input">
+                    <div class="input-group col-lg-12">
+                        <span class="input-group-btn">
+                            <button class="btn" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <input type="text" id="keysug" class="search-query form-control" placeholder="Search Portal" />
+                        <div id="keysugList">
+                            <ul></ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="mobileAsideMenu hidden-lg-up">
+            <a class="menuBtn asideMobileBtn navbar-toggler aside-menu-toggler mobile-aside-menu" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+        </div>
+        <div class="mobileSearchIcon hidden-lg-up">
+            <a class="glyphicon glyphicon-search"> </a>
+        </div>
+
+        <ul class="nav navbar-nav ml-auto hidden-md-down">
+            <li class="nav-item">
+                <a class="nav-link nav-link dropdown-toggle" id="dropdownMenu1" href="#" data-toggle="dropdown">
+                    <span class="hidden-md-down"> Welcome @System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0] </span>
+                    <img src="../Content/NewUI/images/user-avtar.png" class="img-avatar">
+                </a>
+                <ul class="dropdown-menu userMenu" aria-labelledby="dropdownMenu1">
+                    <li><a href="/User/LogOut" id="btnLogOff">Log Out</a></li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    <!--header end here-->
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb hidden-md-down">
+        <li id="Connect" class="breadcrumb-item active"><a href="/home/welcome">Initiate</a> </li>
+        <li id="Learn" class="breadcrumb-item"><a href="/document/Learn">Learn</a> </li>
+        <li id="Support" class="breadcrumb-item"><a href="/document/Support">Connect</a> </li>
+        <!-- Breadcrumb Menu-->
+
+
+        <li class="breadcrumb-menu hidden-md-down">
+            <a class="menuBtn asideBtn navbar-toggler aside-menu-toggler activeBtn" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+            <a class="menuBtn settingBtn dropdown-toggle" href="#" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-cog" aria-hidden="true"></i></a>
+            <ul class="dropdown-menu settingMenu" aria-labelledby="dropdownMenu">
+                <li><a href="#" onclick="OpenChangePasswordForm()">Change Password </a></li>
+            </ul>
+        </li>
+    </ol>
+    <div class="app-body">
+        <!--sidebar start here-->
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+
+                <!--mobile menu --->
+                <div class="userProfile hidden-lg-up">
+                    <div class="userProfileImg">
+                        <img src="../Content/NewUI/images/user.png">
+                    </div>
+                    <div class="userProfileDescription">
+                        <ul>
+                            <li><span class="userWelcomeText">Welcome</span></li>
+                            <li><span class="UserName">@System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0]</span></li>
+                            <li class="actionBtn">
+                                <span><i class="fa fa-cog" aria-hidden="true"></i>Settings</span>
+                                <a href="/User/LogOut" id="btnLogOff"><span><i class="fa fa-sign-out" aria-hidden="true"></i>Log Out</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="clikLink" href="welcome.html">Connect</a>
+                                <a class="clickIcon" data-toggle="collapse" data-parent="#accordion" href="#connectMenu"> </a>
+                            </h4>
+                        </div>
+                        <div id="connectMenu" class="panel-collapse collapse in">
+                            <div class="panel-body open">
+                                <ul class="nav">
+                                    <li class="nav-item active open">
+                                        <a class="nav-link personal" href="/User/PersonalDetails"><i class="fa fa-user"></i> Personal Details </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link contact" href="/User/ContactDetails"><i class="fa fa-mobile"></i> Contact Details  </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link education" href="/Education/GetEducationalDetails"><i class="fa fa-graduation-cap"></i> Education Details  </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link emplyoment" href="/Employement/Index"><i class="fa fa-briefcase"></i> Employment Details  </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link family" href="/Family/FamilyDetails"><i class="fa fa-users"></i> Family Details  </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link upload" href="/document/index"><i class="fa fa-cloud"></i> Upload Documents  </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link final" href="/document/FinalStatus"> <i class="fa fa-th-list"></i> Final Status  </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="clikLink" href="#">Learn</a>
+                                <a class="collapsed clickIcon hide" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu"> </a>
+                            </h4>
+                        </div>
+                        <div id="LearnMenu" class="panel-collapse collapse">
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#" class="clikLink">Support</a>
+                                <a class="collapsed clickIcon hide" data-toggle="collapse" data-parent="#accordion" href="#supportMenu"></a>
+                            </h4>
+                        </div>
+                        <div id="supportMenu" class="panel-collapse collapse">
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--mobile menu end here-->
+                <!--desktop left Menu -->
+                <ul class="nav hidden-md-down">
+                    <li class="nav-item nav-heading">
+                        @*<a class="nav-link">Connect</a>*@
+                        <br/>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal" href="/User/PersonalDetails"><i class="fa fa-user"></i> Personal Details </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link contact" href="/User/ContactDetails"> <i class="fa fa-mobile"></i>Contact Details </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link education" href="/Education/GetEducationalDetails"><i class="fa fa-graduation-cap"></i> Education Details  </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link emplyoment" href="/Employement/Index"><i class="fa fa-briefcase"></i> Employment Details  </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link family" href="/Family/FamilyDetails"><i class="fa fa-users"></i> Family Details  </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link upload" href="/document/index"><i class="fa fa-cloud"></i> Upload Documents  </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link final" href="/document/FinalStatus"> <i class="fa fa-th-list"></i> Final Status  </a>
+                    </li>
+                </ul>
+                <!--desktop left menu-->
+                <div class="footerBox">
+                    <span class="socialIcon">
+                        <ul>
+                            <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </span>
+                    <div><img class="incLogo" src="../Content/NewUI/images/inc_logo.png" alt="INC 5000"></div>
+                    <a href="#" class="copyRightText">Copyright © 2017 Silicus Technologies, LLC</a>
+                    
+                </div>
+            </nav>
+        </div>
+        <!-- Main content -->
+        <main class="main">
+            <div id="divRenderBody" class="container-fluid">
+                @RenderBody()
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+        <!--aside menu-->
+        <aside class="aside-menu">
+            <div class="taskTitle">
+                <i class="fa fa-check-square pull-left" aria-hidden="true"></i>
+                <h4> Task Completed </h4>
+                <i class="fa fa-times navbar-toggler aside-menu-toggler pull-right" aria-hidden="true"></i>
+            </div>
+            <ul class="nav nav-tabs asideTab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" data-toggle="tab" href="#details" role="tab">Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#activity" role="tab">Activity</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane p-1 active" id="details" role="tabpanel">
+                </div>
+                <div class="tab-pane " id="activity" role="tabpanel">
+                    </div>
+                </div>
+        </aside>
+    </div>
+    <!--footer start here-->
+   
+    @*<script src="../Scripts/NewJs/jquery.min.js"></script>*@
+    <!--minified JavaScript v- Bootstrap v3.3.7-->
+    <script src="../Scripts/NewJs/bootstrap.min.js"></script>
+    <script src="../Scripts/NewJs/bootstrap-select.min.js"></script>
+    <script src="../Scripts/NewJs/app.js"></script>
+    <script>
+        $(window).on('beforeunload', function () {
+            ajaxindicatorstart('Loading.. please wait..');
+            setTimeout(ajaxindicatorstop(), 21000);
+        });
+        $(window).load(function () {
+            ajaxindicatorstop();
+        });
+
+        $(document).ready(function () {
+            ajaxindicatorstart('Loading.. please wait..');
+            $('#details').load('/Document/GetCandidateProgressBar');
+            ajaxindicatorstop();
+        });
+    </script>
+</body>
+</html>
+
+<!--Password Change Modal-->
+<div id="changePasswordModal" class="modal fade enbordModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Change password </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-save pull-right" id="btnChangePasswordModalSave" onclick="SaveChangePasswordDetails()"> Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    if (window.location.pathname == '/document/Learn')
+    {
+        $("#Learn").addClass("active");
+        $("#Connect").removeClass("active");
+    }
+    if (window.location.pathname == '/document/Support') {
+        $("#Support").addClass("active");
+        $("#Connect").removeClass("active");
+    }
+    if (window.location.pathname == '/home/welcome') {
+        $("#Connect").addClass("active");
+    }
+
+    $(document).ready(function () {
+
+
+
+        //activity
+
+        //Ajax call to refresh activity log
+        $.ajax({
+            url: '/User/GetActivityDetails/',
+            success: function (data) {
+
+                //Set change Request  form body html with data 
+                $("#activity").html(data);
+            },
+            error: function (data) {
+                toastr.error("Error occurred while getting activity log.");
+            }
+        });
+
+
+    });
+
+    function OpenChangePasswordForm() {
+        $.ajax({
+            url: '/User/ChangePassword/',
+            method: 'GET',
+            success: function (data) {
+                $("#changePasswordModal .modal-body").html(data);
+                $('#changePasswordModal').modal('show');
+            },
+            error: function (data) {
+                toastr.error("Error occurred while opening Change Request Modal form.");
+            }
+        });
+    }
+
+    function SaveChangePasswordDetails() {
+        if ($("#txtPrevPassword").val() == "" || $("#txtNewPassword").val() == "") {
+            $("#frmChangePassword").submit();
+        }
+        else {
+            $.ajax({
+                url: '/User/ChangePassword/',
+                data: $("#frmChangePassword").serialize(),
+                type: 'POST',
+                dataType: 'json',
+                success: function (ChangePasswordResponse) {
+
+                    if (ChangePasswordResponse.Status == true) {
+                        $('#changePasswordModal').modal('hide');
+                        toastr.success("Your password successfully changed!");
+                    }
+                    else
+                    {
+                        toastr.error(ChangePasswordResponse.Message);
+                        return;
+                    }
+                },
+                error: function (ChangePasswordResponse) {
+                    toastr.error("Error occurred while changing password!");
+                }
+    });
+        }
+    }
+</script>

@@ -1,0 +1,19 @@
+﻿
+    @if (Request.IsAuthenticated)
+    { 
+        
+         <span class="welcome"></span> 
+    @*Commented below code as the new dropdwon is added for account section on Layout*@        
+    @*&nbsp; <span ><i class="fa fa-key"></i> @Html.ActionLink("Change Password", "ChangePassword", "User")</span> 
+    &nbsp;<span>|</span> <span ><i class="glyphicon glyphicon-log-out" style="color:#337ab7;"></i> @Html.ActionLink("Log Out", "LogOut", "User")</span>*@
+            <span class="log-out">Last Login: @(HR_Web.Utilities.SessionManager.LastLogin != null ? Convert.ToString(HR_Web.Utilities.SessionManager.LastLogin) : "First Time Login")</span>
+     
+    }
+    else
+    {
+        <div class="nav navbar-nav navbar-right navbar-brand">
+            @Html.ActionLink("Log in", "Login", "User")
+        </div>
+    }
+
+

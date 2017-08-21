@@ -1,0 +1,791 @@
+﻿
+@model Models.ContactDetails
+@{
+    ViewBag.Title = "ContactDetails";
+    Layout = "";
+    var CityList = (SelectList)ViewBag.Cities;
+    var StateList = (SelectList)ViewBag.States;
+    var CountryList = (SelectList)ViewBag.Countries;
+
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/EDP_Validations.js"></script>
+<div align="left">
+
+    <!-- Row start -->
+    @using (Html.BeginForm("ContactDetails", "User", FormMethod.Post, new { id = "formContactDetails" }))
+    {
+        @Html.AntiForgeryToken()
+        <label style="color:green" id="lblmsg"> </label>
+        <div class="row new-form-input">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading clearfix">
+                        <i class="icon-calendar"></i>
+                        <h3 class="panel-title">Address Details</h3>
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group pAddress">
+
+                                    @Html.LabelFor(m => m.PermanantAddLine1, new { @class = "" }) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.PermanantAddLine1, new { id = "CD_txtPermanantAddLine1", placeholder = "Permanent Address Line1", @class = "form-control", tabindex = 1 })
+                                    @Html.ValidationMessageFor(model => model.PermanantAddLine1, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group pAddress">
+
+                                    @Html.TextBoxFor(m => m.PermanantAddLine2, new { id = "CD_txtPermanantAddLine2", placeholder = "Permanent Address Line2", @class = "form-control", tabindex = 2 })
+                                    @Html.ValidationMessageFor(model => model.PermanantAddLine2, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+
+                                    @Html.TextBoxFor(m => m.PermanantAddLine3, new { id = "CD_txtPermanantAddLine3", placeholder = "Permanent Address Line3", @class = "form-control", tabindex = 3 })
+                                    @Html.ValidationMessageFor(model => model.PermanantAddLine3, "", new { @class = "text-danger" })<br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.PermanantCountryID, new { @class = "" }) <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.PermanantCountryID, CountryList, "Select Country", new { id = "CD_ddlPermanantAddCountry", @class = "form-control", placeholder = "Select Country", tabindex = 4 })
+                                    @Html.ValidationMessageFor(model => model.PermanantCountryID, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group pAddress">
+                                    @Html.LabelFor(m => m.PermanantStateID, new { @class = "" }) <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.PermanantStateID, StateList, "Select State", new { id = "CD_ddlPermanantAddState", @class = "form-control", placeholder = "Select State", tabindex = 5 })
+                                    @Html.ValidationMessageFor(model => model.PermanantStateID, "", new { @class = "text-danger", id = "CD_valPermanantAddState" })
+                                    @Html.TextBoxFor(m => m.OtherPermanantState, new { id = "CD_txtOtherPermanantAddState", @class = "form-control", placeholder = "Please enter your State", tabindex = 5 })
+                                    @Html.ValidationMessageFor(model => model.OtherPermanantState, "", new { @class = "text-danger", id = "CD_valOtherPermanantAddState" })
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group pAddress">
+                                    @Html.LabelFor(m => m.PermanantCityID, new { @class = "" }) <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.PermanantCityID, CityList, "Select City", new { id = "CD_ddlPermanantAddCity", @class = "form-control", placeholder = "Select City", tabindex = 6 })
+                                    @Html.ValidationMessageFor(model => model.PermanantCityID, "", new { @class = "text-danger", id = "CD_valPermanantAddCity" })
+                                    @Html.TextBoxFor(m => m.OtherPermanantCity, new { id = "CD_txtOtherPermanantAddCity", @class = "form-control", placeholder = "Please enter your City", tabindex = 6 })
+                                    @Html.ValidationMessageFor(model => model.OtherPermanantCity, "", new { @class = "text-danger", id = "CD_valOtherPermanantAddCity" })
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.PermanantZipcode, new { @class = "" })
+                                    @Html.TextBoxFor(m => m.PermanantZipcode, new { id = "CD_txtPermanantAddZipcode", @class = "form-control", placeholder = "Zip Code", maxlength = "6", tabindex = 7 })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4">
+                                @Html.Label("Same as Permanent Address ?", new { @class = "" })
+                                @Html.CheckBoxFor(m => m.IsBothAddSame, new { id = "CD_chk_sameadd", @tabindex = "8" })
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group pAddress">
+
+                                    @Html.LabelFor(m => m.CurrentAddLine1, new { @class = "" }) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.CurrentAddLine1, new { id = "CD_txtCurrentAddLine1", placeholder = "Current Address Line1", @class = "form-control", @tabindex = 9 })
+                                    @Html.ValidationMessageFor(model => model.CurrentAddLine1, "", new { @class = "text-danger", id = "CD_valCurrentAddLine1" })
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group pAddress">
+
+                                    @Html.TextBoxFor(m => m.CurrentAddLine2, new { id = "CD_txtCurrentAddLine2", placeholder = "Current Address Line2", @class = "form-control", @tabindex = 10 })
+                                    @Html.ValidationMessageFor(model => model.CurrentAddLine2, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+
+                                    @Html.TextBoxFor(m => m.CurrentAddLine3, new { id = "CD_txtCurrentAddLine3", placeholder = "Current Address Line3", @class = "form-control", @tabindex = 11 })
+                                    @Html.ValidationMessageFor(model => model.CurrentAddLine3, "", new { @class = "text-danger" })<br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CurrentCountryID, new { @class = "" })<span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.CurrentCountryID, CountryList, "Select Country", new { id = "CD_ddlCurrentAddCountry", @class = "form-control", placeholder = "Select Country", tabindex = 12 })
+                                    @Html.ValidationMessageFor(model => model.CurrentCountryID, "", new { @class = "text-danger", id = "CD_valCurrentAddCountry" })
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group pAddress">
+                                    @Html.LabelFor(m => m.CurrentStateID, new { @class = "" }) <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.CurrentStateID, StateList, "Select State", new { id = "CD_ddlCurrentAddState", @class = "form-control", placeholder = "Select State", tabindex = 13 })
+                                    @Html.ValidationMessageFor(model => model.CurrentStateID, "", new { @class = "text-danger", id = "CD_valCurrentAddState" })
+                                    @Html.TextBoxFor(m => m.OtherCurrentState, new { id = "CD_txtOtherCurrentAddState", @class = "form-control", placeholder = "Please enter your State", tabindex = 13 })
+                                    @Html.ValidationMessageFor(model => model.OtherCurrentState, "", new { @class = "text-danger", id = "CD_valOtherCurrentAddState" })
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group pAddress">
+                                    @Html.LabelFor(m => m.CurrentCityID, new { @class = "" }) <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.CurrentCityID, CityList, "Select City", new { id = "CD_ddlCurrentAddCity", @class = "form-control", placeholder = "Select City", tabindex = 14 })
+                                    @Html.ValidationMessageFor(model => model.CurrentCityID, "", new { @class = "text-danger", id = "CD_valCurrentAddCity" })
+                                    @Html.TextBoxFor(m => m.OtherCurrentCity, new { id = "CD_txtOtherCurrentAddCity", @class = "form-control", placeholder = "Please enter your City", tabindex = 14 })
+                                    @Html.ValidationMessageFor(model => model.OtherCurrentCity, "", new { @class = "text-danger", id = "CD_valOtherCurrentAddCity" })
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CurrentZipcode, new { @class = "" })
+                                    @Html.TextBoxFor(m => m.CurrentZipcode, new { id = "CD_txtCurrentAddZipcode", @class = "form-control", placeholder = "Zip Code", maxlength = "6", tabindex = 15 })
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading clearfix">
+                        <i class="icon-calendar"></i>
+                        <h3 class="panel-title">Contact Details</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.HomePhone, new { @class = "" })
+                                    @Html.TextBoxFor(m => m.HomePhone, new { id = "CD_txtHomePhone", placeholder = "02023659820", @class = "form-control", maxlength = "11", tabindex = 16 })
+                                    @Html.ValidationMessageFor(model => model.HomePhone, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.MobileNumber, new { @class = "" }) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.MobileNumber, new { id = "CD_txtMobileNumber", placeholder = "9912345412", @class = "form-control", maxlength = "11", tabindex = 18 })
+                                    @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email, new { @class = "" }) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.Email, new { id = "CD_txtEmail", placeholder = "Email", @class = "form-control", tabindex = 17 })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.AnotherContact, new { @class = "" }) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.AnotherContact, new { id = "CD_txtAnotherContact", placeholder = "02023659820", @class = "form-control", maxlength = "11", tabindex = 19 })
+                                    @Html.ValidationMessageFor(model => model.AnotherContact, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.ConDetID)
+        @Html.HiddenFor(m => m.CreatedBy)
+        @Html.HiddenFor(m => m.CreatedDate)
+    }
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //permanent
+        $('#CD_txtOtherPermanantAddCity').hide();
+        $("#CD_txtOtherPermanantAddCity").val('');
+        $("#CD_txtOtherPermanantAddCity").attr('required', false);
+        $('#CD_txtOtherPermanantAddState').hide();
+        $("#CD_txtOtherPermanantAddState").val('');
+        $("#CD_txtOtherPermanantAddState").attr('required', false);
+
+        //current
+        $('#CD_txtOtherCurrentAddCity').hide();
+        $("#CD_txtOtherCurrentAddCity").val('');
+        $("#CD_txtOtherCurrentAddCity").attr('required', false);
+        $('#CD_txtOtherCurrentAddState').hide();
+        $("#CD_txtOtherCurrentAddState").val('');
+        $("#CD_txtOtherCurrentAddState").attr('required', false);
+
+
+
+        if ($("#CD_txtPermanantAddLine1").val() != "" && $("#CD_txtCurrentAddLine1").val() != "" && $("#CD_ddlCurrentAddCountry").val() != "" && $("#CD_ddlPermanantAddCountry").val() != "" && $("#CD_ddlCurrentAddState").val() != "" && $("#CD_ddlPermanantAddState").val() != "") {
+            if ($("#CD_txtPermanantAddLine1").val() == $("#CD_txtCurrentAddLine1").val() && $("#CD_txtCurrentAddLine2").val() == $("#CD_txtPermanantAddLine2").val() && $("#CD_txtCurrentAddLine3").val() == $("#CD_txtPermanantAddLine3").val()
+            && $("#CD_ddlCurrentAddCountry").val() == $("#CD_ddlPermanantAddCountry").val() && $("#CD_ddlCurrentAddState").val() == $("#CD_ddlPermanantAddState").val() && $("#CD_ddlCurrentAddCity").val() == $("#CD_ddlPermanantAddCity").val()) {
+                $("#CD_chk_sameadd").attr("checked", true);
+
+                $('#CD_chk_sameadd').click();
+            }
+            else {
+                $("#CD_chk_sameadd").attr("checked", false);
+            }
+        }
+
+
+        //Reset
+        $("#CD_Reset").click(function () {
+
+            $('#CD_FormId').find('input, select').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');
+
+
+            LoadPermanentStateByCountryId(0);
+            LoadCurrentSateByCountryId(0);
+
+            //permanent
+            $('#CD_txtOtherPermanantAddCity').hide();
+            $("#CD_txtOtherPermanantAddCity").val('');
+            $("#CD_txtOtherPermanantAddCity").attr('required', false);
+            $('#CD_txtOtherPermanantAddState').hide();
+            $("#CD_txtOtherPermanantAddState").val('');
+            $("#CD_txtOtherPermanantAddState").attr('required', false);
+
+            //current
+            $('#CD_txtOtherCurrentAddCity').hide();
+            $("#CD_txtOtherCurrentAddCity").val('');
+            $("#CD_txtOtherCurrentAddCity").attr('required', false);
+            $('#CD_txtOtherCurrentAddState').hide();
+            $("#CD_txtOtherCurrentAddState").val('');
+            $("#CD_txtOtherCurrentAddState").attr('required', false);
+
+            $('#lblmsg').text('');
+        });
+    });
+
+
+
+
+    if ('@Model.PermanantCountryID' != null && '@Model.PermanantCountryID' != '') {
+        LoadPermanentStateByCountryId('@Model.PermanantCountryID');
+    }
+
+    if ('@Model.PermanantStateID' != null && '@Model.PermanantStateID' != '') {
+        LoadPermanentCityBySateId('@Model.PermanantStateID');
+    }
+
+    if ('@Model.CurrentCountryID' != null && '@Model.CurrentCountryID' != '') {
+        LoadCurrentSateByCountryId('@Model.CurrentCountryID');
+
+    }
+    if ('@Model.CurrentStateID' != null && '@Model.CurrentStateID' != '') {
+        LoadCurrentCityByStateId('@Model.CurrentStateID');
+    }
+
+
+    $("#CD_txtCurrentAddLine1").attr('required', true);
+    //$("#CD_ddlCurrentAddCountry").attr('required', true);
+
+    //$("#CD_ddlCurrentAddCity").attr('required', true);
+
+
+    //if ($("#CD_ddlCurrentAddState").val() == '' || $("#CD_ddlCurrentAddState").val() == "" || $("#CD_ddlCurrentAddState").val() == 'Select State')
+    //{
+    //
+    //    if ($("#CD_ddlCurrentAddState").val()=="") {
+    //        $("#CD_ddlCurrentAddState").attr('required', true);
+
+    //        var data = $("#CD_ddlCurrentAddState");
+    //    }
+
+    //}
+
+
+    $('#CD_chk_sameadd').on('change', function () {
+
+        if (this.checked) {
+
+            //clear validationsCD_valCurrentAddCity
+            $("#CD_valCurrentAddLine1").text('');
+            $("#CD_valCurrentAddState").text('');
+            $("#CD_valCurrentAddCountry").text('');
+            $("#CD_valCurrentAddCity").text('');
+
+
+            $("#CD_txtCurrentAddLine1").val($("#CD_txtPermanantAddLine1").val());
+            $("#CD_txtCurrentAddLine1").prop('readonly', true);
+
+
+            $("#CD_txtCurrentAddLine2").val($("#CD_txtPermanantAddLine2").val());
+            $("#CD_txtCurrentAddLine2").prop('readonly', true);
+
+
+            $("#CD_txtCurrentAddLine3").val($("#CD_txtPermanantAddLine3").val());
+            $("#CD_txtCurrentAddLine3").prop('readonly', true);
+
+
+            var markupStatec = "<option value=" + $("#CD_ddlPermanantAddCity").val() + ">" + $("#CD_ddlPermanantAddCity option:selected").text() + "</option>";
+            $("#CD_ddlCurrentAddCity").html(markupStatec).show();
+            $("#CD_ddlCurrentAddCity").prop('disabled', true);
+
+            var value = $("#CD_ddlCurrentAddCity").val();
+            var markupStatec = "<option value=" + $("#CD_ddlPermanantAddState").val() + ">" + $("#CD_ddlPermanantAddState option:selected").text() + "</option>";
+            $("#CD_ddlCurrentAddState").html(markupStatec).show();
+            $("#CD_ddlCurrentAddState").prop('disabled', true);
+
+
+            $("#CD_ddlCurrentAddCountry").val($("#CD_ddlPermanantAddCountry").val());
+            $("#CD_ddlCurrentAddCountry").prop('disabled', true);
+
+
+            $("#CD_txtCurrentAddZipcode").val($("#CD_txtPermanantAddZipcode").val());
+            $("#CD_txtCurrentAddZipcode").prop('readonly', true);
+
+
+            $("#CD_txtOtherCurrentAddState").val($("#CD_txtOtherPermanantAddState").val());
+            $("#CD_txtOtherCurrentAddState").show();
+            $("#CD_txtOtherCurrentAddState").prop('readonly', true);
+
+
+            $("#CD_txtOtherCurrentAddCity").val($("#CD_txtOtherPermanantAddCity").val());
+            $("#CD_txtOtherCurrentAddCity").show();
+            $("#CD_txtOtherCurrentAddCity").prop('readonly', true);
+
+
+            if ($("#CD_txtOtherPermanantAddState").is(':visible')) {
+                $("#CD_txtOtherCurrentAddState").show();
+            }
+            else {
+                $("#CD_txtOtherCurrentAddState").hide();
+            }
+
+            if ($("#CD_txtOtherPermanantAddCity").is(':visible')) {
+                $("#CD_txtOtherCurrentAddCity").show();
+            }
+            else {
+                $("#CD_txtOtherCurrentAddCity").hide();
+            }
+
+            //if ($("#CD_txtOtherPermanantAddState").is(':hidden'))
+            //{
+            //        alert('hidden')
+            //}
+        }
+        else {
+            $("#CD_txtCurrentAddLine1").prop('readonly', false);
+            $("#CD_txtCurrentAddLine1").val('');
+
+            $("#CD_txtCurrentAddLine2").prop('readonly', false);
+            $("#CD_txtCurrentAddLine2").val('');
+
+            $("#CD_txtCurrentAddLine3").prop('readonly', false);
+            $("#CD_txtCurrentAddLine3").val('');
+
+            $("#CD_ddlCurrentAddCity").prop('disabled', false);
+            $("#CD_ddlCurrentAddCity").val('');
+
+            $("#CD_ddlCurrentAddState").prop('disabled', false);
+            $("#CD_ddlCurrentAddState").val('');
+
+            $("#CD_ddlCurrentAddCountry").prop('disabled', false);
+            $("#CD_ddlCurrentAddCountry").val('');
+
+            $("#CD_txtCurrentAddZipcode").prop('readonly', false);
+            $("#CD_txtCurrentAddZipcode").val('');
+
+            $("#CD_txtOtherCurrentAddState").val('');
+            $("#CD_txtOtherCurrentAddState").hide();
+            $("#CD_txtOtherCurrentAddState").prop('readonly', false);
+
+            $("#CD_txtOtherCurrentAddCity").val('');
+            $("#CD_txtOtherCurrentAddCity").hide();
+            $("#CD_txtOtherCurrentAddCity").prop('readonly', false);
+
+
+            //reset State and City dropdown on uncheck
+
+            $('#CD_ddlCurrentAddState').empty();
+            $("#CD_ddlCurrentAddCity").empty();
+
+            var markupCityc = "<option value='0'>Select City</option>";
+            $("#CD_ddlCurrentAddCity").html(markupCityc).show();
+
+            var markupStatec = "<option value='0'>Select State</option>";
+            $("#CD_ddlCurrentAddState").html(markupStatec).show();
+
+        }
+    });
+
+    $('#CD_SaveId').click(function () {
+        $("#CD_ddlCurrentAddCountry").prop('disabled', false);
+        $("#CD_ddlCurrentAddState").prop('disabled', false);
+        $("#CD_ddlCurrentAddCity").prop('disabled', false);
+
+        $('#lblmsg').text('');
+        var form = $('#CD_FormId');
+
+        $.validator.unobtrusive.parse(form);
+        if (form.valid()) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                url: '@Url.Action("ContactDetails", "User")',
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (result) {
+
+                    if (result) {
+                        $('#lblmsg').text('Contact Details Saved');
+                        //window.location.reload();
+                        //alert('Data Saved');
+                    }
+
+                    ajaxindicatorstop();
+                },
+                error: function (data) {
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    });
+
+
+    $('#CD_ddlPermanantAddCountry').change(function () {
+
+        var Id = $('#CD_ddlPermanantAddCountry').val();
+        LoadPermanentStateByCountryId(Id);
+
+        $('#CD_txtOtherPermanantAddCity').hide();
+        $("#CD_txtOtherPermanantAddCity").val('');
+        $('#CD_txtOtherPermanantAddState').hide();
+        $("#CD_txtOtherPermanantAddState").val('');
+
+        $("#CD_txtOtherPermanantAddState").attr('required', false);
+        $("#CD_txtOtherPermanantAddCity").attr('required', false);
+    });
+
+
+    function LoadPermanentStateByCountryId(Id) {
+
+        var markupCity = "<option value='0'>Select City</option>";
+        $("#CD_ddlPermanantAddCity").html(markupCity).show();
+
+        var value = Id;
+        var url = "/User/LoadStateByCountryId/";
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { CountryId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+
+                var markup = "<option value='0'>Select State</option>";
+
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+
+
+                $("#CD_ddlPermanantAddState").html(markup).show();
+                @*if ( $("#CD_ddlPermanantAddCountry").val() == '@Model.PermanantAddCountryId') {
+                        $("#CD_ddlPermanantAddState option[value='" + @Model.PermanantAddState + "']").attr('selected', 'selected')
+                    }*@
+
+                var otherPermanantState = $("#CD_txtOtherPermanantAddState").val();
+                if (otherPermanantState == '') {
+                    otherPermanantState = '@Model.OtherPermanantState';
+                }
+
+                if (otherPermanantState != '' && $("#CD_ddlPermanantAddCountry").val() == '@Model.PermanantCountryID') {
+                    $("#CD_txtOtherPermanantAddState").show();
+                    $("#CD_ddlPermanantAddState").val('Other');
+                    $("#CD_txtOtherPermanantAddState").val(otherPermanantState);
+                    $("#CD_ddlPermanantAddState option[value='" + @Model.PermanantStateID + "']").attr('selected', 'selected')
+                    LoadPermanentCityBySateId($("#CD_ddlPermanantAddState").val());
+                }
+                else {
+                    if (otherPermanantState == "" && '@Model.PermanantStateID' != '' && data.length > 1)
+                        $("#CD_ddlPermanantAddState option[value='" + @Model.PermanantStateID + "']").attr('selected', 'selected')
+                }
+
+
+            },
+            error: function (reponse) {
+                //alert("error : " + reponse);
+            }
+        });
+    }
+
+
+    $('#CD_ddlPermanantAddState').change(function () {
+        var Id = $('#CD_ddlPermanantAddState').val();
+        if (Id == 37) {
+            $('#CD_txtOtherPermanantAddState').show();
+            $("#CD_txtOtherPermanantAddState").val('');
+            $("#CD_txtOtherPermanantAddState").focus();
+            $("#CD_txtOtherPermanantAddState").attr('required', true);
+        }
+        else {
+            $("#CD_txtOtherPermanantAddState").hide();
+            $("#CD_txtOtherPermanantAddState").val('');
+            $("#CD_txtOtherPermanantAddState").attr('required', false);
+        }
+        LoadPermanentCityBySateId(Id);
+
+    });
+
+    function LoadPermanentCityBySateId(Id) {
+        var value = Id;
+        var url = "/User/LoadCityByStateId/";
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { StateId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select City</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+
+                $("#CD_ddlPermanantAddCity").html(markup).show();
+
+                var otherPermanantCity = $("#CD_txtOtherPermanantAddCity").val();
+                if (otherPermanantCity == '') {
+                    otherPermanantCity = '@Model.OtherPermanantCity';
+                }
+                if (otherPermanantCity != '' && $("#CD_ddlPermanantAddCountry").val() == '@Model.PermanantCountryID') {
+                    $("#CD_txtOtherPermanantAddCity").show();
+                    $("#CD_txtOtherPermanantAddCity").val('Other');
+                    $("#CD_ddlPermanantAddCity option[value='" + @Model.PermanantCityID + "']").attr('selected', 'selected')
+                    $("#CD_txtOtherPermanantAddCity").val(otherPermanantCity);
+                }
+                else {
+                    if (otherPermanantCity == "" && '@Model.PermanantCityID' != '' && data.length > 1)
+                        $("#CD_ddlPermanantAddCity option[value='" + @Model.PermanantCityID + "']").attr('selected', 'selected')
+                }
+
+
+            },
+            error: function (reponse) {
+                //alert("error : " + reponse);
+            }
+        });
+    }
+
+
+    $('#CD_ddlPermanantAddCity').change(function () {
+        var Id = $('#CD_ddlPermanantAddCity').val();
+        if (Id == 673) {
+            $('#CD_txtOtherPermanantAddCity').show();
+            $("#CD_txtOtherPermanantAddCity").val('');
+            $("#CD_txtOtherPermanantAddCity").focus();
+            $("#CD_txtOtherPermanantAddCity").attr('required', true);
+        }
+        else {
+            $("#CD_txtOtherPermanantAddCity").hide();
+            $("#CD_txtOtherPermanantAddCity").val('');
+            $("#CD_txtOtherPermanantAddCity").attr('required', false);
+        }
+    });
+    //Current CITY STATE Dropdown fill
+
+    $('#CD_ddlCurrentAddCountry').change(function () {
+
+        var Id = $('#CD_ddlCurrentAddCountry').val();
+        LoadCurrentSateByCountryId(Id);
+
+        $('#CD_txtOtherCurrentAddCity').hide();
+        $("#CD_txtOtherCurrentAddCity").val('');
+        $('#CD_txtOtherCurrentAddState').hide();
+        $("#CD_txtOtherCurrentAddState").val('');
+
+        $("#CD_txtOtherCurrentAddState").attr('required', false);
+        $("#CD_txtOtherCurrentAddCity").attr('required', false);
+
+    });
+
+    function LoadCurrentSateByCountryId(Id) {
+
+        //reset City dropdown
+        var markupCity = "<option value='0'>Select City</option>";
+        $("#CD_ddlCurrentAddCity").html(markupCity).show();
+
+        var value = Id;
+        var url = "/User/LoadStateByCountryId/";
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { CountryId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+
+                var markup = "<option value='0'>Select State</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#CD_ddlCurrentAddState").html(markup).show();
+                // $("#CD_ddlCurrentAddState option[value='" + @Model.CurrentStateID + "']").attr('selected', 'selected')
+
+                var otherCurrState = $("#CD_txtOtherCurrentAddState").val();
+                if (otherCurrState == '') {
+                    otherCurrState = '@Model.OtherCurrentState';
+                }
+                if (otherCurrState != '' && $("#CD_ddlCurrentAddCountry").val() == '@Model.CurrentCountryID') {
+                    $("#CD_txtOtherCurrentAddState").show();
+                    $("#CD_txtOtherCurrentAddState").val('Other');
+                    $("#CD_ddlCurrentAddState option[value='" + @Model.CurrentStateID + "']").attr('selected', 'selected')
+                    $("#CD_txtOtherCurrentAddState").val(otherCurrState);
+                }
+                else {
+                    if (otherCurrState == "" && '@Model.CurrentStateID' != '' && data.length > 1)
+                        $("#CD_ddlCurrentAddState option[value='" + @Model.CurrentStateID + "']").attr('selected', 'selected')
+                    if (otherCurrState == "" && '@Model.CurrentStateID' != '' && data.length == 1) {
+                        if ($("#CD_chk_sameadd").attr("checked", true))
+                            $("#CD_ddlCurrentAddState option[value='" + @Model.CurrentStateID + "']").attr('selected', 'selected')
+                    }
+
+                }
+            },
+            error: function (reponse) {
+                //alert("error : " + reponse);
+            }
+        });
+    }
+
+
+    $('#CD_ddlCurrentAddState').change(function () {
+
+        var Id = $('#CD_ddlCurrentAddState').val();
+
+        if (Id == 37) {
+            $('#CD_txtOtherCurrentAddState').show();
+            $("#CD_txtOtherCurrentAddState").val('');
+            $("#CD_txtOtherCurrentAddState").focus();
+            $("#CD_txtOtherCurrentAddState").attr('required', true);
+        }
+        else {
+            $("#CD_txtOtherCurrentAddState").hide();
+            $("#CD_txtOtherCurrentAddState").val('');
+            $("#CD_txtOtherCurrentAddState").attr('required', false);
+        }
+        LoadCurrentCityByStateId(Id);
+    });
+
+    function LoadCurrentCityByStateId(Id) {
+
+        var value = Id;
+        var url = "/User/LoadCityByStateId/";
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { StateId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+
+                var markup = "<option value='0'>Select City</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#CD_ddlCurrentAddCity").html(markup).show();
+                // $("#CD_ddlCurrentAddCity option[value='" + @Model.CurrentCityID + "']").attr('selected', 'selected')
+
+                var otherCurrCity = $("#CD_txtOtherCurrentAddCity").val();
+                if (otherCurrCity == '') {
+                    otherCurrCity = '@Model.OtherCurrentCity';
+                }
+                if (otherCurrCity != '' && $("#CD_ddlCurrentAddCountry").val() == '@Model.CurrentCityID') {
+                    $("#CD_txtOtherCurrentAddCity").show();
+                    $("#CD_txtOtherCurrentAddCity").val('Other');
+                    $("#CD_ddlCurrentAddCity option[value='" + @Model.CurrentCityID + "']").attr('selected', 'selected')
+                    $("#CD_txtOtherCurrentAddCity").val(otherCurrCity);
+                }
+                else {
+                    if (otherCurrCity == "" && '@Model.CurrentCityID' != '' && data.length > 1)
+                        $("#CD_ddlCurrentAddCity option[value='" + @Model.CurrentCityID + "']").attr('selected', 'selected')
+                    if (otherCurrCity == "" && '@Model.CurrentCityID' != '' && data.length == 1) {
+                        if ($("#CD_chk_sameadd").attr("checked", true))
+                            $("#CD_ddlCurrentAddCity option[value='" + @Model.CurrentCityID + "']").attr('selected', 'selected')
+                    }
+                }
+            },
+            error: function (reponse) {
+                //alert("error : " + reponse);
+            }
+        });
+    }
+
+    $('#CD_ddlCurrentAddCity').change(function () {
+
+        var Id = $('#CD_ddlCurrentAddCity').val();
+        if (Id == 673) {
+            $('#CD_txtOtherCurrentAddCity').show();
+            $("#CD_txtOtherCurrentAddCity").val('');
+            $("#CD_txtOtherCurrentAddCity").focus();
+            $("#CD_txtOtherCurrentAddCity").attr('required', true);
+        }
+        else {
+            $("#CD_txtOtherCurrentAddCity").hide();
+            $("#CD_txtOtherCurrentAddCity").val('');
+            $("#CD_txtOtherCurrentAddCity").attr('required', false);
+        }
+    });
+
+
+    numeric($('#CD_txtHomePhone'))
+    numeric($('#CD_txtMobileNumber'))
+    numeric($('#CD_txtPermanantAddZipcode'));
+    numeric($('#CD_txtCurrentAddZipcode'));
+
+</script>
+

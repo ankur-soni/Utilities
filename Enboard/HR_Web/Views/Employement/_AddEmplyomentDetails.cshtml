@@ -1,0 +1,211 @@
+﻿@model Models.EmployementModel
+
+@{
+    var CurrencyList = (SelectList)ViewBag.Currencies;
+}
+<div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#EmplyomentForm" aria-expanded="true">
+                    Employment Details
+                </a>
+            </h4>
+        </div>
+        <div id="EmplyomentForm" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body">
+                @Html.Partial("_NumberOfEmployments", ViewData["Employment"])
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.NumberOfEmployments > 0)
+{
+    <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            @using (Html.BeginForm("Index", "Employement", FormMethod.Post, new { id = "PD_FormId" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(x => x.IsCurrentEmployment)
+                <div id="EmplyomentForm" class="panel-collapse collapse in" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CompanyName) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", @tabindex = 3, @maxlength = "50" })
+                                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CompanyAddress) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.CompanyAddress, new { @class = "form-control", @tabindex = 4, @maxlength = "50" })
+                                    @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Current Salary per Annum </label> <span class="red">*</span> <em><i class="infoIcon fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Enter 500,000 for Rs. 5 Lacs per annum"></i> </em>
+                                    @Html.TextBoxFor(m => m.CTC, new { @class = "form-control", @tabindex = 5, @maxlength = "50" })
+                                    @Html.ValidationMessageFor(model => model.CTC, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Select Currency</label> <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.CurrencyID, Model.CurrencyList, "", new { id = "ED_ddlCurrency", @class = "form-control", placeholder = "Select", tabindex = 6 })
+                                    @Html.ValidationMessageFor(model => model.CurrencyID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="switchBox">
+                                    <label class="switch">
+                                        <input type="checkbox" name="chkAdd" checked="@Model.IsCurrentEmployment.Value">
+                                        <span class="slider round" tabindex="7"></span>
+                                    </label>
+
+                                    <span class="switchBoxTitle pull-left"> I currently work here </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="PastEmployment" style="display:none">Designation (on leaving)</label>
+                                        <label class="currentEmployment">Current Designation</label> <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @tabindex = 8, @maxlength = "50" })
+                                        @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Date of Joining</label> <span class="red">*</span>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(m => m.FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.FromDate.HasValue ? Convert.ToString(Model.FromDate.Value.ToShortDateString()) : String.Empty))), new { id = "AED_txtFromDate", @class = "form-control", tabindex = 9 })
+                                            <label class="input-group-addon btn" for="AED_txtFromDate">
+                                                <span class="fa fa-calendar"></span>
+                                            </label>
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="PastEmployment" style="display:none">Date of Relieving</label>
+                                        <label class="currentEmployment">Tentative Relieving Date</label> <span class="red">*</span>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(m => m.ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.ToDate.HasValue ? Convert.ToString(Model.ToDate.Value.ToShortDateString()) : String.Empty))), new { id = "AED_txtToDate", @class = "form-control", tabindex = 10 })
+                                            <label class="input-group-addon btn" for="AED_txtToDate">
+                                                <span class="fa fa-calendar"></span>
+                                            </label>
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row PastEmployment" style="display:none">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Reason for leaving</label><span class="red">*</span>
+                                        @Html.EditorFor(x => x.ReasonForLeave, new { @class = "form-control", @maxlength = "500", htmlAttributes = new { rows = 3, style = "width: 100%;" } })
+                                        @Html.ValidationMessageFor(model => model.ReasonForLeave, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row btnRow">
+                            <div class="col-md-12">
+
+
+                                <button class="btn-reset cancelText" type="reset" tabindex="12"> Cancel </button>
+                                <button class="btn-save" type="submit" onclick="EditCancel('PD_FormId')" tabindex="12"> Save </button>
+
+                                @*<button type="submit" onclick="EditCancel('PD_FormId')" class="btn-save mx-1" style="float:right"> +  Add More </button>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+  
+}
+
+<script>
+    $(document).ready(function () {
+        $('#ReasonForLeave').attr('tabindex', "11")
+        if ($('#IsCurrentEmployment').val() !== '' && $('#IsCurrentEmployment').val() === 'False') {
+            $('.currentEmployment').fadeOut();
+            $('.PastEmployment').fadeIn();
+            $('#IsCurrentEmployment').val('false');
+            $('input[name="chkAdd"]').prop('checked', false);
+
+        }
+        $(".switchBox input").click(function () {
+            if ($(this).is(":checked")) {
+                $('.PastEmployment').fadeOut();
+                $('.currentEmployment').fadeIn();
+                $('#IsCurrentEmployment').val('true');
+            }
+            else {
+                $('.currentEmployment').fadeOut();
+                $('.PastEmployment').fadeIn();
+                $('#IsCurrentEmployment').val('false');
+            }
+        });
+
+        $('#AED_txtToDate').datepicker({
+            // maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            onSelect: function (selected) {
+                $("#AED_txtFromDate").datepicker("option", "maxDate", selected)
+            }
+
+        });
+
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+
+        $('#AED_txtFromDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            onSelect: function (selected) {
+                $("#AED_txtToDate").datepicker("option", "minDate", selected)
+            }
+
+        });
+
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+        $(function () {
+            $.validator.addMethod(
+                "date",
+                function (value, element) {
+                    var bits = value.match(/([0-9]+)/gi), str;
+                    if (!bits)
+                        return this.optional(element) || false;
+                    str = bits[1] + '/' + bits[0] + '/' + bits[2];
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(str));
+                },
+                ""
+            );
+        });
+        //$('.hasDatepicker').attr('readonly', true);
+    });
+</script>

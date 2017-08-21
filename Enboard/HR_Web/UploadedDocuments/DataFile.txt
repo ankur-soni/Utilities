@@ -1,0 +1,65 @@
+Detailed Request in JSON:
+
+
+A) HCM-C1 Base Station
+
+Message: GetHCMInfo?basestationid=1
+
+Respose inJSON:
+
+{
+"OperationalStatus" : "B",   // Notes - Response Code : R(Red),BG(Blinking Green),B(Blue),G(Green),BB(Blinking Blue)
+"ConnectionType" : "WIFI", // Notes - Response Code : WIFI,ETHERNET
+"WSignalStatus" : "B",     // Notes- Response Code : N(Connected via Wired Ethernet),B(Execllent Signal),G(Good Signal),Y (Fair Signal),R (Poor  
+Signal)
+"FVersion" : "value",
+"HVersion" : "value",
+"OperatingMode" : "M",  //Notes - M(Master),S(Slave),P(Port Expander)
+"SConnectionDuration" : { "value": "100","unit" : "?"  }, // Notes - Please let us know the unit for this value.We can support  
+(seconds,minutes,hour,days)?
+"ListLocatNetwork" : "?",
+"CEditorVersion" : "value", // Note : HCM Editor Version
+
+}
+
+
+B) HomeSet C-100 Base Station
+
+Message: GetHomeSetInfo?basestationid=2
+
+Respose inJSON:
+{
+"OperationalStatus" : "BG",   // Notes - Response Code : R(Red),BG(Blinking Green),B(Blue),G(Green),BB(Blinking Blue)
+"ConnectionType" : "ETHERNET", // Notes - Response Code : WIFI,ETHERNET
+"WSignalStatus" : "R",     // Notes- Response Code : N(Connected via Wired Ethernet),B(Execllent Signal),G(Good Signal),Y (Fair Signal),R (Poor  
+Signal)
+"FVersion" : "value",
+"HVersion" : "value",
+"OperatingMode" : "P",  //Notes - M(Master),S(Slave),P(Port Expander)
+"SConnectionDuration" : { "value": "100","unit" : "?"  }, // Notes - Please let us know the unit for this value.We can support  
+(seconds,minutes,hour,days)?
+"ListRemoteControls" : [{ "MACID": "Mac Id 1",
+			 "FVersion": "1.0",
+			 "HVersion": "1.0",
+			 "WSignal": "P"
+			 },			
+			{ "MACID": "Mac Id 2",
+			 "FVersion": "2.0",
+			 "HVersion": "3.0",
+			 "WSignal": "G"
+			 }			
+			],
+
+"ListLocatNetwork" : "?",
+"CEditorVersion" : "value" // Note : HCM Editor Version
+
+}
+
+
+
+Sample Json Without Comments and JavaScript Code:
+
+        var jsnString = '{ "OperationalStatus" : "BG", "ConnectionType" : "ETHERNET","WSignalStatus" : "R","FVersion" : "value", "HVersion" : "value", "OperatingMode" : "P", "SConnectionDuration" : { "value": "100","unit" : "?"  }, "ListRemoteControls" : [{ "MACID": "Mac Id 1", "FVersion": "1.0", "HVersion": "1.0", "WSignal": "P"},{ "MACID": "Mac Id 2", "FVersion": "2.0", "HVersion": "3.0", "WSignal": "G"} ],"ListLocatNetwork" : "?","CEditorVersion" : "value" } ';
+               
+        var obj = JSON.parse(jsnString);
+        alert(obj.OperationalStatus);

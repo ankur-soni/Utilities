@@ -1,0 +1,87 @@
+﻿@*@model IEnumerable<Models.LoginDetails>*@
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<Models.LoginDetails>
+@{
+    ViewBag.Title = "Reminder List";
+}
+@Scripts.Render("~/bundles/jquery")
+
+<div class="row">
+    <form class="form-users">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group tl-search-grp">
+                <table style="width: 100%;" class="custom-table">
+                    <tr>
+                        <td>
+                            <input class="form-control" id="focusedInput" type="text" placeholder="Search">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" id="searchReminderList"><i class="fa fa-search"></i> Search</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box" id="divReminderList" style="max-height: 630px; overflow: auto;">
+                @Html.Partial("~/Views/User/_partialReminderList.cshtml", Model)
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>
+
+
+
+@*script for user defined functions*@
+<script type="text/javascript">
+    $(function ($) {
+       // event for search user
+        $('#searchReminderList').click(function (event) {
+            if ($('#focusedInput').val() != "") {
+                GetReminderList($('#focusedInput').val().trim().toLowerCase());
+            }
+            else {
+                if ($("#userReminderGrid > tbody > tr").length == 0)
+                    window.location.reload();
+            }
+        });
+    });
+
+
+    $('#focusedInput').bind('input propertychange', function () {
+
+        GetReminderList($('#focusedInput').val().trim().toLowerCase());
+    })
+
+  
+
+    function GetReminderList(serchText) {
+
+        $.ajax({
+            type: "GET",
+            url: '/User/GetReminderList/',
+            data: {
+                searchString: serchText, 
+            },
+            contentType: "application/json",
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+                return false;
+            },
+            success: function (data) {
+                if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                    HandleSessionTimeout();
+                    return;
+                }
+                $("#divReminderList").html('');
+                $("#divReminderList").html(data);
+                $("#userReminderGrid").show();
+            }
+        });
+    }
+
+</script>
+

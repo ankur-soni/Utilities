@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d01284aba5ac49429ceff68914a1dd99" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="IPDModel.EmployeeFamilyDetail" Width="1.5" PointX="7.5" PointY="45.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_City" Width="1.5" PointX="11.25" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Class" Width="1.5" PointX="8.25" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_College" Width="1.5" PointX="8.25" PointY="24.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Country" Width="1.5" PointX="6.75" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Department" Width="1.5" PointX="3" PointY="34.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Designation" Width="1.5" PointX="3" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Discipline" Width="1.5" PointX="8.25" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_DocumentCategory" Width="1.5" PointX="0.75" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_EducationCategory" Width="1.5" PointX="8.25" PointY="53.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Form" Width="1.5" PointX="5.25" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Language" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_LeavingReason" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Location" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_MaritalStatus" Width="1.5" PointX="11.25" PointY="35.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Relation" Width="1.5" PointX="5.25" PointY="51.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Role" Width="1.5" PointX="3" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_Specialization" Width="1.5" PointX="8.25" PointY="56.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_State" Width="1.5" PointX="9" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.Master_University" Width="1.5" PointX="8.25" PointY="59.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.WelcomeNoteDetail" Width="1.5" PointX="7.5" PointY="73.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IPDModel.UserReminder" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeFamilyDetail_Master_Relation" ManuallyRouted="false" />
+        <AssociationConnector Association="IPDModel.FK_Master_City_Master_State" ManuallyRouted="false" />
+        <AssociationConnector Association="IPDModel.FK_Master_State_Master_Country" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="IPDModel.EmployeeMaster" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="IPDModel.EmployeeSkillDetail" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="IPDModel.Master_Certification" Width="1.5" PointX="4.75" PointY="6.75" />
+        <EntityTypeShape EntityType="IPDModel.Master_SkillSet" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="IPDModel.EmployeeContactDetail" Width="1.5" PointX="16.5" PointY="30.25" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_City" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_City1" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_Country" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_Country1" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_Country2" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_State" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_State1" />
+        <EntityTypeShape EntityType="IPDModel.EmployeeProfessionalDetail" Width="1.5" PointX="8.25" PointY="32.875" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeProfessionalDetails_Master_Department" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeProfessionalDetails_Master_Designation" />
+        <EntityTypeShape EntityType="IPDModel.EmploymentDetail" Width="1.5" PointX="13.5" PointY="28.875" />
+        <EntityTypeShape EntityType="IPDModel.Master_Currency" Width="1.5" PointX="11.25" PointY="32.25" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentDetails_EmploymentDetails" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentDetails_Master_City" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentDetails_Master_Country" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentDetails_Master_Currency" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentDetails_Master_State" />
+        <EntityTypeShape EntityType="IPDModel.EmployeePersonalDetail" Width="1.5" PointX="13.5" PointY="38.625" />
+        <EntityTypeShape EntityType="IPDModel.Master_Bloodgroup" Width="1.5" PointX="11.25" PointY="48.375" />
+        <AssociationConnector Association="IPDModel.FK_EmployeePersonalDetail_Master_Bloodgroup" />
+        <AssociationConnector Association="IPDModel.FK_EmployeePersonalDetail_Master_Country" />
+        <AssociationConnector Association="IPDModel.FK_EmployeePersonalDetail_Master_MaritalStatus" />
+        <EntityTypeShape EntityType="IPDModel.AdminEducationCategoryForUser" Width="1.5" PointX="13.5" PointY="47.375" />
+        <AssociationConnector Association="IPDModel.FK_AdminEducationCategoryForUser_Master_EducationCategory" />
+        <EntityTypeShape EntityType="IPDModel.EducationDocumentCategoryMapping" Width="1.5" PointX="16.5" PointY="46.875" />
+        <AssociationConnector Association="IPDModel.FK_EducationDocumentCategoryMapping_Master_EducationCategory" />
+        <EntityTypeShape EntityType="IPDModel.DocumentDetail" Width="1.5" PointX="16.5" PointY="40.125" />
+        <EntityTypeShape EntityType="IPDModel.Master_Document" Width="1.5" PointX="3" PointY="28.75" />
+        <AssociationConnector Association="IPDModel.FK_DocumentDetails_Master_Document" />
+        <AssociationConnector Association="IPDModel.FK_DocumentDetails_Master_DocumentCategory" />
+        <AssociationConnector Association="IPDModel.FK_DocumentDetails_Master_SubDocumentCategory" />
+        <AssociationConnector Association="IPDModel.FK_EducationDocumentCategoryMapping_Master_Document" />
+        <AssociationConnector Association="IPDModel.FK_Master_Document_Master_DocumentCategory" />
+        <EntityTypeShape EntityType="IPDModel.LoginDetail" Width="1.5" PointX="5.25" PointY="36.625" />
+        <AssociationConnector Association="IPDModel.FK_AdminEducationCategoryForUser_LoginDetails" />
+        <AssociationConnector Association="IPDModel.FK_DocumentDetails_LoginDetails1" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_LoginDetails" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeFamilyDetail_LoginDetails" />
+        <AssociationConnector Association="IPDModel.FK_EmployeePersonalDetail_LoginDetails" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentDetails_LoginDetails" />
+        <AssociationConnector Association="IPDModel.FK_LoginDetails_Master_Department" />
+        <AssociationConnector Association="IPDModel.FK_LoginDetails_Master_Designation" />
+        <AssociationConnector Association="IPDModel.FK_LoginDetails_Master_Role" />
+        <AssociationConnector Association="IPDModel.FK_WelcomeNoteDetails_WelcomeNoteDetails" />
+        <EntityTypeShape EntityType="IPDModel.CandidateChangeRequestsDetail" Width="1.5" PointX="7.5" PointY="20.5" />
+        <AssociationConnector Association="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails" />
+        <EntityTypeShape EntityType="IPDModel.CandidateGraphProgressDetail" Width="1.5" PointX="7.5" PointY="15.375" />
+        <AssociationConnector Association="IPDModel.FK_Graph_Graph1" />
+        <EntityTypeShape EntityType="IPDModel.EmployeeEducationDetail" Width="1.5" PointX="10.5" PointY="39.25" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_LoginDetails" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_Class" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_College" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_Discipline" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_EducationCategory" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_Specialization" />
+        <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_University" />
+        <EntityTypeShape EntityType="IPDModel.EmploymentCount" Width="1.5" PointX="7.5" PointY="41.125" />
+        <AssociationConnector Association="IPDModel.FK_EmploymentCount_LoginDetails" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

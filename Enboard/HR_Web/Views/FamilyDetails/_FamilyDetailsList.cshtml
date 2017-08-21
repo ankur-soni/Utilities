@@ -1,0 +1,221 @@
+﻿@model PagedList.IPagedList<Models.FamilyHistory>
+<style>
+    .glyphicon.glyphicon-ok, .glyphicon.glyphicon-pencil, .glyphicon.glyphicon-trash, .glyphicon.glyphicon-remove, .glyphicon.glyphicon-info-sign {
+        color: rgb(0,175,236);
+        padding: 5px;
+    }
+
+        .glyphicon.glyphicon-ok:hover, .glyphicon.glyphicon-pencil:hover, .glyphicon.glyphicon-trash:hover, .glyphicon.glyphicon-remove:hover, .glyphicon.glyphicon-info-sign:hover {
+            color: #2e2e2e;
+        }
+</style>
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+
+
+    }
+    <div class="box-body table-responsive">
+        <a href="#" onclick="AddFamilyDetails();" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>  Add Family Details</a>
+        <br />
+        <br />
+
+        @if (Model != null && Model.Count() > 0)
+        {
+            <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+                <thead style="background-color:#428bca;color:white; ">
+                    <tr>
+                        <th>#.</th>
+                        <th>Relationship</th>
+                        <th>Full Name (Name) (SurName)</th>
+                        <th>Date Of Birth</th>
+                        <th>Gender</th>
+                        <th>Dependent</th>
+                        <th>Status</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var family in Model)
+                    {
+                        <tr>
+                            <td>@Html.Raw(family.ID)</td>
+                            <td>@Html.Raw(family.RelationShipName) </td>
+                            <td>@Html.Raw(family.FullName)</td>
+                            <td>@Html.Raw(family.DOB)</td>                            
+                            <td>@Html.Raw(family.Gender)</td>
+                            <td>@Html.Raw(family.Dependent)</td>
+                            <td>@Html.Raw(family.IsActive)</td>                            
+                            <td align="center">
+                                <span class="glyphicon glyphicon-pencil" style="color:green; cursor:pointer" title="Edit Details" onclick="EditFamilyDetails(@family.FamDetID)"></span>
+                                <span class="glyphicon glyphicon-info-sign" style=" color:green;cursor:pointer" title="View Details" onclick="ViewFamilyDetails(@family.FamDetID)"></span>
+                                <span class="glyphicon glyphicon-remove" style=" color:red;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@family.FamDetID)"></span>
+                            </td>
+                        </tr>                       
+                    }
+
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <h4>No Records found</h4>
+        }
+    </div>
+
+    <div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                    <h4 class="modal-title" id="hTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsg">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="DeleteFamilyDetails($('#hdnSelectedID').val())">Yes</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">No</button>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModalInformation" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="hTitleInfo"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsgInfo">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="cancel()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function AddFamilyDetails() {
+            var data = { Id: 0 }
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/FamilyDetails/AddEditFamilyDetails",
+                data: data,
+                success: function (data) {
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+        function EditFamilyDetails(ID) {                      
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/FamilyDetails/AddEditFamilyDetails",
+                data: { FamDetID: ID },
+                datatype: "html",
+                success: function (data) {                    
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+        function DeleteFamilyDetails(ID) {           
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/FamilyDetails/DeleteFamilyDetails",
+                data: { Id: ID },
+                datatype: "json",
+                success: function (data) {                   
+                    if(data)
+                    {             
+                        $('#myModal').hide();
+                        $("#hTitleInfo").html('Deleted');
+                        $("#divMsgInfo").html('Family details deleted successfully.');
+                        $('#myModalInformation').show();
+              
+                        $.ajax({
+                            urlGrid:"/FamilyDetails/FamilyDetailsGrid",
+                            cache: false,
+                            type: 'GET',
+                            success: function (data) {                               
+                                $("body").html(data);
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });  
+
+        }
+
+        function DeleteIndex(ID) {            
+            $('#hdnSelectedID').val(ID);
+            $("#hTitle").html('Delete?');
+            $("#divMsg").html('Are you sure you want to delete this Record?');
+            $('#myModal').show();
+        }
+        
+        function cancel() {
+            $('#myModal').hide();
+            $('#myModalInformation').hide();
+        }
+
+        function ViewFamilyDetails(ID) {             
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/FamilyDetails/AddEditFamilyDetails",
+                data: { FamDetID: ID, IsReadOnly :true },
+                success: function (data) {
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    </script>
+
+</div>

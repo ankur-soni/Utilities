@@ -1,0 +1,196 @@
+﻿@*@model IEnumerable<Models.LoginDetails>*@
+@model PagedList.IPagedList<Models.LoginDetails>
+@using PagedList;
+@using PagedList.Mvc;
+@*Model for confirmation*@
+
+
+<style type="text/css">
+    a:hover {
+        cursor: pointer;
+    }
+
+    table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
+        background: #428bca;
+    }
+    .glyphicon.glyphicon-download,.glyphicon.glyphicon-envelope {  color:rgb(0,175,236); padding:5px;    }
+    .glyphicon.glyphicon-download:hover, .glyphicon.glyphicon-envelope :hover {  color:#2e2e2e;text-decoration:none}
+   
+</style>
+<div id="myMailModal" class="modal fade in" aria-hidden="false" style="display:none;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnUserId" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="ErrorDiv_Email" class="alert alert-danger" role="alert" style="display:none"> </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelMail()">x</button>
+                <h4 class="modal-title" id="mailTital">Send Email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                    <div class="form-group">
+                        <label class="control-label">To</label><span class="red">*</span>
+                        <input class="form-control" id="txtTo" type="text" placeholder="John.doe@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">CC</label>
+                        <input class="form-control" id="txtCC" type="text" placeholder="John.doe@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <input class="form-control" id="txtSubject" type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Body</label>
+
+                        <textarea id="txtBody" class="form-control" rows="4">This is the default test for mail body.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <input id="cbxAttachment" type="checkbox" checked="checked" name="attachment" value="Yes"> &nbsp; <label id="lblcheckbox">Attach documents</label>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="fnSendMail()">Send</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancelMail()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-body table-responsive">
+    <br />
+    <br />
+
+    <table id="userReminderGrid"  hidden class="table table-bordered table-striped dataTable tablesorter sortable" aria-describedby="example1_info">
+        <thead style="background-color:#428bca;color:white;">
+            <tr>
+                <th style="border-bottom-width: 3px;">Name</th>
+                <th style="border-bottom-width: 3px;" data-defaultsort="disabled">Email Address</th>
+                <th style="border-bottom-width: 3px;">Last Login</th>
+                <th style="border-bottom-width: 3px;" data-defaultsort="asc">Number Of Reminders</th>
+                <th style="text-align:center;" data-defaultsort="disabled">Send Reminder</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                var @strUserFullName = user.FirstName + " " + user.LastName;
+                <tr id="@user.UserId">
+                    <td>@Html.Raw(strUserFullName)</td>
+                    <td>@Html.Raw(user.Email)</td>
+                    <td>@Html.Raw(user.LastLogin)</td>
+                    <td>@Html.Raw(user.ShortJoiningDate)</td>
+                    <td align="center" style="vertical-align:middle;"><span class="glyphicon glyphicon-envelope"  title="Mail" onclick="MailSend(@user.UserId, '@strUserFullName','@user.Email');"></span></td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+
+
+
+
+@*this div is used for apply pagging*@
+@if (Model.PageCount > 1)
+{
+    @Html.PagedListPager(Model, Page => Url.Action("ReminderList", new { Page }))
+}
+    @*script for user defined functions*@
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $("div .modal-backdrop").on("click",function(){
+                $('#modalUserDetails').hide();
+            });
+        });
+
+        function MailSend(userId, CandidateName, UserMailId) {
+            $("#hdnUserId").val(userId);
+            $("#txtTo").val(UserMailId);
+            $("#txtSubject").val("");
+            $("#txtBody").val("This is the default test for mail body.");
+            $("#lblcheckbox").html("Attach documents of - " + CandidateName);
+            $('#cbxAttachment').prop('checked', true)
+            $('#txtSubject').val('Emailing: Documents for ' + CandidateName)
+            $('#txtBody').val("Hello,\r\nPlease find the attached documents for the candidate " + CandidateName + " \r\n \r\n<br/><br/>From,<br/>\r\nTeam Silicus");
+            //    $('#txtBody').val("Hello,\r\nPlease find the attached documents for the candidate " + CandidateName + " \r\n \r\nFrom,\r\nTeam Silicus");
+            $('#myMailModal').show();
+        }
+
+        function fnSendMail() {
+            if ($("#txtTo").val() != "")
+            {
+                if (validateMultipleEmailsCommaSeparated($("#txtTo").val()) && validateMultipleEmailsCommaSeparated($("#txtCC").val()))
+                {
+                  
+                    var strToIds = $("#txtTo").val();
+                    var strCCIds = $("#txtCC").val();
+                    var strSub = $("#txtSubject").val();
+                    var strBody = $("#txtBody").val();
+                    var isAttachment = $('#cbxAttachment').is(":checked");
+                    var userId = $("#hdnUserId").val();
+                    var strUrl = '/User/SendEmailAsReminder';
+                    $.ajax({
+                        type: "POST",
+                        url: strUrl,
+                        data: '{"to":"' + strToIds + '" ,"cc":"' + strCCIds + '","sub":"' + strSub + '", "body":"' + strBody + '", "isAttach":"' + isAttachment + '", "userId":"' + userId + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert(textStatus + " " + errorThrown);
+                            return false;
+                        },
+                        success: function (data) {
+                            $('#myMailModal').hide();
+                            $("#Smsg").html("Mail has been sent successfully to - " + strToIds);
+                            $('#sucess-msg').show();
+                            setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 4000)
+                        }
+                    });
+                }
+            }
+            else {
+                $("#ErrorDiv_Email").html('Please enter to email id.').show();
+                setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
+            }
+        }
+
+
+        function validateMultipleEmailsCommaSeparated(mailids) {
+            var value = mailids;
+            var returnMailIds = "";
+            if (value != '') {
+                var result = value.split(',');
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i] != '') {
+                        if (!validateEmail(result[i])) {
+                            $("#ErrorDiv_Email").html('\'' + result[i] + '\' is not a valid email address.').show();
+                            setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        function validateEmail(field) {
+            field = field.trim();
+            var regex = /^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return (regex.test(field)) ? true : false;
+        }
+        // function for hide model
+        function cancel() {
+            $('#myModal').hide();
+            $('#myModalImage').hide();
+        }
+
+        // function for hide model
+        function cancelMail() {
+            $('#myMailModal').hide();
+        }
+    </script>

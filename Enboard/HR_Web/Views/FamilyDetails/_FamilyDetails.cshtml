@@ -1,0 +1,235 @@
+﻿@model Models.FamilyDetails
+
+@{
+    ViewBag.Title = "FamilyDetails";
+    var RelationList = (SelectList)ViewBag.Relationship;
+    var DependentList = (SelectList)ViewBag.DependentList;
+    var GenderList = (SelectList)ViewBag.GenderList;
+    var BloodGroupList = (SelectList)ViewBag.BloodGroupList;
+}
+<style>
+    .labelfont{
+        color: #6D6767;font-size: inherit;
+    }
+</style>
+
+@Scripts.Render("~/bundles/jqueryval")
+<div class="container">
+    <!-- Row start -->
+    @using (Html.BeginForm("FamilyDetails", "User", FormMethod.Post, new { id = "Family_FormId" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+        <label style="color:green" id="lblmsg"> </label>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading clearfix">
+                        <i class="icon-calendar"></i>
+                        <h3 class="panel-title">Family Details</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.RelationshipID, new { @class = "label labelfont" }) <span class="red">*</span>
+                                    @Html.DropDownListFor(m => m.RelationshipID, RelationList, "Select Relation", new { id = "ddlRelationGroup", @class = "form-control", placeholder = "p", tabindex = 1 })
+                                    @Html.ValidationMessageFor(model => model.RelationshipID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.FullName, new { @class = "label labelfont" }) <span class="red">*</span>
+                                    @Html.TextBoxFor(m => m.FullName, new { id = "txtFullName", placeholder = "Full Name (Name) (Surname)", @class = "form-control", tabindex = 2, @maxlength = "100" })
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.DOB, new { @class = "label labelfont" })
+                                    @Html.TextBoxFor(m => m.DOB, String.Format("{0:dd/MM/yyyy}", Model.DOB), new { id = "txtDOB", placeholder = "", @class = "form-control", tabindex = 3, @maxlength = "14" })                                   
+                                    <span id="doberrormessage" class="text-danger field-validation-error">Date of birth is required if relation is Spouse.</span>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.PlaceofBirth, new { @class = "label labelfont" })
+                                    @Html.TextBoxFor(m => m.PlaceofBirth, new { id = "txtbirthplace", placeholder = "Place of birth", @class = "form-control alphanumeric", tabindex = 4, @maxlength = "100" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Occupation, new { @class = "label labelfont" })
+                                    @Html.TextBoxFor(m => m.Occupation, new { id = "txtOccupation", placeholder = "Occupation", @class = "form-control alphanumeric", tabindex = 5, @maxlength = "50" })
+                                </div>                        
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.EmergencyContact, new { @class = "label labelfont" })                                   
+                                    @Html.DropDownListFor(m => m.EmergencyContact, RelationList, "Select Relation", new { id = "ddlRelationGroupEmergency", @class = "form-control", placeholder = "p", tabindex = 6 })                                
+                                </div> 
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="panel-body">                               
+                                <div class="form-group" id="divMotherTongueId">
+                                    @Html.LabelFor(m => m.Gender, new { @class = "label labelfont" }) 
+                                    @Html.DropDownListFor(m => m.Gender, GenderList, "Select Gender", new { id = "ddlDependent", @class = "form-control", placeholder = "p", tabindex = 7 })                                                             
+                                </div>    
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Nationality, new { @class = "label labelfont" }) 
+                                    @Html.TextBoxFor(m => m.Nationality, new { id = "PD_txtNationality", placeholder = "Nationality", @class = "form-control", tabindex = 8, @maxlength = "20" })                                   
+                                </div>                             
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Dependent, new { @class = "label labelfont" }) 
+                                    @Html.DropDownListFor(m => m.Dependent, DependentList, "Select Dependent", new { id = "ddlDependent", @class = "form-control", placeholder = "p", tabindex = 9 })                                 
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.BloodGroup, new { @class = "label labelfont" })                                    
+                                    @Html.DropDownListFor(m => m.BloodGroup, BloodGroupList, "Select BloodGroup", new { id = "ddlBloodGroup", @class = "form-control", placeholder = "p", tabindex = 10 })                                    
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Address, new { @class = "label labelfont" })
+                                    @Html.TextBoxFor(m => m.Address, new { id = "txtAddress", placeholder = "Address", @class = "form-control alphanumeric", tabindex = 11, @maxlength = "100" })                                   
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ContactNumber, new { @class = "label labelfont" })
+                                    @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtContactNumber", placeholder = "Contact Number", @class = "form-control alphanumeric", tabindex = 12, @maxlength = "15" })                                   
+                                    <span id="contacterrormessage" class="text-danger field-validation-error">Contact number is required if relation is Spouse.</span>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+                <div style="padding-bottom:20px;">
+                    <a href="#" id="Family_SaveData" class="btn btn-save" tabindex="11"><span class="glyphicon glyphicon-saved"></span> Save</a>
+                    <a href="#" id="Family_Cancel" class="btn btn-cancel" tabindex="12"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+                </div>
+            </div>
+        </div>
+            @Html.HiddenFor(m => m.FamDetID)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+    }
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.IsReadOnly' == 'True') {
+            $('input,select').attr('disabled', true);
+            $('#Family_SaveData').attr('disabled', true);
+        }
+        else {
+            $('#Family_SaveData').attr('disabled', false);
+        }
+    
+        $('#txtDOB').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            yearRange: "-100:+0"
+        });
+
+        //Datepicker validation 
+        $('.hasDatepicker').attr('readonly', true);
+
+        $("#contacterrormessage").hide();
+        $("#doberrormessage").hide();
+
+        $('#Family_Cancel').click(function () {
+            ajaxindicatorstart('Loading.. please wait..');
+            GetFamilyDetailsList();
+        });
+
+        $('#Family_SaveData').click(function () {         
+            var spouse = $('#ddlRelationGroup').val();
+            var number = $('#txtContactNumber').val();
+            var dob = $('#txtDOB').val();
+            if ((spouse == 3 && (isNaN(number) || number == '')) && (isNaN(dob) || dob == '')) {
+                $("#contacterrormessage").show();
+                $("#doberrormessage").show();
+                return;
+            }
+            else {
+                $("#contacterrormessage").hide();
+                $("#doberrormessage").hide();
+            }
+            if ((spouse == 3 && (isNaN(number) || number == ''))) {
+                $("#contacterrormessage").show();
+                return;
+            }
+            else {
+                $("#contacterrormessage").hide();
+            }
+            if ((spouse == 3 && (isNaN(dob) || dob == ''))) {
+                $("#doberrormessage").show();
+                return;
+            }
+            else {
+                $("#doberrormessage").hide();
+            }
+
+            var form = $('#Family_FormId');           
+            $('#lblError').text('');
+            $.validator.unobtrusive.parse(form);
+            if (form.valid()) {               
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    url: "/FamilyDetails/AddEditFamilyDetails",
+                    data: form.serialize(),                    
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+                        var isSuccessful = (data['success']);
+                        if (isSuccessful) {
+                            GetFamilyDetailsList();
+                        }
+                        else {
+                            var errors = data['response'];
+                            //displayValidationErrors(errors);
+                        }                        
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        //alert('some error occured')
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+        });
+       
+
+        function displayValidationErrors(errors) {
+            var $ul = $('div.validation-summary-valid.text-danger > ul');
+
+            $ul.empty();
+            $.each(errors, function (idx, errorMessage) {
+                $ul.append('<li>' + errorMessage + '</li>');
+            });
+        }
+
+        function GetFamilyDetailsList() {
+            $.ajax({
+                url: "/FamilyDetails/FamilyDetailsGrid",
+                cache: false,
+                type: 'GET',
+                success: function (data) {
+                    $("body").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+        
+        //For emergency contact       
+        var emergencyContact = parseInt(@ViewBag.EmergencyContact);       
+        if (emergencyContact != null && emergencyContact != '' && !isNaN(emergencyContact))
+        {
+            $("#ddlRelationGroupEmergency").prop("disabled", true);
+        }
+        else {
+            $("#ddlRelationGroupEmergency").prop("disabled", false);
+        }
+
+    });
+</script>

@@ -1,0 +1,213 @@
+﻿@model Models.AddEmployeeModel
+@{
+    ViewBag.Title = "Add Offer Candidate To Employee";
+    Layout = null;
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/EDP_Validations.js"></script>
+
+<div class="container-fluid">
+  
+    <!-- Row start -->
+    @using (Html.BeginForm("AssignPNo", "User", FormMethod.Post, new { id = "frmAssignPNo" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.UserID)
+        @Html.HiddenFor(T => T.EmployeeMasterId)
+    <div class="panel panel-primary" id="succdiv">
+        <div class="panel-heading clearfix">
+            <i class="icon-calendar"></i>
+            <h3 class="panel-title">Add to Employee List</h3>
+        </div>
+       
+        <div class="row">
+            <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-1 col-sm-offset-1" >
+                <div class="panel-body">
+
+                    <div class="form-group">
+                        @Html.Label("Employee No", new { @class = "" })
+                        @Html.TextBoxFor(m => m.EmpNo, new { id = "txtEmpNo", @maxlength = 50, @class = "form-control", placeholder = "Employee No", tabindex = 1 })
+                        @Html.ValidationMessageFor(model => model.EmpNo, "", new { @class = "text-danger" })
+                    </div>
+                  
+
+                    <div class="form-group">
+                        @Html.Label("Email Address", new { @class = "" })
+                            @Html.TextBoxFor(m => m.Email, new { id = "txtEmail", @class = "form-control", placeholder = "John.Doe@silicus.com", tabindex = 3 })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                  
+                    <div class="form-group">
+                        @Html.Label("Joining Date", new { @class = "" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.JoiningDate, String.Format("{0:yyyy/MM/dd}", Model.JoiningDate), new { id = "txtJoiningDate", @class = "form-control", placeholder = "DD/MM/YYYY", tabindex = 5 })
+                            <label class="input-group-addon btn" for="txtJoiningDate"><span class="fa fa-calendar"></span></label>
+                        </div>
+                            @*@Html.TextBoxFor(m => m.OtherClass, new { id = "ED_txtOtherClass", @class = "form-control", placeholder = "Please enter your Class", style = "display:none;" })*@
+                            @*@Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger", id = "ED_OtherClass" })*@
+                    </div>
+                </div>
+
+            </div>
+       
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.Label("Employee Name", new { @class = "" })
+                        @Html.TextBoxFor(m => m.EmpName, new { id = "txtEmpName", @class = "form-control", placeholder = "Employee Name", tabindex = 2 })
+                        @Html.ValidationMessageFor(model => model.EmpName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Date of Birth", new { @class = "" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.DOB, String.Format("{0:yyyy-MM-dd}", Model.DOB), new { id = "txtDOB", placeholder = "DD/MM/YYYY", @class = "form-control", tabindex = 4 })
+                           
+                            <label class="input-group-addon btn" for="txtDOB"><span class="fa fa-calendar"></span></label>
+                            </div>
+                        @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                        </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+                    @*<input type="button" value="Add Education Details" class="btn-primary" id="ED_SaveId" />*@
+
+            <a href="#" id="btnSave" class="btn btn-primary" tabindex="14"><span class="glyphicon glyphicon-saved"></span> Save</a>
+            <a href="#" id="btnCancel" class="btn btn-cancel" tabindex="15"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+            @Html.HiddenFor(T => T.IsEmployeeEditMode)
+            @*<input type="button" value="Save" class="btn-primary"  />
+                @*<input type="button" value="Delete" class="btn-primary" id="ED_DeleteData" />*@
+            @*<input type="button" value="Cancel" class="btn-primary"  />*@
+
+            @*<div class="panel-heading clearfix">
+                    <h3 class="panel-title">Education Details</h3>
+                    <br />
+
+                        <div id="grdEducationList">
+                            <div class="row">
+                               @Html.Partial("~/Views/Education/_EducationList.cshtml", Model.EducationalDetailsList)
+                            </div>
+                        </div>
+
+                </div>*@
+
+
+    
+    }
+        </div>
+
+        
+
+
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+        $('#txtDOB').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+
+        $('#txtJoiningDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+
+        //Datepicker validation 
+        //$('.hasDatepicker').attr('readonly', true);
+    });
+
+
+
+    $('#btnSave').click(function () {
+      
+     
+        var form = $('#frmAssignPNo');
+        $.validator.unobtrusive.parse(form);
+
+        if (form.valid()) {
+         
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({              
+                url: "/User/AssignPNo",
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data.result) {
+                        $.ajax({
+                            url: "/User/UserList",
+                            cache: false,
+                            type: 'GET',
+                            success: function (data) {
+                                // $("#succdiv").(data);
+
+                                $("body").html(data);
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    });
+
+
+    $('#btnCancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            url: "/User/UserList",
+            cache: false,
+            type: 'GET',            
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+
+
+
+
+</script>

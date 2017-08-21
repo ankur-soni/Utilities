@@ -1,0 +1,229 @@
+﻿@*@model IEnumerable<Models.LoginDetails>*@
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<Models.LoginDetails>
+@{
+    ViewBag.Title = "User List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+@Scripts.Render("~/bundles/jquery")
+<style type="text/css">
+    th:hover:not([data-sort=disabled]) {
+        cursor: pointer;
+    }
+
+    table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
+        background: #428bca;
+    }
+
+    td > a:hover {
+        cursor: pointer;
+    }
+
+    .glyphicon.glyphicon-ok, .glyphicon.glyphicon-pencil, .glyphicon.glyphicon-trash, .glyphicon.glyphicon-remove, .glyphicon.glyphicon-info-sign {
+        color: rgb(0,175,236);
+        padding: 5px;
+    }
+
+        .glyphicon.glyphicon-ok:hover, .glyphicon.glyphicon-pencil:hover, .glyphicon.glyphicon-trash:hover, .glyphicon.glyphicon-remove:hover, .glyphicon.glyphicon-info-sign:hover {
+            color: #2e2e2e;
+        }
+</style>
+<div class="row">
+    <div class="form-users">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group tl-search-grp">
+                <table style="width: 100%;" class="custom-table">
+                    <tr>
+                        <td>
+                            <input class="form-control" id="focusedInput" type="text" placeholder="Search">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box" id="divUserList">
+                @Html.Partial("~/Views/User/_partialUserList.cshtml", Model)
+            </div>
+        </div> 
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnuserId" />
+    <input type="hidden" id="hdCurrentStatus" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="Update()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModalDelete" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnSelectedID" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="canceldelete()">x</button>
+                <h4 class="modal-title" id="hTitleDelete"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsgDelete">
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="DeleteUserDetails($('#hdnSelectedID').val())">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="canceldelete()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalUserDetails" class="modal fade in" aria-hidden="false" style="display:none; overflow-y: scroll; overflow-x:hidden">
+    <div class="modal-backdrop fade in" style="z-index:0;"></div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body pop-upNav" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divUserDetailsContent">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" style="margin-right:15px;" data-dismiss="modal" onclick="CloseUserDetails()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Code change - Added modal for image on document status tab for user details*@
+
+<div id="documentStatusImageModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnDocId" />
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="height: 8%;">
+                <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitle"></h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
+                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 100%;"></iframe>
+                    <a id="docDownload" style="display:none;" target="_blank" href=""> Download Document </a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="funVerify(true)">Approve</button>
+                <button type="button" class="btn btn-primary" onclick="funVerify(false)">Reject</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Code change - Added modal for send email on document status tab for user details*@
+
+<div id="documentStatusMailModal" class="modal fade in" aria-hidden="false" style="display:none;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnUserId" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="ErrorDiv_Email" class="alert alert-danger" role="alert" style="display:none"> </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelMail()">x</button>
+                <h4 class="modal-title" id="mailTital">Send Email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                    <div class="form-group">
+                        <label class="control-label">To</label><span class="red">*</span>
+                        <input class="form-control" id="txtTo" type="text" placeholder="John.doe@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <input class="form-control" id="txtSubject" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Body</label>
+
+                        <textarea id="txtBody" class="form-control" rows="4">This is the default test for mail body.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <input id="cbxAttachment" type="checkbox" checked="checked" name="attachment" value="Yes"> &nbsp; <label id="lblcheckbox">Attach documents</label>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="fnSendMail()">Send</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancelMail()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*script for user defined functions*@
+<script type="text/javascript">
+
+    $('#focusedInput').bind('input propertychange', function () {
+        var regex = /<[^>]*>|<|>|/g;
+        GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
+    });
+
+    function viewAll()
+    {
+        GetUserList("");
+        $("#focusedInput").val("");
+    }
+
+    function GetUserList(serchText) {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: '/User/GetUserList/',
+            data: {
+                searchString: serchText,
+            },
+            contentType: "application/json",
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+                return false;
+            },
+            success: function (data) {
+                if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                    HandleSessionTimeout();
+                    return;
+                }
+                $("#divUserList").html('');
+                $("#divUserList").html(data);
+            }
+        });
+    }
+
+</script>

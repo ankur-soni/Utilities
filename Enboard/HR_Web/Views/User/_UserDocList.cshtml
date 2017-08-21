@@ -1,0 +1,300 @@
+﻿
+@model PagedList.IPagedList<Models.DocDetailsModel>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    var downArrow = "~/images/down-arrow.png";
+    var upArrow = "~/images/up-arrow.png";
+    var downArrowPath = @Url.Content(downArrow);
+    var upArrowPath = @Url.Content(upArrow);
+}
+<style type="text/css">
+    th:hover:not([data-sort=disabled]) {
+        cursor: pointer;
+    }
+
+    table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
+        background: #428bca;
+    }
+
+    .glyphicon.glyphicon-download, .glyphicon.glyphicon-envelope {
+        color: rgb(0,175,236);
+        padding: 5px;
+    }
+
+        .glyphicon.glyphicon-download:hover, .glyphicon.glyphicon-envelope:hover {
+            color: #2e2e2e;
+            text-decoration: none;
+        }
+</style>
+
+<div class="box-body table-responsive">
+
+
+
+
+    @if (Model.Count() > 0)
+    {
+        <table id="DocGrid" class="table table-bordered table-striped dataTable tablesorter" aria-describedby="example1_info">
+
+            <thead style="background-color:#428bca;color:white; ">
+                <tr>
+                    <th style="border-bottom-width: 3px; " data-sort='disabled'>
+                        Candidate Name 
+                    </th>
+                    <th style="border-bottom-width: 3px;" data-sort='disabled'>Doc Category</th>
+                    <th style="border-bottom-width: 3px;" data-sort='disabled'>Doc Sub Category</th>
+                    <th style="border-bottom-width: 3px;" data-sort='disabled'>Document Name</th>
+                    <th style="border-bottom-width: 3px; " data-sort='disabled'>
+                        Status
+                    </th>
+
+                    <th style="border-bottom-width: 3px;" data-sort='disabled'>Download</th>
+                    <th style="border-bottom-width: 3px; text-align:center;" data-sort='disabled'>Email Documents</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                        int candidateCount = 1;
+                        int approvedDocs = 0;
+                        int rejecteddocs = 0;
+                        string candidateName = "";
+                        foreach (var user in Model)
+                        {
+                            var strTitleName = user.CandidateName + " : " + user.Maincategory + " - " + user.SubCategory;
+                            if (candidateName != user.CandidateName)
+                            {
+                                candidateCount = Model.Count(n => n.CandidateName == user.CandidateName);
+                                approvedDocs = Model.Count(n => n.CandidateName == user.CandidateName && n.IsVerify == true);
+                                rejecteddocs = Model.Count(n => n.CandidateName == user.CandidateName && n.IsVerify == false);
+                            }
+
+                            var strcolor = "";
+                            if (user.IsVerify == true)
+                            {
+                                strcolor = "text-success";
+                            }
+                            else if (user.IsVerify == false)
+                            {
+                                strcolor = "text-danger";
+                            }
+                            <tr>
+                                @if (candidateName != user.CandidateName)
+                                {
+                                    if (user.isAllApproved)
+                                    {
+                                        <td rowspan="@candidateCount" style="vertical-align:middle;background-color:#c8ead8">@Html.Raw(user.CandidateName) </td>
+                                    }
+                                    else if (user.isAllRejected)
+                                    {
+
+                                        <td rowspan="@candidateCount" style="vertical-align:middle;background-color:#ffe6e6">@Html.Raw(user.CandidateName) </td>
+                                    }
+                                    else
+                                    {
+                                        <td rowspan="@candidateCount" style="vertical-align:middle;">@Html.Raw(user.CandidateName) </td>
+                                    }
+                                }
+                                <td class="@strcolor">@Html.Raw(user.Maincategory)</td>
+                                <td class="@strcolor">@Html.Raw(user.SubCategory)</td>
+                                <td><a style="cursor:pointer;" title="Verify Doc" onclick="fnViewDoc(@user.Id,'@user.FilePath','@strTitleName')">@Html.Raw(user.DocumentName)</a></td>
+                                @if (user.IsVerify != null)
+                                {
+                                    <td class="@strcolor">@Html.Raw(user.IsVerify == true ? "Approved" : "Rejected")</td>
+                                }
+                                else
+                                {
+                                    <td>@Html.Raw("Pending")</td>
+                                }
+                                <td style="text-align:center">
+                                    <a href="@Url.Action("Download", "User", new { id = user.Id.ToString() } )" title="Download">
+                                        <span class="glyphicon glyphicon-download" aria-hidden="true"> </span>
+                                    </a>
+                                </td>
+                                @if (candidateName != user.CandidateName)
+                                {
+                                    <td align="center" rowspan="@candidateCount" style="vertical-align:middle;">
+                                        <a href="@Url.Action("ZipDownload", "User", new { userId = user.UserId.ToString() })" title="Download all files">
+                                            <span class="glyphicon glyphicon-download" aria-hidden="true"> </span>
+                                        </a>
+
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-envelope" title="Mail" onclick="MailSend(@user.UserId, '@user.CandidateName');"></span>
+                                        </a>
+
+                                    </td>
+                                }
+                            </tr>
+                                candidateName = user.CandidateName;
+                        }
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <br />
+        <h4>No Records found</h4>
+    }
+
+
+</div>
+
+
+
+@if (Model.PageCount > 1)
+{
+    @Html.PagedListPager(Model, Page => Url.Action("GetUserDocumentDetails", new { userId = Model.FirstOrDefault().UserId, Page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.SearchString }))
+
+    string sortOrder = ViewBag.CurrentSort;
+    int index = ViewBag.PageIndex != null ? ViewBag.PageIndex : 1;
+    @Html.Hidden("hdnSortOrder", sortOrder)
+    @Html.Hidden("hdnIndex", index)
+}
+
+<script>
+    function fnViewDoc(docId, docName, titleName) {;
+        $("#hdnDocId").val(docId);
+        var url = '@Url.Action("getImg", "Document")?id=' + docId;
+
+        var imgWithExt = docName.split('.');
+        if (imgWithExt[1] === 'docx' || imgWithExt[1] === 'doc') {
+            $("#hTitle").html(titleName);
+            $('#documentStatusImageModal').show();
+            $("#docDownload").attr('href',"/Document/getDocument/" + docId);
+            $('#documentStatusImageModal').find("iframe").hide();
+            $('#docDownload').show();
+        }
+        else {
+            $("#hTitle").html(titleName);
+            $('#documentStatusImageModal').find("#docDownload").hide();
+            $('#documentStatusImageModal').find("iframe").show();
+            $('#documentStatusImageModal').find("iframe").attr("src", url);
+            $('#documentStatusImageModal').show();
+        }
+
+
+
+
+    }
+
+
+    // function for hide model
+    function cancel() {
+        $('#documentStatusImageModal').find("iframe").attr("src", '');
+        $('#documentStatusImageModal').hide();
+        //$('#myModalImage').hide();
+    }
+
+    // function for hide model
+    function cancelMail() {
+        $('#documentStatusMailModal').hide();
+    }
+
+    // function for Approve / Dis-Approve Doc
+    function funVerify(result) {
+        var userId = @ViewBag.DocUserId;
+        var intDocId = $("#hdnDocId").val();
+        var strUrl = '/User/VerifyDoc';
+        $.ajax({
+            type: "POST",
+            url: strUrl,
+            data: '{"Id":"' + intDocId + '" , "Val":"' + result + '"}',
+            contentType: "application/json; charset=utf-8",
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+                return false;
+            },
+            success: function (data) {
+                $('#documentStatusImageModal').hide();
+                $('#myModalImage').hide();
+                $('#sucess-msg').show();
+                setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 3000)
+                GetUserDocumentDetails(userId);
+                //window.location.reload();
+            }
+        });
+    }
+
+    function MailSend(userId, CandidateName) {
+        $("#hdnUserId").val(userId);
+        $("#txtTo").val("");
+        $("#txtSubject").val("");
+        $("#txtBody").val("This is the default test for mail body.");
+        $("#lblcheckbox").html("Attach documents of - " + CandidateName);
+        $('#cbxAttachment').prop('checked', true)
+        $('#txtSubject').val('Emailing: Documents for ' + CandidateName)
+        $('#txtBody').val("Hello,\r\nPlease find the attached documents for the candidate " + CandidateName + " \r\n \r\n<br/><br/>From,<br/>\r\nTeam Silicus");
+        //    $('#txtBody').val("Hello,\r\nPlease find the attached documents for the candidate " + CandidateName + " \r\n \r\nFrom,\r\nTeam Silicus");
+        $('#documentStatusMailModal').show();
+    }
+
+
+    $(document).ready(function () {
+
+        $('#focusedInput').val('@ViewBag.SearchString');
+    });
+
+    function fnSendMail() {
+        if ($("#txtTo").val() != "") {
+            if (validateMultipleEmailsCommaSeparated()) {
+                ;
+                var strToIds = $("#txtTo").val();
+                var strSub = $("#txtSubject").val();
+                var strBody = $("#txtBody").val();
+                var isAttachment = $('#cbxAttachment').is(":checked");
+                var userId = $("#hdnUserId").val();
+                var strUrl = '/User/SendEmail';
+                $.ajax({
+                    type: "POST",
+                    url: strUrl,
+                    data: '{"to":"' + strToIds + '" , "sub":"' + strSub + '", "body":"' + strBody + '", "isAttach":"' + isAttachment + '", "userId":"' + userId + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + " " + errorThrown);
+                        return false;
+                    },
+                    success: function (data) {
+                        $('#documentStatusMailModal').hide();
+                        $("#Smsg").html("Mail has been sent successfully to - " + strToIds);
+                        $('#sucess-msg').show();
+                        setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 4000)
+                    }
+                });
+            }
+        }
+        else {
+            $("#ErrorDiv_Email").html('Please enter to email id.').show();
+            setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
+        }
+    }
+
+
+    function validateMultipleEmailsCommaSeparated() {
+        var value = $("#txtTo").val();
+        var returnMailIds = "";
+        if (value != '') {
+            var result = value.split(',');
+            for (var i = 0; i < result.length; i++) {
+                if (result[i] != '') {
+                    if (!validateEmail(result[i])) {
+                        $("#ErrorDiv_Email").html('\'' + result[i] + '\' is not a valid email address.').show();
+                        setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    function validateEmail(field) {
+        field = field.trim();
+        var regex = /^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return (regex.test(field)) ? true : false;
+    }
+
+</script>

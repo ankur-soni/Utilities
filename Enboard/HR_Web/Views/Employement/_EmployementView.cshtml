@@ -1,0 +1,678 @@
+﻿@model Models.EmployementModel
+
+@{
+    var CityList = (SelectList)ViewBag.Cities;
+    var StateList = (SelectList)ViewBag.States;
+    var CountryList = (SelectList)ViewBag.Countries;
+    var CurrentEmploymentList = (SelectList)ViewBag.CurrentEmployments;
+    var CurrencyList = (SelectList)ViewBag.Currencies;
+}
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+
+    .hline {
+        width: 100%;
+        height: 1px;
+        background: #fff;
+    }
+</style>
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/EDP_Validations.js"></script>
+<div class="container">
+    @using (Html.BeginForm("EmployementDetails", "Employement", FormMethod.Post, new { id = "EmpD_FormId" }))
+   {
+        @Html.AntiForgeryToken()
+
+        if (@TempData["EmployDsucc"] != null)
+        {
+     
+        }
+
+        <div class="panel panel-primary" id="succdiv">
+            <div class="panel-heading clearfix">
+                <i class="icon-calendar"></i>
+                <h3 class="panel-title">Employment Details</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="panel-body">
+                        <fieldset>
+                            <legend style="color:#2180D2">Company Address</legend>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+
+                                        @Html.LabelFor(m => m.CompanyName, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.CompanyName, new { id = "ED_txtCompanyName", placeholder = "Company Name", @class = "form-control CompanyName", tabindex = 1 })
+                                        @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                                    </div>
+</div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.IsCurrentEmployment, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.DropDownListFor(m => m.IsCurrentEmployment, CurrentEmploymentList, "Select", new { id = "ED_ddlCurrentEmployment", @class = "form-control ddlCurrentEmployment", tabindex = 3 })
+                                        @Html.ValidationMessageFor(model => model.IsCurrentEmployment, "", new { @class = "text-danger" })
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            &nbsp;
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.CompanyAddress, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.CompanyAddress, new { id = "ED_txtCompanyAddress", placeholder = "Company Address", @class = "form-control", tabindex = 2 })
+                                        @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            &nbsp;
+                            <div class="row">
+
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyCountry, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.DropDownListFor(m => m.CompanyCountryId, CountryList, "Select Country", new { id = "ED_ddlCompanyCountry", @class = "form-control ddlCompanyCountry", placeholder = "Select Country", tabindex = 3 })
+                                        @Html.ValidationMessageFor(model => model.CompanyCountryId, "", new { @class = "text-danger" })
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyState, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.DropDownListFor(m => m.CompanyStateId, StateList, "Select State", new { id = "ED_ddlCompanyState", @class = "form-control ddlCompanyState", placeholder = "Select State", tabindex = 4 })
+                                        @Html.ValidationMessageFor(model => model.CompanyStateId, "", new { @class = "text-danger", id = "ED_valCompanyState" })
+                                        @Html.TextBoxFor(m => m.OtherCompanyState, new { id = "ED_txtOtherCompanyState", @class = "form-control OtherCompanyState mt-5", placeholder = "Please enter your State", tabindex = 4 })
+                                        @Html.ValidationMessageFor(model => model.OtherCompanyState, "", new { @class = "text-danger", id = "ED_valOtherCompanyState" })
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ComapnyCity, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.DropDownListFor(m => m.CompanyCityId, CityList, "Select City", new { id = "ED_ddlComapnyCity", @class = "form-control ddlComapnyCity", placeholder = "Select City", tabindex = 5 })
+                                        @Html.ValidationMessageFor(model => model.CompanyCityId, "", new { @class = "text-danger", id = "ED_valComapnyCity" })
+                                        @Html.TextBoxFor(m => m.OtherComapnyCity, new { id = "ED_txtOtherComapnyCity", @class = "form-control OtherComapnyCity mt-5", placeholder = "Please enter your City", tabindex = 5 })
+                                        @Html.ValidationMessageFor(model => model.OtherComapnyCity, "", new { @class = "text-danger", id = "ED_valOtherComapnyCity" })
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyZipcode, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.CompanyZipcode, new { id = "ED_txtCompanyZipcode", @class = "form-control CompanyZipcode", placeholder = "Zip Code", maxlength = "6", tabindex = 6 })
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset>
+                            <legend style="color:#2180D2">Company Details</legend>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="">
+
+                                        @Html.LabelFor(m => m.CompanyWebsite, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.CompanyWebsite, new { id = "ED_txtComanyWebsite", placeholder = "Company Website", @class = "form-control", tabindex = 7 })
+                                        @Html.ValidationMessageFor(model => model.CompanyWebsite, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            &nbsp;
+                            <div class="row">
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.CompanyPhoneNumber, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.CompanyPhoneNumber, new { id = "ED_txtCompanyPhoneNumber", placeholder = "02025636590", @class = "form-control CompanyPhoneNumber", maxlength = "11", tabindex = 8 })
+                                        @Html.ValidationMessageFor(model => model.CompanyPhoneNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+
+                                        @Html.LabelFor(m => m.FromDate, new { @class = "label" }) <span class="red">*</span>
+                                        @if (Model.FromDate != null || Model.FromDate != DateTime.MinValue)
+                                        {
+                                            @Html.TextBoxFor(m => m.FromDate, String.Format("{0:dd/MM/yyyy}", Model.FromDate), new { id = "ED_txtFromDate", placeholder = "From Date", @class = "form-control FromDate", tabindex = 9})
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.FromDate, new { id = "ED_txtFromDate", placeholder = "From Date", @class = "form-control FromDate", tabindex = 9 })
+                                        }
+
+                                        @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.ToDate, new { @class = "label" , id = "lblToDate"})<span class="red">*</span>
+                                        @if (Model.ToDate != null || Model.ToDate != DateTime.MinValue)
+                                        {
+                                            @Html.TextBoxFor(m => m.ToDate, String.Format("{0:dd/MM/yyyy}", Model.ToDate), new { id = "ED_txtToDate", placeholder = "To Date", @class = "form-control ToDate", tabindex = 10 })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.ToDate, new { id = "ED_txtToDate", placeholder = "To Date", @class = "form-control ToDate", tabindex = 10 })
+                                        }
+
+                                        @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            &nbsp;
+                            <div class="row">
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.JobTitle, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.JobTitle, new { id = "ED_txtJobTitle", placeholder = "JobTitle", @class = "form-control JobTitle", @tabindex = "11" })
+                                        @Html.ValidationMessageFor(model => model.JobTitle, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+
+                                        @Html.LabelFor(m => m.Designation, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.Designation, new { id = "ED_txtDesignation", placeholder = "Designation", @class = "form-control", @tabindex = "12" })
+                                        @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.PreviousEmpId, new { @class = "label" })
+                                        @Html.TextBoxFor(m => m.PreviousEmpId, new { id = "ED_txtPreviousEmpId", placeholder = "Previous Employee Id", @class = "form-control", @tabindex = "13" })
+                                        @Html.ValidationMessageFor(model => model.PreviousEmpId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            &nbsp;
+                            <div class="row">
+
+                               
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.CurrencyID, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.DropDownListFor(m => m.CurrencyID, CurrencyList, "Select Currency", new { id = "ED_ddlCurrency", @class = "form-control ddlCurrency", placeholder = "Select Currency", tabindex = 4 })
+                                        @Html.ValidationMessageFor(model => model.CurrencyID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+                                        @Html.LabelFor(m => m.CTC, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.CTC, new { id = "ED_txtCTC", placeholder = "780000", @class = "form-control CTC", @tabindex = "14", @maxlength = "20" })
+                                        @Html.ValidationMessageFor(model => model.CTC, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="">
+
+                                        @Html.LabelFor(m => m.ReasonForLeave, new { @class = "label" }) <span class="red">*</span>
+                                        @Html.TextBoxFor(m => m.ReasonForLeave, new { id = "ED_txtReasonForLeave", placeholder = "Reason For Leaving", @class = "form-control", @tabindex = "15" })
+                                        @Html.ValidationMessageFor(model => model.ReasonForLeave, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            &nbsp;
+                        </fieldset>
+
+
+
+                        <fieldset>
+                            <legend style="color:#2180D2">Reference</legend>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+
+
+                                    <div>
+                                        <!--Change by Chetana-->
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.SupervisorName, new { @class = "label" })<span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.SupervisorName, new { id = "ED_txtSupervisorName", placeholder = "Supervisor Name", @class = "form-control SupervisorName", tabindex = 16 })
+                                            @Html.ValidationMessageFor(model => model.SupervisorName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.SupervisorPhone, new { @class = "label" }) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.SupervisorPhone, new { id = "ED_txtSupervisorPhone", placeholder = "02025636590", @class = "form-control SupervisorPhone", maxlength = "11", tabindex = 18 })
+                                            @Html.ValidationMessageFor(model => model.SupervisorPhone, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.HRName, new { @class = "label" })<span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.HRName, new { id = "ED_txtHRName", placeholder = "HR Name", @class = "form-control HRName", maxlength = "20", tabindex = 20 })
+                                            @Html.ValidationMessageFor(model => model.HRName, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.HREmail, new { @class = "label" }) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.HREmail, new { id = "ED_txtMobileNumber", placeholder = "HR Email", @class = "form-control", tabindex = 22 })
+                                            @Html.ValidationMessageFor(model => model.HREmail, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+
+                                    <div>
+                                        <!--Change by Chetana-->
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.SupervisorDesignation, new { @class = "label" }) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.SupervisorDesignation, new { id = "ED_txtSupervisorDesignation", placeholder = "Supervisor Designation", @class = "form-control", tabindex = 17 })
+                                            @Html.ValidationMessageFor(model => model.SupervisorDesignation, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.SupervisorEmail, new { @class = "label" }) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.SupervisorEmail, new { id = "ED_txtSupervisorEmail", placeholder = "Supervisor Email", @class = "form-control", tabindex = 19 })
+                                            @Html.ValidationMessageFor(model => model.SupervisorEmail, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.HRPhone, new { @class = "label" }) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.HRPhone, new { id = "ED_txtHRPhone", placeholder = "02025636590", @class = "form-control HRPhone", maxlength = "11", tabindex = 21 })
+                                            @Html.ValidationMessageFor(model => model.HRPhone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            @Html.HiddenFor(m => m.EmploymentDetID)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            @Html.HiddenFor(m => m.EmployementNo)
+
+    <a href="#" id="CD_SaveData" class="btn btn-save" tabindex="23"><span class="glyphicon glyphicon-saved"></span> Save</a>
+    <a href="#" id="CD_Cancel" class="btn btn-cancel" tabindex="24"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+
+   }
+            @*</form>*@
+        </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    //Method to enable and disable Is Current Employment field
+        $.ajax({
+            url: "/Employement/GetCurrentEmploymentStatus",
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+            
+                if (data == "True")
+                {
+
+                    $.ajax({
+                        data: { employmentDetID: $("#EmploymentDetID").val() },
+                        url: "/Employement/CheckSelectedEmploymentStatus",
+                        cache: false,
+                        type: 'GET',
+                        success: function (data) {
+                            debugger;
+                            if (data == "True") {
+                                //Comment the below line if you want candidate to edit the field from YES to NO.
+                                $("#ED_ddlCurrentEmployment").attr('disabled', true);
+
+                                $("#lblToDate").text("Tentative Relieving Date");
+                            }
+                            else {
+                                $("#ED_ddlCurrentEmployment").val("False");
+                                $("#ED_ddlCurrentEmployment").attr('disabled', true);
+                            }
+                            ajaxindicatorstop();
+                        },
+                        error: function () {
+                            alert('some error occured')
+                            ajaxindicatorstop();
+                        }
+                    });
+                }
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+//Code change - change event for dropdown
+        $("#ED_ddlCurrentEmployment").change(function () {
+            if ($("#ED_ddlCurrentEmployment").val() == "True") {
+                $("#lblToDate").text("Tentative Relieving Date");
+                $('#ED_txtToDate').attr('placeholder', 'Tentative Relieving Date');
+            }
+            else {
+                $("#lblToDate").text("To Date");
+                $('#ED_txtToDate').attr('placeholder', 'To Date');
+            }
+        });
+
+        if ('@ViewBag.IsReadOnly' == 'True') {
+            $('input,select').attr('disabled', true);
+            $('#CD_SaveData').attr('disabled', true);
+        }
+        else {
+            $('#CD_SaveData').attr('disabled', false);
+        }
+
+        $('#CD_Cancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+     
+        $.ajax({
+            url: "/Employement/EmploymnetDetailsGrid",
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+        });
+
+
+        $('#CD_SaveData').click(function () {
+            debugger;
+
+            var form = $('#EmpD_FormId');
+
+            $('#lblError').text('');
+            $.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    url: "/Employement/EmployementDetails",
+                    data: form.serialize(),
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {                        
+                                      
+                            $.ajax({
+                                urlGrid: "/Employement/EmploymnetDetailsGrid",
+                                cache: false,
+                                type: 'GET',
+                                success: function (data) {
+                                    $("body").html(data);
+                                    ajaxindicatorstop();
+                                },
+                                error: function () {
+                                    alert('some error occured')
+                                    ajaxindicatorstop();
+                                }
+                            });
+                        //}
+                    },
+                    error: function (request, status, error) {
+                        alert('some error occured')
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+        });
+
+        /*new code*/
+        $('#ED_txtToDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+
+        $('#ED_txtFromDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 16 + 'px');
+       
+
+        if ('@Model.OtherComapnyCity' != '') {
+            
+        }
+        else {
+            $('.OtherComapnyCity').hide();
+            $(".OtherComapnyCity").val('');
+            $(".OtherComapnyCity").attr('required', false);
+        }
+        if ('@Model.OtherCompanyState' != '') {
+
+        }
+        else {
+            $('.OtherCompanyState').hide();
+            $(".OtherCompanyState").val('');
+            $(".OtherCompanyState").attr('required', false);
+        }
+    });
+
+   
+    if ('@Model.CompanyCountry' != null && '@Model.CompanyCountry' != '') {
+        LoadStateByCountryId('@Model.CompanyCountry');
+    }
+
+    if ('@Model.CompanyState' != null && '@Model.CompanyState' != '') {
+        LoadCityBySateId('@Model.CompanyState');
+    }
+
+
+    $(function () {
+        $.validator.addMethod('date',
+        function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var ok = true;
+            try {
+                $.datepicker.parseDate('dd/mm/yy', value);
+            }
+            catch (err) {
+                ok = false;
+            }
+            return ok;
+        });
+        $(".datefield").datepicker({ dateFormat: 'dd/mm/yy', changeYear: true });
+    });
+
+
+    $('.ddlCompanyCountry').change(function () {
+
+        var Id = $(this).val();
+        LoadStateByCountryId(Id);
+
+        $('#ED_txtOtherComapnyCity').hide();
+        $("#ED_txtOtherComapnyCity").val('');
+        $('#ED_txtOtherCompanyState').hide();
+        $("#ED_txtOtherCompanyState").val('');
+
+            
+        $("#ED_txtOtherCompanyState").attr('required', false);
+        $("#ED_txtOtherComapnyCity").attr('required', false);
+
+        
+    });
+
+
+    function LoadStateByCountryId(Id) {
+       
+        var markupCity = "<option value='0'>Select City</option>";
+        $("#ED_ddlComapnyCity").html(markupCity).show();
+
+        var value = Id;
+        var url = "/Employement/LoadStateByCountryId/";
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { CountryId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+             
+                var markup = "<option value='0'>Select State</option>";
+
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+
+
+                $("#ED_ddlCompanyState").html(markup).show();
+             
+                var otherState = $("#ED_txtOtherCompanyState").val();
+                if (otherState == '') {
+                    otherState = '@Model.OtherCompanyState';
+                }
+
+                if (otherState != '' && $("#ED_ddlCompanyCountry").val() == '@Model.CompanyCountry') {
+                    $("#ED_txtOtherCompanyState").show();
+                    $("#ED_ddlCompanyState").val('Other');
+                    $("#ED_txtOtherCompanyState").val(otherState);
+                    $("#ED_ddlCompanyState option[value='" + @Model.CompanyState + "']").attr('selected', 'selected')
+                    LoadCityBySateId($("#ED_ddlCompanyState").val());
+                }
+                else {
+                    if (otherState == "" && '@Model.CompanyState' != '' && data.length > 1)
+                        $("#ED_ddlCompanyState option[value='" + @Model.CompanyState + "']").attr('selected', 'selected')
+                }
+
+
+
+            },
+            error: function (reponse) {
+              
+            }
+        });
+    }
+
+
+    $('#ED_ddlCompanyState').change(function () {
+       
+        var Id = $(this).val();
+        if (Id == 37) {
+            $('#ED_txtOtherCompanyState').show();
+            $("#ED_txtOtherCompanyState").val('');
+            $("#ED_txtOtherCompanyState").focus();
+            $("#ED_txtOtherCompanyState").attr('required', true);
+        }
+        else {
+            $("#ED_txtOtherCompanyState").hide();
+            $("#ED_txtOtherCompanyState").val('');
+            $("#ED_txtOtherCompanyState").attr('required', false);
+        }
+        LoadCityBySateId(Id);
+
+    });
+
+    function LoadCityBySateId(Id) {
+        var value = Id;
+        var url = "/Employement/LoadCityByStateId/";
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { StateId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+
+                var markup = "<option value='0'>Select City</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#ED_ddlComapnyCity").html(markup).show();
+               
+                var otherCity = $("#ED_txtOtherComapnyCity").val();
+                if (otherCity == '') {
+                    otherCity = '@Model.OtherComapnyCity';
+                }
+                if (otherCity != '' && $("#ED_ddlCompanyCountry").val() == '@Model.CompanyCountry') {
+                    $("#ED_txtOtherComapnyCity").show();
+                    $("#ED_txtOtherComapnyCity").val('Other');
+                    $("#ED_ddlComapnyCity option[value='" + @Model.ComapnyCity + "']").attr('selected', 'selected')
+                    $("#ED_txtOtherComapnyCity").val(otherCity);
+                }
+                else {
+                    if (otherCity == "" && '@Model.ComapnyCity' != '' && data.length > 1)
+                        $("#ED_ddlComapnyCity option[value='" + @Model.ComapnyCity + "']").attr('selected', 'selected')
+                }
+
+
+            },
+            error: function (reponse) {
+          
+            }
+        });
+    }
+
+
+    $('#ED_ddlComapnyCity').change(function () {
+      
+        var Id = $(this).val();
+        if (Id == 673) {
+            $('.OtherComapnyCity').show();
+            $(".OtherComapnyCity").val('');
+            $(".OtherComapnyCity").focus();
+            $(".OtherComapnyCity").attr('required', true);
+        }
+        else {
+            $(".OtherComapnyCity").hide();
+            $(".OtherComapnyCity").val('');
+            $(".OtherComapnyCity").attr('required', false);
+        }
+    });
+
+    alphabets($('.CompanyName'));
+    numeric($('.CompanyZipcode'));
+    numeric($('.CompanyPhoneNumber'));
+    alphabets($('.JobTitle'));
+    numeric($('.CTC'));
+    alphabets($('.SupervisorName'));
+    numeric($('.SupervisorPhone'));
+    alphabets($('.HRName *'));
+    numeric($('.HRPhone'));
+
+</script>

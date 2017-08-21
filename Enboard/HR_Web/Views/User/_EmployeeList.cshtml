@@ -1,0 +1,198 @@
+﻿@model PagedList.IPagedList<Models.AddEmployeeModelList>
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+
+
+
+    }
+
+
+
+    <div class="box-body table-responsive">
+
+        <!--<div class="row"><div class="col-xs-6"></div><div class="col-xs-6"><div class="dataTables_filter" id="example1_filter"><label>Search: <input type="text" aria-controls="example1"></label></div></div></div>-->
+        @*@Html.HiddenFor(m => Model.PageCount)*@
+        @if (Model.Count() > 0)
+        {
+            <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+                <thead style="background-color:#428bca;color:white; ">
+                    <tr>
+                        <th>Employee No</th>
+                        <th>Employee Name</th>
+                        @*<th>Date of Birth</th>                     
+                        <th>Joining Date</th>*@
+                        @*<th>Email Address</th>*@                    
+                        <th style="text-align:center;">Exit Employee</th>
+                        <th style="text-align:center;">Edit Employee</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@Html.Raw(user.EmpNo) </td>
+                            <td><a style="cursor:pointer;" title="Verify Doc" onclick="ViewEmployeeDetails('@user.EmpNo')">@Html.Raw(user.EmpName)</a></td>
+                            @*<td>@Html.Raw(user.DOB)</td>
+                            <td>@Html.Raw(user.JoiningDate)</td>*@
+                            @*<td>@Html.Raw(user.Email)</td>*@                         
+                            <td align="center">
+
+                                @if(@user.isActive)
+                                { 
+                                    <a href="#" onclick="ExitEmployee(@user.ID);" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span> Exit Employee</a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="btn btn-primary" disabled="disabled" title="Employee Already Exited" ><span class="glyphicon glyphicon-remove"></span> Exit Employee</a>
+
+                                }
+                                
+                                @*<span class="glyphicon glyphicon-remove" style="color:red; width:15px; height:15px;cursor:pointer" title="Delete" onclick="DeleteIndex(@user.CatId);"></span>*@ 
+
+                            </td>
+                            <td align="center">
+
+                                @if (@user.isActive)
+                                {
+                                    <a href="#" onclick="EditEmployee('@user.EmpNo','@user.ID');" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit Employee</a>
+                                }
+                                else
+                                {
+                                    <a href="#"  disabled="disabled"  class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit Employee</a>
+
+                                }
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        }
+        else
+        {          
+            
+            <h4>No Records found</h4>
+        }
+
+        @if (Model.PageCount > 1)
+        {
+
+            @*@Html.PagedListPager((IPagedList)ViewBag.Names, page => Url.Action("Index", new { page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "unobtrusive" }))*@
+            <div class="EmployeeList">
+                @Html.PagedListPager(Model, pageNo => Url.Action("EmployeeList", new { Page }), new PagedListRenderOptions { DisplayLinkToNextPage = PagedListDisplayMode.Never, 
+               DisplayLinkToLastPage=PagedListDisplayMode.Never,DisplayLinkToPreviousPage=PagedListDisplayMode.Never,  DisplayEllipsesWhenNotShowingAllPageNumbers=false})
+            </div>
+        }
+    </div>  
+    </div> 
+    <script>
+
+        $(document).ready(function () {
+
+            $('.EmployeeList a').click(function (event) {
+
+                var data = { pageNo: this.text, searchString: $('#txtSearchExistingEmployess').val() }
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    type: "GET",
+                    url: "/User/EmployeeList",
+                    data: data,
+                    datatype: "html",
+                    success: function (data) {                      
+                        // $("#succdiv").(data);
+                        $("#divExistingEmployees").html(data);
+                        ajaxindicatorstop();
+                    },
+                    error: function () {
+                        alert('some error occured')
+                        ajaxindicatorstop();
+                    }
+                });
+
+                event.preventDefault();
+
+            });
+        });
+
+
+        function ExitEmployee(Id) {
+           
+            var data = { ID: Id }
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/ExitEmployee",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    // $("body").html(data);
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function (jqXHR, exception) {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+            //}
+
+        }
+        function EditEmployee(EmpNo,UserId) {
+            $('#lblComparegreaterDateError').text('');
+            var data = { userID: UserId, EmpNo: EmpNo, isEmployeeEditMode: true }
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/AssignPNo",
+                data: data,
+                //datatype: "html",
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+        function ViewEmployeeDetails(empNo)
+        {
+            var data = { EmpNo: empNo }
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/GetEmployeeDetails",
+                data: data,
+                //datatype: "html",
+                success: function (data) {
+                    
+                    $("#Empno").html(data.EmpNo);
+                    $("#DOB").html(data.DOB);
+                    $("#employeeEmail").html(data.Email);
+                    $("#joiningDate").html(data.JoiningDate);
+                    $("#employeeName").html(data.EmployeeName);
+                    $('#myModal').show()
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    
+    </script>
+   

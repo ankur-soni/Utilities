@@ -1,0 +1,65 @@
+﻿@using HR_Web.Utilities;
+@model Models.DocumentDetailListViewModel
+@{
+    List<Data.DocumentDetail> _documentDetailList;
+    IEnumerable<Data.Master_Document> _Master_DocumentList = Model.Master_DocumentList;
+}
+
+@using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
+{
+    <ul class="docList">
+        @if (Model.EducationCategoryList.Any())
+        {
+            _Master_DocumentList = (from educationItem in Model.EducationCategoryList
+                                    join mappingItem in _Master_DocumentList.Where(x => x.DocCatID == Constant.DocumentCategory.Education).ToList()
+                                    on educationItem equals mappingItem.DocumentID
+                                    select mappingItem);
+
+
+            foreach (var item in _Master_DocumentList)
+            {
+                <li>
+                    <h6 class="docName">
+                        @item.Document
+                        <span style="color:red">*</span>
+                    </h6>
+                    <ul class="docUpload">
+                        <li>
+                            <span class="userNote"> &nbsp;</span>
+
+                            <div class="btn btn-primary btn-upload btn-sm pull-right">
+                                <span>Upload</span>
+                                <input id=@("Upload" + item.DocumentID) type="file" name="file" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                            </div>
+                        </li>
+                    </ul>
+                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).ToList();}
+                    @if (_documentDetailList.Any())
+                    {
+                        <ul class="docDescription">
+                            @foreach (var itemDetails in _documentDetailList)
+                            {
+
+                                if (item != null)
+                                {
+                                    <li>
+                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        <span class="uploadName mand educationalproofdoc"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
+                                        <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
+                                    </li>
+                                }
+                            }
+                            <li class="addDocument">
+                                <span class="userNote"> &nbsp;</span>
+                                <div class="btn btn-primary btn-upload btn-sm pull-right">
+                                    <span>Upload</span>
+                                    <input id=@("SaveUpload" + item.DocumentID) type="file" name="file" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                </li>
+            }
+        }
+    </ul>
+}
