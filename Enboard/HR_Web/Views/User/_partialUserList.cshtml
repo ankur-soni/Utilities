@@ -119,7 +119,7 @@
                         @if ((user.Active == 1 && user.IsOnboarded == false) || (user.Email.Contains("@silicus.com") && user.IsOnboarded == false))//@if ((user.Active == 1 && user.IsOnboarded == false)
                     {
                             <td align="center">
-                                <a href="#" onclick="AssignPno(@user.UserId);" class="btn btn-primary">Get On board</a>
+                                <a href="#" onclick="AssignPno(@user.UserId);" class="btn btn-primary">Get On-board</a>
                             </td>
                         }
                         else if (user.IsOnboarded == true)

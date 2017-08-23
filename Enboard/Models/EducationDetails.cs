@@ -130,7 +130,6 @@ namespace Models
         public string UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         [Display(Name = "Explain breaks during Education")]
-        [Required(ErrorMessage = "Please provide details for any break during education")]
         [DataType(DataType.MultilineText)]
         public string BreaksDuringEducation { get; set; }
 

@@ -40,7 +40,7 @@
     <header class="app-header navbar">
         <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button"><i class="fa fa-bars" aria-hidden="true"></i></button>
         <a class="navbar-brand" href="#"></a>
-        <ul class="nav navbar-nav SearchBar">
+        @*<ul class="nav navbar-nav SearchBar">
             <li class="hidden-md-down">
                 <div id="custom-search-input">
                     <div class="input-group col-lg-12">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </li>
-        </ul>
+        </ul>*@
         <div class="mobileAsideMenu hidden-lg-up">
             <a class="menuBtn asideMobileBtn navbar-toggler aside-menu-toggler mobile-aside-menu" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
         </div>
@@ -71,6 +71,7 @@
                     <img src="../Content/NewUI/images/user-avtar.png" class="img-avatar">
                 </a>
                 <ul class="dropdown-menu userMenu" aria-labelledby="dropdownMenu1">
+                    <li><a href="#" onclick="OpenChangePasswordForm()">Change Password </a></li>
                     <li><a href="/User/LogOut" id="btnLogOff">Log Out</a></li>
                 </ul>
             </li>
@@ -82,15 +83,16 @@
         <li id="Connect" class="breadcrumb-item active"><a href="/home/welcome">Initiate</a> </li>
         <li id="Learn" class="breadcrumb-item"><a href="/document/Learn">Learn</a> </li>
         <li id="Support" class="breadcrumb-item"><a href="/document/Support">Connect</a> </li>
+        <li id="AboutUs" class="breadcrumb-item"><a href="/document/AboutUs">About Silicus</a> </li>
         <!-- Breadcrumb Menu-->
 
 
         <li class="breadcrumb-menu hidden-md-down">
             <a class="menuBtn asideBtn navbar-toggler aside-menu-toggler activeBtn" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
-            <a class="menuBtn settingBtn dropdown-toggle" href="#" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-cog" aria-hidden="true"></i></a>
+            @*<a class="menuBtn settingBtn dropdown-toggle" href="#" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-cog" aria-hidden="true"></i></a>
             <ul class="dropdown-menu settingMenu" aria-labelledby="dropdownMenu">
                 <li><a href="#" onclick="OpenChangePasswordForm()">Change Password </a></li>
-            </ul>
+            </ul>*@
         </li>
     </ol>
     <div class="app-body">
@@ -305,6 +307,10 @@
     }
     if (window.location.pathname == '/document/Support') {
         $("#Support").addClass("active");
+        $("#Connect").removeClass("active");
+    }
+    if (window.location.pathname == '/document/AboutUs') {
+        $("#AboutUs").addClass("active");
         $("#Connect").removeClass("active");
     }
     if (window.location.pathname == '/home/welcome') {

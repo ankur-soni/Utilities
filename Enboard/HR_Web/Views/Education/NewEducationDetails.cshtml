@@ -138,7 +138,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @Html.LabelFor(m => m.BreaksDuringEducation, new { @class = "" }) <span class="red">*</span>
+                                            @Html.LabelFor(m => m.BreaksDuringEducation) 
                                             @Html.TextAreaFor(model => model.BreaksDuringEducation,10,30, new { id = "CD_txtBreaks", placeholder = "Breaks During Education", @class = "form-control", tabindex = 11, MaxLength = 100 })
                                             @Html.ValidationMessageFor(model => model.BreaksDuringEducation, "", new { @class = "text-danger" })
                                         </div>

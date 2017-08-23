@@ -570,5 +570,14 @@ namespace HR_Web.Controllers
             ViewBag.IsOnboarded = IsOnboarded;
             return View();
         }
+
+
+        public ActionResult AboutUs()
+        {
+            var Employee = _IEmployeeService.GetAll(null, null, "").Where(m => m.UserId == SessionManager.UserId).FirstOrDefault();
+            bool IsOnboarded = Employee == null ? false : true;
+            ViewBag.IsOnboarded = IsOnboarded;
+            return View();
+        }
     }
 }

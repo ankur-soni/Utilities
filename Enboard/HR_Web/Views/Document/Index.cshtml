@@ -294,11 +294,11 @@
                 success: function (response) {
                     if (response.status = true) {
                         toastr.success('File deleted Sucessfully.');
-                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 500);
+                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 300);
                     }
                     else {
                         toastr.error('Unable to delete uploaded file.');
-                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 500);
+                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 300);
                     }
                     ajaxindicatorstop();
                 },
@@ -466,13 +466,13 @@
 
                     ajaxindicatorstop();
                     toastr.success('Document has been uploaded.');
-                    setTimeout(function () { window.location.href = baseUrl +(response.DocCatID == undefined ?"": "?DocCatID=" + response.DocCatID); }, 500);
+                    setTimeout(function () { window.location.href = baseUrl +(response.DocCatID == undefined ?"": "?DocCatID=" + response.DocCatID); }, 300);
 
                 }
                 else {
                     ajaxindicatorstop();
                     toastr.error('Unable to uploade file.');
-                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 500);
+                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 300);
                 }
             },
             error: function (error) {
