@@ -99,26 +99,26 @@
                                 @if (user.Active == 1)
                                 {
                                     <li class="inActiveButton">
-                                        <span class="glyphicon glyphicon-remove" style="color:red; cursor:pointer;" title="Make In-Active" onclick="return fnUpdateUser(@user.UserId,true, '@strUserFullName', @user.Active)"><span>Make In-Active</span></span>
+                                        <span class="glyphicon glyphicon-remove" style="color:slategray;font-weight: bold;cursor:pointer;" title="Make In-Active" onclick="return fnUpdateUser(@user.UserId,true, '@strUserFullName', @user.Active)"><span>Make In-Active</span></span>
                                     </li>
                                     <li class="editButton">
-                                        <span class="glyphicon glyphicon-pencil" style=" color:green;cursor:pointer" title="Edit Details" onclick="EditUserDetails(@user.UserId);"><span>Edit Details</span></span>
+                                        <span class="glyphicon glyphicon-pencil" style="color:slategray;font-weight: bold;cursor:pointer" title="Edit Details" onclick="EditUserDetails(@user.UserId);"><span>Edit Details</span></span>
                                     </li>
                                     <li class="deleteButton">
-                                        <span class="glyphicon glyphicon-trash" style=" color:red;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.UserId);"><span>Delete Details</span></span>
+                                        <span class="glyphicon glyphicon-trash" style="color:cadetblue;font-weight: bold;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.UserId);"><span>Delete Details</span></span>
                                     </li>
                                 }
                                 else // this block for user id 0 and 2
                                 {
                                     var @strtitle = user.Active == 2 ? "Make Re-Active" : "Make Active";
                                     <li class="inActiveButton">
-                                        <span class="glyphicon glyphicon-ok" style=" color:green;cursor:pointer;" title='@strtitle' onclick="return fnUpdateUser(@user.UserId,false, '@strUserFullName', @user.Active)"><span>Make Active</span></span>
+                                        <span class="glyphicon glyphicon-ok" style="color:slategray;font-weight: bold;cursor:pointer;" title='@strtitle' onclick="return fnUpdateUser(@user.UserId,false, '@strUserFullName', @user.Active)"><span>Make Active</span></span>
                                     </li>
                                     <li class="editButton">
-                                        <span class="glyphicon glyphicon-pencil" style="color:green;cursor:pointer" title="Edit Details" onclick="EditUserDetails(@user.UserId);"><span>Edit Details</span></span>
+                                        <span class="glyphicon glyphicon-pencil" style="color:slategray;font-weight: bold;cursor:pointer" title="Edit Details" onclick="EditUserDetails(@user.UserId);"><span>Edit Details</span></span>
                                     </li>
                                     <li class="deleteButton">
-                                        <span class="glyphicon glyphicon-trash" style="color:red;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.UserId);"><span>Delete Details</span></span>
+                                        <span class="glyphicon glyphicon-trash" style="color:cadetblue;font-weight: bold;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.UserId);"><span>Delete Details</span></span>
                                     </li>
                                 }
                             </ul>

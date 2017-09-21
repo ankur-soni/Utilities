@@ -40,7 +40,7 @@ namespace Models
 
         public long UserID { get; set; }
 
-        [Display(Name = "Father Name")]
+        [Display(Name = "Father's Name")]
         [Required(ErrorMessage = "Please enter Father Name")]
         public string FatherName { get; set; }
 
@@ -131,7 +131,7 @@ namespace Models
         [Display(Name = "Have Passport?")]
         public string HavePassport { get; set; }
 
-        [Display(Name = "Name On Passport")]
+        [Display(Name = "Name as on Passport")]
         public string NameOnPassport { get; set; }
 
         [Display(Name = "Date Of Expiry")]

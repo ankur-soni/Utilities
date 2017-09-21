@@ -169,7 +169,7 @@ namespace Models
         [Display(Name = "Postal Code")]
         [DataType(DataType.PostalCode)]
         public string CurrentZipcode { get; set; }
-        [Display(Name = "Home Landline Number with STD Code")]
+        [Display(Name = "Landline number (enter STD code)")]
         //[Required(ErrorMessage = "Please enter Home Landline Number with STD Code")]
         [RegularExpression(@"^[0-9]{8,11}$", ErrorMessage = "Not a valid Phone number")]
         public string HomePhone { get; set; }
