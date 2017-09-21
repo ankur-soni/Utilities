@@ -1187,3 +1187,12 @@ input[type=text]::-ms-clear { display: none; }
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+.gray-tooltip + .tooltip > .tooltip-inner{
+   
+    background-color: slategray;
+    color: black;
+    font:bold;
+    text-align: left;
+                                           
+}
+
