@@ -63,12 +63,13 @@ namespace Silicus.Ensure.Web
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
-
+         
             app.UseOpenIdConnectAuthentication(
                 new OpenIdConnectAuthenticationOptions
                 {
                     ClientId = clientId,
                     Authority = authority,
+                    
                     PostLogoutRedirectUri = postLogoutRedirectUri,
                     RedirectUri = postLogoutRedirectUri,
                     Notifications = new OpenIdConnectAuthenticationNotifications

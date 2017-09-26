@@ -30,6 +30,8 @@ using System.Globalization;
 using Microsoft.AspNet.Identity;
 using Silicus.Ensure.Web.Models.Employee;
 using System.Web.Configuration;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -1259,6 +1261,12 @@ namespace Silicus.Ensure.Web.Controllers
                 userTestSuitDetails.ReviewerId = user.ID;
                 userTestSuitDetails.ReviewDate = DateTime.Now;
                 _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
+
+                // Update the status of JobVite Candidate
+                if(userTestSuitDetails.EmployeeId == 0)
+                {
+                    UpDateJobViteCandidateStatus(userTestSuitDetails.CandidateID, userTestSuitDetails.StatusId);
+                }
                 //_userService.Update(user);
             }
             catch
@@ -1269,7 +1277,53 @@ namespace Silicus.Ensure.Web.Controllers
             return RedirectToAction("ReviewAssignedTest", new { ReviewType = ReviewType });
         }
 
-        # region Mail Send
+        private void UpDateJobViteCandidateStatus(string candidateID, int statusId)
+        {
+            var CandidateUser = UserManager.FindById(candidateID);
+            var JobViteID = CandidateUser.JobViteId;
+
+            string JobViteBaseURL = ConfigurationManager.AppSettings["JobViteBaseURL"];
+            string JobViteUserId = ConfigurationManager.AppSettings["JobViteUserId"];
+            string JobVitesc = ConfigurationManager.AppSettings["JobVitesc"];
+
+            string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc;
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(baseAddress);
+
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "PUT";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = new JavaScriptSerializer().Serialize(new
+                {
+                    candidate= new {
+                        application = new
+                        {
+                            eId = JobViteID,
+                            workflowState = "New"
+                        }
+                    },
+                   
+                });
+
+                streamWriter.Write(json);
+            }
+            try
+            {
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            
+        }
+
+        #region Mail Send
         //public ActionResult SendMail(int? id)
         //{
         //    int UserId = 0;
@@ -1327,7 +1381,7 @@ namespace Silicus.Ensure.Web.Controllers
         //}
 
         #endregion
-            
+
         [HttpPost]
         public JsonResult SessionTimeout()
         {

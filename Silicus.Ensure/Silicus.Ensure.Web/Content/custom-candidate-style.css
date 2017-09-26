@@ -648,6 +648,8 @@ header.navbar {
     padding: 0px 0px 0px 40px;
     margin: 8px 0px 8px -42px;
     border-left: 4px solid #eee;
+    display: inline-block;
+    vertical-align: middle;
 }
 
     .sidebar ul.nav li.nav-item a.nav-link:hover {

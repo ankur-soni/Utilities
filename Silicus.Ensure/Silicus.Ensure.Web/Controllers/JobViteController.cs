@@ -76,7 +76,14 @@ namespace Silicus.Ensure.Web.Controllers
         public async Task<ActionResult> SyncCandidates()
         {
             StringBuilder syncLog = new StringBuilder();
-            string baseAddress = "https://api.jobvite.com/api/v2/candidate?api=silicustechnologies_candidate_api_key&sc=c4b68fcb2c29aba71c6a5c418e39e912&wflowstate=New&format=json&city=Pune";
+            string JobViteBaseURL = ConfigurationManager.AppSettings["JobViteBaseURL"];
+            string JobViteUserId = ConfigurationManager.AppSettings["JobViteUserId"];
+            string JobVitesc = ConfigurationManager.AppSettings["JobVitesc"];
+            string JobViteCandidateSelecttionStatus = ConfigurationManager.AppSettings["JobViteCandidateSelecttionStatus"];
+
+            string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
+
+            //string baseAddress = "https://api.jobvite.com/api/v2/candidate?api=silicustechnologies_candidate_api_key&sc=c4b68fcb2c29aba71c6a5c418e39e912&wflowstate=New&format=json";
 
             try
             {
