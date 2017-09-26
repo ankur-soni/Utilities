@@ -20,6 +20,14 @@ using System.IO.Compression;
 using System.IO;
 using HR_Web.CustomFilters;
 using Service.Interface;
+using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Newtonsoft.Json;
+
+
 
 namespace HR_Web.Controllers
 {
@@ -2314,7 +2322,7 @@ namespace HR_Web.Controllers
         [Authorize]
         public ActionResult AddEditUserDetails(int Id = 0)
         {
-            var silicusLocations = ConfigurationManager.AppSettings["SilicusLocation"].Split(',').ToList().Select(a=> new SelectListItem() { Text = a, Value = a});
+            var silicusLocations = ConfigurationManager.AppSettings["SilicusLocation"].Split(',').ToList().Select(a => new SelectListItem() { Text = a, Value = a });
             ViewBag.Departments = GetDepartments();
             ViewBag.Designations = GetDesignationList();
             ViewBag.CountryCodeList = GetCountryCode();
@@ -2526,7 +2534,204 @@ namespace HR_Web.Controllers
                 return Json(new { result = false, Message = "Fail" }, JsonRequestBehavior.AllowGet);
             }
         }
+        //public ActionResult OpenChangeRequestForm()
+        //{
+        //    ViewBag.CountryCodeList = GetCountryCode();
 
+        //    //Get logged in user details 
+        //    var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //    var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+
+        //    var LoginDetails = _IUserService.GetById(userId);
+
+        //    var employeePersonalDetails = new ChangeRequestDetails();
+
+        //    if (LoginDetails != null)
+        //    {
+
+        //        _Logindetails = LoginDetails;
+        //        employeePersonalDetails.FirstName = _Logindetails.FirstName;
+        //        employeePersonalDetails.LastName = _Logindetails.LastName;
+        //        employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
+        //        employeePersonalDetails.EmpEmail = _Logindetails.Email;
+        //        employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
+        //        employeePersonalDetails.CountryCode = _Logindetails.CountryCode;
+
+        //    }
+
+        //    Mapper.CreateMap<Models.ChangeRequestDetails, Models.ChangeRequestDetails>();
+        //    var user = Mapper.Map<Models.ChangeRequestDetails, Models.ChangeRequestDetails>(employeePersonalDetails);
+        //    user.DateofBirth = Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+
+        //    return PartialView("_ChangeRequestForm", user);
+        //}
+        //public ActionResult UserList(int? page, string sortOrder, string searchString = "")
+        //{
+        //    ViewBag.CurrentSort = sortOrder;
+        //    ViewBag.NameParm = sortOrder == "Name_ASC" ? "Name_DESC" : "Name_ASC";
+        //    ViewBag.StatusParm = sortOrder == "Status_ASC" ? "Status_DESC" : "Status_ASC";
+        //    ViewBag.JoiningDateParm = sortOrder == "JoiningDate_ASC" ? "JoiningDate_DESC" : "JoiningDate_ASC";
+
+        //    var userList = new List<LoginDetails>();
+        //    if (System.Web.HttpContext.Current.Request.IsAuthenticated)
+        //    {
+        //        var user = _IUserService.GetAll(null, null, "").Where(m => (m.UserID != SessionManager.UserId) && (m.IsDelete == false) && (m.Email.ToLower().Contains(searchString) ||
+        //               m.FirstName.ToLower().Contains(searchString) || m.LastName.ToLower().Contains(searchString))).ToList();
+
+        //        if (!string.IsNullOrEmpty(sortOrder))
+        //        {
+        //            if (sortOrder.Contains("Name_DESC"))
+        //                user = user.OrderByDescending(m => m.FirstName).ToList();
+        //            if (sortOrder.Contains("Name_ASC"))
+        //                user = user.OrderBy(m => m.FirstName).ToList();
+        //            if (sortOrder.Contains("Status_DESC"))
+        //            {
+        //                var user1 = user.Where(m => m.IsActive == 1).ToList();
+        //                var user2 = user.Where(m => m.IsActive == 0 || m.IsActive == 2).ToList();
+        //                var user3 = new List<LoginDetail>();
+        //                user3.AddRange(user2);
+        //                user3.AddRange(user1);
+        //                user.RemoveAll(m => m.IsActive == 1 || m.IsActive == 2 || m.IsActive == 0);
+        //                user.AddRange(user3);
+        //            }
+        //            if (sortOrder.Contains("Status_ASC"))
+        //            {
+
+        //                var user1 = user.Where(m => m.IsActive == 1).ToList();
+        //                var user2 = user.Where(m => m.IsActive == 0 || m.IsActive == 2).ToList();
+        //                var user3 = new List<LoginDetail>();
+        //                user3.AddRange(user1);
+        //                user3.AddRange(user2);
+        //                user.RemoveAll(m => m.IsActive == 1 || m.IsActive == 2 || m.IsActive == 0);
+        //                user.AddRange(user3);
+        //            }
+        //            if (sortOrder.Contains("JoiningDate_DESC"))
+        //                user = user.OrderByDescending(m => m.JoiningDate).ToList();
+        //            if (sortOrder.Contains("JoiningDate_ASC"))
+        //                user = user.OrderBy(m => m.JoiningDate).ToList();
+        //        }
+        //        else
+        //        {
+        //            user = user.OrderByDescending(m => m.JoiningDate.Value).ToList();
+        //        }
+
+
+        //        var AdminEmployeeList = _IRoleService.GetAll(null, null, "").ToList();
+
+        //        LoginDetail empobj;
+        //        foreach (var empitem in AdminEmployeeList)
+        //        {
+        //            empobj = new LoginDetail();
+        //            empobj = user.Where(m => m.Email.ToUpper().Trim() == empitem.UserName.ToUpper().Trim()).FirstOrDefault();
+        //            if (empobj != null)
+        //            {
+        //                user.Remove(empobj);
+        //            }
+        //        }
+
+        //        if (Request.HttpMethod != "GET")
+        //        {
+        //            page = 1;
+        //        }
+
+        //        int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]);  //5; // Code change - Minimize page size temporarily //Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); //5;
+        //        int pageNumber = (page ?? 1);
+
+        //        ViewBag.PageIndex = pageNumber;
+        //        ViewBag.SearchString = searchString;
+        //        ViewModel.CandidateProgressDetails candidateProgressDetails = new ViewModel.CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
+        //        foreach (var item in user)
+        //        {
+        //            var Employee = _IEmployeeService.GetAll(null, null, "").Where(m => m.UserId == item.UserID).FirstOrDefault();
+        //            var designation = _IUserService.GetDesignationName(item.DesignationID);
+        //            userList.Add(new LoginDetails()
+        //            {
+        //                //Code change - Added employee number for tooltip on onboarding status 
+        //                EmpNo = Employee == null ? string.Empty : Employee.EmpNo,
+        //                ActivatedDate = item.ActivatedDate,
+        //                Active = item.IsActive,
+        //                FirstName = item.FirstName,
+        //                LastName = item.LastName,
+        //                Email = item.Email,
+        //                DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+        //                JoiningDate = item.JoiningDate,
+        //                ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+        //                ShortJoiningDate = convertDateToShort(item.JoiningDate),
+        //                UserId = item.UserID,
+        //                IsOnboarded = Employee == null ? false : true,
+        //                ContactNumber = item.ContactNumber,
+        //                DesignationID = item.DesignationID,
+        //                JoiningLocation = item.JoiningLocation,
+        //                Designation = designation,
+        //                OverAllUploadPecentage = candidateProgressDetails.SaveCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
+        //            });
+        //        }
+        //        return View(userList.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    return View(userList);
+        //}
+
+
+        [HttpPost]
+      //  public async Task<ActionResult> SyncCandidates(int? page, string searchString = "")
+             public async Task<ActionResult> SyncCandidates()
+        {
+
+            //ViewBag.CurrentSort = sortOrder;
+            //ViewBag.NameParm = sortOrder == "Name_ASC" ? "Name_DESC" : "Name_ASC";
+            //ViewBag.StatusParm = sortOrder == "Status_ASC" ? "Status_DESC" : "Status_ASC";
+            //ViewBag.JoiningDateParm = sortOrder == "JoiningDate_ASC" ? "JoiningDate_DESC" : "JoiningDate_ASC";
+            var userList = new List<AddEditUserModel>();
+
+            StringBuilder syncLog = new StringBuilder();
+            string baseAddress = "https://api.jobvite.com/api/v2/candidate?api=silicustechnologies_candidate_api_key&sc=c4b68fcb2c29aba71c6a5c418e39e912&wflowstate=New&format=json&city=Pune";
+
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    HttpResponseMessage response = await httpClient.GetAsync(baseAddress);
+                    response.EnsureSuccessStatusCode();
+                    syncLog.AppendLine("JobVite Connection Established");
+                    string result = await response.Content.ReadAsStringAsync();
+                    APIResponse businessunits = JsonConvert.DeserializeObject<APIResponse>(result);
+                    var candidateList = (from candidate in businessunits.candidates
+
+                                         select new LoginDetails()
+                                         {
+                                             FirstName = candidate.firstName,
+                                             LastName = candidate.lastName,
+                                             Email = candidate.email,
+                                             //CandidateStatus = candidate.application.workflowState,
+                                             //JobViteId = candidate.application.eId,
+                                             //Position = candidate.application.job.title
+                                         }).ToList();
+
+                    // return Json(result, JsonRequestBehavior.AllowGet);
+                    // return Json(new { Items = candidateList });
+
+                    //if (Request.HttpMethod != "GET")
+                    //{
+                    //    page = 1;
+                    //}
+
+                    //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]);  //5; // Code change - Minimize page size temporarily //Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); //5;
+                    //int pageNumber = (page ?? 1);
+
+                    //ViewBag.PageIndex = pageNumber;
+                    //ViewBag.SearchString = searchString;
+                    return View("_PopupJobViteUserList", candidateList);
+                    //return View("_PopupJobViteUserList", candidateList.ToPagedList(pageNumber, pageSize));
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        
 
         public ActionResult DeleteUserDetails(int UserID)
         {
