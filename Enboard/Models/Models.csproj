@@ -52,7 +52,7 @@
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,6 +66,7 @@
     <Compile Include="EducationViewModel.cs" />
     <Compile Include="FamilyDetails.cs" />
     <Compile Include="FinalSubmitViewModel.cs" />
+    <Compile Include="JobViteCandidateBussnessModel.cs" />
     <Compile Include="ManageEmployeeModel.cs" />
     <Compile Include="CertificationModel.cs" />
     <Compile Include="ClassModel.cs">
@@ -102,6 +103,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SubDocumentCategoryModel.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="UniversityModel.cs">
       <SubType>Code</SubType>
     </Compile>

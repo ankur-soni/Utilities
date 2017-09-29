@@ -648,5 +648,27 @@ namespace Service
 
             }
         }
+
+        public LoginDetail GetUserExists(string Firstsname , string Lastname , string Email)
+        {
+
+            using (IPDEntities ctx = new IPDEntities())
+            {
+                var result = ctx.LoginDetails.Where(T => T.FirstName == Firstsname && T.LastName == Lastname && T.Email == Email).FirstOrDefault();
+                return result;
+            }
+            
+        }
+        public Master_Department GetDepartmentId(string Name)
+        {
+
+            using (IPDEntities ctx = new IPDEntities())
+            {
+                var result = ctx.Master_Department.Where(T => T.DepartmentName== Name).FirstOrDefault();
+                return result;
+            }
+
+        }
+
     }
 }

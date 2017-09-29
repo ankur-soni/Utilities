@@ -26,8 +26,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
-
-
+using System.Text.RegularExpressions;
 
 namespace HR_Web.Controllers
 {
@@ -2534,157 +2533,23 @@ namespace HR_Web.Controllers
                 return Json(new { result = false, Message = "Fail" }, JsonRequestBehavior.AllowGet);
             }
         }
-        //public ActionResult OpenChangeRequestForm()
-        //{
-        //    ViewBag.CountryCodeList = GetCountryCode();
-
-        //    //Get logged in user details 
-        //    var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-        //    var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-
-        //    var LoginDetails = _IUserService.GetById(userId);
-
-        //    var employeePersonalDetails = new ChangeRequestDetails();
-
-        //    if (LoginDetails != null)
-        //    {
-
-        //        _Logindetails = LoginDetails;
-        //        employeePersonalDetails.FirstName = _Logindetails.FirstName;
-        //        employeePersonalDetails.LastName = _Logindetails.LastName;
-        //        employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
-        //        employeePersonalDetails.EmpEmail = _Logindetails.Email;
-        //        employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
-        //        employeePersonalDetails.CountryCode = _Logindetails.CountryCode;
-
-        //    }
-
-        //    Mapper.CreateMap<Models.ChangeRequestDetails, Models.ChangeRequestDetails>();
-        //    var user = Mapper.Map<Models.ChangeRequestDetails, Models.ChangeRequestDetails>(employeePersonalDetails);
-        //    user.DateofBirth = Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
-
-        //    return PartialView("_ChangeRequestForm", user);
-        //}
-        //public ActionResult UserList(int? page, string sortOrder, string searchString = "")
-        //{
-        //    ViewBag.CurrentSort = sortOrder;
-        //    ViewBag.NameParm = sortOrder == "Name_ASC" ? "Name_DESC" : "Name_ASC";
-        //    ViewBag.StatusParm = sortOrder == "Status_ASC" ? "Status_DESC" : "Status_ASC";
-        //    ViewBag.JoiningDateParm = sortOrder == "JoiningDate_ASC" ? "JoiningDate_DESC" : "JoiningDate_ASC";
-
-        //    var userList = new List<LoginDetails>();
-        //    if (System.Web.HttpContext.Current.Request.IsAuthenticated)
-        //    {
-        //        var user = _IUserService.GetAll(null, null, "").Where(m => (m.UserID != SessionManager.UserId) && (m.IsDelete == false) && (m.Email.ToLower().Contains(searchString) ||
-        //               m.FirstName.ToLower().Contains(searchString) || m.LastName.ToLower().Contains(searchString))).ToList();
-
-        //        if (!string.IsNullOrEmpty(sortOrder))
-        //        {
-        //            if (sortOrder.Contains("Name_DESC"))
-        //                user = user.OrderByDescending(m => m.FirstName).ToList();
-        //            if (sortOrder.Contains("Name_ASC"))
-        //                user = user.OrderBy(m => m.FirstName).ToList();
-        //            if (sortOrder.Contains("Status_DESC"))
-        //            {
-        //                var user1 = user.Where(m => m.IsActive == 1).ToList();
-        //                var user2 = user.Where(m => m.IsActive == 0 || m.IsActive == 2).ToList();
-        //                var user3 = new List<LoginDetail>();
-        //                user3.AddRange(user2);
-        //                user3.AddRange(user1);
-        //                user.RemoveAll(m => m.IsActive == 1 || m.IsActive == 2 || m.IsActive == 0);
-        //                user.AddRange(user3);
-        //            }
-        //            if (sortOrder.Contains("Status_ASC"))
-        //            {
-
-        //                var user1 = user.Where(m => m.IsActive == 1).ToList();
-        //                var user2 = user.Where(m => m.IsActive == 0 || m.IsActive == 2).ToList();
-        //                var user3 = new List<LoginDetail>();
-        //                user3.AddRange(user1);
-        //                user3.AddRange(user2);
-        //                user.RemoveAll(m => m.IsActive == 1 || m.IsActive == 2 || m.IsActive == 0);
-        //                user.AddRange(user3);
-        //            }
-        //            if (sortOrder.Contains("JoiningDate_DESC"))
-        //                user = user.OrderByDescending(m => m.JoiningDate).ToList();
-        //            if (sortOrder.Contains("JoiningDate_ASC"))
-        //                user = user.OrderBy(m => m.JoiningDate).ToList();
-        //        }
-        //        else
-        //        {
-        //            user = user.OrderByDescending(m => m.JoiningDate.Value).ToList();
-        //        }
 
 
-        //        var AdminEmployeeList = _IRoleService.GetAll(null, null, "").ToList();
-
-        //        LoginDetail empobj;
-        //        foreach (var empitem in AdminEmployeeList)
-        //        {
-        //            empobj = new LoginDetail();
-        //            empobj = user.Where(m => m.Email.ToUpper().Trim() == empitem.UserName.ToUpper().Trim()).FirstOrDefault();
-        //            if (empobj != null)
-        //            {
-        //                user.Remove(empobj);
-        //            }
-        //        }
-
-        //        if (Request.HttpMethod != "GET")
-        //        {
-        //            page = 1;
-        //        }
-
-        //        int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]);  //5; // Code change - Minimize page size temporarily //Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); //5;
-        //        int pageNumber = (page ?? 1);
-
-        //        ViewBag.PageIndex = pageNumber;
-        //        ViewBag.SearchString = searchString;
-        //        ViewModel.CandidateProgressDetails candidateProgressDetails = new ViewModel.CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
-        //        foreach (var item in user)
-        //        {
-        //            var Employee = _IEmployeeService.GetAll(null, null, "").Where(m => m.UserId == item.UserID).FirstOrDefault();
-        //            var designation = _IUserService.GetDesignationName(item.DesignationID);
-        //            userList.Add(new LoginDetails()
-        //            {
-        //                //Code change - Added employee number for tooltip on onboarding status 
-        //                EmpNo = Employee == null ? string.Empty : Employee.EmpNo,
-        //                ActivatedDate = item.ActivatedDate,
-        //                Active = item.IsActive,
-        //                FirstName = item.FirstName,
-        //                LastName = item.LastName,
-        //                Email = item.Email,
-        //                DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
-        //                JoiningDate = item.JoiningDate,
-        //                ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
-        //                ShortJoiningDate = convertDateToShort(item.JoiningDate),
-        //                UserId = item.UserID,
-        //                IsOnboarded = Employee == null ? false : true,
-        //                ContactNumber = item.ContactNumber,
-        //                DesignationID = item.DesignationID,
-        //                JoiningLocation = item.JoiningLocation,
-        //                Designation = designation,
-        //                OverAllUploadPecentage = candidateProgressDetails.SaveCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
-        //            });
-        //        }
-        //        return View(userList.ToPagedList(pageNumber, pageSize));
-        //    }
-        //    return View(userList);
-        //}
-
-
-        [HttpPost]
-      //  public async Task<ActionResult> SyncCandidates(int? page, string searchString = "")
-             public async Task<ActionResult> SyncCandidates()
+       // [HttpPost]
+        public async Task<ActionResult> SyncCandidates(int? page, string sortOrder, string searchString = "")
         {
 
-            //ViewBag.CurrentSort = sortOrder;
-            //ViewBag.NameParm = sortOrder == "Name_ASC" ? "Name_DESC" : "Name_ASC";
-            //ViewBag.StatusParm = sortOrder == "Status_ASC" ? "Status_DESC" : "Status_ASC";
-            //ViewBag.JoiningDateParm = sortOrder == "JoiningDate_ASC" ? "JoiningDate_DESC" : "JoiningDate_ASC";
             var userList = new List<AddEditUserModel>();
 
             StringBuilder syncLog = new StringBuilder();
-            string baseAddress = "https://api.jobvite.com/api/v2/candidate?api=silicustechnologies_candidate_api_key&sc=c4b68fcb2c29aba71c6a5c418e39e912&wflowstate=New&format=json&city=Pune";
+            string JobViteBaseURL = ConfigurationManager.AppSettings["JobViteBaseURL"];
+            string JobViteUserId = ConfigurationManager.AppSettings["JobViteUserId"];
+            string JobVitesc = ConfigurationManager.AppSettings["JobVitesc"];
+            string JobViteCandidateSelecttionStatus = ConfigurationManager.AppSettings["JobViteCandidateSelecttionStatus"];
+
+            string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
+
+        
 
             try
             {
@@ -2698,31 +2563,30 @@ namespace HR_Web.Controllers
                     APIResponse businessunits = JsonConvert.DeserializeObject<APIResponse>(result);
                     var candidateList = (from candidate in businessunits.candidates
 
-                                         select new LoginDetails()
+                                         select new AddEditUserModel()
                                          {
                                              FirstName = candidate.firstName,
                                              LastName = candidate.lastName,
                                              Email = candidate.email,
-                                             //CandidateStatus = candidate.application.workflowState,
-                                             //JobViteId = candidate.application.eId,
-                                             //Position = candidate.application.job.title
-                                         }).ToList();
+                                             JoiningLocation = candidate.location == ",  " ? "" : candidate.location,
+                                             //ContactNumber = candidate.mobile,
+                                             RequisitionID = candidate.application.job.requisitionId,
+                                             DepartmentName = candidate.application.job.department,
+                                           CountryCode= candidate.countryCode
+                                           
+                }).ToList();
 
-                    // return Json(result, JsonRequestBehavior.AllowGet);
-                    // return Json(new { Items = candidateList });
-
-                    //if (Request.HttpMethod != "GET")
-                    //{
-                    //    page = 1;
-                    //}
-
-                    //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]);  //5; // Code change - Minimize page size temporarily //Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); //5;
-                    //int pageNumber = (page ?? 1);
-
-                    //ViewBag.PageIndex = pageNumber;
-                    //ViewBag.SearchString = searchString;
-                    return View("_PopupJobViteUserList", candidateList);
-                    //return View("_PopupJobViteUserList", candidateList.ToPagedList(pageNumber, pageSize));
+                    if (Request.HttpMethod != "GET")
+                    {
+                        page = 1;
+                    }
+                    //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); 
+                    int pageSize = 5;
+                    int pageNumber = (page ?? 1);
+                    ViewBag.PageIndex = pageNumber;
+                   // ViewBag.SearchString = searchString;
+              
+                    return View("_PopupJobViteUserList", candidateList.ToPagedList(pageNumber, pageSize));
                 }
             }
             catch (Exception e)
@@ -2731,8 +2595,158 @@ namespace HR_Web.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public ActionResult SaveJobeViteDetails(List<AddEditUserModel> jobViteCandidateList)
+        {
+            List<LoginDetail> list = new List<LoginDetail>();
+            bool result = false;
+            bool status = false;
+            string firstname = "";
+            string lastname = "";
 
+
+            
+            if (System.Web.HttpContext.Current.Request.IsAuthenticated)
+            {
+                userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+                userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+
+            }
+            if (jobViteCandidateList != null)
+            {
+                foreach (AddEditUserModel model in jobViteCandidateList)
+                {
+                    LoginDetail details = new LoginDetail();
+
+                    firstname = model.FirstName;
+                    lastname = model.LastName;
+                    details.FirstName = Regex.Replace(firstname, @"\s+", "");
+                    lastname = model.LastName;
+                    details.LastName = Regex.Replace(lastname, @"\s+", "");
+                    //concatination of string to get password
+                    string s1 = details.FirstName;
+                    string s = s1.Substring(0, 1);
+                    string pwd = s + "_" + details.LastName + "_" + "123";
+                    details.Password = SessionManager.EncryptData(pwd);
+                    string date = "10/3/2017";
+                    details.DOB =SessionManager.EncryptData(Convert.ToString(date)); //SessionManager.EncryptData(Convert.ToString(model.DOB.Value));
+                    
+                    details.Email = model.Email;
+                    details.JoiningDate = DateTime.Now;
+                    //if (model.ContactNumber != null)
+                    //{
+                    //    if (model.ContactNumber.Contains("+"))
+                    //    {
+                    //        var newString = string.Empty;
+                    //        string str = model.ContactNumber.Substring(0, 3);
+                    //        newString = model.ContactNumber.Remove(0, model.ContactNumber.IndexOf(' ') + 1);
+                    //        //  newString= model.ContactNumber.Split(new char[] { ' ' }, 2)[1];
+                    //        if (model.ContactNumber.Contains("-"))
+                    //        {
+                    //            newString = model.ContactNumber.Split(new char[] { '-' }, 2)[1];
+                    //            //   newString = model.ContactNumber.Remove(0, str.IndexOf(" - ") + 1);
+                    //        }
+                    //        details.ContactNumber = newString;
+                    //        details.CountryCode = str;
+                    //    }
+
+                    //    else
+                    //    {
+                    //        details.ContactNumber = model.ContactNumber;
+                    //    }
+                    //}
+                    if (model.DepartmentName == "")
+                    {
+                        details.DepartmentID = 14;
+                    }
+                    else {
+                        Master_Department dpt  = _IUserService.GetDepartmentId(model.DepartmentName);
+                        if (dpt != null)
+                        {
+                            details.DepartmentID = dpt.DepartmentID;
+                        }
+                        else {
+                            details.DepartmentID = 14;
+                        }
+                       
+                    }
+                    details.RequisitionID = model.RequisitionID;
+                    details.JoiningLocation = model.JoiningLocation;
+                   
+                    details.DesignationID = 2;
+                    details.RoleID = 16; 
+                    details.ActivatedDate = DateTime.Now;
+                    details.CreatedBy = "";
+                    details.CreatedDate = DateTime.Now;
+                    details.IsSubmitted = false;
+                    details.IsActive = 0;
+                    details.IsDelete = false;
+                    details.LastLogin = DateTime.Now;
+                    
+                    status = _IUserService.AddUserDetails(details);
+                    
+                    //Update existing education caetgrories for that user
+                    _IUserService.UpdateEducationCategoryDetails(details.UserID, userName);
+                    //Update existing education caetgrories for that user
+
+                    var educationCategoryDetails = new AdminEducationCategoryForUser();                    //Add new education categpries for that user 
+                    educationCategoryDetails.UserID = details.UserID;
+                    educationCategoryDetails.EducationCategoryId = 3;
+                    educationCategoryDetails.IsActive = true;
+                    educationCategoryDetails.CreatedBy = userName;
+                    educationCategoryDetails.CreatedDate = DateTime.Now;
+                    var stat = _IUserService.AddEducationCategoryDetails(educationCategoryDetails, userName);
+                    
+                }
+             
+            }
+            if (status)
+            {
+                return Json(new { result = true, Message = "Success" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = false, Message = "Fail" }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        [HttpPost]
+        public ActionResult IsFirstNameLastNameEmailDuplicateCheck(List<AddEditUserModel> jobViteCandidateList)
+        {
+            bool ifRecordExist = false;
+            try
+            {
+                
+                var employeedata = string.Empty;
+                var firstname = string.Empty;
+                var lastname = string.Empty;
+                var email = string.Empty;
+                foreach (AddEditUserModel model in jobViteCandidateList)
+                {
+                   
+                    lastname = model.LastName;
+                    firstname = Regex.Replace(model.FirstName, @"\s+", "");
+                    lastname = model.LastName;
+                    lastname = Regex.Replace(model.LastName, @"\s+", "");
+                    email = model.Email;
+
+                    LoginDetail login = _IUserService.GetUserExists(firstname, lastname, email);
+                    ifRecordExist = login != null ? true : false;
+                }
+
+                var roleData = _IRoleService.GetAll(null, null, "").Where(p => p.UserName.ToLower() == email.ToLower());
+                if (roleData != null && roleData.Count() > 0)
+                {
+                    ifRecordExist = true;
+                }
+
+                return Json(ifRecordExist, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult DeleteUserDetails(int UserID)
         {
 

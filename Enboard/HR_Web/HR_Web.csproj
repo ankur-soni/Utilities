@@ -480,6 +480,7 @@
     <Content Include="Views\User\_AddAdminUser.cshtml" />
     <Content Include="Views\Employement\_NumberOfEmployments.cshtml" />
     <Content Include="Views\Document\AboutUs.cshtml" />
+    <Content Include="Views\User\_PopupJobViteUserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
