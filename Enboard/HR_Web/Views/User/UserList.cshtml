@@ -303,4 +303,26 @@
         $('#modalJobViteDetails').hide();
     }
 
+    function ShowJobViteDetails() {
+
+        var page = 1;
+        var searchString = "";
+        var data = { page: page, sortOrder: "", searchString: searchString }
+        ajaxindicatorstart('Please wait..');
+        $.ajax({
+            url: '/User/SyncCandidates/',
+            success: function (data) {
+                $("#divJobvitetDetailsContent").html(data);
+
+                ajaxindicatorstop();
+            },
+            error: function (data) {
+                ajaxindicatorstop();
+                toastr.error("Error occurred while opening Change Request Modal form.");
+            }
+        });
+        $('#modalJobViteDetails').show();
+
+    }
+
 </script>

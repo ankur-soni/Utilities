@@ -2580,13 +2580,13 @@ namespace HR_Web.Controllers
                     {
                         page = 1;
                     }
-                    //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); 
-                    int pageSize = 5;
+                    int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); 
+                    //int pageSize = 5;
                     int pageNumber = (page ?? 1);
                     ViewBag.PageIndex = pageNumber;
                    // ViewBag.SearchString = searchString;
               
-                    return View("_PopupJobViteUserList", candidateList.ToPagedList(pageNumber, pageSize));
+                    return View("_popupJobViteCandidateList", candidateList.ToPagedList(pageNumber, pageSize));
                 }
             }
             catch (Exception e)
@@ -2671,7 +2671,14 @@ namespace HR_Web.Controllers
                        
                     }
                     details.RequisitionID = model.RequisitionID;
-                    details.JoiningLocation = model.JoiningLocation;
+                    if (model.JoiningLocation != null)
+                    {
+                        details.JoiningLocation = model.JoiningLocation;
+                    }
+                    else {
+                        details.JoiningLocation = "Pune";
+                    }
+                   
                    
                     details.DesignationID = 2;
                     details.RoleID = 16; 

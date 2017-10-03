@@ -1,6 +1,4 @@
-﻿
-
-@*@model List<Models.LoginDetails>*@
+﻿@*@model List<Models.LoginDetails>*@
 @model PagedList.IPagedList<Models.AddEditUserModel>
 @using PagedList;
 @using PagedList.Mvc;
@@ -16,21 +14,21 @@
     <table id="gridJobvitedetails" class="table table-bordered table-striped dataTable tablesorter" aria-describedby="example1_info">
         <thead style="background-color:#f8f8f8;color:#000;">
             <tr>
-                <th style="border-bottom-width: 3px;min-width:130px "  data-sort='disabled' hidden="hidden"> Firstname </th>
+                <th style="border-bottom-width: 3px;min-width:130px " data-sort='disabled' hidden="hidden"> Firstname </th>
                 <th style="border-bottom-width: 3px;" data-sort='disabled' hidden="hidden"> Lastname </th>
                 <th style="border-bottom-width: 3px;" data-sort='disabled'> Select </th>
                 <th style="border-bottom-width: 3px;min-width:230px ">
-                    Name 
+                    Name
 
                 </th>
 
                 <th style="border-bottom-width: 3px;" data-sort='disabled'> Email Address </th>
-              @*//  <th style="border-bottom-width: 3px;" data-sort='disabled'> CountryCode </th>
-                <th style="border-bottom-width: 3px;min-width:130px" data-sort='disabled'> Contact Number </th>*@
+                @*//  <th style="border-bottom-width: 3px;" data-sort='disabled'> CountryCode </th>
+                    <th style="border-bottom-width: 3px;min-width:130px" data-sort='disabled'> Contact Number </th>*@
                 @*<th style="border-bottom-width: 3px;">Offered Designation</th>*@
                 <th style="border-bottom-width: 3px;min-width:300px" data-sort='disabled'> Joining Location </th>
                 <th style="border-bottom-width: 3px;" data-sort='disabled'> Requisition Id </th>
-                <th style="border-bottom-width: 3px;" data-sort='disabled'> Department </th>
+                <th style="border-bottom-width: 3px; min-width:300px" data-sort='disabled'> Department </th>
                 @*<th style="border-bottom-width: 3px;" data-sort='disabled'> Recruiters </th>*@
 
 
@@ -62,7 +60,7 @@
 
                         <td align="left" class="classEmail">@Html.Raw(user.Email)</td>
                         @*<td class="class9">@Html.Raw(user.CountryCode)</td>
-                        <td class="classContactNo">@Html.Raw(user.ContactNumber)</td>*@
+                            <td class="classContactNo">@Html.Raw(user.ContactNumber)</td>*@
                         <td align="left" class="classJoine">@Html.Raw(user.JoiningLocation)</td>
                         <td align="left" class="class10">@Html.Raw(user.RequisitionID)</td>
                         <td align="left" class="class7">@Html.Raw(user.DepartmentName)</td>
@@ -94,11 +92,11 @@
         @Html.Hidden("hdnIndex", index)
     }
 
-    </div>
-    <script>
+</div>
+<script>
         var isUserExists;
         $(document).on("click", "#contentPager a", function () {
-            
+
             ajaxindicatorstart('Loading.. please wait..');
             $.ajax({
                 url: $(this).attr("href"),
@@ -112,7 +110,7 @@
             ajaxindicatorstop();
             return false;
         });
-    
+
 
         function CloseJobViteDocumentDetails() {
             $('#modalJobViteDetails').hide();
@@ -141,7 +139,7 @@
 
           //  ChechIsUserExists(jobViteResponseList);
             //-------------------------------------------------------------------------
-          
+
             $.ajax({
                 url: "/User/IsFirstNameLastNameEmailDuplicateCheck",
                 type: 'POST',
@@ -163,7 +161,7 @@
                             data: JSON.stringify({ jobViteCandidateList: jobViteResponseList }),
                             success: function (result) {
                                 if (result) {
-                                   
+
                                     ajaxindicatorstart('Loading.. please wait..');
                                     $.ajax({
                                         url: "/User/UserList",
@@ -174,6 +172,8 @@
                                         },
                                         success: function (data) {
                                             $('#modalJobViteDetails').hide();
+                                          // $("#divUserList").html(data);
+                                            
                                             window.location.reload();
                                             ajaxindicatorstop();
                                         },
@@ -202,5 +202,6 @@
             });
         }
 
-    
-    </script>
+
+</script>
+
