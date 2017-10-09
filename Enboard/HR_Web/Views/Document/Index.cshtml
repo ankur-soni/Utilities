@@ -294,11 +294,11 @@
                 success: function (response) {
                     if (response.status = true) {
                         toastr.success('File deleted Sucessfully.');
-                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 300);
+                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 1600);
                     }
                     else {
                         toastr.error('Unable to delete uploaded file.');
-                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 300);
+                        setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 1600);
                     }
                     ajaxindicatorstop();
                 },
@@ -449,7 +449,7 @@
             url: '/Document/SaveUploadedDocuments',
             data: formData,
             dataType: 'json',
-            contentType: false,
+           contentType: false,
             processData: false,
             async: false,
             success: function (response) {
@@ -464,19 +464,21 @@
                     array = array.concat(res);
                     var DocCategory = "'" + DocumentCategory + "'";
 
-                    ajaxindicatorstop();
                     toastr.success('Document has been uploaded.');
-                    setTimeout(function () { window.location.href = baseUrl +(response.DocCatID == undefined ?"": "?DocCatID=" + response.DocCatID); }, 300);
+                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 5000);
+         
+                 
 
                 }
                 else {
-                    ajaxindicatorstop();
                     toastr.error('Unable to uploade file.');
-                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 300);
+                   setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); },5000);
+
                 }
+                ajaxindicatorstop();
             },
             error: function (error) {
-                ajaxindicatorstop();
+              ajaxindicatorstop();
                 toastr.error(JSON.stringify(error.responseText.trim()));
             }
         });

@@ -1187,3 +1187,55 @@ input[type=text]::-ms-clear { display: none; }
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+.gray-tooltip + .tooltip > .tooltip-inner{
+   
+    background-color: slategray;
+    color: black;
+    font:bold;
+    text-align: left;
+                                           
+}
+
+.classchk {
+    background-color: white;
+}
+.className {
+     background-color: white;
+}
+
+.classEmail {
+     background-color: white;
+}
+
+.classJoine {
+     background-color: white;
+}
+
+.classDesignation {
+     background-color: white;
+}
+
+.classContactNo {
+     background-color: white;
+}
+
+.class7 {
+     background-color: white;
+}
+
+.class8 {
+     background-color: white;
+}
+
+.class9 {
+}
+
+.class10 {
+}
+
+.class11 {
+}
+
+
+
+

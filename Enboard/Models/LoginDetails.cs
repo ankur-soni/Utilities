@@ -7,6 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
+    
+
     public class LoginDetails
     {
        
@@ -124,6 +126,7 @@ namespace Models
         [Display(Name = "Joining Location")]
         [Required(ErrorMessage = "Please enter Joining Location")]
         public string JoiningLocation { get; set; }
+        public string JoiningLoc { get; set; }
         public string ProjectName { get; set; }
 
         public string PrimarySkill { get; set; }
@@ -163,7 +166,10 @@ namespace Models
         public bool Diploma { get; set; }
         public bool DoctoratePhD { get; set; }
         public bool Other { get; set; }
-
+        public bool IsCheck { get; set; }
+        public string DepartmentName { get; set; }
+        public string RecruterFirstname { get; set; }
+        public string RecruterLastname { get; set; }
         public IEnumerable<EducationCategory> AvailableEducationCategories { get; set; }
         public IEnumerable<EducationCategory> SelectedEducationCategories { get; set; }
         public PostedEducationCategories PostedEducationCategories { get; set; }
@@ -231,4 +237,12 @@ namespace Models
 
         public string Message { get; set; }
     }
+    public class AddUser
+    {
+        public string email { get; set; }
+        public string lastName { get; set; }
+
+    }
+
+    
 }

@@ -149,6 +149,12 @@ header.navbar .nav-item a {
     margin-top: -60px;
    
 }
+#divJobvitetDetailsContent .box-body.table-responsive {    
+     overflow: auto;
+}
+#divRenderBody .model {
+    position:relative !important;
+}
 .custom-table .form-control {
     height: 33px !important;    
     width: 100%;

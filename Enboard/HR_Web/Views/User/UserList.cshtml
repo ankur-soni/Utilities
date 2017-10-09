@@ -42,6 +42,7 @@
                         <td>
                             <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
                         </td>
+                        
                     </tr>
                 </table>
             </div>
@@ -53,6 +54,26 @@
             </div>
         </div> 
         <div class="clearfix"></div>
+    </div>
+</div>
+
+<div id="changeRequestModal" class="modal fade enbordModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-save pull-right" id="btnChangeRequestModalSave" onclick="SaveChangeRequestDetails()"> Send</a>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -188,6 +209,31 @@
 </div>
 
 
+<div id="modalJobViteDetails" class="modal fade in" aria-hidden="false" style="display:none;">
+    <div class="modal-backdrop fade in" style="z-index:0;"></div>
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseJobViteDocumentDetails()">x</button>
+                <h4 class="modal-title" id="mailTital">Job Vite Detail</h4>
+            </div>
+            <div class="modal-body pop-upNav" style="text-align: center;">
+                <div  id="divJobvitetDetailsContent" >
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SaveJobViteDetails()">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CloseJobViteDocumentDetails()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @*script for user defined functions*@
 <script type="text/javascript">
 
@@ -225,5 +271,58 @@
             }
         });
     }
+
+  
+
+    function ShowJobViteDetails() {
+        var page = 1;
+        var searchString = "";
+        var data = { page: page, searchString: searchString }
+        ajaxindicatorstart('Please wait..');
+        $.ajax({
+            type: "POST",
+            url: '/User/SyncCandidates/',
+            success: function (data) {
+                
+                $("#divJobvitetDetailsContent").html("");
+                $("#divJobvitetDetailsContent").html(data);
+                ajaxindicatorstop();
+
+            },
+            error: function (data) {
+                ajaxindicatorstop();
+                toastr.error("Error occurred while opening Change Request Modal form.");
+            }
+        });
+        $('#modalJobViteDetails').show();
+
+    }
+
+    function CloseJobViteDocumentDetails() {
+
+        $('#modalJobViteDetails').hide();
+    }
+
+    //function ShowJobViteDetails() {
+
+    //    var page = 1;
+    //    var searchString = "";
+    //    var data = { page: page, sortOrder: "", searchString: searchString }
+    //    ajaxindicatorstart('Please wait..');
+    //    $.ajax({
+    //        url: '/User/SyncCandidates/',
+    //        success: function (data) {
+    //            $("#divJobvitetDetailsContent").html(data);
+
+    //            ajaxindicatorstop();
+    //        },
+    //        error: function (data) {
+    //            ajaxindicatorstop();
+    //            toastr.error("Error occurred while opening Change Request Modal form.");
+    //        }
+    //    });
+    //    $('#modalJobViteDetails').show();
+
+    //}
 
 </script>

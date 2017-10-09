@@ -20,6 +20,13 @@ using System.IO.Compression;
 using System.IO;
 using HR_Web.CustomFilters;
 using Service.Interface;
+using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace HR_Web.Controllers
 {
@@ -2314,7 +2321,7 @@ namespace HR_Web.Controllers
         [Authorize]
         public ActionResult AddEditUserDetails(int Id = 0)
         {
-            var silicusLocations = ConfigurationManager.AppSettings["SilicusLocation"].Split(',').ToList().Select(a=> new SelectListItem() { Text = a, Value = a});
+            var silicusLocations = ConfigurationManager.AppSettings["SilicusLocation"].Split(',').ToList().Select(a => new SelectListItem() { Text = a, Value = a });
             ViewBag.Departments = GetDepartments();
             ViewBag.Designations = GetDesignationList();
             ViewBag.CountryCodeList = GetCountryCode();
@@ -2528,6 +2535,225 @@ namespace HR_Web.Controllers
         }
 
 
+       // [HttpPost]
+        public async Task<ActionResult> SyncCandidates(int? page, string sortOrder, string searchString = "")
+        {
+
+            var userList = new List<AddEditUserModel>();
+
+            StringBuilder syncLog = new StringBuilder();
+            string JobViteBaseURL = ConfigurationManager.AppSettings["JobViteBaseURL"];
+            string JobViteUserId = ConfigurationManager.AppSettings["JobViteUserId"];
+            string JobVitesc = ConfigurationManager.AppSettings["JobVitesc"];
+            string JobViteCandidateSelecttionStatus = ConfigurationManager.AppSettings["JobViteCandidateSelecttionStatus"];
+
+            string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
+
+        
+
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    HttpResponseMessage response = await httpClient.GetAsync(baseAddress);
+                    response.EnsureSuccessStatusCode();
+                    syncLog.AppendLine("JobVite Connection Established");
+                    string result = await response.Content.ReadAsStringAsync();
+                    APIResponse businessunits = JsonConvert.DeserializeObject<APIResponse>(result);
+                    var candidateList = (from candidate in businessunits.candidates
+
+                                         select new AddEditUserModel()
+                                         {
+                                             FirstName = candidate.firstName,
+                                             LastName = candidate.lastName,
+                                             Email = candidate.email,
+                                             JoiningLocation = candidate.location == ",  " ? "" : candidate.location,
+                                             //ContactNumber = candidate.mobile,
+                                             RequisitionID = candidate.application.job.requisitionId,
+                                             DepartmentName = candidate.application.job.department,
+                                           CountryCode= candidate.countryCode
+                                           
+                }).ToList();
+
+                    if (Request.HttpMethod != "GET")
+                    {
+                        page = 1;
+                    }
+                    int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); 
+                    //int pageSize = 5;
+                    int pageNumber = (page ?? 1);
+                    ViewBag.PageIndex = pageNumber;
+                   // ViewBag.SearchString = searchString;
+              
+                    return View("_popupJobViteCandidateList", candidateList.ToPagedList(pageNumber, pageSize));
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveJobeViteDetails(List<AddEditUserModel> jobViteCandidateList)
+        {
+            List<LoginDetail> list = new List<LoginDetail>();
+            bool result = false;
+            bool status = false;
+            string firstname = "";
+            string lastname = "";
+
+
+            
+            if (System.Web.HttpContext.Current.Request.IsAuthenticated)
+            {
+                userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+                userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+
+            }
+            if (jobViteCandidateList != null)
+            {
+                foreach (AddEditUserModel model in jobViteCandidateList)
+                {
+                    LoginDetail details = new LoginDetail();
+
+                    firstname = model.FirstName;
+                    lastname = model.LastName;
+                    details.FirstName = Regex.Replace(firstname, @"\s+", "");
+                    lastname = model.LastName;
+                    details.LastName = Regex.Replace(lastname, @"\s+", "");
+                    //concatination of string to get password
+                    string s1 = details.FirstName;
+                    string s = s1.Substring(0, 1);
+                    string pwd = s + "_" + details.LastName + "_" + "123";
+                    details.Password = SessionManager.EncryptData(pwd);
+                    string date = "10/3/2017";
+                    details.DOB =SessionManager.EncryptData(Convert.ToString(date)); //SessionManager.EncryptData(Convert.ToString(model.DOB.Value));
+                    
+                    details.Email = model.Email;
+                    details.JoiningDate = DateTime.Now;
+                    //if (model.ContactNumber != null)
+                    //{
+                    //    if (model.ContactNumber.Contains("+"))
+                    //    {
+                    //        var newString = string.Empty;
+                    //        string str = model.ContactNumber.Substring(0, 3);
+                    //        newString = model.ContactNumber.Remove(0, model.ContactNumber.IndexOf(' ') + 1);
+                    //        //  newString= model.ContactNumber.Split(new char[] { ' ' }, 2)[1];
+                    //        if (model.ContactNumber.Contains("-"))
+                    //        {
+                    //            newString = model.ContactNumber.Split(new char[] { '-' }, 2)[1];
+                    //            //   newString = model.ContactNumber.Remove(0, str.IndexOf(" - ") + 1);
+                    //        }
+                    //        details.ContactNumber = newString;
+                    //        details.CountryCode = str;
+                    //    }
+
+                    //    else
+                    //    {
+                    //        details.ContactNumber = model.ContactNumber;
+                    //    }
+                    //}
+                    if (model.DepartmentName == "")
+                    {
+                        details.DepartmentID = 14;
+                    }
+                    else {
+                        Master_Department dpt  = _IUserService.GetDepartmentId(model.DepartmentName);
+                        if (dpt != null)
+                        {
+                            details.DepartmentID = dpt.DepartmentID;
+                        }
+                        else {
+                            details.DepartmentID = 14;
+                        }
+                       
+                    }
+                    details.RequisitionID = model.RequisitionID;
+                    if (model.JoiningLocation != null)
+                    {
+                        details.JoiningLocation = model.JoiningLocation;
+                    }
+                    else {
+                        details.JoiningLocation = "Pune";
+                    }
+                   
+                   
+                    details.DesignationID = 2;
+                    details.RoleID = 16; 
+                    details.ActivatedDate = DateTime.Now;
+                    details.CreatedBy = "";
+                    details.CreatedDate = DateTime.Now;
+                    details.IsSubmitted = false;
+                    details.IsActive = 0;
+                    details.IsDelete = false;
+                    details.LastLogin = DateTime.Now;
+                    
+                    status = _IUserService.AddUserDetails(details);
+                    
+                    //Update existing education caetgrories for that user
+                    _IUserService.UpdateEducationCategoryDetails(details.UserID, userName);
+                    //Update existing education caetgrories for that user
+
+                    var educationCategoryDetails = new AdminEducationCategoryForUser();                    //Add new education categpries for that user 
+                    educationCategoryDetails.UserID = details.UserID;
+                    educationCategoryDetails.EducationCategoryId = 3;
+                    educationCategoryDetails.IsActive = true;
+                    educationCategoryDetails.CreatedBy = userName;
+                    educationCategoryDetails.CreatedDate = DateTime.Now;
+                    var stat = _IUserService.AddEducationCategoryDetails(educationCategoryDetails, userName);
+                    
+                }
+             
+            }
+            if (status)
+            {
+                return Json(new { result = true, Message = "Success" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = false, Message = "Fail" }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        [HttpPost]
+        public ActionResult IsFirstNameLastNameEmailDuplicateCheck(List<AddEditUserModel> jobViteCandidateList)
+        {
+            bool ifRecordExist = false;
+            try
+            {
+                
+                var employeedata = string.Empty;
+                var firstname = string.Empty;
+                var lastname = string.Empty;
+                var email = string.Empty;
+                foreach (AddEditUserModel model in jobViteCandidateList)
+                {
+                   
+                    lastname = model.LastName;
+                    firstname = Regex.Replace(model.FirstName, @"\s+", "");
+                    lastname = model.LastName;
+                    lastname = Regex.Replace(model.LastName, @"\s+", "");
+                    email = model.Email;
+
+                    LoginDetail login = _IUserService.GetUserExists(firstname, lastname, email);
+                    ifRecordExist = login != null ? true : false;
+                }
+
+                var roleData = _IRoleService.GetAll(null, null, "").Where(p => p.UserName.ToLower() == email.ToLower());
+                if (roleData != null && roleData.Count() > 0)
+                {
+                    ifRecordExist = true;
+                }
+
+                return Json(ifRecordExist, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult DeleteUserDetails(int UserID)
         {
 

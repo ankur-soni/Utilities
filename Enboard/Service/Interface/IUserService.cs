@@ -51,6 +51,8 @@ namespace Service
 
         List<CandidateChangeRequestsDetail> GetCandidateChangeRequest(string searchString);
         CandidateChangeRequestsDetail ChangeRequestAction(long CandChangeReqID, bool Action, string ActionTakenBy);
-        
+        LoginDetail GetUserExists(string Firstsname, string Lastname, string Email);
+        Master_Department GetDepartmentId(string Name);
+
     }
 }
