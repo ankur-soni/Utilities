@@ -134,7 +134,7 @@
                             @Html.Label("Contact Number", new { @class = "" })<span class="red">*</span>
                             <div class="input-group">
                                 @Html.DropDownListFor(m => m.CountryCode, CountryCodeList, "", new { style = "width:10em;", id = "PD_ddlCountryCode", @class = "form-control titleSelect ", placeholder = "Select Country Code", tabindex = 6 })
-                                @Html.TextBoxFor(m => m.ContactNumber, new { style = "width:20em;", id = "txtContactNumber", maxlength = 15, @class = "form-control numberSpace", placeholder = "Contact Number", tabindex = 7 })
+                                @Html.TextBoxFor(m => m.ContactNumber, new { style = "width:20em;", id = "txtContactNumber", maxlength = 12, @class = "form-control numberSpace", placeholder = "Contact Number", tabindex = 7 })
                             </div>
                             @Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })
                             @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })

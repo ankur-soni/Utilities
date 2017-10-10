@@ -358,9 +358,9 @@ namespace HR_Web.Controllers
                         FirstName = item.FirstName,
                         LastName = item.LastName,
                         Email = item.Email,
-                        DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+                        DOB = (item.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(item.DOB)) : (DateTime?)null, //Change request - Null check, as DOB set null while adding user
                         JoiningDate = item.JoiningDate,
-                        ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+                        ShortDOB = (item.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))) : string.Empty,//convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))), //Change request - Null check, as DOB set null while adding user
                         ShortJoiningDate = convertDateToShort(item.JoiningDate),
                         UserId = item.UserID,
                         IsOnboarded = Employee == null ? false : true,
@@ -521,9 +521,9 @@ namespace HR_Web.Controllers
                         FirstName = item.FirstName,
                         LastName = item.LastName,
                         Email = item.Email,
-                        DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+                        DOB = (item.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(item.DOB)) : (DateTime?)null,//Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
                         JoiningDate = item.JoiningDate,
-                        ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+                        ShortDOB = (item.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))) : string.Empty,//convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
                         ShortJoiningDate = convertDateToShort(item.JoiningDate),
                         UserId = item.UserID,
                         IsOnboarded = Employee == null ? false : true,
@@ -605,7 +605,7 @@ namespace HR_Web.Controllers
                         employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
                         employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
                         employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
-                        employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
+                        employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                         employeePersonalDetails.Gender = _Logindetails.Gender;
                         employeePersonalDetails.CountryCode = _Logindetails.CountryCode;
                         //advanced fields
@@ -654,7 +654,7 @@ namespace HR_Web.Controllers
                     employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
                     employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
                     employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
-                    employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
+                    employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                     employeePersonalDetails.Gender = _Logindetails.Gender;
                     employeePersonalDetails.CountryCode = _Logindetails.CountryCode;
                     employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
@@ -712,7 +712,7 @@ namespace HR_Web.Controllers
                         employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
                         employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
                         employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
-                        employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
+                        employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                         employeePersonalDetails.Gender = _Logindetails.Gender;
                         employeePersonalDetails.CountryCode = _Logindetails.CountryCode;
                         //advanced fields
@@ -751,7 +751,7 @@ namespace HR_Web.Controllers
                     employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
                     employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
                     employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
-                    employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
+                    employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                 }
 
             }
@@ -1501,9 +1501,9 @@ namespace HR_Web.Controllers
                             FirstName = item.FirstName,
                             LastName = item.LastName,
                             Email = item.Email,
-                            DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+                            DOB = (item.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(item.DOB)) : (DateTime?)null, //Change request - Null check, as DOB set null while adding user
                             JoiningDate = item.JoiningDate,
-                            ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+                            ShortDOB = (item.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))) : string.Empty,//convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))), //Change request - Null check, as DOB set null while adding user
                             ShortJoiningDate = convertDateToShort(item.JoiningDate),
                             UserId = item.UserID,
                             IsOnboarded = Employee == null ? false : true,
@@ -1624,9 +1624,9 @@ namespace HR_Web.Controllers
                             FirstName = item.FirstName,
                             LastName = item.LastName,
                             Email = item.Email,
-                            DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+                            DOB = (item.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(item.DOB)) : (DateTime?)null, //Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
                             JoiningDate = item.JoiningDate,
-                            ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+                            ShortDOB = (item.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))) : string.Empty,//convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
                             ShortJoiningDate = convertDateToShort(item.JoiningDate),
                             UserId = item.UserID,
                             IsOnboarded = Employee == null ? false : true,
@@ -1703,9 +1703,9 @@ namespace HR_Web.Controllers
                             FirstName = item.FirstName,
                             LastName = item.LastName,
                             Email = item.Email,
-                            DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+                            DOB = (item.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(item.DOB)) : (DateTime?)null,//Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
                             JoiningDate = item.JoiningDate,
-                            ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+                            ShortDOB = (item.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))) : string.Empty,//convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
                             ShortJoiningDate = convertDateToShort(item.JoiningDate),
                             UserId = item.UserID,
                             IsOnboarded = Employee == null ? false : true,
@@ -2350,7 +2350,7 @@ namespace HR_Web.Controllers
                     model.LastName = obj.LastName;
                     model.Email = obj.Email;
                     model.JoiningDate = obj.JoiningDate;
-                    model.DOB = Convert.ToString(SessionManager.DecryptData(obj.DOB));
+                    model.DOB = (obj.DOB != null) ? Convert.ToString(SessionManager.DecryptData(obj.DOB)) : string.Empty;//Convert.ToString(SessionManager.DecryptData(obj.DOB));//Change request - Null check, as DOB set null while adding user
                     model.ContactNumber = obj.ContactNumber;
                     model.DepartmentID = obj.DepartmentID;
                     model.DesignationID = obj.DesignationID;
@@ -2436,8 +2436,15 @@ namespace HR_Web.Controllers
                         obj.CountryCode = model.CountryCode;
                         obj.Gender = model.Gender;
 
-                        status = _IUserService.Update(obj, null, "");
+                        try
+                        {
 
+                            status = _IUserService.Update(obj, null, "");
+
+                        }
+                        catch (Exception e) {
+                            throw;
+                        }
                         //Update existing education caetgrories for that user
                         _IUserService.UpdateEducationCategoryDetails(obj.UserID, userName);
 
@@ -2547,8 +2554,7 @@ namespace HR_Web.Controllers
             string JobVitesc = ConfigurationManager.AppSettings["JobVitesc"];
             string JobViteCandidateSelecttionStatus = ConfigurationManager.AppSettings["JobViteCandidateSelecttionStatus"];
 
-            string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
-
+           string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
         
 
             try
@@ -2568,11 +2574,12 @@ namespace HR_Web.Controllers
                                              FirstName = candidate.firstName,
                                              LastName = candidate.lastName,
                                              Email = candidate.email,
-                                             JoiningLocation = candidate.location == ",  " ? "" : candidate.location,
+                                             //Change request - Showing only above required fields in Add jobivite user list grid
+                                             //JoiningLocation = candidate.location == ",  " ? "" : candidate.location,
                                              //ContactNumber = candidate.mobile,
-                                             RequisitionID = candidate.application.job.requisitionId,
-                                             DepartmentName = candidate.application.job.department,
-                                           CountryCode= candidate.countryCode
+                                             //RequisitionID = candidate.application.job.requisitionId,
+                                             //DepartmentName = candidate.application.job.department,
+                                             //CountryCode= candidate.countryCode
                                            
                 }).ToList();
 
@@ -2580,13 +2587,13 @@ namespace HR_Web.Controllers
                     {
                         page = 1;
                     }
-                    int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); 
-                    //int pageSize = 5;
+                    //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]); 
+                    int pageSize = 10000;
                     int pageNumber = (page ?? 1);
                     ViewBag.PageIndex = pageNumber;
                    // ViewBag.SearchString = searchString;
               
-                    return View("_popupJobViteCandidateList", candidateList.ToPagedList(pageNumber, pageSize));
+                    return PartialView("_popupJobViteCandidateList", candidateList.ToPagedList(pageNumber, pageSize));
                 }
             }
             catch (Exception e)
@@ -2628,11 +2635,13 @@ namespace HR_Web.Controllers
                     string s = s1.Substring(0, 1);
                     string pwd = s + "_" + details.LastName + "_" + "123";
                     details.Password = SessionManager.EncryptData(pwd);
-                    string date = "10/3/2017";
-                    details.DOB =SessionManager.EncryptData(Convert.ToString(date)); //SessionManager.EncryptData(Convert.ToString(model.DOB.Value));
-                    
-                    details.Email = model.Email;
+
+                    //string date = "10/3/2017"; /*Change Request - Removing unwanted details while adding user*/
+                    //details.DOB =SessionManager.EncryptData(Convert.ToString(date)); //SessionManager.EncryptData(Convert.ToString(model.DOB.Value));
+
+                    details.Email = (model.Email != null) ? model.Email : string.Empty;
                     details.JoiningDate = DateTime.Now;
+
                     //if (model.ContactNumber != null)
                     //{
                     //    if (model.ContactNumber.Contains("+"))
@@ -2655,35 +2664,43 @@ namespace HR_Web.Controllers
                     //        details.ContactNumber = model.ContactNumber;
                     //    }
                     //}
-                    if (model.DepartmentName == "")
-                    {
-                        details.DepartmentID = 14;
-                    }
-                    else {
-                        Master_Department dpt  = _IUserService.GetDepartmentId(model.DepartmentName);
-                        if (dpt != null)
-                        {
-                            details.DepartmentID = dpt.DepartmentID;
-                        }
-                        else {
-                            details.DepartmentID = 14;
-                        }
-                       
-                    }
-                    details.RequisitionID = model.RequisitionID;
-                    if (model.JoiningLocation != null)
-                    {
-                        details.JoiningLocation = model.JoiningLocation;
-                    }
-                    else {
-                        details.JoiningLocation = "Pune";
-                    }
-                   
-                   
-                    details.DesignationID = 2;
+
+                    details.DepartmentID = 1; /*Change Request - Adding default Department as first value in the list */
+                    //if (model.DepartmentName == "")
+                    //{
+                    //    details.DepartmentID = 14;
+                    //}
+                    //else {
+                    //    Master_Department dpt  = _IUserService.GetDepartmentId(model.DepartmentName);
+                    //    if (dpt != null)
+                    //    {
+                    //        details.DepartmentID = dpt.DepartmentID;
+                    //    }
+                    //    else {
+                    //        details.DepartmentID = 14;
+                    //    }
+
+                    //}
+
+
+                    //details.RequisitionID = model.RequisitionID; /*Change Request - Removing unwanted  details while adding user*/
+                    //if (model.JoiningLocation != null)
+                    //{
+                    //    details.JoiningLocation = model.JoiningLocation;
+                    //}
+                    //else {
+                    //    details.JoiningLocation = "Pune";
+                    //}
+
+                    details.JoiningLocation = "Pune";   /*Change Request - Adding default Designation as first value in the list */
+
+                    
+                    details.DesignationID = 1; /*Change Request - Adding default Designation as first value in the list */
                     details.RoleID = 16; 
-                    details.ActivatedDate = DateTime.Now;
-                    details.CreatedBy = "";
+
+                    //details.ActivatedDate = DateTime.Now; /*Change Request - Removing unwanted  details while adding user*/
+
+                    details.CreatedBy = userName; /*Change Request - Added created by as username for logged in user */
                     details.CreatedDate = DateTime.Now;
                     details.IsSubmitted = false;
                     details.IsActive = 0;
@@ -2829,7 +2846,7 @@ namespace HR_Web.Controllers
             .Select(x => new OfferCandidateModel()
             {
                 EmployeeName = x.FirstName + " " + x.LastName,
-                ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))),
+                ShortDOB = (x.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))) : string.Empty,//convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))),
                 EmailAddress = x.Email,
                 UserID = x.UserID
             })
@@ -2884,7 +2901,7 @@ namespace HR_Web.Controllers
             .Select(x => new OfferCandidateModel()
             {
                 EmployeeName = x.FirstName + " " + x.LastName,
-                ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))),
+                ShortDOB = (x.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))) :string.Empty, //convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))),
                 EmailAddress = x.Email,
                 UserID = x.UserID
             })
@@ -2917,7 +2934,7 @@ namespace HR_Web.Controllers
             ModelList = EmployeeList
             .Select(x => new AddEmployeeModelList()
             {
-                DOB = SessionManager.DecryptData(x.DOB),
+                DOB = (x.DOB != null) ? SessionManager.DecryptData(x.DOB) : string.Empty,//SessionManager.DecryptData(x.DOB),
                 Email = SessionManager.DecryptData(x.Email),
                 EmpName = x.EmployeeName,
                 EmpNo = x.EmpNo,
@@ -2951,7 +2968,7 @@ namespace HR_Web.Controllers
             ModelList = EmployeeList
             .Select(x => new AddEmployeeModelList()
             {
-                DOB = SessionManager.DecryptData(x.DOB),
+                DOB = (x.DOB != null) ? SessionManager.DecryptData(x.DOB) : string.Empty,//SessionManager.DecryptData(x.DOB),
                 Email = SessionManager.DecryptData(x.Email),
                 EmpName = x.EmployeeName,
                 EmpNo = x.EmpNo,
@@ -3017,7 +3034,7 @@ namespace HR_Web.Controllers
             ModelList = EmployeeList
             .Select(x => new AddEmployeeModelList()
             {
-                DOB = SessionManager.DecryptData(x.DOB),
+                DOB = (x.DOB != null) ? SessionManager.DecryptData(x.DOB) : string.Empty,//SessionManager.DecryptData(x.DOB),
                 Email = SessionManager.DecryptData(x.Email),
                 EmpName = x.EmployeeName,
                 EmpNo = x.EmpNo,
@@ -3049,7 +3066,7 @@ namespace HR_Web.Controllers
             ModelList = EmployeeList
             .Select(x => new AddEmployeeModelList()
             {
-                DOB = SessionManager.DecryptData(x.DOB),
+                DOB = (x.DOB != null) ? SessionManager.DecryptData(x.DOB) : string.Empty,//SessionManager.DecryptData(x.DOB),
                 Email = SessionManager.DecryptData(x.Email),
                 EmpName = x.EmployeeName,
                 EmpNo = x.EmpNo,
@@ -3103,7 +3120,7 @@ namespace HR_Web.Controllers
                 LoginDetail data = list.Where(x => x.UserID == userID).FirstOrDefault();
                 if (list != null)
                 {
-                    Model.DOB = Convert.ToDateTime(SessionManager.DecryptData(data.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+                    Model.DOB = (data.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(data.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;//Convert.ToDateTime(SessionManager.DecryptData(data.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
                     Model.EmpName = data.FirstName + " " + data.LastName;
                     Model.JoiningDate = convertDateToShort(data.JoiningDate);
                     Model.UserID = userID;
@@ -3117,7 +3134,7 @@ namespace HR_Web.Controllers
                 //Executed when employee is edited from employee details page
                 var employeeList = _IEmployeeService.GetAll(null, null, "").ToList();
                 EmployeeMaster employeeData = employeeList.Where(x => x.Id == Convert.ToInt32(userID)).FirstOrDefault();
-                Model.DOB = Convert.ToDateTime(SessionManager.DecryptData(employeeData.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+                Model.DOB = (employeeData.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(employeeData.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;//Convert.ToDateTime(SessionManager.DecryptData(employeeData.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
                 Model.EmpName = employeeData.EmployeeName;
 
                 if (employeeData.JoiningDate != new DateTime())
@@ -3202,7 +3219,7 @@ namespace HR_Web.Controllers
             EmployeeMaster data = list.Where(x => x.Id == ID).FirstOrDefault();
             if (data != null)
             {
-                Model.DOB = Convert.ToDateTime(SessionManager.DecryptData(data.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+                Model.DOB = (data.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(data.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;//Convert.ToDateTime(SessionManager.DecryptData(data.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
                 Model.EmpName = data.EmployeeName;
                 Model.JoiningDate = data.JoiningDate.HasValue ? Convert.ToString(data.JoiningDate.Value.Date.ToShortDateString()) : null;
                 Model.EmpNo = data.EmpNo;
@@ -3819,7 +3836,7 @@ namespace HR_Web.Controllers
                 EmployeeName = EmployeeList.EmployeeName,
                 EmpNo = EmployeeList.EmpNo,
                 Email = SessionManager.DecryptData(EmployeeList.Email),
-                DOB = SessionManager.DecryptData(EmployeeList.DOB),
+                DOB = (EmployeeList.DOB != null) ? SessionManager.DecryptData(EmployeeList.DOB) : string.Empty,//SessionManager.DecryptData(EmployeeList.DOB),
                 JoiningDate = convertDateToShort(EmployeeList.JoiningDate)
             }, JsonRequestBehavior.AllowGet);
         }
@@ -3830,7 +3847,7 @@ namespace HR_Web.Controllers
             AddEmployeeModel Model = new AddEmployeeModel();
             var employeeList = _IEmployeeService.GetAll(null, null, "").ToList();
             EmployeeMaster employeeData = employeeList.Where(x => x.UserId == UserId).FirstOrDefault();
-            Model.DOB = Convert.ToDateTime(SessionManager.DecryptData(employeeData.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+            Model.DOB = (employeeData.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(employeeData.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;//Convert.ToDateTime(SessionManager.DecryptData(employeeData.DOB)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
             Model.EmpName = employeeData.EmployeeName;
             Model.LeavingDate = convertDateToShort(employeeData.LeavingDate);
             if (employeeData.JoiningDate != new DateTime())
@@ -4059,7 +4076,7 @@ namespace HR_Web.Controllers
             ModelList = EmployeeList
             .Select(x => new AddEmployeeModelList()
             {
-                DOB = SessionManager.DecryptData(x.DOB),
+                DOB = (x.DOB != null) ? SessionManager.DecryptData(x.DOB) : string.Empty,//SessionManager.DecryptData(x.DOB),
                 Email = SessionManager.DecryptData(x.Email),
                 EmpName = x.EmployeeName,
                 EmpNo = x.EmpNo,
@@ -4257,7 +4274,7 @@ namespace HR_Web.Controllers
                 employeePersonalDetails.LastName = _Logindetails.LastName;
                 employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
                 employeePersonalDetails.EmpEmail = _Logindetails.Email;
-                employeePersonalDetails.DateofBirth = SessionManager.DecryptData(_Logindetails.DOB);
+                employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty; //SessionManager.DecryptData(_Logindetails.DOB);
                 employeePersonalDetails.CountryCode = _Logindetails.CountryCode;
 
             }
@@ -4582,9 +4599,9 @@ namespace HR_Web.Controllers
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     Email = item.Email,
-                    DOB = Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
+                    DOB = (item.DOB != null) ? Convert.ToDateTime(SessionManager.DecryptData(item.DOB)) : (DateTime?)null, //Convert.ToDateTime(SessionManager.DecryptData(item.DOB)),
                     JoiningDate = item.JoiningDate,
-                    ShortDOB = convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
+                    ShortDOB = (item.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))) : string.Empty, //convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(item.DOB))),
                     ShortJoiningDate = convertDateToShort(item.JoiningDate),
                     UserId = item.UserID,
                     IsOnboarded = Employee == null ? false : true,

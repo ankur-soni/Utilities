@@ -256,6 +256,8 @@
     <Content Include="Content\NewUI\fonts\Simple-Line-Icons.svg" />
     <Content Include="Content\NewUI\images\4X-login-bg.jpg" />
     <Content Include="Content\NewUI\images\6.jpg" />
+    <Content Include="Content\NewUI\images\cmmi3.png" />
+    <Content Include="Content\NewUI\images\cmmi3_logo.png" />
     <Content Include="Content\NewUI\images\favicon.ico" />
     <Content Include="Content\NewUI\images\favicon.png" />
     <Content Include="Content\NewUI\images\glory.jpg" />
@@ -306,6 +308,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Images\cmmi3.png" />
     <Content Include="Images\excel.png" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\filetype_pdf.png" />

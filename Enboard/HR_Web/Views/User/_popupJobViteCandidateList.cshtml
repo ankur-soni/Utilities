@@ -10,25 +10,51 @@
     var upArrowPath = @Url.Content(upArrow);
 }
 
+<style type="text/css">
+
+
+table.scroll tbody,
+table.scroll thead { display: block; }
+
+
+table.scroll tbody {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+</style>
+
 <div class="box-body table-responsive">
-    <table id="gridJobvitedetails" class="table table-bordered table-striped dataTable tablesorter" aria-describedby="example1_info">
+        <div class="form-group tl-search-grp">
+            <table style="width: 100%;" class="custom-table">
+                <tr>
+                    <td>
+                        <input class="form-control" id="txtSearch" type="text" placeholder="Search">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
+                    </td>
+                </tr>
+            </table>
+    </div>
+
+    <table id="gridJobvitedetails" class="table table-bordered table-striped dataTable tablesorter scroll" aria-describedby="example1_info" style="width:100%;">
         <thead style="background-color:#f8f8f8;color:#000;">
             <tr>
-                <th style="border-bottom-width: 3px;min-width:130px " data-sort='disabled' hidden="hidden"> Firstname </th>
+                <th style="border-bottom-width: 3px;" data-sort='disabled' hidden="hidden"> Firstname </th>
                 <th style="border-bottom-width: 3px;" data-sort='disabled' hidden="hidden"> Lastname </th>
-                <th style="border-bottom-width: 3px;" data-sort='disabled'> Select </th>
-                <th style="border-bottom-width: 3px;min-width:230px ">
-                    Name
+                <th style="border-bottom-width: 3px;min-width:50px;" data-sort='disabled'> Select </th>
+                <th style="border-bottom-width: 3px;min-width:290px;"> Name </th>
 
-                </th>
-
-                <th style="border-bottom-width: 3px;" data-sort='disabled'> Email Address </th>
+                <th style="border-bottom-width: 3px; min-width:420px;" data-sort='disabled'> Email Address </th>
                 @*//  <th style="border-bottom-width: 3px;" data-sort='disabled'> CountryCode </th>
                     <th style="border-bottom-width: 3px;min-width:130px" data-sort='disabled'> Contact Number </th>*@
                 @*<th style="border-bottom-width: 3px;">Offered Designation</th>*@
-                <th style="border-bottom-width: 3px;min-width:300px" data-sort='disabled'> Joining Location </th>
+                @*Change request - Showing limited columns in grid*@
+                @*<th style="border-bottom-width: 3px;min-width:300px" data-sort='disabled'> Joining Location </th>
                 <th style="border-bottom-width: 3px;" data-sort='disabled'> Requisition Id </th>
-                <th style="border-bottom-width: 3px; min-width:300px" data-sort='disabled'> Department </th>
+                <th style="border-bottom-width: 3px; min-width:300px" data-sort='disabled'> Department </th>*@
+                
                 @*<th style="border-bottom-width: 3px;" data-sort='disabled'> Recruiters </th>*@
 
 
@@ -52,18 +78,18 @@
                             @Html.Raw(user.LastName)
 
                         </td>
-                        <td style="border-bottom-width: 3px;" class="class1">
+                        <td style="border-bottom-width: 3px; min-width:50px;" class="class1">
                             <input type="checkbox" name="Modules" value="@user.IsCheck" />
 
                         </td>
-                        <td align="left" class="className"><a data-target="#">@Html.Raw(strUserFullName)</a></td>
+                        <td align="left" class="className" style="border-bottom-width: 3px; min-width:290px;"><a data-target="#">@Html.Raw(strUserFullName)</a></td>
 
-                        <td align="left" class="classEmail">@Html.Raw(user.Email)</td>
+                        <td align="left" class="classEmail" style="border-bottom-width: 3px; min-width:420px;">@Html.Raw(user.Email)</td>
                         @*<td class="class9">@Html.Raw(user.CountryCode)</td>
                             <td class="classContactNo">@Html.Raw(user.ContactNumber)</td>*@
-                        <td align="left" class="classJoine">@Html.Raw(user.JoiningLocation)</td>
+                        @*<td align="left" class="classJoine">@Html.Raw(user.JoiningLocation)</td>
                         <td align="left" class="class10">@Html.Raw(user.RequisitionID)</td>
-                        <td align="left" class="class7">@Html.Raw(user.DepartmentName)</td>
+                        <td align="left" class="class7">@Html.Raw(user.DepartmentName)</td>*@
 
                         @*<td class="class8">@Html.Raw(user.RecruiterName)</td>*@
 
@@ -82,7 +108,7 @@
 
     </table>
 </div>
-<div id="contentPager">
+@*<div id="contentPager">
     @if (Model.PageCount > 1)
     {
         @Html.PagedListPager(Model, Page => Url.Action("SyncCandidates", new { Page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.SearchString }))
@@ -92,7 +118,157 @@
         @Html.Hidden("hdnIndex", index)
     }
 
-</div>
+</div>*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //$("#txtSearch").keyup(function () {
+        //    var value = $(this).val().toUpperCase();
+        //    var $rows = $("table tr");
+
+        //    if(value === ''){
+        //        $rows.show();
+        //        return false;
+        //    }
+
+        //    $rows.each(function(index) {
+        //        if (index !== 0) {
+
+        //            $row = $(this);
+
+        //            var column1 = $row.find("td:first a").html().toUpperCase();
+        //            var column2 = $row.find("td").eq(1).text().toUpperCase();
+
+        //            if ((column1.indexOf(value) > -1) || (column2.indexOf(value) > -1)) {
+        //                $row.show();
+        //            }
+        //            else {
+        //                $row.hide();
+        //            }
+        //        }
+        //    });
+        //});​
+
+    });
+
+
+    $('#txtSearch').keyup(function () {
+    //    debugger;
+    //    var searchText = $("#txtSearch").val();//$(this).val().toLowerCase();
+    //    $.each($("#table tbody tr"), function () {
+    //        if ($(this).text().toLowerCase().indexOf(searchText) === -1)
+    //            $(this).hide();
+    //        else
+    //            $(this).show();
+    //    });
+    //});
+    //function resetSearch() {
+    //    // clear the textbox
+    //    $('#txtSearch').val('');
+    //    // show all table rows
+    //    $('#gridJobvitedetails tr').show();
+    //    // remove any no records rows
+    //    $('.norecords').remove();
+    //    // remove the cancel search image
+    //    //$('#imgSearch').hide();
+    //    // make sure we re-focus on the textbox for usability
+    //    $('#txtSearch').focus();
+    //}
+
+    //// execute the search
+    //$('#txtSearch').keyup(function () {
+       
+    //    // only search when there are 3 or more characters in the textbox
+    //    if ($('#txtSearch').val().length > 2) {
+    //        debugger;
+    //        // hide all rows
+    //        $('#gridJobvitedetails tr').hide();
+    //        // show the header row
+    //        $('#gridJobvitedetails tr:first').show();
+    //        // show the matching rows (using the containsNoCase from Rick Strahl)
+    //        $('#gridJobvitedetails tr td:containsNoCase(\'' + $('#txtSearch').val() + '\')').parent().show();
+    //        // show the cancel search image
+    //        //$('#imgSearch').show();
+    //    }
+    //    else if ($('#txtSearch').val().length == 0) {
+    //        // if the user removed all of the text, reset the search
+    //        resetSearch();
+    //    }
+
+    //    // if there were no matching rows, tell the user
+    //    if ($('#gridJobvitedetails tr:visible').length == 1) {
+    //        // remove the norecords row if it already exists
+    //        $('.norecords').remove();
+    //        // add the norecords row
+    //        $('#gridJobvitedetails').append('<tr class="norecords"><td colspan="5" class="Normal">No records were found</td></tr>');
+        //    }
+   
+        var value = $(this).val().toUpperCase();
+        var $rows = $("#gridJobvitedetails tr");
+
+        if (value === '') {
+            $rows.show();
+            return false;
+        }
+
+        $rows.each(function (index) {
+            if (index !== 0) {
+
+                $row = $(this);
+
+                var column1 = $row.find("td").text().toUpperCase();
+                var column2 = $row.find("td").eq(1).text().toUpperCase();
+
+                if ((column1.indexOf(value) > -1) || (column2.indexOf(value) > -1)) {
+                    $row.show();
+                }
+                else {
+                    $row.hide();
+                }
+            }
+        });
+    });
+
+
+    //$('#focusedInputJV').bind('input propertychange', function () {
+    //    var regex = /<[^>]*>|<|>|/g;
+    //    GetUserList($('#focusedInputJV').val().toLowerCase().replace(regex, "").trim());
+    //});
+
+    //function viewAll() {
+    //    GetUserList("");
+    //    $("#focusedInputJV").val("");
+    //}
+
+    //function GetUserList(serchText) {
+    //    $.ajax({
+    //        type: "GET",
+    //        async: false,
+    //        url: '/User/GetUserList/',
+    //        data: {
+    //            searchString: serchText,
+    //        },
+    //        contentType: "application/json",
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            alert(textStatus + " " + errorThrown);
+    //            return false;
+    //        },
+    //        success: function (data) {
+    //            if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+    //                HandleSessionTimeout();
+    //                return;
+    //            }
+    //            $("#divUserList").html('');
+    //            $("#divUserList").html(data);
+    //        }
+    //    });
+    //}
+
+</script>
+
+
 <script>
         var isUserExists;
         $(document).on("click", "#contentPager a", function () {
@@ -129,11 +305,11 @@
                 obj.FirstName = jobViteCandidateList[i].find(".class1").html();
                 obj.LastName = jobViteCandidateList[i].find(".class2").html();
                 obj.Email = jobViteCandidateList[i].find(".classEmail").html();
-             //   obj.ContactNumber = jobViteCandidateList[i].find(".classContactNo").html();
-                obj.JoiningLocation = jobViteCandidateList[i].find(".classJoine").html();
-                obj.RequisitionID = jobViteCandidateList[i].find(".class10").html();
-                obj.DepartmentName = jobViteCandidateList[i].find(".class7").html();
-             //   obj.CountryCode = jobViteCandidateList[i].find(".class9").html();
+              //obj.ContactNumber = jobViteCandidateList[i].find(".classContactNo").html();
+              //obj.JoiningLocation = jobViteCandidateList[i].find(".classJoine").html();
+              //obj.RequisitionID = jobViteCandidateList[i].find(".class10").html();
+              //obj.DepartmentName = jobViteCandidateList[i].find(".class7").html();
+              //obj.CountryCode = jobViteCandidateList[i].find(".class9").html();
                 jobViteResponseList.push(obj);
             }
 
