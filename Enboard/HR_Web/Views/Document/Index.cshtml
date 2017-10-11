@@ -46,11 +46,12 @@
                                     @Html.Partial("_DocumentEmploymentDetails")
                                 </div>
                             </div>
-                            <div class="row btnRow">
+                            @*Change request - Merged save and next code*@
+                            @*<div class="row btnRow">
                                 <div class="col-md-12">
                                     <a href="#" onclick="SaveClick();" class="btn-save">Save </a>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                        
                     </div>
@@ -64,7 +65,7 @@
     </div>
     <div class="row btnRow finalDetailsNext">
         <div class="col-md-12">
-            <a href="#" onclick="NextClick();" class="btn-save mx-1">Next </a>
+            <a href="#" onclick="NextClick();" class="btn-save mx-1">Next</a>
         </div>
     </div>
 </div>
@@ -116,7 +117,9 @@
             $('#documentStatusImageModal').show();
         }
     }
-    function SaveClick() {
+    @*Change request - Merged save and next code*@
+    @*function SaveClick() {
+
         var validation = true;
 
         if ($("#idProof").hasClass('active')) {
@@ -186,22 +189,27 @@
             }
         }
 
-
-
         return validation;
 
 
-    }
+    }*@
+    @*Change request - Merged save and next code*@
     function NextClick() {
+       
         var validation = true;
 
-        var idProofMand = $("#idProof .docDescription span.mand").length
-        var addressProofMand = $("#adressProof .docDescription span.mand").length
-
+        var idProofMand = $("#idProof .docDescription span.mand").length;
+       
         if (idProofMand < 1) {
             validation = false;
         }
 
+        $("#adressProof .docList").each(function () {
+            var uploaddoc = $(this).closest('ul').find('span.uploadName').length;
+            if (uploaddoc == 0) {
+                validation = false;
+            }
+        });
 
         $("#educational .docName").each(function () {
             var uploaddoc = $(this).closest('li').children('ul.docDescription').find('span.mand').length;
