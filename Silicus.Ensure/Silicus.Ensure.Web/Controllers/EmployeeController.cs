@@ -85,9 +85,12 @@ namespace Silicus.Ensure.Web.Controllers
         [CustomAuthorize("Admin", "Recruiter")]
         public ActionResult GetEmployeeassigedforTestSuits(int suitId)
         {
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId && ts.StatusId == 2).Select(ts => ts.EmployeeId).Distinct().ToList<int>();
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId && ts.StatusId == 2).ToList();
+            var empList = TestSuits.Select(ts => ts.EmployeeId).Distinct().ToList<int>();
+            var reviewers = TestSuits.Count > 0 ? TestSuits.FirstOrDefault().AssignedReviewers : "";
 
-            return Json(TestSuits, JsonRequestBehavior.AllowGet);
+
+            return Json(new { employeeList= empList, reviewer= reviewers }, JsonRequestBehavior.AllowGet);
         }
 
         private int GetUtilityId()
@@ -135,21 +138,37 @@ namespace Silicus.Ensure.Web.Controllers
         private List<SelectListItem> GetUserDetails()
         {
             var userlist = _containerUserService.GetAllUsers();
-            var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
+            var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist).Distinct();
             var UtilityId = GetUtilityId();
             var userRoles = _utilityUserRoleService.GetAllUserRolesForUtility(UtilityId);
+
+            //var userWithRoles = (from userinRoles in userRoles
+            //                     join allUsers in userlistViewModel
+            //                     on userinRoles.UserId equals allUsers.UserId
+            //                     where userinRoles.IsActive && userinRoles.UtilityId == UtilityId
+            //                     select new SelectListItem
+            //                     {
+            //                         Text = allUsers.FullName,
+            //                         Value = allUsers.UserId.ToString()
+            //                     }).OrderBy(t => t.Text).Distinct<SelectListItem>().ToList();
 
             var userWithRoles = (from userinRoles in userRoles
                                  join allUsers in userlistViewModel
                                  on userinRoles.UserId equals allUsers.UserId
                                  where userinRoles.IsActive && userinRoles.UtilityId == UtilityId
-                                 select new SelectListItem
+                                 select new
                                  {
-                                     Text = allUsers.FullName,
-                                     Value = allUsers.UserId.ToString()
+                                     Name = allUsers.FullName,
+                                     Id = allUsers.UserId.ToString()
+                                 }).ToList();
+
+            var userList = userWithRoles.Distinct().Select(x=> new SelectListItem
+                                 {
+                                     Text = x.Name,
+                                     Value = x.Id
                                  }).OrderBy(t => t.Text).Distinct<SelectListItem>().ToList();
 
-            return userWithRoles;
+            return userList;
         }
 
         public ActionResult GetEmployeeTestSuits([DataSourceRequest] DataSourceRequest request)
@@ -322,7 +341,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [HttpPost]
         [CustomAuthorize("Admin", "Recruiter")]
-        public ActionResult AssignEmployeeSuite(int SuiteId, List<int> UserList,int reviewerId, int IsReAssign = 0)
+        public ActionResult AssignEmployeeSuite(int SuiteId, List<int> UserList,string reviewerId, int IsReAssign = 0)
         {
             // string mailsubject = "";
             //var updateCurrentUsers = _userService.GetUserById(UserId);
@@ -351,7 +370,7 @@ namespace Silicus.Ensure.Web.Controllers
                 userTestSuite.EmployeeId = UserId;
                 userTestSuite.TestSuiteId = SuiteId;
                 userTestSuite.CandidateID = "0";
-                userTestSuite.ReviewerId = reviewerId;
+                userTestSuite.AssignedReviewers = reviewerId;
                 userTestSuite.StatusId = (int)CandidateStatus.TestAssigned;
                 _testSuiteService.AssignEmployeeSuite(userTestSuite, testSuiteDetails);
             }

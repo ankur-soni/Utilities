@@ -6331,3 +6331,12 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+
+pre {
+     white-space: pre-wrap!important;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap!important;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap!important;      /* Opera 4-6 */
+    white-space: -o-pre-wrap!important;    /* Opera 7 */
+     word-break: keep-all!important;  
+}

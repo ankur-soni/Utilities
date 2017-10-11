@@ -49,7 +49,8 @@ namespace Silicus.Ensure.Web.Models.Employee
 
         public string TestSuitName { get; set; }
 
-        public string ReviewerName { get; set; }
+        public string AssignedReviewerName { get; set; }
+        public string ActualReviewerName { get; set; }
 
         public DateTime? ReviewDate { get; set; }
         public DateTime? AttemptDate { get; set; }

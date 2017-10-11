@@ -1144,6 +1144,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             var userEmailId = User.Identity.Name;
             var Currentuser = _containerUserService.FindUserByEmail(userEmailId);
+            
 
             //var utilityId = GetUtilityId();
             //var roleDetails = _roleService.GetRoleByRoleName("Admin");
@@ -1151,7 +1152,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
             if (! roles.Any(r=>r == "Admin"))
-                TestSuits = TestSuits.Where(t => t.ReviewerId.Value.ToString() == User.Identity.GetUserId()).ToList();
+                TestSuits = TestSuits.Where(t => t.AssignedReviewers.Split(',').Contains(Currentuser.ID.ToString())).ToList();
 
             var TestResults = new List<EmployeeTestResultViewModel>();
 
@@ -1172,9 +1173,23 @@ namespace Silicus.Ensure.Web.Controllers
                 currentTs.AttemptDate = tests.AttemptDate;
                 currentTs.StatusId = tests.StatusId;
                 currentTs.ReviewDate = tests.ReviewDate;
-                var Reviweruser = userlist.Where(u => u.ID == tests.ReviewerId).FirstOrDefault();
-                if (Reviweruser != null)
-                    currentTs.ReviewerName = Reviweruser.FirstName + " " + Reviweruser.LastName;
+                var Reviwerusers = userlist.Where(u => tests.AssignedReviewers.Split(',').Contains(u.ID.ToString())).ToList();
+                var counter = 1;
+
+                var rUser = userlist.Where(u=>u.ID == tests.ReviewerId).FirstOrDefault();
+                if (rUser != null)
+                    currentTs.ActualReviewerName = rUser.FirstName + " " + rUser.LastName;
+
+                foreach (var Reviweruser in Reviwerusers)
+                {
+                    currentTs.AssignedReviewerName = currentTs.AssignedReviewerName + Reviweruser.FirstName + " " + Reviweruser.LastName;
+
+                    if(counter < Reviwerusers.Count)
+                    {
+                        currentTs.AssignedReviewerName = currentTs.AssignedReviewerName + "<br>Or<br>";
+                        counter++;
+                    }
+                }
                  
 
                 if (tests.EmployeeId > 0)
@@ -1292,6 +1307,8 @@ namespace Silicus.Ensure.Web.Controllers
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "PUT";
 
+            var workflowStatus = statusId == 5 ? ConfigurationManager.AppSettings["JobViteCandidateSelectStatus"] : ConfigurationManager.AppSettings["JobViteCandidateRejectStatus"];
+
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 string json = new JavaScriptSerializer().Serialize(new
@@ -1300,7 +1317,7 @@ namespace Silicus.Ensure.Web.Controllers
                         application = new
                         {
                             eId = JobViteID,
-                            workflowState = "New"
+                            workflowState = workflowStatus
                         }
                     },
                    

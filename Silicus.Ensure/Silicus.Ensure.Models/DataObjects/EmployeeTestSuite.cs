@@ -16,6 +16,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int ObjectiveCount { get; set; }
 
+        public string AssignedReviewers { get; set; }
+
         public int? ReviewerId { get; set; }
 
         public DateTime? ReviewDate { get; set; }

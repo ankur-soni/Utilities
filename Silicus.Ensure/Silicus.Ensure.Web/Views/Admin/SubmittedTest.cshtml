@@ -66,10 +66,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                       Evaluation for
+                                        Evaluation for
                                     </div>
                                     <div class="col-md-6">
-                                       @((int)Session["ReviewType"] == 1? "Internal Employee" : "External Candidate")
+                                        @((int)Session["ReviewType"] == 1 ? "Internal Employee" : "External Candidate")
                                     </div>
                                 </div>
                             </div>
@@ -96,209 +96,229 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset>
-                    <legend>Objective question result</legend>
-                    <div class="row">
-                        <div class="col-md-12 M-B20 row">
-                            <div class="col-sm-3">
-                                Objective question Total Marks
+
+                <div class="portlet box green">
+                    <div class="portlet-title">
+                        <div class="caption">Practical Question Set</div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="form-body">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-md-12 M-B20 row">
+                                        <div class="col-sm-3">
+                                            Objective question Total Marks
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <input class="form-control valid" data-val="true"
+                                                   id="ObjectiveQuestionMarks" name="ObjectiveQuestionMarks" type="text"
+                                                   value="@Model.ObjectiveQuestionMarks" tyle="width:100%;" readonly="readonly" />
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-3">
+                                            Objective question Obtained marks
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <input class="form-control valid" data-val="true"
+                                                   id="ObjectiveQuestionResult" name="ObjectiveQuestionResult" type="text"
+                                                   value="@Model.ObjectiveQuestionResult" tyle="width:100%;" readonly="readonly" />
+
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div class="fluid mt20">
+                                <fieldset>
+                                    <legend class="M-B50">Objective question set</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Question description</th>
+                                                        <th>Submitted answer</th>
+                                                        <th>Correct answer</th>
+                                                        <th>Result</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var oQuestion in Model.objectiveQuestionList)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <pre class="prettyprint lang-cs">@oQuestion.QuestionDescription</pre>
+                                                            </td>
+                                                            <td>@oQuestion.SubmittedAnswer</td>
+                                                            <td>@oQuestion.CorrectAnswer</td>
+                                                            <td>@oQuestion.Result</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
-                            <div class="col-sm-1">
-                                <input class="form-control valid" data-val="true"
-                                       id="ObjectiveQuestionMarks" name="ObjectiveQuestionMarks" type="text"
-                                       value="@Model.ObjectiveQuestionMarks" tyle="width:100%;" readonly="readonly" />
-                            </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-3">
-                                Objective question Obtained marks
-                            </div>
-                            <div class="col-sm-1">
-                                <input class="form-control valid" data-val="true"
-                                       id="ObjectiveQuestionResult" name="ObjectiveQuestionResult" type="text"
-                                       value="@Model.ObjectiveQuestionResult" tyle="width:100%;" readonly="readonly" />
-                                
-                            </div>
-                            <div class="col-sm-2"></div>
                         </div>
                     </div>
-                </fieldset>
-                <div class="fluid mt20">
-                    <fieldset>
-                        <legend class="M-B50">Objective question set</legend>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Question description</th>
-                                            <th>Submitted answer</th>
-                                            <th>Correct answer</th>
-                                            <th>Result</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var oQuestion in Model.objectiveQuestionList)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    <pre class="prettyprint lang-cs">@oQuestion.QuestionDescription</pre>
-                                                </td>
-                                                <td>@oQuestion.SubmittedAnswer</td>
-                                                <td>@oQuestion.CorrectAnswer</td>
-                                                <td>@oQuestion.Result</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </fieldset>
                 </div>
                 <div id="pracQuestion" class="fluid mt20">
                     <fieldset>
-                        <legend>Practical question set</legend>
-                        <table class="table table-bordered">
-                            @foreach (var pQuestion in Model.practicalQuestionList)
-                            {
-                                i = i + 1;
-                                <tr>
-                                    <td>Practical question @i:</td>
-                                    <td>
-                                        <pre class="prettyprint lang-cs">@pQuestion.QuestionDescription</pre>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Correct answer</td>
-                                    <td>
-                                        <pre class="prettyprint lang-cs"><span id="@(pQuestion.CorrectAnwer + i)" name="@(pQuestion.CorrectAnwer + i)">@pQuestion.CorrectAnwer</span></pre>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Submitted answer</td>
-                                    <td>
-                                        <pre class="prettyprint lang-cs"><span id="@(pQuestion.SubmittedAnswer + i)" name="@(pQuestion.SubmittedAnswer + i)">@pQuestion.SubmittedAnswer</span></pre>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Maximum Marks</td>
-                                    <td>
-                                        <input class="form-control valid" data-val="true"
-                                               id="@(" weightage" + i)" name="@(" weightage" + i)" type="text"
-                                               value="@pQuestion.Weightage" aria-required="true" style="width:30%;" readonly="readonly"
-                                               aria-invalid="false" aria-describedby="Emarks-error">
-                                    </td>
-                                </tr>
-                                <tr class="borderBottom" style="height: 70px;">
-                                    <td>Evaluated marks</td>
-                                    <td>
-                                        <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
-                                               id="@("Emarks"+i)" name="@("Emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
-                                               value="@pQuestion.EvaluatedMark" aria-required="true" style="width:30%"
-                                               aria-invalid="false" aria-describedby="Emarks-error">
-                                    </td>
-                                </tr>
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">Objective question result</div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="form-body">
+                                    <table class="table table-bordered">
+                                        @foreach (var pQuestion in Model.practicalQuestionList)
+                                        {
+                                            i = i + 1;
+                                            <tr>
+                                                <td>Practical question @i:</td>
+                                                <td>
+                                                    <pre class="prettyprint lang-cs">@pQuestion.QuestionDescription</pre>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Correct answer</td>
+                                                <td>
+                                                    <pre class="prettyprint lang-cs"><span id="@(pQuestion.CorrectAnwer + i)" name="@(pQuestion.CorrectAnwer + i)">@pQuestion.CorrectAnwer</span></pre>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Submitted answer</td>
+                                                <td>
+                                                    <pre class="prettyprint lang-cs"><span id="@(pQuestion.SubmittedAnswer + i)" name="@(pQuestion.SubmittedAnswer + i)">@pQuestion.SubmittedAnswer</span></pre>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Maximum Marks</td>
+                                                <td>
+                                                    <input class="form-control valid" data-val="true"
+                                                           id="@(" weightage" + i)" name="@(" weightage" + i)" type="text"
+                                                           value="@pQuestion.Weightage" aria-required="true" style="width:30%;" readonly="readonly"
+                                                           aria-invalid="false" aria-describedby="Emarks-error">
+                                                </td>
+                                            </tr>
+                                            <tr class="borderBottom" style="height: 70px;">
+                                                <td>Evaluated marks</td>
+                                                <td>
+                                                    <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
+                                                           id="@("Emarks"+i)" name="@("Emarks"+i)" type="number" onchange="EvaluateTotalResult(this);"
+                                                           value="@pQuestion.EvaluatedMark" aria-required="true" style="width:30%" max="@pQuestion.Weightage" min="0"
+                                                           aria-invalid="false" aria-describedby="Emarks-error">
+                                                </td>
+                                            </tr>
 
-                            }
-                        </table>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </fieldset>
                 </div>
-                <div id="eval" class="fluid mt20">
-                    <fieldset>
-                        <legend>Evaluation result:</legend>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="col-sm-2">Total marks obtained</td>
-                                <td>
-                                    <input class="form-control"
-                                           id="TotalMarksObtained" name="TotalMarksObtained" type="text"
-                                           value="@Model.TotalMarksObtained" style="width:30%;" readonly="readonly" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Evaluation Feedback</td>
-                                <td>
-                                    <textarea cols="20" id="EvaluatedFeedBack" name="EvaluatedFeedBack"
-                                              rows="5" data-role="editor" autocomplete="off" style="width:87%;color: #333;" class="k-content k-raw-content">@Model.EvaluatedFeedBack</textarea>
-                                    @* @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)*@
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td>
-                                    @if (Model.Status == ((int)CandidateStatus.UnderEvaluation).ToString() || Model.Status == ((int)CandidateStatus.TestSubmitted).ToString())
-                                    {
-                                        @(Html.Kendo().DropDownListFor(m => m.Status)
+                    <div id="eval" class="fluid mt20">
+                        <fieldset>
+                            <legend>Evaluation result:</legend>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="col-sm-2">Total marks obtained</td>
+                                    <td>
+                                        <input class="form-control"
+                                               id="TotalMarksObtained" name="TotalMarksObtained" type="text"
+                                               value="@Model.TotalMarksObtained" style="width:30%;" readonly="readonly" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Evaluation Feedback</td>
+                                    <td>
+                                        <textarea cols="20" id="EvaluatedFeedBack" name="EvaluatedFeedBack"
+                                                  rows="5" data-role="editor" autocomplete="off" style="width:87%;color: #333;" class="k-content k-raw-content">
+                                            @Model.EvaluatedFeedBack
+                                        </textarea>
+                                        @* @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)*@
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>
+                                        @if (Model.Status == ((int)CandidateStatus.UnderEvaluation).ToString() || Model.Status == ((int)CandidateStatus.TestSubmitted).ToString())
+                                        {
+                                            @(Html.Kendo().DropDownListFor(m => m.Status)
                                         .Name("Status")
                                          .OptionLabel("--Select--")
                                         .DataTextField("Text")
                                         .DataValueField("Value")
                                         .BindTo(new List<SelectListItem>
                                             () {
-                                           
+
                                             new SelectListItem(){
-                                            Text=CandidateStatus.Selected.ToString(),
+                                            Text= "Test Passed",
                                             Value=((int)CandidateStatus.Selected).ToString()
                                             },
                                             new SelectListItem(){
-                                            Text=CandidateStatus.Rejected.ToString(),
+                                            Text="Test Failed",
                                             Value=((int)CandidateStatus.Rejected).ToString()
                                             }
-                                            }).HtmlAttributes(new { style = "width: 100%" })
-                                        )
-                                        @Html.ValidationMessageFor(m => m.Status)
+                                            }).HtmlAttributes(new { style = "width: 200px;" })
+                                            )
+                                            @Html.ValidationMessageFor(m => m.Status)
 
-                                    }
-                                    else
-                                    {
-                                        if (Model.Status == ((int)CandidateStatus.Selected).ToString())
-                                        {
-                                            <span>Test Passed</span>
                                         }
-                                        if (Model.Status == ((int)CandidateStatus.Rejected).ToString())
+                                        else
                                         {
-                                            <span>Test Failed</span>
+                                            if (Model.Status == ((int)CandidateStatus.Selected).ToString())
+                                            {
+                                                <span>Test Passed</span>
+                                            }
+                                            if (Model.Status == ((int)CandidateStatus.Rejected).ToString())
+                                            {
+                                                <span>Test Failed</span>
+                                            }
                                         }
-                                    }
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-6 row">
-                                    <div class="col-md-6">
-                                        @Html.LabelFor(m => m.ReviewerName):
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 row">
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.ReviewerName):
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.DisplayFor(m => m.ReviewerName, new { @class = "form-control" })
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.DisplayFor(m => m.ReviewerName, new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="col-md-6">
-                                        @Html.LabelFor(m => m.ReviewDate):
-                                    </div>
-                                    <div class="col-md-6">
-                                        @Html.DisplayFor(m => m.ReviewDate, new { @class = "form-control" })
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.ReviewDate):
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.DisplayFor(m => m.ReviewDate, new { @class = "form-control" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="pull-right">
-                                    @(Html.Kendo().Button()
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="pull-right">
+                                        @(Html.Kendo().Button()
                                  .Name("btnCancel").Icon("cancel")
                                  .HtmlAttributes(new { type = "button" })
                                  .Events(e => e.Click("OnCancel"))
                                  .Content("Cancel"))
-                                   @if (Model.Status == ((int)CandidateStatus.UnderEvaluation).ToString() || Model.Status == ((int)CandidateStatus.TestSubmitted).ToString())
-                                   {
-                                    <input type="submit" style="width:70px;" value="Save" class="k-button k-button-icontext" id="btnSave" />
-                                   }
+                                        @if (Model.Status == ((int)CandidateStatus.UnderEvaluation).ToString() || Model.Status == ((int)CandidateStatus.TestSubmitted).ToString())
+                                        {
+                                            <input type="submit" style="width:70px;" value="Save" class="k-button k-button-icontext" id="btnSave" />
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </div>
+                        </fieldset>
+                    </div>
             }
         </div>
     </div>

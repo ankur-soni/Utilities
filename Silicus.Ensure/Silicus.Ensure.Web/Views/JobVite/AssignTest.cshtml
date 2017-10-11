@@ -111,6 +111,7 @@
                     @(Html.Kendo().DropDownListFor(m => m.TestSuiteId).Name("TestSuiteId")
   .DataTextField("TestSuiteName")
   .DataValueField("TestSuiteId")
+  .Filter("contains")
   .OptionLabel("--Select--")
   .DataSource(source => source
   .Custom()
@@ -144,25 +145,17 @@
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="form-group">
 
-                    @(Html.Kendo().DropDownListFor(m => m.ReviewerId).Name("ReviewerId")
-  .DataTextField("DisplayName")
-  .DataValueField("ID")
-  .OptionLabel("--Select--")
-  .DataSource(source => source
-  .Custom()
-  .Transport(transport => transport
-        .Read(read =>
-        {
-            read.Url("/Common/GetPanelDetails/");
-        })
-  )
-  //.Schema(schema => schema
-  //      .Data("Data")
-  //      .Total("Total")
-  //      .Errors("errors")
-  // )
-)
-
+                    @(Html.Kendo().MultiSelectFor(m => m.ReviewerId)
+          .DataTextField("DisplayName")
+          .DataValueField("ID")
+          .Placeholder("Select Reviewer...")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetPanelDetails", "Common");
+              });
+          })
                     )
                     @Html.ValidationMessageFor(m => m.ReviewerId)
 

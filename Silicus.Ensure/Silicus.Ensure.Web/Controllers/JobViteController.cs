@@ -201,7 +201,7 @@ namespace Silicus.Ensure.Web.Controllers
                 if (employeeTestSuit != null)
                 {
                     model.existingAssignedTest = employeeTestSuit.EmployeeTestSuiteId;
-                    model.ReviewerId = employeeTestSuit.ReviewerId.Value;
+                    model.ReviewerId = employeeTestSuit.AssignedReviewers.Split(',');
                     model.TestSuiteId = employeeTestSuit.TestSuiteId;
                 }
 
@@ -229,7 +229,7 @@ namespace Silicus.Ensure.Web.Controllers
             userTestSuite.EmployeeId = 0;
             userTestSuite.CandidateID = user.Id;
             userTestSuite.TestSuiteId = model.TestSuiteId;
-            userTestSuite.ReviewerId = model.ReviewerId;
+            userTestSuite.AssignedReviewers = String.Join(",", model.ReviewerId); 
             userTestSuite.StatusId = (int)CandidateStatus.TestAssigned;
             _testSuiteService.AssignEmployeeSuite(userTestSuite, testSuiteDetails);
             user.CandidateStatus = CandidateStatus.TestAssigned.ToString();

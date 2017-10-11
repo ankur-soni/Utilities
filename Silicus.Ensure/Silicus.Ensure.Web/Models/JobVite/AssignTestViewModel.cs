@@ -22,7 +22,7 @@ namespace Silicus.Ensure.Web.Models.JobVite
         public int TestSuiteId { get; set; }
 
         [Required(ErrorMessage = "Reviewer is required")]
-        public int ReviewerId { get; set; }
+        public IEnumerable<string> ReviewerId { get; set; }
         //[Required(ErrorMessage = "Candidate is required")]
         //public List<string> CandidatesJson { get; set; }
     }

@@ -46,11 +46,11 @@
          {
 
              columns.Bound(c => c.TestSuitName).Title("Test Name");
-             columns.Bound(p => p.EmpName).Title("Emp name");
-             columns.Bound(p => p.EmployeeId).Title("EmployeeId");
+             columns.Bound(p => p.EmpName).Title("Employee Name");
+             columns.Bound(p => p.EmployeeId).Title("Employee Id");
              columns.Bound(p => p.MaxScore).Title("Total Marks");
              columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0? MarksObtained : 'NA'#"); ;
-             columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
+             columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false).Title("Test Attempt Date");
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
                                                                             Test assigned
