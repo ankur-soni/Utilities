@@ -15,6 +15,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
 
+        TestSuiteViewQuesBussinessModel TestSuitSummary(int testSuitId);
+
         IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite(int userId);
         EmployeeTestSuite GetUserTestSuite(string userId);
 

@@ -198,7 +198,7 @@ else
     function LoadFirstQuestion(userId) {     
         var testSuiteId = $("#TestSuiteId").val();
         $.ajax({
-            url: "/Reviewer/PreviewQuestion",
+            url: "/TestSuit/PreviewQuestion",
             data: { testSuiteId: testSuiteId },
             success: function (data) {
                 $('#QuestionDetails').html(data);
@@ -248,6 +248,7 @@ else
     }
 
     function UpdateCurrentQuestionAndLoadNewOne(questionId) {
+        debbuger;
         var questionNavigationDetails = GetCurrentQuestionStatus();
         updateQuestionLinkColorClass('#' + questionNavigationDetails.QuestionNumber, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);

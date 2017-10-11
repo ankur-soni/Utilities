@@ -17,4 +17,17 @@ namespace Silicus.Ensure.Models.Test
         [DisplayFormat(DataFormatString = "{0:n2}")]
         public int MaximumMarks { get; set; }
     }
+
+    public class TestSuiteViewQuesBussinessModel
+    {
+        public int QuestionNumber { get; set; }
+        public int Duration { get; set; }
+        public string TestSuiteName { get; set; }
+        public int Proficiency { get; set; }
+        public int ObjectiveCount { get; set; }
+        public int PracticalCount { get; set; }
+        public int MaxScore { get; set; }
+        public string ErrorMessage { get; set; }
+        
+    }
 }

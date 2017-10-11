@@ -454,6 +454,27 @@ namespace Silicus.Ensure.Services
             return AddUserTestSuite(userTestSuite);
         }
 
+        public TestSuiteViewQuesBussinessModel TestSuitSummary(int testSuitId)
+        {
+            var testSuite = GetTestSuitById(testSuitId);
+            var questions = GenerateQuestionSet(testSuite);
+
+            var TestSuiteViewQuesModel = new TestSuiteViewQuesBussinessModel();
+            TestSuiteViewQuesModel.TestSuiteName = testSuite.TestSuiteName;
+            if (questions.Count > 0)
+            {
+                TestSuiteViewQuesModel.ObjectiveCount = questions.Count(x => x.QuestionType == 1);
+                TestSuiteViewQuesModel.PracticalCount = questions.Count(x => x.QuestionType == 2);
+                TestSuiteViewQuesModel.ErrorMessage = "Test Suit generated successfully";
+            }
+            else
+            {
+                TestSuiteViewQuesModel.ErrorMessage = "Not able to find enough questions to generate TestSuit";
+            }
+
+            return TestSuiteViewQuesModel;
+        }
+
         public int AssignEmployeeSuite(EmployeeTestSuite employeeTestSuite, TestSuite testSuite)
         {
             var testSuiteDetails = new List<EmployeeTestDetails>();

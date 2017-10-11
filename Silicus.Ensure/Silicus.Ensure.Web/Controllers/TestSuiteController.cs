@@ -16,7 +16,7 @@ using Silicus.Ensure.Web.Filters;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [CustomAuthorize("Admin", "Panel", "Recruiter","Candidate")]
+    [CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
     public class TestSuiteController : Controller
     {
         private readonly ITestSuiteService _testSuiteService;
@@ -37,11 +37,34 @@ namespace Silicus.Ensure.Web.Controllers
             _commonController = commonController;
         }
 
+        public ActionResult GetTestSuiteList([DataSourceRequest] DataSourceRequest request)
+        {
+            _testSuiteService.TestSuiteActivation();
+            var tags = _tagsService.GetTagsDetails();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.Status == (int)TestSuiteStatus.Ready).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+            var userTestSuites = _userService.GetAllTestSuiteDetails();
+            bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
+            foreach (var item in viewModels)
+            {
+                
+                List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+                item.PrimaryTagNames = string.Join(",", (from a in tags
+                                                         where TagId.Contains(a.TagId)
+                                                         select a.TagName));
+                item.StatusName = ((TestSuiteStatus)item.Status).ToString();
+                item.UserInRole = userInRole;
+                item.IsAssigned = userTestSuites.Any(y => y.TestSuiteId == item.TestSuiteId && y.StatusId == (int)CandidateStatus.TestAssigned);
+            }
+            return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
             _testSuiteService.TestSuiteActivation();
             var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false ).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             var userTestSuites = _userService.GetAllTestSuiteDetails();
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
@@ -55,7 +78,7 @@ namespace Silicus.Ensure.Web.Controllers
                 //{
                 //    item.PositionName = "Not assigned";
                 //}
-                
+
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)
@@ -84,12 +107,12 @@ namespace Silicus.Ensure.Web.Controllers
             //return View("AddTestSuite", testSuite);
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-           // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            // var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
 
             if (testSuiteId == 0)
             {
                 ViewBag.Type = "New";
-               // testSuite.PositionList = positionDetails.ToList();
+                // testSuite.PositionList = positionDetails.ToList();
                 return View("AddTestSuite", testSuite);
             }
             else
@@ -362,6 +385,25 @@ namespace Silicus.Ensure.Web.Controllers
             return View(testSuiteViewQuesModel);
         }
 
+        public ActionResult SetStatus(int testSuiteId)
+        {
+            var testSuite = _testSuiteService.GetTestSuitById(testSuiteId);
+            testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
+            _testSuiteService.Update(testSuite);
+
+            return Json(1, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult PreviewTestSuit(int testSuiteId)
+        {
+            var tsSummary = _testSuiteService.TestSuitSummary(testSuiteId);
+
+            var model = _mappingService.Map<TestSuiteViewQuesBussinessModel, TestSuiteViewQuesModel>(tsSummary);
+
+            model.QuestionNumber = testSuiteId;
+            return PartialView("_TestSuitPreview", model);
+        }
 
         public ActionResult PreViewQuestion(int testSuiteId)
         {
@@ -374,7 +416,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
                 var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID };
-                if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
+                if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Pending))
                 {
                     var questionList = _testSuiteService.GetPreview(previewTest);
                     foreach (var pQuestion in questionList)

@@ -16,47 +16,42 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="M-B60">
-                <div class="toolbar">
-                    <div class="row M-B15">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 addclearFloat">
-                            <div class="form-group clearFloat1 addclearFloat1">
-                                <a href='/TestSuite/Add?testSuiteId=0' class='k-button k-button-icontext k-grid-add addTag testsuitAnchor'><span style="padding-right:5px;" class='fa fa-plus'></span>Add test suite</a>
-                                <div class="input-group testsuitInputGroup">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
-                                    <span class="input-group-btn">
-                                        <button id="testSuiteSearch" class="btn btn-default btn-search"  type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                    </span>
-                                </div>
+            <div class="toolbar">
+                <div class="row M-B15">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 addclearFloat">
+                        <div class="form-group clearFloat1 addclearFloat1">
+                            <a href='/TestSuite/Add?testSuiteId=0' class='k-button k-button-icontext k-grid-add addTag testsuitAnchor'><span style="padding-right:5px;" class='fa fa-plus'></span>Add test suite</a>
+                            <div class="input-group testsuitInputGroup">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
+                                <span class="input-group-btn">
+                                    <button id="testSuiteSearch" class="btn btn-default btn-search" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="kendogrid">
+            </div>
+            <div class="kendogrid">
 
-                    <div class="table-responsive M-B15">
-                        @if (Request.IsAuthenticated)
-                        {
-                            @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+                <div class="table-responsive M-B15">
+                    @if (Request.IsAuthenticated)
+                    {
+                        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
                 .Columns(columns =>
                 {
                     columns.Bound(p => p.TestSuiteName).Width(300).Title("Test suite");
                     columns.Bound(p => p.Duration).Width(150);
-                    columns.Bound(p => p.PositionName).Width(300).Title("Position");
+                  //  columns.Bound(p => p.PositionName).Width(300).Title("Position");
                     columns.Bound(p => p.PrimaryTagNames).Width(200).Title("Tags");
                     columns.Bound(p => p.StatusName).Width(200).Title("Status");
                     columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit M-T2 M-B2' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
                                                           "<a class='k-button k-button-icontext k-grid-delete M-T2 M-B2' href='\\#' onclick='ConfirmDeleteTestSuiteRow(event)'>Delete</a>").Title("Actions").Width(300).Sortable(false);
-                    //columns.Bound("").ClientTemplate(@"
-
-                    //                                  #if (UserInRole){#
-                    //                                      <a class='dialog-window M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a> |
-                    //                                  #}#
-                    //                                      <a class='dialog-window M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a> |" +
-                    //                                                                                                    "  #if (StatusName=='Ready'){#" +
-                    //                                                                                                    "<a class='dialog-window M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
-                    //                                                                                                    + "#}#"
-                    //                                        ).Title("Test actions").Width(500).Sortable(false);
+                    columns.Bound("").ClientTemplate(@"
+                                                          #if (StatusName=='Pending'){#" +
+                                                          "<a class='dialog-window M-T4' onclick=showTest('#=TestSuiteId#')>Check Readiness</a>"
+                                                           + "#}#"
+                                                            ).Title("Test actions").Width(500).Sortable(false);
 
 
 
@@ -76,24 +71,63 @@
                   )
                       .Pageable(p => p.PageSizes(true))
                   .Sortable()
-)
-                        }
-                    </div>
+                        )
+                    }
                 </div>
+            </div>
 
-            
+
         </div>
 
-        <div id="DivUsers">
+        <div id="TestSuitPreview" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="550" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Assign Test</h4>
+            </div>
+            <div class="modal-body popUp-modalbody" id="TestSuitPreviewBody">
+
+
+            </div>
+
 
         </div>
     </div>
 </div>
 <script>
-    function showTest(id) {
-         //  window.location.href =;
-             window.open( "/TestSuite/PreViewQuestion?testSuiteId=" + id, '_blank');
+    function showTest(id) {      
+            var urllink = "/TestSuite/PreviewTestSuit?testSuiteId=" + id;
+            $.ajax({
+                url: urllink,
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                // data: JSON.stringify({ time: time, EmployeeTestSuiteId: EmployeeTestSuiteId }),
+                success: function (data) {
+                    $("#TestSuitPreviewBody").html(data);
+                    $('#TestSuitPreview').modal('show');
+                },
+                error: function () {
+                }
+            });
     }
+
+    function SetStatus(id) {     
+        var urllink = "/TestSuite/SetStatus?testSuiteId=" + id;
+        $.ajax({
+            url: urllink,
+            type: "GET",
+            contentType: 'application/json; charset=utf-8',           
+            success: function (data) {
+                $('#TestSuitPreview').modal('toggle');
+                $('#testSuiteGrids').data('kendoGrid').dataSource.read();               
+
+                ShowMessage("Test Suit is Ready for assignment.", 1);                
+            },
+            error: function () {
+            }
+        });
+    }
+
     $(document).ready(function () {
         SelectedMenu("#testsuite-link");
         SetNavigationMenuActive('TestSuite');
@@ -133,7 +167,7 @@
         }
         else {
             deleteGridRow('testSuiteGrids', data);
-            
+
         }
     }
 
@@ -204,8 +238,7 @@
     }
 </script>
 <style>
-#testSuiteGrids .k-loading-image {
-    background-image: none;
-}
-
+    #testSuiteGrids .k-loading-image {
+        background-image: none;
+    }
 </style>

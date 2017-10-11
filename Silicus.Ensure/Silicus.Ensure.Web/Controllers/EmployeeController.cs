@@ -62,7 +62,7 @@ namespace Silicus.Ensure.Web.Controllers
             model.EmployeeList = GetUserDetails();
 
             model.TestSuitList = _testSuiteService.GetTestSuiteDetails()
-                              .Where(m => m.IsDeleted == false && m.IsExternal == false).OrderByDescending(m => m.TestSuiteId);
+                              .Where(m => m.IsDeleted == false && m.IsExternal == false && m.Status == (int)TestSuiteStatus.Ready ).OrderByDescending(m => m.TestSuiteId);
 
             return View("EmployeeList", model);
             //return View("AssigedTest");

@@ -5415,6 +5415,7 @@
     <Content Include="Views\Test\_testSuiteAndCandidateDetails.cshtml" />
     <Content Include="Views\Test\CompleteTest.cshtml" />
     <Content Include="Views\Admin\ReviewAssigedTest.cshtml" />
+    <Content Include="Views\TestSuite\_TestSuitPreview.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5543,7 +5544,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53393</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

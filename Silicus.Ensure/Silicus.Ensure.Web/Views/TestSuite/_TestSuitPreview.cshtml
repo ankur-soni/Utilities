@@ -1,0 +1,69 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteViewQuesModel
+
+<div class=''>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+
+                <label class="">TestSuiteName</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+                <label>@Model.TestSuiteName</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+
+                <label class="">ObjectiveCount</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+                <label>@Model.ObjectiveCount</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+
+                <label class="">PracticalCount</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+                <label>@Model.PracticalCount</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+
+                <label class="">Error Message </label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+                <label>@Model.ErrorMessage</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        @if (Model.ObjectiveCount == 0 && Model.PracticalCount == 0)
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        }
+        else
+        {
+            <button type="button" style="width:90px;" class='btn green' onclick="SetStatus(@Model.QuestionNumber);">Set Ready</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        }
+       
+    </div>
+</div>
