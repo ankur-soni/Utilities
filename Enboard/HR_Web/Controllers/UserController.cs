@@ -603,7 +603,7 @@ namespace HR_Web.Controllers
                         employeePersonalDetails.Designation = _IUserService.GetDesignationName(_Logindetails.DesignationID);
                         employeePersonalDetails.DepartmentID = _Logindetails.DepartmentID;
                         employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
-                        employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
+                        employeePersonalDetails.JoiningDate = (_Logindetails.JoiningDate != null) ? _Logindetails.JoiningDate.ToString() : string.Empty;
                         employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
                         employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                         employeePersonalDetails.Gender = _Logindetails.Gender;
@@ -652,7 +652,7 @@ namespace HR_Web.Controllers
                     employeePersonalDetails.Designation = _IUserService.GetDesignationName(_Logindetails.DesignationID);
                     employeePersonalDetails.DepartmentID = _Logindetails.DepartmentID;
                     employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
-                    employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
+                    employeePersonalDetails.JoiningDate = (_Logindetails.JoiningDate != null) ? _Logindetails.JoiningDate.ToString() : string.Empty;
                     employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
                     employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                     employeePersonalDetails.Gender = _Logindetails.Gender;
@@ -665,8 +665,8 @@ namespace HR_Web.Controllers
 
             Mapper.CreateMap<Models.PersonalDetails, Models.PersonalDetails>();
             var user = Mapper.Map<Models.PersonalDetails, Models.PersonalDetails>(employeePersonalDetails);
-            user.DateofBirth = Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
-            user.JoiningDate = Convert.ToDateTime(user.JoiningDate).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+            user.DateofBirth = (user.DateofBirth != "") ? Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;
+            user.JoiningDate = (user.JoiningDate != "") ? Convert.ToDateTime(user.JoiningDate).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;
 
             return View(user);
         }
@@ -710,7 +710,7 @@ namespace HR_Web.Controllers
                         employeePersonalDetails.Designation = _IUserService.GetDesignationName(_Logindetails.DesignationID);
                         employeePersonalDetails.DepartmentID = _Logindetails.DepartmentID;
                         employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
-                        employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
+                        employeePersonalDetails.JoiningDate = (_Logindetails.JoiningDate != null) ? _Logindetails.JoiningDate.ToString() : string.Empty;
                         employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
                         employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                         employeePersonalDetails.Gender = _Logindetails.Gender;
@@ -749,17 +749,17 @@ namespace HR_Web.Controllers
                     employeePersonalDetails.Designation = _IUserService.GetDesignationName(_Logindetails.DesignationID);
                     employeePersonalDetails.DepartmentID = _Logindetails.DepartmentID;
                     employeePersonalDetails.Department = _IUserService.GetDepartmentName(_Logindetails.DepartmentID);
-                    employeePersonalDetails.JoiningDate = _Logindetails.JoiningDate.ToString();
+                    employeePersonalDetails.JoiningDate = (_Logindetails.JoiningDate != null) ? _Logindetails.JoiningDate.ToString() : string.Empty;
                     employeePersonalDetails.JoiningLocation = _Logindetails.JoiningLocation;
                     employeePersonalDetails.DateofBirth = (_Logindetails.DOB != null) ? SessionManager.DecryptData(_Logindetails.DOB) : string.Empty;//SessionManager.DecryptData(_Logindetails.DOB);
                 }
 
             }
-
+            //Change request 2 - fixed personal details issue , added null check for DOB
             Mapper.CreateMap<Models.PersonalDetails, Models.PersonalDetails>();
             var user = Mapper.Map<Models.PersonalDetails, Models.PersonalDetails>(employeePersonalDetails);
-            user.DateofBirth = Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
-            user.JoiningDate = Convert.ToDateTime(user.JoiningDate).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+            user.DateofBirth = (user.DateofBirth != "") ? Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;
+            user.JoiningDate = (user.JoiningDate != "") ? Convert.ToDateTime(user.JoiningDate).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;
             return View("GetPersonalDetails", user);
 
         }
@@ -4281,7 +4281,7 @@ namespace HR_Web.Controllers
 
             Mapper.CreateMap<Models.ChangeRequestDetails, Models.ChangeRequestDetails>();
             var user = Mapper.Map<Models.ChangeRequestDetails, Models.ChangeRequestDetails>(employeePersonalDetails);
-            user.DateofBirth = Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+            user.DateofBirth = (user.DateofBirth != "") ? Convert.ToDateTime(user.DateofBirth).ToString("dd/M/yyyy", CultureInfo.InvariantCulture) : string.Empty;
 
             return PartialView("_ChangeRequestForm", user);
         }

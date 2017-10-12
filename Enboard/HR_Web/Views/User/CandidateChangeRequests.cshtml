@@ -107,8 +107,12 @@
                             if ($("#userGrid tbody tr").length == 0) {
                                 $("#userGrid tbody").append('<tr><td style="text-align: center;" colspan="4">No Data Found</td></tr>');
                             }
+                            //change request 2 - modified success and failure toastr
+                            if(Action)
+                            toastr.success('Change request is approved successfully.');
+                            else
+                            toastr.error('Change request is denied.');
 
-                            toastr.success('Change request is ' + (Action ? 'approved successfully' : 'denied') + '.');
                             $('#myModalRequest').hide();
                         }
                         else {
