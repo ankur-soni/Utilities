@@ -31,9 +31,6 @@ table.scroll tbody {
                     <td>
                         <input class="form-control" id="txtSearch" type="text" placeholder="Search">
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
-                    </td>
                 </tr>
             </table>
     </div>
@@ -122,88 +119,7 @@ table.scroll tbody {
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-
-        //$("#txtSearch").keyup(function () {
-        //    var value = $(this).val().toUpperCase();
-        //    var $rows = $("table tr");
-
-        //    if(value === ''){
-        //        $rows.show();
-        //        return false;
-        //    }
-
-        //    $rows.each(function(index) {
-        //        if (index !== 0) {
-
-        //            $row = $(this);
-
-        //            var column1 = $row.find("td:first a").html().toUpperCase();
-        //            var column2 = $row.find("td").eq(1).text().toUpperCase();
-
-        //            if ((column1.indexOf(value) > -1) || (column2.indexOf(value) > -1)) {
-        //                $row.show();
-        //            }
-        //            else {
-        //                $row.hide();
-        //            }
-        //        }
-        //    });
-        //});​
-
-    });
-
-
     $('#txtSearch').keyup(function () {
-    //    debugger;
-    //    var searchText = $("#txtSearch").val();//$(this).val().toLowerCase();
-    //    $.each($("#table tbody tr"), function () {
-    //        if ($(this).text().toLowerCase().indexOf(searchText) === -1)
-    //            $(this).hide();
-    //        else
-    //            $(this).show();
-    //    });
-    //});
-    //function resetSearch() {
-    //    // clear the textbox
-    //    $('#txtSearch').val('');
-    //    // show all table rows
-    //    $('#gridJobvitedetails tr').show();
-    //    // remove any no records rows
-    //    $('.norecords').remove();
-    //    // remove the cancel search image
-    //    //$('#imgSearch').hide();
-    //    // make sure we re-focus on the textbox for usability
-    //    $('#txtSearch').focus();
-    //}
-
-    //// execute the search
-    //$('#txtSearch').keyup(function () {
-       
-    //    // only search when there are 3 or more characters in the textbox
-    //    if ($('#txtSearch').val().length > 2) {
-    //        debugger;
-    //        // hide all rows
-    //        $('#gridJobvitedetails tr').hide();
-    //        // show the header row
-    //        $('#gridJobvitedetails tr:first').show();
-    //        // show the matching rows (using the containsNoCase from Rick Strahl)
-    //        $('#gridJobvitedetails tr td:containsNoCase(\'' + $('#txtSearch').val() + '\')').parent().show();
-    //        // show the cancel search image
-    //        //$('#imgSearch').show();
-    //    }
-    //    else if ($('#txtSearch').val().length == 0) {
-    //        // if the user removed all of the text, reset the search
-    //        resetSearch();
-    //    }
-
-    //    // if there were no matching rows, tell the user
-    //    if ($('#gridJobvitedetails tr:visible').length == 1) {
-    //        // remove the norecords row if it already exists
-    //        $('.norecords').remove();
-    //        // add the norecords row
-    //        $('#gridJobvitedetails').append('<tr class="norecords"><td colspan="5" class="Normal">No records were found</td></tr>');
-        //    }
    
         var value = $(this).val().toUpperCase();
         var $rows = $("#gridJobvitedetails tr");
@@ -230,41 +146,6 @@ table.scroll tbody {
             }
         });
     });
-
-
-    //$('#focusedInputJV').bind('input propertychange', function () {
-    //    var regex = /<[^>]*>|<|>|/g;
-    //    GetUserList($('#focusedInputJV').val().toLowerCase().replace(regex, "").trim());
-    //});
-
-    //function viewAll() {
-    //    GetUserList("");
-    //    $("#focusedInputJV").val("");
-    //}
-
-    //function GetUserList(serchText) {
-    //    $.ajax({
-    //        type: "GET",
-    //        async: false,
-    //        url: '/User/GetUserList/',
-    //        data: {
-    //            searchString: serchText,
-    //        },
-    //        contentType: "application/json",
-    //        error: function (jqXHR, textStatus, errorThrown) {
-    //            alert(textStatus + " " + errorThrown);
-    //            return false;
-    //        },
-    //        success: function (data) {
-    //            if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
-    //                HandleSessionTimeout();
-    //                return;
-    //            }
-    //            $("#divUserList").html('');
-    //            $("#divUserList").html(data);
-    //        }
-    //    });
-    //}
 
 </script>
 

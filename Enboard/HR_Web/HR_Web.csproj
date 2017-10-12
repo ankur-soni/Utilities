@@ -343,6 +343,8 @@
     <Content Include="Content\NewUI\fonts\Simple-Line-Icons.woff" />
     <Content Include="Content\NewUI\fonts\Simple-Line-Icons.woff2" />
     <Content Include="Content\NewUI\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\enboard - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\enboard - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Enboard.pubxml" />
     <None Include="Properties\PublishProfiles\HR_WebPublish.pubxml" />
     <None Include="Properties\PublishProfiles\MVC_IDP.pubxml" />
@@ -486,6 +488,10 @@
     <Content Include="Views\Document\AboutUs.cshtml" />
     <Content Include="Views\User\_PopupJobViteUserList.cshtml" />
     <Content Include="Views\User\_popupJobViteCandidateList.cshtml" />
+    <None Include="Web.Beta.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -574,6 +580,15 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
