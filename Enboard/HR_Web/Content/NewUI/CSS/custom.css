@@ -1239,3 +1239,19 @@ input[type=text]::-ms-clear { display: none; }
 
 
 
+
+.tooltip {
+    position:absolute !important;
+}
+
+.tooltip.top {
+    position: absolute !important;
+    min-width: 200px;
+}
+.panel-body em {
+    position:relative;
+}
+.toast.toast-warning {
+    margin: 0 auto !important;
+    padding: 50px 20px !important;
+}

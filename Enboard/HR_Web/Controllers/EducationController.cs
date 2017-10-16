@@ -317,7 +317,7 @@ namespace HR_Web.Controllers
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
                 details.UpdatedBy = userName;
-                details.UpdatedDate = DateTime.Now;
+                details.UpdatedDate = DateTime.UtcNow;
 
                 Mapper.CreateMap<EducationDetails, Data.EmployeeEducationDetail>();
                 EmployeeEducationDetail eduDetail = Mapper.Map<EducationDetails, Data.EmployeeEducationDetail>(details);
@@ -348,14 +348,14 @@ namespace HR_Web.Controllers
                 //if (eduDetail.CreatedBy == null || eduDetail.CreatedBy == null)
                 //    eduDetail.CreatedBy = userName;
                 //if (eduDetail.CreatedDate == DateTime.MinValue || eduDetail.CreatedDate == null)
-                //    eduDetail.CreatedDate = DateTime.Now;
+                //    eduDetail.CreatedDate = DateTime.UtcNow;
 
                 if (details.EduDetID == 0)
                 {
                     eduDetail.CreatedBy = userName;
-                    eduDetail.CreatedDate = DateTime.Now;
+                    eduDetail.CreatedDate = DateTime.UtcNow;
                     eduDetail.UpdatedBy = userName;
-                    eduDetail.UpdatedDate = DateTime.Now;
+                    eduDetail.UpdatedDate = DateTime.UtcNow;
                     eduDetail.IsActive = true;
                     status = _IEducationService.Insert(eduDetail, null, "");
                     return Json(new { result = false, Message = "Success" }, JsonRequestBehavior.AllowGet);
@@ -363,7 +363,7 @@ namespace HR_Web.Controllers
                 else
                 {
                     eduDetail.UpdatedBy = userName;
-                    eduDetail.UpdatedDate = DateTime.Now;
+                    eduDetail.UpdatedDate = DateTime.UtcNow;
                     eduDetail.IsActive = true;
                     status = _IEducationService.Update(eduDetail, null, "");
                     return Json(new { result = false, Message = "Success" }, JsonRequestBehavior.AllowGet);
@@ -527,7 +527,7 @@ namespace HR_Web.Controllers
             List<Year> yearlist = new List<Year>();
             DateTime startYear = new DateTime(1970, 1, 1);
             int yearid = 1;
-            while (DateTime.Now.Year >= startYear.Year)
+            while (DateTime.UtcNow.Year >= startYear.Year)
             {
                 Year year = new Year();
                 year.YearName = Convert.ToString(startYear.Year);

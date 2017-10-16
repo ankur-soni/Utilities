@@ -253,12 +253,12 @@ namespace HR_Web.Controllers
                     if (EmpfamilyDetails.CreatedBy == null || EmpfamilyDetails.CreatedBy == "")
                         EmpfamilyDetails.CreatedBy = userName;
                     if (EmpfamilyDetails.CreatedDate == DateTime.MinValue || EmpfamilyDetails.CreatedDate == null)
-                        EmpfamilyDetails.CreatedDate = DateTime.Now;
+                        EmpfamilyDetails.CreatedDate = DateTime.UtcNow;
 
                     if (EmpfamilyDetails.UpdatedBy == null || EmpfamilyDetails.UpdatedBy == "")
                         EmpfamilyDetails.UpdatedBy = userName;
                     if (EmpfamilyDetails.UpdatedDate == DateTime.MinValue || EmpfamilyDetails.UpdatedDate == null)
-                        EmpfamilyDetails.UpdatedDate = DateTime.Now;
+                        EmpfamilyDetails.UpdatedDate = DateTime.UtcNow;
 
                     var EmployeeFamilyList = _IFamilyDetailsService.GetAll(null, null, "");
                     if (EmployeeFamilyList != null)
@@ -362,7 +362,7 @@ namespace HR_Web.Controllers
                     if (EmpfamilyDetails.UpdatedBy == null || EmpfamilyDetails.UpdatedBy == "")
                         EmpfamilyDetails.UpdatedBy = userName;
                     if (EmpfamilyDetails.UpdatedDate == DateTime.MinValue || EmpfamilyDetails.UpdatedDate == null)
-                        EmpfamilyDetails.UpdatedDate = DateTime.Now;
+                        EmpfamilyDetails.UpdatedDate = DateTime.UtcNow;
                     EmpfamilyDetails.IsActive = true;
                     status = _IFamilyDetailsService.Update(EmpfamilyDetails, null, "");
 

@@ -206,7 +206,7 @@ namespace HR_Web.Controllers
                 if (obj.Count == 0)
                 {
                     //eduDetail.CreatedBy = userName;
-                    //eduDetail.CreatedDate = DateTime.Now;
+                    //eduDetail.CreatedDate = DateTime.UtcNow;
                     //eduDetail.Active = true;
                     status = _IEmpSkillsService.Insert(skillDetail, null, "");
                     if (status == true)

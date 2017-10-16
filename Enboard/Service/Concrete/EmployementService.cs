@@ -71,7 +71,7 @@ namespace Service
 
                     EmploymentDetail employmnetDetails = ctx.EmploymentDetails.Where(m => m.EmploymentDetID == ID).FirstOrDefault();
                     employmnetDetails.IsActive = false;
-                    employmnetDetails.UpdatedDate = DateTime.Now;
+                    employmnetDetails.UpdatedDate = DateTime.UtcNow;
                     employmnetDetails.UpdatedBy = userName;
                     ctx.SaveChanges();
 

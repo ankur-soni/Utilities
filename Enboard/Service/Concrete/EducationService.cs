@@ -85,7 +85,7 @@ namespace Service
 
                     EmployeeEducationDetail educationdetail = ctx.EmployeeEducationDetails.Where(m => m.EduDetID == ID).FirstOrDefault();
                     educationdetail.IsActive = false;
-                    educationdetail.UpdatedDate = DateTime.Now;
+                    educationdetail.UpdatedDate = DateTime.UtcNow;
                     educationdetail.UpdatedBy = userName;
                     ctx.SaveChanges();
                     result = true;

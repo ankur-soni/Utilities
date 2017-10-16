@@ -82,7 +82,7 @@ namespace Service.Concrete
 
                     EmployeeFamilyDetail familyDetails = ctx.EmployeeFamilyDetails.Where(m => m.FamDetID == FamDetID).FirstOrDefault();
                     familyDetails.IsActive = false;
-                    familyDetails.UpdatedDate = DateTime.Now;
+                    familyDetails.UpdatedDate = DateTime.UtcNow;
                     familyDetails.UpdatedBy = userName;
 
                     ctx.SaveChanges();

@@ -177,7 +177,7 @@ namespace HR_Web.Controllers
                     }
 
                     employementModel.UpdatedBy = userName;
-                    employementModel.UpdatedDate = DateTime.Now;
+                    employementModel.UpdatedDate = DateTime.UtcNow;
 
                     Mapper.CreateMap<EmployementModel, Data.EmploymentDetail>();
                     var EmployDetail = Mapper.Map<EmployementModel, Data.EmploymentDetail>(employementModel);
@@ -186,12 +186,12 @@ namespace HR_Web.Controllers
                     if (EmployDetail.CreatedBy == null || EmployDetail.CreatedBy == "")
                         EmployDetail.CreatedBy = userName;
                     if (EmployDetail.CreatedDate == DateTime.MinValue || EmployDetail.CreatedDate == null)
-                        EmployDetail.CreatedDate = DateTime.Now;
+                        EmployDetail.CreatedDate = DateTime.UtcNow;
 
                     if (EmployDetail.UpdatedBy == null || EmployDetail.UpdatedBy == "")
                         EmployDetail.UpdatedBy = userName;
                     if (EmployDetail.UpdatedDate == DateTime.MinValue || EmployDetail.UpdatedDate == null)
-                        EmployDetail.UpdatedDate = DateTime.Now;
+                        EmployDetail.UpdatedDate = DateTime.UtcNow;
 
                     EmployDetail.EmployementNo = _IEmployementService.GetLatestEmploymentNo(Convert.ToInt32(employementModel.UserId));
                     EmployDetail.IsActive = true;
@@ -259,7 +259,7 @@ namespace HR_Web.Controllers
                     var employmentList = EmploymentDetailList(Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]));
 
                     employementModel.UpdatedBy = userName;
-                    employementModel.UpdatedDate = DateTime.Now;
+                    employementModel.UpdatedDate = DateTime.UtcNow;
 
                     Mapper.CreateMap<EmployementModel, Data.EmploymentDetail>();
                     var EmployDetail = Mapper.Map<EmployementModel, Data.EmploymentDetail>(employementModel);
@@ -293,7 +293,7 @@ namespace HR_Web.Controllers
                     if (EmployDetail.UpdatedBy == null || EmployDetail.UpdatedBy == "")
                         EmployDetail.UpdatedBy = userName;
                     if (EmployDetail.UpdatedDate == DateTime.MinValue || EmployDetail.UpdatedDate == null)
-                        EmployDetail.UpdatedDate = DateTime.Now;
+                        EmployDetail.UpdatedDate = DateTime.UtcNow;
 
                     EmployDetail.IsActive = true;
                     EmployDetail.CompanyCountryID = _ICountryService.GetAll(null, null, "").Where(i => i.Country == "Other").Select(x => x.CountryID).FirstOrDefault();

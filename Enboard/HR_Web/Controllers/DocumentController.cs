@@ -199,9 +199,9 @@ namespace HR_Web.Controllers
                         _docDetails.FilePath = ViewBag.WebUrlUploadedFolder + userName + "/" + fileName; ;
                         _docDetails.IsUploaded = true;
                         _docDetails.UpdatedBy = userName;
-                        _docDetails.UpdatedDate = DateTime.Now;
+                        _docDetails.UpdatedDate = DateTime.UtcNow;
                         _docDetails.CreatedBy = userName;
-                        _docDetails.CreatedDate = DateTime.Now;
+                        _docDetails.CreatedDate = DateTime.UtcNow;
                         _docDetails.IsActive = true;
                         _docDetails.Data = FileToByteArray(fileName, path);
 
@@ -330,7 +330,7 @@ namespace HR_Web.Controllers
                     {
                         item.IsActive = false;
                         item.UpdatedBy = userName;
-                        item.UpdatedDate = DateTime.Now;
+                        item.UpdatedDate = DateTime.UtcNow;
                         status = _IDocumentDetailsService.Update(item, null, "");
                     }
                 }

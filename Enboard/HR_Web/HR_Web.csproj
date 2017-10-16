@@ -229,6 +229,7 @@
     <Compile Include="Utilities\Constant.cs" />
     <Compile Include="Utilities\PrincipalContext.cs" />
     <Compile Include="Utilities\SessionManager.cs" />
+    <Compile Include="ViewModel\ActivityViewModel.cs" />
     <Compile Include="ViewModel\DocumentViewModel.cs" />
     <Compile Include="ViewModel\CandidateProgressDetails.cs" />
   </ItemGroup>

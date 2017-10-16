@@ -1,6 +1,18 @@
-﻿@model Models.ActivityDetails
+﻿@*@model Models.ActivityDetails*@
+@model List<HR_Web.ViewModel.ActivityViewModel>
 
-@if (Model.PersonalDetailsDate != null) { 
+
+@foreach (var item in Model)
+{
+    <div class="callout">
+        <div> You have edited <a href=@item.TabURL>@item.TabName </a> on </div>
+        <small class="text-muted mr-1"><i class="icon-calendar"></i> @item.LastModifiedDate</small>
+    </div>
+}
+
+
+
+@*@if (Model.PersonalDetailsDate != null) { 
 <div class="callout">
     <div> You have edited <a href="/User/PersonalDetails">Personal Details  </a> on </div>
     <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.PersonalDetailsDate </small>
@@ -42,4 +54,4 @@
     <div> You have edited <a href="/document/index">Document Details  </a>on </div>
     <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.UploadDocumentDetailsDate </small>
 </div>
-}
+}*@

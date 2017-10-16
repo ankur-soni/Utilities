@@ -371,7 +371,7 @@ namespace Service
                     {
                         //entry exist
                         welcomeNoteDetails.IsDelete = true;
-                        welcomeNoteDetails.UpdatedDate = DateTime.Now;
+                        welcomeNoteDetails.UpdatedDate = DateTime.UtcNow;
                         welcomeNoteDetails.UpdatedBy = welcomeobj.UpdatedBy;
                         ctx.SaveChanges();
                     }
@@ -381,9 +381,9 @@ namespace Service
                     newWelcomeNoteDetails.IsDelete = false;
                     newWelcomeNoteDetails.UserID = welcomeobj.UserID;
                     newWelcomeNoteDetails.UpdatedBy = welcomeobj.UpdatedBy;
-                    newWelcomeNoteDetails.UpdatedDate = DateTime.Now;
+                    newWelcomeNoteDetails.UpdatedDate = DateTime.UtcNow;
                     newWelcomeNoteDetails.CreatedBy = welcomeobj.CreatedBy;
-                    newWelcomeNoteDetails.Createddate = DateTime.Now;
+                    newWelcomeNoteDetails.Createddate = DateTime.UtcNow;
 
                     ctx.WelcomeNoteDetails.Add(newWelcomeNoteDetails);
                     ctx.SaveChanges();
@@ -514,7 +514,7 @@ namespace Service
                             //entry exist
                             item.IsActive = false;
                             item.UpdatedBy = userName;
-                            item.UpdatedDate = DateTime.Now;
+                            item.UpdatedDate = DateTime.UtcNow;
                             ctx.SaveChanges();
                            
                         }
@@ -630,7 +630,7 @@ namespace Service
                             }
                         }
                         request.UpdatedBy = ActionTakenBy;
-                        request.UpdatedDate = DateTime.Now;
+                        request.UpdatedDate = DateTime.UtcNow;
                         ctx.SaveChanges();
 
                         return request;

@@ -27,6 +27,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using HR_Web.ViewModel;
 
 namespace HR_Web.Controllers
 {
@@ -159,7 +160,7 @@ namespace HR_Web.Controllers
                 if (res != null)
                 {
                     SessionManager.LastLogin = res.LastLogin;
-                    res.LastLogin = DateTime.Now;
+                    res.LastLogin = DateTime.UtcNow;
                     _IUserService.Update(res, null, "");
 
                     // add or update  UserReminder Table
@@ -179,7 +180,7 @@ namespace HR_Web.Controllers
                             FormsAuthentication.SetAuthCookie(res.FirstName + "|" + res.UserID, false);
                             if (res.ActivatedDate == null)
                             {
-                                res.ActivatedDate = DateTime.Now;
+                                res.ActivatedDate = DateTime.UtcNow;
                                 _IUserService.Update(res, null, "");
                             }
 
@@ -783,13 +784,13 @@ namespace HR_Web.Controllers
                 if (details.CreatedBy == null || details.CreatedBy == null)
                     details.CreatedBy = userName;
                 if (details.CreatedDate == DateTime.MinValue || details.CreatedDate == null)
-                    details.CreatedDate = DateTime.Now;
+                    details.CreatedDate = DateTime.UtcNow;
 
                 details.UpdatedBy = userName;
-                details.UpdatedDate = DateTime.Now;
+                details.UpdatedDate = DateTime.UtcNow;
                 details.UserID = userId;
                 details.PlaceofBirth = !string.IsNullOrEmpty(details.BirthState) || !string.IsNullOrEmpty(details.BirthCity) ? details.BirthState + "-" + details.BirthCity : null;
-                details.OtherPlaceOfBirth = !string.IsNullOrEmpty(details.OtherBirthState) || !string.IsNullOrEmpty(details.OtherBirthCity) ? details.OtherBirthState + "-" + details.OtherBirthCity : null;
+                details.OtherPlaceOfBirth = !string.IsNullOrEmpty(details.OtherBirthState) || !string.IsNullOrEmpty(details.OtherBirthCity) ? details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim() : null;
 
                 if (details.MotherTongue == "Other" && (!string.IsNullOrEmpty(details.SpecificLanguage)))
                 {
@@ -1162,10 +1163,10 @@ namespace HR_Web.Controllers
                 if (details.CreatedBy == null || details.CreatedBy == null)
                     details.CreatedBy = userName;
                 if (details.CreatedDate == DateTime.MinValue || details.CreatedDate == null)
-                    details.CreatedDate = DateTime.Now;
+                    details.CreatedDate = DateTime.UtcNow;
 
                 details.UpdatedBy = userName;
-                details.UpdatedDate = DateTime.Now;
+                details.UpdatedDate = DateTime.UtcNow;//DateTime.UtcNow;
                 details.UserID = userId;
 
 
@@ -2378,7 +2379,7 @@ namespace HR_Web.Controllers
             {
                 //Add new user
 
-                model.JoiningDate = Convert.ToDateTime(DateTime.Now.ToString("dd/M/yyyy", CultureInfo.InvariantCulture));
+                model.JoiningDate = Convert.ToDateTime(DateTime.UtcNow.ToString("dd/M/yyyy", CultureInfo.InvariantCulture));
                 var selectedEducationCategories = new List<EducationCategory>();
                 //setup a view model
                 model.AvailableEducationCategories = GetEducationCategories();
@@ -2459,7 +2460,7 @@ namespace HR_Web.Controllers
                                 educationCategoryDetails.EducationCategoryId = Convert.ToInt32(item);
                                 educationCategoryDetails.IsActive = true;
                                 educationCategoryDetails.CreatedBy = userName;
-                                educationCategoryDetails.CreatedDate = DateTime.Now;
+                                educationCategoryDetails.CreatedDate = DateTime.UtcNow;
 
                                 var stat = _IUserService.AddEducationCategoryDetails(educationCategoryDetails, userName);
                             }
@@ -2472,7 +2473,7 @@ namespace HR_Web.Controllers
                 else
                 {
                     //insert
-                    userDetails.CreatedDate = DateTime.Now;
+                    userDetails.CreatedDate = DateTime.UtcNow;
                     userDetails.FirstName = model.FirstName;
                     userDetails.LastName = model.LastName;
                     userDetails.DOB = Convert.ToString(SessionManager.EncryptData(model.DOB)); //SessionManager.EncryptData(Convert.ToString(model.DOB.Value));
@@ -2524,7 +2525,7 @@ namespace HR_Web.Controllers
                             educationCategoryDetails.EducationCategoryId = Convert.ToInt32(item);
                             educationCategoryDetails.IsActive = true;
                             educationCategoryDetails.CreatedBy = userName;
-                            educationCategoryDetails.CreatedDate = DateTime.Now;
+                            educationCategoryDetails.CreatedDate = DateTime.UtcNow;
 
                             var stat = _IUserService.AddEducationCategoryDetails(educationCategoryDetails, userName);
                         }
@@ -2640,7 +2641,7 @@ namespace HR_Web.Controllers
                     //details.DOB =SessionManager.EncryptData(Convert.ToString(date)); //SessionManager.EncryptData(Convert.ToString(model.DOB.Value));
 
                     details.Email = (model.Email != null) ? model.Email : string.Empty;
-                    details.JoiningDate = DateTime.Now;
+                    details.JoiningDate = DateTime.UtcNow;
 
                     //if (model.ContactNumber != null)
                     //{
@@ -2698,14 +2699,14 @@ namespace HR_Web.Controllers
                     details.DesignationID = 1; /*Change Request - Adding default Designation as first value in the list */
                     details.RoleID = 16; 
 
-                    //details.ActivatedDate = DateTime.Now; /*Change Request - Removing unwanted  details while adding user*/
+                    //details.ActivatedDate = DateTime.UtcNow; /*Change Request - Removing unwanted  details while adding user*/
 
                     details.CreatedBy = userName; /*Change Request - Added created by as username for logged in user */
-                    details.CreatedDate = DateTime.Now;
+                    details.CreatedDate = DateTime.UtcNow;
                     details.IsSubmitted = false;
                     details.IsActive = 0;
                     details.IsDelete = false;
-                    details.LastLogin = DateTime.Now;
+                    details.LastLogin = DateTime.UtcNow;
                     
                     status = _IUserService.AddUserDetails(details);
                     
@@ -2718,7 +2719,7 @@ namespace HR_Web.Controllers
                     educationCategoryDetails.EducationCategoryId = 3;
                     educationCategoryDetails.IsActive = true;
                     educationCategoryDetails.CreatedBy = userName;
-                    educationCategoryDetails.CreatedDate = DateTime.Now;
+                    educationCategoryDetails.CreatedDate = DateTime.UtcNow;
                     var stat = _IUserService.AddEducationCategoryDetails(educationCategoryDetails, userName);
                     
                 }
@@ -4009,7 +4010,7 @@ namespace HR_Web.Controllers
                 userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
                 var employeedata = _IEmployeeService.GetAll(null, null, "").Where(T => T.Id == EmployeeMasterId).FirstOrDefault();
-                employeedata.LeavingDate = DateTime.Now;
+                employeedata.LeavingDate = DateTime.UtcNow;
                 employeedata.Active = 0;
                 if (_IUserService.UpdateEmployeeLeavingDetails(employeedata))
                 {
@@ -4312,8 +4313,8 @@ namespace HR_Web.Controllers
                     obj.IsApproved = null;
                     obj.CreatedBy = userName;
                     obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.Now;
-                    obj.UpdatedDate = DateTime.Now;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
                     obj.OldValue = LoginDetails.FirstName;
 
                     var result = _IUserService.AddChangeRequestDetails(obj);
@@ -4332,8 +4333,8 @@ namespace HR_Web.Controllers
                     obj.IsApproved = null;
                     obj.CreatedBy = userName;
                     obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.Now;
-                    obj.UpdatedDate = DateTime.Now;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
                     obj.OldValue = LoginDetails.LastName;
                     var result = _IUserService.AddChangeRequestDetails(obj);
 
@@ -4352,8 +4353,8 @@ namespace HR_Web.Controllers
                     obj.IsApproved = null;
                     obj.CreatedBy = userName;
                     obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.Now;
-                    obj.UpdatedDate = DateTime.Now;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
                     obj.OldValue = LoginDetails.ContactNumber;
                     var result = _IUserService.AddChangeRequestDetails(obj);
 
@@ -4371,8 +4372,8 @@ namespace HR_Web.Controllers
                     obj.IsApproved = null;
                     obj.CreatedBy = userName;
                     obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.Now;
-                    obj.UpdatedDate = DateTime.Now;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
                     obj.OldValue = LoginDetails.CountryCode;
                     var result = _IUserService.AddChangeRequestDetails(obj);
 
@@ -4396,8 +4397,8 @@ namespace HR_Web.Controllers
                     obj.IsApproved = null;
                     obj.CreatedBy = userName;
                     obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.Now;
-                    obj.UpdatedDate = DateTime.Now;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
                     obj.OldValue = LoginDetails.Email;
                     var result = _IUserService.AddChangeRequestDetails(obj);
 
@@ -4416,8 +4417,8 @@ namespace HR_Web.Controllers
                     obj.IsApproved = null;
                     obj.CreatedBy = userName;
                     obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.Now;
-                    obj.UpdatedDate = DateTime.Now;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
                     obj.OldValue = SessionManager.DecryptData(LoginDetails.DOB).Trim();
                     if (oldDob != newDob)
                     {
@@ -4474,7 +4475,6 @@ namespace HR_Web.Controllers
 
         public ActionResult GetActivityDetails()
         {
-            //Get logged in user details 
             var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
@@ -4484,20 +4484,28 @@ namespace HR_Web.Controllers
 
             if (details != null)
             {
-
-                activityDetails.PersonalDetailsDate = details.PersonalDetailsDate;
-                activityDetails.ContactDetailsDate = details.ContactDetailsDate;
-                activityDetails.EducationDetailsDate = details.EducationDetailsDate;
-                activityDetails.EmploymentDetailsDate = details.EmploymentDetailsDate;
-                activityDetails.FamilyDetailsDate = details.FamilyDetailsDate;
-                activityDetails.UploadDocumentDetailsDate = details.UploadDocumentDetailsDate;
-
+                activityDetails.PersonalDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.PersonalDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                activityDetails.ContactDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.ContactDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                activityDetails.EducationDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.EducationDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                activityDetails.EmploymentDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.EmploymentDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                activityDetails.FamilyDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.FamilyDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                activityDetails.UploadDocumentDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.UploadDocumentDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
             }
 
-            Mapper.CreateMap<Models.ActivityDetails, Models.ActivityDetails>();
-            var userDetails = Mapper.Map<Models.ActivityDetails, Models.ActivityDetails>(activityDetails);
+            List<ActivityViewModel> activityList = new List<ActivityViewModel>();
 
-            return PartialView("_Activity", userDetails);
+            activityList.Add(new ActivityViewModel { TabName = "Personal Details",LastModifiedDate = activityDetails.PersonalDetailsDate, TabURL = "/User/PersonalDetails"});
+            activityList.Add(new ActivityViewModel { TabName = "Contact Details", LastModifiedDate = activityDetails.ContactDetailsDate, TabURL = "/User/ContactDetails" });
+            activityList.Add(new ActivityViewModel { TabName = "Education Details", LastModifiedDate = activityDetails.EducationDetailsDate, TabURL = "/Education/GetEducationalDetails" });
+            activityList.Add(new ActivityViewModel { TabName = "Employment Details", LastModifiedDate = activityDetails.EmploymentDetailsDate, TabURL = "/Employement/Index" });
+            activityList.Add(new ActivityViewModel { TabName = "Family Details", LastModifiedDate = activityDetails.FamilyDetailsDate, TabURL = "/Family/FamilyDetails" });
+            activityList.Add(new ActivityViewModel { TabName = "Document Details", LastModifiedDate = activityDetails.UploadDocumentDetailsDate, TabURL = "/document/index" });
+
+            activityList = activityList.OrderByDescending(a => a.LastModifiedDate).ToList();
+
+            return PartialView("_Activity", activityList);
+
+
         }
 
         /// <summary>
@@ -4649,7 +4657,7 @@ namespace HR_Web.Controllers
                 }
                 
                 LoginDetail adminUserDetail = new LoginDetail();
-                adminUserDetail.CreatedDate = DateTime.Now;
+                adminUserDetail.CreatedDate = DateTime.UtcNow;
                 adminUserDetail.FirstName = model.FirstName;
                 adminUserDetail.LastName = model.LastName;
                 adminUserDetail.Password = SessionManager.EncryptData(model.Password);
@@ -4668,7 +4676,7 @@ namespace HR_Web.Controllers
                 role.IsActive = true;
                 role.RoleName = "ADMIN";
                 role.UserName = model.Email;
-                role.CreatedDate = DateTime.Now;
+                role.CreatedDate = DateTime.UtcNow;
                 var roleStatus = _IRoleService.Insert(role, null, "");
                 if (roleStatus)
                 {
