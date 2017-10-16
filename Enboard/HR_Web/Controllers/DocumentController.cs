@@ -93,7 +93,17 @@ namespace HR_Web.Controllers
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
                 DocumentDetaillist = _IDocumentService.GetAll(null, null, "").ToList();
+                
             }
+
+            foreach (var documentDetailsList in DocumentDetaillist)
+            {
+                foreach (var documentDetails in documentDetailsList.DocumentDetails)
+                {
+                    documentDetails.UpdatedDate = TimeZoneInfo.ConvertTimeFromUtc(documentDetails.UpdatedDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
+            }
+
             ViewBag.DocCatID = DocCatID;
             var userDetails = _IUserService.GetById(userId);
             ViewBag.IsSubmitted = userDetails == null ? false : userDetails.IsSubmitted.HasValue && userDetails.IsSubmitted.Value;
