@@ -8,7 +8,7 @@
 
         <div class="form-inline">
             @Html.TextBoxFor(m => m.NumberOfEmployments, new { id = "txtNumberOfEmployments", placeholder = "Number of Employments, Including Current", @class = "form-control alphanumeric", maxlength = "2", tabindex = 1, @style = "min-width:293px !important" })
-            <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="right" title="If you are frehser then put value 0, otherwise put number of previous employments including current employment and count should not exceed 20."></label>
+            <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="right" title="If you are a fresher then put value 0, otherwise put number of previous employments including current employment and count should not exceed 20."></label>
             @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger", id = "valNumberOfEmployments" })
         </div>
         @if (ViewBag.NumberOfEmployments <= 0 || ViewBag.NumberOfEmployments == null)
