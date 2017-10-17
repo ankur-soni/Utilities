@@ -40,6 +40,9 @@
                             <input class="form-control" id="focusedInput" type="text" placeholder="Search">
                         </td>
                         <td>
+                            <button type="button" class="btn btn-primary" id="btnSearch"><i class="glyphicon glyphicon-search"></i></button>
+                        </td>
+                        <td>
                             <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
                         </td>
                         
@@ -237,10 +240,25 @@
 @*script for user defined functions*@
 <script type="text/javascript">
 
-    $('#focusedInput').bind('input propertychange', function () {
-        var regex = /<[^>]*>|<|>|/g;
-        GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
+    $(document).ready(function () {
+        //click event for search user
+        $('#btnSearch').click(function () {
+            var regex = /<[^>]*>|<|>|/g;
+            GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
+        });
+
+        //search user by search string 
+        $("#focusedInput").keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#btnSearch").click();
+            }
+        });
     });
+
+    //$('#focusedInput').bind('input propertychange', function () {
+    //    var regex = /<[^>]*>|<|>|/g;
+    //    GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
+    //});
 
     function viewAll()
     {

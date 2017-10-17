@@ -40,6 +40,9 @@
                             <input class="form-control" id="focusedInput" type="text" placeholder="Search">
                         </td>
                         <td>
+                            <button type="button" class="btn btn-primary" id="btnSearch"><i class="glyphicon glyphicon-search"></i></button>
+                        </td>
+                        <td>
                             <button type="button" class="btn btn-primary" onclick="clearSearch();"><i class="fa fa-eye"></i> View All</button>
                         </td>
                     </tr>
@@ -165,8 +168,24 @@
                 }
             });
         }
-        $('#focusedInput').bind('input propertychange', function () {
-            sorting($('#hdnSortOrder').val(), $('#hdnIndex').val());
+        //$('#focusedInput').bind('input propertychange', function () {
+        //    sorting($('#hdnSortOrder').val(), $('#hdnIndex').val());
+        //});
+
+        $(document).ready(function () {
+            //click event for search user
+            $('#btnSearch').click(function () {
+                sorting($('#hdnSortOrder').val(), $('#hdnIndex').val());
+            });
+
+            //search user by search string 
+            $("#focusedInput").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    $("#btnSearch").click();
+                }
+            });
         });
+
+
     </script>
 }

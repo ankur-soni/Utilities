@@ -46,7 +46,7 @@
                             @Html.Label("Contact Number") <span class="red">*</span>
                             <div class="input-group">
                                 @Html.DropDownListFor(m => m.CountryCode, CountryCodeList, "Select", new { id = "ddlCRCountryCode", @class = "form-control titleSelect", placeholder = "Select Country Code", tabindex = 32 })
-                                @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtCRContactNumber", @class = "input.digit form-control", @tabindex = 33, @maxlength = "20" })
+                                @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtCRContactNumber", @class = "input.digit form-control", @tabindex = 33, @maxlength = "12" })
                             </div>
                             @Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })  
                             @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })  
