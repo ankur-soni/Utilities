@@ -159,7 +159,8 @@ namespace HR_Web.Controllers
                 var res = user.Where(u => u.Email.ToLower().Trim() == details.Email.ToLower().Trim() && Convert.ToInt32(u.IsActive) == 1).FirstOrDefault();
                 if (res != null)
                 {
-                    SessionManager.LastLogin = res.LastLogin;
+                    //Change request - fixed timezone issue 
+                    SessionManager.LastLogin = TimeZoneInfo.ConvertTimeFromUtc(res.LastLogin.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     res.LastLogin = DateTime.UtcNow;
                     _IUserService.Update(res, null, "");
 
