@@ -79,6 +79,7 @@
     <Compile Include="EducationViewModel.cs" />
     <Compile Include="FamilyDetails.cs" />
     <Compile Include="FinalSubmitViewModel.cs" />
+    <Compile Include="ImpersonateUser.cs" />
     <Compile Include="JobViteCandidateBussnessModel.cs" />
     <Compile Include="ManageEmployeeModel.cs" />
     <Compile Include="CertificationModel.cs" />

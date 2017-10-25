@@ -229,6 +229,7 @@
     <Compile Include="Utilities\Constant.cs" />
     <Compile Include="Utilities\PrincipalContext.cs" />
     <Compile Include="Utilities\SessionManager.cs" />
+    <Compile Include="Utilities\UserImpersonation.cs" />
     <Compile Include="ViewModel\ActivityViewModel.cs" />
     <Compile Include="ViewModel\DocumentViewModel.cs" />
     <Compile Include="ViewModel\CandidateProgressDetails.cs" />
@@ -489,6 +490,7 @@
     <Content Include="Views\Document\AboutUs.cshtml" />
     <Content Include="Views\User\_PopupJobViteUserList.cshtml" />
     <Content Include="Views\User\_popupJobViteCandidateList.cshtml" />
+    <Content Include="Views\User\LoginAs.cshtml" />
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -551,6 +553,7 @@
     <Folder Include="Scripts\tinymce\skins\lightgray\img\" />
     <Folder Include="Scripts\tinymce\themes\inlite\" />
     <Folder Include="Scripts\tinymce\themes\modern\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>

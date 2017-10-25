@@ -264,6 +264,44 @@ namespace HR_Web.Controllers
             return View(details);
 
         }
+        [HttpGet]
+        public ActionResult LoginAs()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult LoginAs(ImpersonateUser details)
+        {
+          
+
+          
+
+            var user = _IUserService.GetAll(null, null, "").ToList();
+
+            var chkDeactivateduser = user.Where(u => u.Email.ToLower().Trim() == details.Email.ToLower().Trim() && Convert.ToInt32(u.IsActive) == 2).FirstOrDefault();
+            if (chkDeactivateduser != null)
+            {
+                ModelState.AddModelError("", "Your Login has been Deactivated");
+                return View(details);
+            }
+
+            string EncryptedEmail = SessionManager.EncryptData(details.Email.Trim());
+            var res = user.Where(u => u.Email.ToLower().Trim() == details.Email.ToLower().Trim() && Convert.ToInt32(u.IsActive) == 1).FirstOrDefault();
+            if (res != null)
+            {
+                UserImpersonation.ImpersonateUser(res.FirstName + "|" + res.UserID, string.Empty);
+                return RedirectToAction("Welcome", "Home");
+            }
+
+            ModelState.AddModelError("", "User does not exist");
+            return View(details);
+            
+
+        }
+
+
+
+
         /// <summary>
         /// Displays List of user for the application
         /// </summary>
