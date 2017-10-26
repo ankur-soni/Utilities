@@ -42,15 +42,15 @@
 
          .Columns(columns =>
          {
-             columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(200);
+             columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(150);
              columns.Bound(p => p.EmpName).Title(Model == 2 ? "Candidate Name" : "Employee Name");
              columns.Bound(p => p.MaxScore).Title("Total Marks").Width(80);//.ClientTemplate(@"#=Duration# Mins");
              //columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
              columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0 && StatusId > 3 ? MarksObtained : 'NA'#").Width(80);
              columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
-             columns.Bound(p => p.AssignedReviewerName).Title("Assigned Reviewer Name").Encoded(false).Width(200);
-             columns.Bound(p => p.ActualReviewerName).Title("Reviewer Name").Encoded(false);
-             columns.Bound(p => p.ReviewDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
+             columns.Bound(p => p.AssignedReviewerName).Title("Assigned Reviewer Name").Encoded(false).Width(150);
+             columns.Bound(p => p.ActualReviewerName).Title("Reviewer Name").Encoded(false).Width(100);
+             columns.Bound(p => p.ReviewDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false).Width(100);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
                                                                             Test assigned
@@ -73,7 +73,7 @@
                                                                         else{#
                                                                             #=StatusId#
                                                                         #}
-                                                                        #").Title("Status").Width(250);
+                                                                        #").Title("Status").Width(180);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==3){#
                                                                             <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Start Evaluation</a>
@@ -85,7 +85,7 @@
                                                                           /
                                                                             <a onclick='GeneratePDF(#=EmployeeTestSuiteId#)'>View QuestionSet(PDF)</a>
                                                                         #}
-                                                                        #").Title("Test Action").Width(300);
+                                                                        #").Title("Test Action").Width(250);
          })
                                        .DataSource(dataSource => dataSource
                                        .Ajax()

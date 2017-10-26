@@ -1176,6 +1176,7 @@ namespace Silicus.Ensure.Web.Controllers
                 var Reviwerusers = userlist.Where(u => tests.AssignedReviewers.Split(',').Contains(u.ID.ToString())).ToList();
                 var counter = 1;
 
+                currentTs.ActualReviewerName = " ";
                 var rUser = userlist.Where(u=>u.ID == tests.ReviewerId).FirstOrDefault();
                 if (rUser != null)
                     currentTs.ActualReviewerName = rUser.FirstName + " " + rUser.LastName;

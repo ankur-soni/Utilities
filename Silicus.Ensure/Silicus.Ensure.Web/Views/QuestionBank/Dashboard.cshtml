@@ -8,17 +8,17 @@
 
 <script>
     $(document).ready(function () {
-       
+
         SelectedMenu('#question-bank-dashboard');
         $("#questionbank-submenu").css("display", "block");
         $("#questionbank-link a span.arrow").addClass("open");
-            //SetNavigationMenuActive('Marksheer');
-       
+        //SetNavigationMenuActive('Marksheer');
+        debugger;
         var model = @Html.Raw(Json.Encode(Model));
 
         Highcharts.chart('container', {
             chart: {
-                type: 'line'
+                type: 'column'
             },
             title: {
                 text: 'Technology wise Question Count'
@@ -28,9 +28,20 @@
                 crosshair: true
             },
             yAxis: {
-                min: 0,
+                allowDecimals: false,
                 title: {
-                    text: 'Questions Count'
+                    text: 'Units'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color:'gray'
+                    }
+                    , formatter: function()
+                    {
+                        return '<b> Total :' + this.total + '</b>'
+                    }
                 }
             },
             tooltip: {
@@ -43,8 +54,21 @@
             },
             plotOptions: {
                 column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                        style: {
+                            textOutline: false
+                        },
+                        formatter: function() {
+                            if (this.y > 0) {
+                                return this.y ;
+                            } else {
+                                return '';
+                            }
+                        }
+                    }
                 }
             },
             series: [{
@@ -68,129 +92,131 @@
     function onDataBound()
     {
 
-        var test = $('#questionList').data('kendoGrid').dataSource.data();
+        //var test = $('#questionList').data('kendoGrid').dataSource.data();
 
-        var categories = new Array();
-        var BeginerList = new Array();
-        var ItermidiateList = new Array();
-        var ExpertList = new Array();
+        //var categories = new Array();
+        //var BeginerList = new Array();
+        //var ItermidiateList = new Array();
+        //var ExpertList = new Array();
 
-        $.each(test, function (index, data) {
-            if(-1 !== (idx = jQuery.inArray(data.CreatedBy, categories))) {
-            } else {
-                categories.push(data.CreatedBy);
-            }
-        });
+        //$.each(test, function (index, data) {
+        //    if(-1 !== (idx = jQuery.inArray(data.CreatedBy, categories))) {
+        //    } else {
+        //        categories.push(data.CreatedBy);
+        //    }
+        //});
 
-        $.each(categories, function (index, cat) {
-            var p=i=e=false;
-            $.each(test, function (index1, data) {
-                if(data.CreatedBy == cat)
-                {
-                    if(data.ProficiencyLevel == "Beginner")
-                    {
-                        p= true;
-                        BeginerList.push(data.Count);
-                    }
-                    if(data.ProficiencyLevel == "Intermediate")
-                    {
-                        i = true;
-                        ItermidiateList.push(data.Count);
-                    }
-                    if(data.ProficiencyLevel == "Expert")
-                    {
-                        e= true;
-                        ExpertList.push(data.Count);
-                    }
-                }
-            });
+        //$.each(categories, function (index, cat) {
+        //    var p=i=e=false;
+        //    $.each(test, function (index1, data) {
+        //        if(data.CreatedBy == cat)
+        //        {
+        //            if(data.ProficiencyLevel == "Beginner")
+        //            {
+        //                p= true;
+        //                BeginerList.push(data.Count);
+        //            }
+        //            if(data.ProficiencyLevel == "Intermediate")
+        //            {
+        //                i = true;
+        //                ItermidiateList.push(data.Count);
+        //            }
+        //            if(data.ProficiencyLevel == "Expert")
+        //            {
+        //                e= true;
+        //                ExpertList.push(data.Count);
+        //            }
+        //        }
+        //    });
 
-            if(p==false)
-                BeginerList.push(0);
-            if(i==false)
-                ItermidiateList.push(0);
-            if(e==false)
-                ExpertList.push(0);
-        });
+        //    if(p==false)
+        //        BeginerList.push(0);
+        //    if(i==false)
+        //        ItermidiateList.push(0);
+        //    if(e==false)
+        //        ExpertList.push(0);
+        //});
 
-        Highcharts.chart('GridChart', {
-            data: {
-                table: test
-            },
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Contributor wise Question Count'
-            },
-            xAxis: {
-                categories: categories,
-                crosshair: true
-            },
-            yAxis: {
-                allowDecimals: false,
-                title: {
-                    text: 'Units'
-                },
-                stackLabels: {
-                    enabled: true,
-                    style: {
-                        fontWeight: 'bold',
-                        color:'gray'
-                    }
-                    , formatter: function()
-                    {
-                        return '<b> Total :' + this.total + '</b>'   
-                    }
-                }
-            },
-                series: [{
-                    name: 'Beginner',
-                    data: BeginerList
+        //debugger;
+        //Highcharts.chart('GridChart', {
+        //    //data: {
+        //    //    table: test
+        //    //},
+        //    chart: {
+        //        type: 'column'
+        //    },
+        //    title: {
+        //        text: 'Contributor wise Question Count'
+        //    },
+        //    xAxis: {
+        //        categories: categories,
+        //        crosshair: true
+        //    },
+        //    yAxis: {
+        //        allowDecimals: false,
+        //        title: {
+        //            text: 'Units'
+        //        },
+        //        stackLabels: {
+        //            enabled: true,
+        //            style: {
+        //                fontWeight: 'bold',
+        //                color:'gray'
+        //            }
+        //            , formatter: function()
+        //            {
+        //                return '<b> Total :' + this.total + '</b>'
+        //            }
+        //        }
+        //    },
+        //    series: [{
+        //        name: 'Beginner',
+        //        data: BeginerList
 
-                }, {
-                    name: 'Intermediate',
-                    data: ItermidiateList
+        //    }, {
+        //        name: 'Intermediate',
+        //        data: ItermidiateList
 
-                }, {
-                    name: 'Expert',
-                    data: ExpertList
+        //    }, {
+        //        name: 'Expert',
+        //        data: ExpertList
 
-                }],plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                            style: {
-                                textOutline: false
-                            },
-                            formatter: function() {
-                                if (this.y > 0) {
-                                    return this.y ;
-                                } else {
-                                    return '';
-                                }
-                            }
-                        }
-                    }
-                },
+        //    }],plotOptions: {
+        //        column: {
+        //            stacking: 'normal',
+        //            dataLabels: {
+        //                enabled: true,
+        //                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+        //                style: {
+        //                    textOutline: false
+        //                },
+        //                formatter: function() {
+        //                    if (this.y > 0) {
+        //                        return this.y ;
+        //                    } else {
+        //                        return '';
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    },
 
-                tooltip: {
-                    formatter: function () {
-                        return '<b>' + this.series.name + '</b> : ' +
-                            this.point.y
-                    }
-                }
-            });
+        //    tooltip: {
+        //        formatter: function () {
+        //            return '<b>' + this.series.name + '</b> : ' +
+        //                this.point.y
+        //        }
+        //    }
+        //});
     }
 
-    function ProficiencyLevelDropDownList(args) {
+    function StatusDropDownList(args) {
         args.element.kendoDropDownList({
             dataSource: [
-               { text: "Beginner", value: "Beginner" },
-               { text: "Intermediate", value: "Intermediate" },
-               { text: "Expert", value: "Expert" }
+               { text: "ReadyForReview", value: "ReadyForReview" },
+               { text: "Rejected", value: "Rejected" },
+               { text: "OnHold", value: "OnHold" },
+               { text: "Approved", value: "Approved" }
             ],
             dataTextField: "text",
             dataValueField: "value",
@@ -222,26 +248,51 @@
     </div>
 </div>
 
-<div id="GridChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="exTab1" class="container">
+    <div id="Tabs" role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+      
+                <li class="active">
+                    <a href="#1a" data-toggle="tab">Summary</a>
+                </li>
+                <li>
+                    <a href="#2a" data-toggle="tab">Detail</a>
+                </li>
 
-<div class="table-responsive">
+            </ul>
 
-    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>().Name("questionList")
+            <div class="tab-content clearfix" role="tabpanel">
+                <div class="tab-pane active" id="1a">
+                    <h3>Question Summary</h3>
+                    <div id="container" style="min-width: 250px; height: 400px; margin: 0 auto"></div>
+                </div>
+                <div class="tab-pane" id="2a">
+                    @*<div id="GridChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
+                    <h3>Question Details</h3>
+                    <div class="table-responsive">
+
+                        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>().Name("questionList")
                                 .Columns(columns =>
                                 {
-                                    columns.Bound(q => q.CreatedBy);
-                                    columns.Bound(q => q.Technology).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false)));
-                                    columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("ProficiencyLevelDropDownList").ShowOperators(false)));
-                                    columns.Bound(q => q.Count);
+                                    //columns.Bound(q => q.CreatedBy);
+                                    columns.Bound(q => q.Technology).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false))).ClientGroupHeaderTemplate("Technology: #= value #"); 
+                                    columns.Bound(q => q.ProficiencyLevel).Title("Status").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("StatusDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.Count).ClientGroupFooterTemplate("Count: #=sum#");
 
                                 }).Events(events => events
              .DataBound("onDataBound")
         //.Filter("onFiltering")
 
         ).DataSource(dataSource => dataSource.Ajax()
+        .Aggregates(aggregates =>
+        {
+            aggregates.Add(p => p.Count).Sum();
+        })
 .Sort(s => s.Add("Count"))
+ .Group(groups => groups.Add(p => p.Technology))
    .Read(read => read.Action("GetAllQuestionsStastistics", "QuestionBank"))
-   .PageSize(10)
+   .PageSize(20)
 
    .ServerOperation(true)
                                             ).Pageable(p => p.PageSizes(true))
@@ -249,8 +300,11 @@
 
                                              .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
                                              .Resizable(resizing => resizing.Columns(true))
-    )
+                        )
 
+                    </div>
+                </div>
+            </div>
+
+    </div>
 </div>
-
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>

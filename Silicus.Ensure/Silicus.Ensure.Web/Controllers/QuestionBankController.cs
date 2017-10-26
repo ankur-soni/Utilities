@@ -69,19 +69,20 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetAllQuestionsStastistics([DataSourceRequest] DataSourceRequest request)
         {
             var questions = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
-            var QList = questions.GroupBy(q => new { q.CreatedBy, q.TechnologyId, q.ProficiencyLevel }).Select(qu => new Questionstatistics()
+            var QList = questions.GroupBy(q => new { q.TechnologyId, q.Status }).Select(qu => new Questionstatistics()
             {
-                CreatedBy = qu.Key.CreatedBy.ToString(),
+                //CreatedBy = qu.Key.CreatedBy.ToString(),
                 Technology = qu.Key.TechnologyId.ToString(),
-                ProficiencyLevel = qu.Key.ProficiencyLevel.ToString(),
+                ProficiencyLevel = qu.Key.Status.ToString(),
                 Count = qu.Count()
             }).ToList();
 
             foreach(var obj in QList)
             {
-                obj.CreatedBy = GetCreatedByName(int.Parse(obj.CreatedBy));
-                obj.ProficiencyLevel = GetCompetency(obj.ProficiencyLevel);
+                //obj.CreatedBy = GetCreatedByName(int.Parse(obj.CreatedBy));
                 obj.Technology = GetTechnologyName(int.Parse(obj.Technology));
+                //obj.ProficiencyLevel = GetCompetency(obj.ProficiencyLevel);
+                //obj.Technology = obj.Technology;
             }
 
             //var jsonResult = Json(QList.ToArray().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
