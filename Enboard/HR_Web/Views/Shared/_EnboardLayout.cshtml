@@ -39,24 +39,24 @@
     <!--header start here-->
     <header class="app-header navbar">
         <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button"><i class="fa fa-bars" aria-hidden="true"></i></button>
-        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="#" onclick='window.location.href="@Url.Action("welcome","Home")"' ></a>
         @*<ul class="nav navbar-nav SearchBar">
-            <li class="hidden-md-down">
-                <div id="custom-search-input">
-                    <div class="input-group col-lg-12">
-                        <span class="input-group-btn">
-                            <button class="btn" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                        <input type="text" id="keysug" class="search-query form-control" placeholder="Search Portal" />
-                        <div id="keysugList">
-                            <ul></ul>
+                <li class="hidden-md-down">
+                    <div id="custom-search-input">
+                        <div class="input-group col-lg-12">
+                            <span class="input-group-btn">
+                                <button class="btn" type="button">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                            <input type="text" id="keysug" class="search-query form-control" placeholder="Search Portal" />
+                            <div id="keysugList">
+                                <ul></ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>*@
+                </li>
+            </ul>*@
         <div class="mobileAsideMenu hidden-lg-up">
             <a class="menuBtn asideMobileBtn navbar-toggler aside-menu-toggler mobile-aside-menu" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
         </div>
@@ -90,9 +90,9 @@
         <li class="breadcrumb-menu hidden-md-down">
             <a class="menuBtn asideBtn navbar-toggler aside-menu-toggler activeBtn" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
             @*<a class="menuBtn settingBtn dropdown-toggle" href="#" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-cog" aria-hidden="true"></i></a>
-            <ul class="dropdown-menu settingMenu" aria-labelledby="dropdownMenu">
-                <li><a href="#" onclick="OpenChangePasswordForm()">Change Password </a></li>
-            </ul>*@
+                <ul class="dropdown-menu settingMenu" aria-labelledby="dropdownMenu">
+                    <li><a href="#" onclick="OpenChangePasswordForm()">Change Password </a></li>
+                </ul>*@
         </li>
     </ol>
     <div class="app-body">
@@ -182,7 +182,7 @@
                 <ul class="nav hidden-md-down">
                     <li class="nav-item nav-heading">
                         @*<a class="nav-link">Connect</a>*@
-                        <br/>
+                        <br />
                     </li>
                     <li class="nav-item">
                         <a class="nav-link personal" href="/User/PersonalDetails"><i class="fa fa-user"></i> Personal Details </a>
@@ -208,20 +208,7 @@
                     </li>
                 </ul>
                 <!--desktop left menu-->
-                <div class="footerBox">
-                    <span class="socialIcon">
-                        @*Change request - Removed social sites icon from screen*@
-                        @*<ul>
-                            <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                            <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                        </ul>*@
-                    </span>
-                    <div><img class="incLogo" src="../Content/NewUI/images/inc_logo.png" alt="INC 5000"></div>
-                    <a class="copyRightText">Copyright © 2017 Silicus Technologies, LLC</a> @*Change request - Removed link*@
-                    
-                </div>
+                <!-- Old footer code section -->
             </nav>
         </div>
         <!-- Main content -->
@@ -231,6 +218,7 @@
             </div>
             <!-- /.conainer-fluid -->
         </main>
+        
         <!--aside menu-->
         <aside class="aside-menu">
             <div class="taskTitle">
@@ -251,12 +239,24 @@
                 <div class="tab-pane p-1 active" id="details" role="tabpanel">
                 </div>
                 <div class="tab-pane " id="activity" role="tabpanel">
-                    </div>
                 </div>
+            </div>
         </aside>
     </div>
     <!--footer start here-->
-   
+    <footer class="app-footer text-center">
+        <a class="copyRightText">Copyright © 2017 Silicus Technologies India Pvt. Ltd.<img class="incLogo" src="../Content/NewUI/images/inc_logo.png" alt="INC 5000"> </a>
+        @*<span class="float-right socialIcon">*@
+        @*Change request - Removed social sites icon from admin screen*@
+        @*<ul>
+                <li><a onclick="OpenCreditsModal()" href="#">Credits</a></li>
+                <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+            </ul>*@
+        @*</span>*@
+    </footer>
     @*<script src="../Scripts/NewJs/jquery.min.js"></script>*@
     <!--minified JavaScript v- Bootstrap v3.3.7-->
     <script src="../Scripts/NewJs/bootstrap.min.js"></script>
@@ -301,8 +301,7 @@
 
 <script type="text/javascript">
 
-    if (window.location.pathname == '/document/Learn')
-    {
+    if (window.location.pathname == '/document/Learn') {
         $("#Learn").addClass("active");
         $("#Connect").removeClass("active");
     }
@@ -329,7 +328,7 @@
             url: '/User/GetActivityDetails/',
             success: function (data) {
 
-                //Set change Request  form body html with data 
+                //Set change Request  form body html with data
                 $("#activity").html(data);
             },
             error: function (data) {
@@ -370,8 +369,7 @@
                         $('#changePasswordModal').modal('hide');
                         toastr.success("Your password successfully changed!");
                     }
-                    else
-                    {
+                    else {
                         toastr.error(ChangePasswordResponse.Message);
                         return;
                     }
@@ -379,7 +377,17 @@
                 error: function (ChangePasswordResponse) {
                     toastr.error("Error occurred while changing password!");
                 }
-    });
+            });
         }
     }
 </script>
+
+<style>
+.app-footer {
+    position: fixed;
+    z-index: 9999999;
+    bottom: 0;
+    margin: 0 auto !important;
+    width: 100%;
+}
+</style>

@@ -76,9 +76,11 @@ namespace Models
         public string SecurityNumber { get; set; }
 
         [Display(Name = "Aadhar Card Number")]
+        [RegularExpression(@"^[0-9]{12,12}$", ErrorMessage = "Not a valid Aadhar Card Number")]
         public string AadharCardNumber { get; set; }
-
+      
         [Display(Name = "UAN Number")]
+        [RegularExpression(@"^[0-9]{12,12}$", ErrorMessage = "Not a valid UAN Number")]
         public string UANNumber { get; set; }
 
         [Display(Name = "Mother Tongue")]
@@ -146,6 +148,9 @@ namespace Models
         [Display(Name = "Number Of Employments")]
         [Range(0, 20, ErrorMessage = "Please enter total number of Employments including current.(In case of fresher put 0)")]
         public int? NumberOfEmployments { get; set; }
+
+        public bool FinalStatus { get; set; }
+
     }
 
     public class BloodGroup

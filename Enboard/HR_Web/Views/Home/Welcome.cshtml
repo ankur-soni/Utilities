@@ -21,7 +21,7 @@
         <div class="col-lg-10 col-lg-offset-1">
             <div class="alert alert-welcome alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                Welcome <strong> User </strong>  to Silicus Onboarding Portal
+                Welcome <strong> @System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0] </strong>  to Silicus Onboarding Portal
             </div>
             <div class="welcomeText">
                 <p>Welcome to Enboard! </p>

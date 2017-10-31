@@ -157,7 +157,10 @@
                                 </div>
                                 <div class="row btnRow">
                                     <div class="col-md-12">
-                                        <a href="#" id="CD_SaveId" class="btn-save pull-right" tabindex="19"> Save</a>
+                                        @if (ViewBag.IsSubmitted == false)
+                                        {
+                                            <a href="#" id="CD_SaveId" class="btn-save pull-right" tabindex="19"> Save</a>
+                                        }
                                         @*<a class="btn-reset pull-right" href="#">Edit</a>*@
                                     </div>
                                 </div>
@@ -165,23 +168,23 @@
 
                             </div>
                         </div>
-                       
+
                     </div>
-                    
+
                     @Html.HiddenFor(m => m.ConDetID)
                     @Html.HiddenFor(m => m.CreatedBy)
                     @Html.HiddenFor(m => m.CreatedDate)
                 }
             </div>
         </div>
-        
+
     </div>
     @*Change request -Removed next button*@
     @*<div class="row btnRow educationDetailsNext">
-        <div class="col-md-12">
-            <a href="/Education/GetEducationalDetails" class="btn-save  mx-1" tabindex="19">Next</a>
-        </div>
-    </div>*@
+            <div class="col-md-12">
+                <a href="/Education/GetEducationalDetails" class="btn-save  mx-1" tabindex="19">Next</a>
+            </div>
+        </div>*@
 </div>
 
 <script type="text/javascript">
@@ -453,7 +456,7 @@
             $("#CD_txtOtherPermanantAddState").val('');
             $("#CD_txtOtherPermanantAddState").attr('required', false);
         }
-        
+
 
     });
 

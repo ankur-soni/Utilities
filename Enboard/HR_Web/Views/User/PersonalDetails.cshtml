@@ -19,7 +19,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="containerInner">        
+    <div class="containerInner">
         <div class="row">
             <label style="color:green" id="lblmsg"> </label>
             <div class="col-lg-12">
@@ -229,14 +229,15 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             @Html.LabelFor(m => m.AadharCardNumber)
-                                            @Html.TextBoxFor(m => m.AadharCardNumber, new { id = "PD_txtAadharCardNumber", placeholder = "Aadhar Card Number", @class = "form-control alphanumeric", maxlength = "20", tabindex = 19 })
+                                            @Html.TextBoxFor(m => m.AadharCardNumber, new { id = "PD_txtAadharCardNumber", placeholder = "Aadhar Card Number", @class = "form-control alphanumeric", maxlength = "12", tabindex = 19 })
                                             @Html.ValidationMessageFor(model => model.AadharCardNumber, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             @Html.LabelFor(m => m.UANNumber)
-                                            @Html.TextBoxFor(m => m.UANNumber, new { id = "PD_txtUANNumber", placeholder = "UAN Number", @class = "form-control alphanumeric", maxlength = "20", tabindex = 20 })
+                                            @Html.TextBoxFor(m => m.UANNumber, new { id = "PD_txtUANNumber", placeholder = "UAN Number", @class = "form-control alphanumeric", maxlength = "12", tabindex = 20 })
+                                            @Html.ValidationMessageFor(model => model.UANNumber, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
@@ -273,16 +274,16 @@
 
                                     </div>
                                     @*<div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.NumberOfEmployments)
-                                            <div class="form-inline">
-                                            @Html.TextBoxFor(m => m.NumberOfEmployments, new { id = "txtNumberOfEmployments", placeholder = "Number of Employments, Including Current", @class = "form-control alphanumeric", maxlength = "2", tabindex = 19, @style = "min-width:293px !important" })
-                                            <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="top" title="If you are frehser then put value 0, otherwise put number of previous employments including current employment."></label>
-                                            @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger", id = "valNumberOfEmployments" })
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.NumberOfEmployments)
+                                                <div class="form-inline">
+                                                @Html.TextBoxFor(m => m.NumberOfEmployments, new { id = "txtNumberOfEmployments", placeholder = "Number of Employments, Including Current", @class = "form-control alphanumeric", maxlength = "2", tabindex = 19, @style = "min-width:293px !important" })
+                                                <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="top" title="If you are frehser then put value 0, otherwise put number of previous employments including current employment."></label>
+                                                @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger", id = "valNumberOfEmployments" })
+                                                </div>
+
                                             </div>
-                                            
-                                        </div>
-                                    </div>*@
+                                        </div>*@
                                 </div>
 
                                 <div class="row">
@@ -328,7 +329,11 @@
                                 <div class="row btnRow">
                                     <div class="col-md-12">
                                         @*<a class="btn-reset" href="#">Edit</a>*@
-                                        <a href="#" id="PD_SaveId" class="btn-save" tabindex="27">Save</a>
+                                        @if (Model.FinalStatus == false)
+                                        {
+                                            <a href="#" id="PD_SaveId" class="btn-save" tabindex="27">Save</a>
+                                        }
+
 
                                     </div>
                                 </div>
@@ -336,7 +341,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 @Html.HiddenFor(m => m.PerDetID)
                 @Html.HiddenFor(m => m.CreatedBy)
                 @Html.HiddenFor(m => m.CreatedDate)
@@ -344,10 +349,10 @@
         </div>
         @*Change request -Removed next button*@
         @*<div class="row btnRow contactDetailsNext">
-            <div class="col-md-12">
-                <a href="/User/ContactDetails" class="btn-save  mx-1" tabindex="34">Next</a>
-            </div>
-        </div>*@
+                <div class="col-md-12">
+                    <a href="/User/ContactDetails" class="btn-save  mx-1" tabindex="34">Next</a>
+                </div>
+            </div>*@
     </div>
 }
 <!-- Modal -->
@@ -371,6 +376,10 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    numeric($('#PD_txtAadharCardNumber'));
+    numeric($('#PD_txtUANNumber'));
+
     //Function on click of send on change request modal
     function SaveChangeRequestDetails() {
         //Check if any of the textbox is blank
@@ -413,8 +422,7 @@
             $('#changeRequestModal').modal('hide');
             toastr.success(data.Message);
         }
-        else
-        {
+        else {
             toastr.error(data.Message);
         }
     }

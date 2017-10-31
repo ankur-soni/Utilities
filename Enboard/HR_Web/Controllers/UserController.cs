@@ -269,6 +269,14 @@ namespace HR_Web.Controllers
         {
             return View();
         }
+
+        public ActionResult GetDecryptString()
+        {
+            string Encrypt = "R19CZW5kZWxfMTIz";
+            string DeCryptString=  SessionManager.DecryptData(Encrypt);
+            return new EmptyResult();
+        }
+
         [HttpPost]
         public ActionResult LoginAs(ImpersonateUser details)
         {
@@ -634,7 +642,7 @@ namespace HR_Web.Controllers
                     {
                         _personalDetails = PersonalDetails;
                         _Logindetails = LoginDetails;
-
+                        employeePersonalDetails.FinalStatus = _Logindetails.IsSubmitted == null ? false : _Logindetails.IsSubmitted.Value;
                         employeePersonalDetails.FirstName = _Logindetails.FirstName;
                         employeePersonalDetails.LastName = _Logindetails.LastName;
                         employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
