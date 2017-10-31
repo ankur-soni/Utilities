@@ -20,142 +20,147 @@
 <div class="containerInner">
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel-group educationDetails tabSection" id="accordion" role="tablist" aria-multiselectable="true">
-                @using (Html.BeginForm("EducationalDetails", "Education", FormMethod.Post, new { id = "ED_FormId", @class = "addFormClass" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(m => m.EducationCategoryId)
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#educationForm" aria-expanded="true">
-                                    Add Education Details
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="educationForm" class="panel-collapse collapse in" role="tabpanel">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.EducationCategory, new { @class = "" }) <span class="red">*</span>
-                                            @Html.DropDownListFor(model => model.EducationCategoryId, educategories, "", new { id = "ED_ddlEducationCategory", @class = "form-control", placeholder = "Select Education Category", tabindex = 1 })
-                                            @Html.ValidationMessageFor(model => model.EducationCategoryId, "", new { @class = "text-danger" })
-                                            @Html.TextBoxFor(model => model.OtherEducationCategory, new { id = "ED_txtOtherEducationCategory", @class = "form-control otherTextBox", placeholder = "Please enter your Education Category", style = "display:none;", tabindex = 1 })
-                                            @Html.ValidationMessageFor(model => model.OtherEducationCategory, "", new { @class = "text-danger", id = "ED_valOtherEducationCategory" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.TypeofDegreeDeploma, new { @class = "" }) <span class="red">*</span>
-                                            @Html.DropDownListFor(model => model.TypeofDegreeDeplomaId, discipline, "", new { id = "ED_ddlTypeofDegreeDeploma", @class = "form-control", placeholder = "Select Discipline", tabindex = 2 })
-                                            @Html.ValidationMessageFor(model => model.TypeofDegreeDeplomaId, "", new { @class = "text-danger" })
-                                            @Html.TextBoxFor(model => model.OtherDiscipline, new { id = "ED_txtOtherTypeofDegreeDeploma", @class = "form-control otherTextBox", placeholder = "Please enter your Discipline", style = "display:none;", tabindex = 2 })
-                                            @Html.ValidationMessageFor(model => model.OtherDiscipline, "", new { @class = "text-danger", id = "ED_OtherClass" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.PassingYear, new { @class = "" }) <span class="red">*</span>
-                                            @Html.DropDownListFor(model => model.PassingYear, Years, "", new { id = "CD_txtPassingYear", @class = "form-control", tabindex = 3 })
-                                            @Html.ValidationMessageFor(model => model.PassingYear, "", new { @class = "text-danger" })
-                                            <label id="lblPassingYearError" class="text-danger" style="display:none;"> </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Class, new { @class = "" }) <span class="red">*</span>
-                                            @Html.DropDownListFor(model => model.ClassId, classes, "", new { id = "ED_ddlClass", @class = "form-control", placeholder = "Select Class", tabindex = 4 })
-                                            @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Specialization, new { @class = "" }) <span class="red">*</span>
-                                            @Html.TextBoxFor(model => model.OtherSpecialization, new { id = "ED_txtOtherSpecialization", @class = "form-control mt-5", placeholder = "Please enter your Specialization", tabindex = 5 })
-                                            @Html.ValidationMessageFor(model => model.OtherSpecialization, "", new { @class = "text-danger", id = "ED_OtherClass" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.InstituteName, new { @class = "" }) <span class="red">*</span>
-                                            @Html.DropDownListFor(model => model.InstituteNameId, college, "", new { id = "ED_ddlInstituteName", @class = "form-control", placeholder = "Select Institute Name", tabindex = 6 })
-                                            @Html.ValidationMessageFor(model => model.InstituteNameId, "", new { @class = "text-danger" })
-                                            @Html.TextBoxFor(model => model.OtherCollegeName, new { id = "ED_txtOtherInstituteName", @class = "form-control otherTextBox", placeholder = "Please enter your Institute Name", style = "display:none;", tabindex = 6 })
-                                            @Html.ValidationMessageFor(model => model.OtherCollegeName, "", new { @class = "text-danger", id = "ED_OtherInstituteName" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.FromDate, new { @class = "" }) <span class="red">*</span>
-                                            <div class="input-group">
-                                                @Html.TextBoxFor(model => model.FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.FromDate.HasValue ? Convert.ToString(Model.FromDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedFrom", @class = "form-control", tabindex = 7 })
-                                                <label class="input-group-addon btn" for="txtAttendedFrom">
-                                                    <span class="fa fa-calendar"></span>
-                                                </label>
-                                            </div>
-                                            @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.ToDate, new { @class = "" }) <span class="red">*</span>
-                                            <div class="input-group">
-                                                @Html.TextBoxFor(model => model.ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.ToDate.HasValue ? Convert.ToString(Model.ToDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedTo", @class = "form-control", tabindex = 8 })
-                                                <label class="input-group-addon btn" for="txtAttendedTo">
-                                                    <span class="fa fa-calendar"></span>
-                                                </label>
-                                            </div>
-                                            @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.University_BoardName, new { @class = "" }) <span class="red">*</span>
-                                            @Html.DropDownListFor(model => model.University_BoardNameId, university, "", new { id = "ED_ddlUniversity_BoardName", @class = "form-control", placeholder = "Select University/Board Name", tabindex = 9 })
-                                            @Html.ValidationMessageFor(model => model.University_BoardNameId, "", new { @class = "text-danger" })
-                                            @Html.TextBoxFor(model => model.OtherUniversityName, new { id = "ED_txtOtherUniversity_BoardName", @class = "form-control otherTextBox", placeholder = "Please enter your University / BoardName", style = "display:none;", tabindex = 9 })
-                                            @Html.ValidationMessageFor(model => model.OtherUniversityName, "", new { @class = "text-danger", id = "ED_OtherUniversity_BoardName" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Percentage, new { @class = "" }) <span class="red">*</span>
-                                            <div class="form-inline">
-                                                @Html.TextBoxFor(model => model.Percentage, new { id = "CD_txtPercentage", placeholder = "63.50", @class = "form-control", tabindex = 10, MaxLength = 5, @style = "min-width:293px !important" })
-                                                <label class="glyphicon glyphicon-info-sign gray-tooltip" style="width:25px;" data-toggle = "tooltip" data-placement = "right" title = "If your result is in CGPI then please convert it into percentage value with appropriate formula and enter 'Percentage Score' value."></label>
-                                            </div>
-                                            @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.BreaksDuringEducation) 
-                                            @Html.TextAreaFor(model => model.BreaksDuringEducation,10,30, new { id = "CD_txtBreaks", placeholder = "Breaks During Education", @class = "form-control", tabindex = 11, MaxLength = 100 })
-                                            @Html.ValidationMessageFor(model => model.BreaksDuringEducation, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row btnRow">
-                                    <div class="col-md-12">
-                                        @*<a class="btn-save  mx-1" id="btnEdnAddMore"> +  Add More </a>
-                                        <a href="#" id="ED_SaveData" class="btn-save" tabindex="14"> Save & Next</a>*@
 
-                                        <button class="btn-reset cancelText" type="reset" tabindex="12"> Cancel </button>
-                                        <a class="btn-save" id="ED_SaveData" tabindex="13"> Save </a>
+            <div class="panel-group educationDetails tabSection" id="accordion" role="tablist" aria-multiselectable="true">
+                @if (educategories.ToList().Count > 0)
+                {
+
+                    using (Html.BeginForm("EducationalDetails", "Education", FormMethod.Post, new { id = "ED_FormId", @class = "addFormClass" }))
+                {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.EducationCategoryId)
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#educationForm" aria-expanded="true">
+                                        Add Education Details
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="educationForm" class="panel-collapse collapse in" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.EducationCategory, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.EducationCategoryId, educategories, "", new { id = "ED_ddlEducationCategory", @class = "form-control", placeholder = "Select Education Category", tabindex = 1 })
+                                                @Html.ValidationMessageFor(model => model.EducationCategoryId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherEducationCategory, new { id = "ED_txtOtherEducationCategory", @class = "form-control otherTextBox", placeholder = "Please enter your Education Category", style = "display:none;", tabindex = 1 })
+                                                @Html.ValidationMessageFor(model => model.OtherEducationCategory, "", new { @class = "text-danger", id = "ED_valOtherEducationCategory" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.TypeofDegreeDeploma, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.TypeofDegreeDeplomaId, discipline, "", new { id = "ED_ddlTypeofDegreeDeploma", @class = "form-control", placeholder = "Select Discipline", tabindex = 2 })
+                                                @Html.ValidationMessageFor(model => model.TypeofDegreeDeplomaId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherDiscipline, new { id = "ED_txtOtherTypeofDegreeDeploma", @class = "form-control otherTextBox", placeholder = "Please enter your Discipline", style = "display:none;", tabindex = 2 })
+                                                @Html.ValidationMessageFor(model => model.OtherDiscipline, "", new { @class = "text-danger", id = "ED_OtherClass" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.PassingYear, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.PassingYear, Years, "", new { id = "CD_txtPassingYear", @class = "form-control", tabindex = 3 })
+                                                @Html.ValidationMessageFor(model => model.PassingYear, "", new { @class = "text-danger" })
+                                                <label id="lblPassingYearError" class="text-danger" style="display:none;"> </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Class, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.ClassId, classes, "", new { id = "ED_ddlClass", @class = "form-control", placeholder = "Select Class", tabindex = 4 })
+                                                @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Specialization, new { @class = "" }) <span class="red">*</span>
+                                                @Html.TextBoxFor(model => model.OtherSpecialization, new { id = "ED_txtOtherSpecialization", @class = "form-control mt-5", placeholder = "Please enter your Specialization", tabindex = 5 })
+                                                @Html.ValidationMessageFor(model => model.OtherSpecialization, "", new { @class = "text-danger", id = "ED_OtherClass" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.InstituteName, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.InstituteNameId, college, "", new { id = "ED_ddlInstituteName", @class = "form-control", placeholder = "Select Institute Name", tabindex = 6 })
+                                                @Html.ValidationMessageFor(model => model.InstituteNameId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherCollegeName, new { id = "ED_txtOtherInstituteName", @class = "form-control otherTextBox", placeholder = "Please enter your Institute Name", style = "display:none;", tabindex = 6 })
+                                                @Html.ValidationMessageFor(model => model.OtherCollegeName, "", new { @class = "text-danger", id = "ED_OtherInstituteName" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.FromDate, new { @class = "" }) <span class="red">*</span>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.FromDate.HasValue ? Convert.ToString(Model.FromDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedFrom", @class = "form-control", tabindex = 7 })
+                                                    <label class="input-group-addon btn" for="txtAttendedFrom">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.ToDate, new { @class = "" }) <span class="red">*</span>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.ToDate.HasValue ? Convert.ToString(Model.ToDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedTo", @class = "form-control", tabindex = 8 })
+                                                    <label class="input-group-addon btn" for="txtAttendedTo">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.University_BoardName, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.University_BoardNameId, university, "", new { id = "ED_ddlUniversity_BoardName", @class = "form-control", placeholder = "Select University/Board Name", tabindex = 9 })
+                                                @Html.ValidationMessageFor(model => model.University_BoardNameId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherUniversityName, new { id = "ED_txtOtherUniversity_BoardName", @class = "form-control otherTextBox", placeholder = "Please enter your University / BoardName", style = "display:none;", tabindex = 9 })
+                                                @Html.ValidationMessageFor(model => model.OtherUniversityName, "", new { @class = "text-danger", id = "ED_OtherUniversity_BoardName" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Percentage, new { @class = "" }) <span class="red">*</span>
+                                                <div class="form-inline">
+                                                    @Html.TextBoxFor(model => model.Percentage, new { id = "CD_txtPercentage", placeholder = "63.50", @class = "form-control", tabindex = 10, MaxLength = 5, @style = "min-width:293px !important" })
+                                                    <label class="glyphicon glyphicon-info-sign gray-tooltip" style="width:25px;" data-toggle="tooltip" data-placement="right" title="If your result is in CGPI then please convert it into percentage value with appropriate formula and enter 'Percentage Score' value."></label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.BreaksDuringEducation)
+                                                @Html.TextAreaFor(model => model.BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks", placeholder = "Breaks During Education", @class = "form-control", tabindex = 11, MaxLength = 100 })
+                                                @Html.ValidationMessageFor(model => model.BreaksDuringEducation, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row btnRow">
+                                        <div class="col-md-12">
+                                            @*<a class="btn-save  mx-1" id="btnEdnAddMore"> +  Add More </a>
+                                                <a href="#" id="ED_SaveData" class="btn-save" tabindex="14"> Save & Next</a>*@
+
+                                            <button class="btn-reset cancelText" type="reset" tabindex="12"> Cancel </button>
+                                            <a class="btn-save" id="ED_SaveData" tabindex="13"> Save </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
                 @if (Model.educationDetialslist != null)
                 {
@@ -184,7 +189,7 @@
                                                           id = "ED_ddlEducationCategory" + i.ToString(),
                                                           @class = "form-control",
                                                           placeholder = "Select Education Category",
-                                                          tabindex = (@i + 1).ToString()+14,
+                                                          tabindex = (@i + 1).ToString() + 14,
                                                           onchange = "educationCategoryChange(this);"
                                                       })
                                                     @Html.ValidationMessageFor(m => Model.educationDetialslist[i].EducationCategoryId, "", new { @class = "text-danger" })
@@ -345,10 +350,10 @@
     </div>
     @*Change request -Removed next button*@
     @*<div class="row btnRow emplyomentDetailsNext">
-        <div class="col-md-12">
-            <a href="/Employement/Index" id="ED_Next" class="btn-save  mx-1" tabindex="900000">Next</a>
-        </div>
-    </div>*@
+            <div class="col-md-12">
+                <a href="/Employement/Index" id="ED_Next" class="btn-save  mx-1" tabindex="900000">Next</a>
+            </div>
+        </div>*@
 </div>
 <style type="text/css">
     .tooltip-inner {
