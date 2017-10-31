@@ -25,7 +25,7 @@
 
                             <div class="btn btn-primary btn-upload btn-sm pull-right">
                                 <span>Upload</span>
-                                <input id=@("Upload" + item.DocumentID) type="file" name="file" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                                <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
                             </div>
                         </li>
                     </ul>
@@ -51,7 +51,7 @@
                                 <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files. </span>
                                 <div class="btn btn-primary btn-upload btn-sm pull-right">
                                     <span>Upload</span>
-                                    <input id=@("SaveUpload" + item.DocumentID) type="file" name="file" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                                    <input id=@("SaveUpload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
                                 </div>
                             </li>
                         </ul>
