@@ -52,14 +52,16 @@
                                         <div class="form-group">
                                             @Html.LabelFor(m => m.AnotherContact, new { @class = "" }) <span class="red">*</span>
                                             <div class="input-group">
-                                                <select class="form-control titleSelect" tabindex="2">
+                                                @*<select class="form-control titleSelect" tabindex="2">
                                                     <option>+ 1</option>
                                                     <option selected="">+ 91</option>
                                                     <option>+ 44</option>
-                                                </select>
+                                                </select>*@
+                                                @Html.TextBoxFor(m => m.CountryCallingCode, new { id = "CD_txtcountrycallingcodes", placeholder = "+91", @class = "form-control titleSelect", maxlength = "5", tabindex = 2 })
                                                 @Html.TextBoxFor(m => m.AnotherContact, new { id = "CD_txtAnotherContact", placeholder = "02023659820", @class = "form-control numberSpace", maxlength = "11", tabindex = 3 })
                                             </div>
                                             @Html.ValidationMessageFor(model => model.AnotherContact, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(model => model.CountryCallingCode, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -190,6 +192,9 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
+              
+
         if ('@ViewBag.IsSubmitted'.toLowerCase() === 'true') {
             $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save").attr('disabled', 'disabled');
             $('#FD_Save').remove();

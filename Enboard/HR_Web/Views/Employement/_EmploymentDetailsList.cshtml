@@ -251,7 +251,8 @@
         $('#FromDate' + editId).prop('disabled', flag);
         $('#ToDate' + editId).prop('disabled', flag);
         $('#ReasonForLeave' + editId).prop('disabled', flag);
-
+        $('#chk' + editId).prop('disabled', flag);
+        
         if (flag == false) {
             $(save).css('display', 'block');
             $(cancel).css('display', 'none');

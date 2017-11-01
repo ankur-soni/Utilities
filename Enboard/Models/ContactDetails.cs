@@ -187,6 +187,9 @@ namespace Models
         [Required(ErrorMessage = "Please enter Alternate Contact Number")]
         [RegularExpression(@"^[0-9]{8,11}$", ErrorMessage = "Not a valid Phone number")]
         public string AnotherContact { get; set; }
+        [Required(ErrorMessage = "Please enter country calling code")]
+        [RegularExpression(@"^[+][0-9]{1,5}$", ErrorMessage = "Not a valid Country calling code")]
+        public string CountryCallingCode { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string UpdatedBy { get; set; }

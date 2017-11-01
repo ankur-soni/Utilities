@@ -34,7 +34,7 @@
         <EntityTypeShape EntityType="IPDModel.EmployeeSkillDetail" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="IPDModel.Master_Certification" Width="1.5" PointX="4.75" PointY="6.75" />
         <EntityTypeShape EntityType="IPDModel.Master_SkillSet" Width="1.5" PointX="6.75" PointY="6.75" />
-        <EntityTypeShape EntityType="IPDModel.EmployeeContactDetail" Width="1.5" PointX="16.5" PointY="30.25" />
+        <EntityTypeShape EntityType="IPDModel.EmployeeContactDetail" Width="2.75" PointX="16.5" PointY="30.25" />
         <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_City" />
         <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_City1" />
         <AssociationConnector Association="IPDModel.FK_EmployeeContactDetail_Master_Country" />

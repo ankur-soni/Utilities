@@ -14,7 +14,7 @@ namespace Models
        
         public long UserId { get; set; }
 
-        [Display (Name="User Name")]
+        [Display (Name="Email")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please enter Password")]

@@ -117,6 +117,7 @@
           <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="IsBothAddSame" Type="bit" />
+          <Property Name="CountryCallingCode" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="EmployeeEducationDetail">
           <Key>
@@ -2039,6 +2040,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="Master_State1" Relationship="IPDModel.FK_EmployeeContactDetail_Master_State1" FromRole="EmployeeContactDetail" ToRole="Master_State" />
           <NavigationProperty Name="LoginDetail" Relationship="IPDModel.FK_EmployeeContactDetail_LoginDetails" FromRole="EmployeeContactDetail" ToRole="LoginDetail" />
           <Property Name="IsBothAddSame" Type="Boolean" />
+          <Property Name="CountryCallingCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_EmployeeContactDetail_Master_City">
           <End Type="IPDModel.Master_City" Role="Master_City" Multiplicity="1" />
@@ -3248,6 +3250,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="EmployeeContactDetails">
             <EntityTypeMapping TypeName="IPDModel.EmployeeContactDetail">
               <MappingFragment StoreEntitySet="EmployeeContactDetail">
+                <ScalarProperty Name="CountryCallingCode" ColumnName="CountryCallingCode" />
                 <ScalarProperty Name="IsBothAddSame" ColumnName="IsBothAddSame" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />

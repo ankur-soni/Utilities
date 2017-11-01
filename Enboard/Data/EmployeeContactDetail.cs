@@ -45,6 +45,7 @@ namespace Data
         public string UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<bool> IsBothAddSame { get; set; }
+        public string CountryCallingCode { get; set; }
     
         public virtual Master_City Master_City { get; set; }
         public virtual Master_City Master_City1 { get; set; }
