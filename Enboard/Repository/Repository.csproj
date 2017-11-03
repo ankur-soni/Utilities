@@ -86,6 +86,7 @@
     <Compile Include="Concrete\EducationCategoryRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Concrete\EducationCategoryUniversityBoardMappingRepository.cs" />
     <Compile Include="Concrete\EducationDocumentCategoryMappingRepository.cs" />
     <Compile Include="Concrete\EducationRepository.cs" />
     <Compile Include="Concrete\EmployeeRepository.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Interface\IDocumentDetailsRepository.cs" />
     <Compile Include="Interface\IDocumentRepository.cs" />
     <Compile Include="Interface\IEducationCategoryRepository.cs" />
+    <Compile Include="Interface\IEducationCategoryUniversityBoardMappingRepository.cs" />
     <Compile Include="Interface\IEducationDocumentCategoryMappingRepository.cs" />
     <Compile Include="Interface\IEducationRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />

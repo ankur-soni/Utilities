@@ -18,6 +18,7 @@ namespace Data
         public Master_University()
         {
             this.EmployeeEducationDetails = new HashSet<EmployeeEducationDetail>();
+            this.EducationCategoryUniversityBoardMappings = new HashSet<EducationCategoryUniversityBoardMapping>();
         }
     
         public int UniversityID { get; set; }
@@ -27,5 +28,7 @@ namespace Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeEducationDetail> EmployeeEducationDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EducationCategoryUniversityBoardMapping> EducationCategoryUniversityBoardMappings { get; set; }
     }
 }

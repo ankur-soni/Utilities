@@ -20,6 +20,7 @@ namespace Data
             this.AdminEducationCategoryForUsers = new HashSet<AdminEducationCategoryForUser>();
             this.EducationDocumentCategoryMappings = new HashSet<EducationDocumentCategoryMapping>();
             this.EmployeeEducationDetails = new HashSet<EmployeeEducationDetail>();
+            this.EducationCategoryUniversityBoardMappings = new HashSet<EducationCategoryUniversityBoardMapping>();
         }
     
         public int EducationCategoryID { get; set; }
@@ -33,5 +34,7 @@ namespace Data
         public virtual ICollection<EducationDocumentCategoryMapping> EducationDocumentCategoryMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeEducationDetail> EmployeeEducationDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EducationCategoryUniversityBoardMapping> EducationCategoryUniversityBoardMappings { get; set; }
     }
 }

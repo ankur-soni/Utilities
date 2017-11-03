@@ -72,6 +72,20 @@
           <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
           <Property Name="UpdatedDate" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoardMapping' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EducationCategoryUniversityBoardMapping">
+          <Key>
+            <PropertyRef Name="EduCatUNiBodID" />
+            <PropertyRef Name="EducationCategoryID" />
+            <PropertyRef Name="UniversityID" />
+          </Key>
+          <Property Name="EduCatUNiBodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EducationCategoryID" Type="int" Nullable="false" />
+          <Property Name="UniversityID" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="EducationDocumentCategoryMapping">
           <Key>
             <PropertyRef Name="EduDocCatID" />
@@ -657,6 +671,18 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID">
+          <End Role="Master_EducationCategory" Type="Self.Master_EducationCategory" Multiplicity="1" />
+          <End Role="EducationCategoryUniversityBoardMapping" Type="Self.EducationCategoryUniversityBoardMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Master_EducationCategory">
+              <PropertyRef Name="EducationCategoryID" />
+            </Principal>
+            <Dependent Role="EducationCategoryUniversityBoardMapping">
+              <PropertyRef Name="EducationCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EducationDocumentCategoryMapping_Master_Document">
           <End Role="Master_Document" Type="Self.Master_Document" Multiplicity="1" />
           <End Role="EducationDocumentCategoryMapping" Type="Self.EducationDocumentCategoryMapping" Multiplicity="*" />
@@ -1125,6 +1151,18 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_UniversityBoardUniversityId_MappingtableUniversityId">
+          <End Role="Master_University" Type="Self.Master_University" Multiplicity="1" />
+          <End Role="EducationCategoryUniversityBoardMapping" Type="Self.EducationCategoryUniversityBoardMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Master_University">
+              <PropertyRef Name="UniversityID" />
+            </Principal>
+            <Dependent Role="EducationCategoryUniversityBoardMapping">
+              <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WelcomeNoteDetails_WelcomeNoteDetails">
           <End Role="LoginDetails" Type="Self.LoginDetails" Multiplicity="1" />
           <End Role="WelcomeNoteDetails" Type="Self.WelcomeNoteDetails" Multiplicity="*" />
@@ -1186,6 +1224,15 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySet Name="Master_State" EntityType="Self.Master_State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_University" EntityType="Self.Master_University" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WelcomeNoteDetails" EntityType="Self.WelcomeNoteDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EducationCategoryUniversityBoardMapping" EntityType="Self.EducationCategoryUniversityBoardMapping" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EducationCategoryUniversityBoardMapping].[EduCatUNiBodID] AS [EduCatUNiBodID], 
+    [EducationCategoryUniversityBoardMapping].[EducationCategoryID] AS [EducationCategoryID], 
+    [EducationCategoryUniversityBoardMapping].[UniversityID] AS [UniversityID], 
+    [EducationCategoryUniversityBoardMapping].[CreatedBy] AS [CreatedBy], 
+    [EducationCategoryUniversityBoardMapping].[CreatedDate] AS [CreatedDate]
+    FROM [dbo].[EducationCategoryUniversityBoardMapping] AS [EducationCategoryUniversityBoardMapping]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="UserReminder" EntityType="Self.UserReminder" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [UserReminder].[UserId] AS [UserId], 
@@ -1218,6 +1265,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <AssociationSet Name="FK_DocumentDetails_Master_DocumentCategory" Association="Self.FK_DocumentDetails_Master_DocumentCategory">
             <End Role="Master_DocumentCategory" EntitySet="Master_DocumentCategory" />
             <End Role="DocumentDetails" EntitySet="DocumentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID" Association="Self.fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID">
+            <End Role="Master_EducationCategory" EntitySet="Master_EducationCategory" />
+            <End Role="EducationCategoryUniversityBoardMapping" EntitySet="EducationCategoryUniversityBoardMapping" />
           </AssociationSet>
           <AssociationSet Name="FK_EducationDocumentCategoryMapping_Master_Document" Association="Self.FK_EducationDocumentCategoryMapping_Master_Document">
             <End Role="Master_Document" EntitySet="Master_Document" />
@@ -1375,6 +1426,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             <End Role="Master_Country" EntitySet="Master_Country" />
             <End Role="Master_State" EntitySet="Master_State" />
           </AssociationSet>
+          <AssociationSet Name="fk_UniversityBoardUniversityId_MappingtableUniversityId" Association="Self.fk_UniversityBoardUniversityId_MappingtableUniversityId">
+            <End Role="Master_University" EntitySet="Master_University" />
+            <End Role="EducationCategoryUniversityBoardMapping" EntitySet="EducationCategoryUniversityBoardMapping" />
+          </AssociationSet>
           <AssociationSet Name="FK_WelcomeNoteDetails_WelcomeNoteDetails" Association="Self.FK_WelcomeNoteDetails_WelcomeNoteDetails">
             <End Role="LoginDetails" EntitySet="LoginDetails" />
             <End Role="WelcomeNoteDetails" EntitySet="WelcomeNoteDetails" />
@@ -1521,6 +1576,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="AdminEducationCategoryForUsers" Relationship="IPDModel.FK_AdminEducationCategoryForUser_Master_EducationCategory" FromRole="Master_EducationCategory" ToRole="AdminEducationCategoryForUser" />
           <NavigationProperty Name="EducationDocumentCategoryMappings" Relationship="IPDModel.FK_EducationDocumentCategoryMapping_Master_EducationCategory" FromRole="Master_EducationCategory" ToRole="EducationDocumentCategoryMapping" />
           <NavigationProperty Name="EmployeeEducationDetails" Relationship="IPDModel.FK_EmployeeEducationDetail_Master_EducationCategory" FromRole="Master_EducationCategory" ToRole="EmployeeEducationDetail" />
+          <NavigationProperty Name="EducationCategoryUniversityBoardMappings" Relationship="IPDModel.fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID" FromRole="Master_EducationCategory" ToRole="EducationCategoryUniversityBoardMapping" />
         </EntityType>
         <EntityType Name="Master_Form">
           <Key>
@@ -1625,6 +1681,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="EmployeeEducationDetails" Relationship="IPDModel.FK_EmployeeEducationDetail_Master_University" FromRole="Master_University" ToRole="EmployeeEducationDetail" />
+          <NavigationProperty Name="EducationCategoryUniversityBoardMappings" Relationship="IPDModel.fk_UniversityBoardUniversityId_MappingtableUniversityId" FromRole="Master_University" ToRole="EducationCategoryUniversityBoardMapping" />
         </EntityType>
         <EntityType Name="WelcomeNoteDetail">
           <Key>
@@ -1923,6 +1980,15 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <AssociationSet Name="FK_EmploymentCount_LoginDetails" Association="IPDModel.FK_EmploymentCount_LoginDetails">
             <End Role="LoginDetail" EntitySet="LoginDetails" />
             <End Role="EmploymentCount" EntitySet="EmploymentCounts" />
+          </AssociationSet>
+          <EntitySet Name="EducationCategoryUniversityBoardMappings" EntityType="IPDModel.EducationCategoryUniversityBoardMapping" />
+          <AssociationSet Name="fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID" Association="IPDModel.fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID">
+            <End Role="Master_EducationCategory" EntitySet="Master_EducationCategory" />
+            <End Role="EducationCategoryUniversityBoardMapping" EntitySet="EducationCategoryUniversityBoardMappings" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UniversityBoardUniversityId_MappingtableUniversityId" Association="IPDModel.fk_UniversityBoardUniversityId_MappingtableUniversityId">
+            <End Role="Master_University" EntitySet="Master_University" />
+            <End Role="EducationCategoryUniversityBoardMapping" EntitySet="EducationCategoryUniversityBoardMappings" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="EmployeeMaster">
@@ -2901,6 +2967,44 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EducationCategoryUniversityBoardMapping">
+          <Key>
+            <PropertyRef Name="EduCatUNiBodID" />
+            <PropertyRef Name="EducationCategoryID" />
+            <PropertyRef Name="UniversityID" />
+          </Key>
+          <Property Name="EduCatUNiBodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EducationCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="UniversityID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Master_EducationCategory" Relationship="IPDModel.fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID" FromRole="EducationCategoryUniversityBoardMapping" ToRole="Master_EducationCategory" />
+          <NavigationProperty Name="Master_University" Relationship="IPDModel.fk_UniversityBoardUniversityId_MappingtableUniversityId" FromRole="EducationCategoryUniversityBoardMapping" ToRole="Master_University" />
+        </EntityType>
+        <Association Name="fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID">
+          <End Type="IPDModel.Master_EducationCategory" Role="Master_EducationCategory" Multiplicity="1" />
+          <End Type="IPDModel.EducationCategoryUniversityBoardMapping" Role="EducationCategoryUniversityBoardMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Master_EducationCategory">
+              <PropertyRef Name="EducationCategoryID" />
+            </Principal>
+            <Dependent Role="EducationCategoryUniversityBoardMapping">
+              <PropertyRef Name="EducationCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UniversityBoardUniversityId_MappingtableUniversityId">
+          <End Type="IPDModel.Master_University" Role="Master_University" Multiplicity="1" />
+          <End Type="IPDModel.EducationCategoryUniversityBoardMapping" Role="EducationCategoryUniversityBoardMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Master_University">
+              <PropertyRef Name="UniversityID" />
+            </Principal>
+            <Dependent Role="EducationCategoryUniversityBoardMapping">
+              <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3581,6 +3685,17 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NumberOfEmployments" ColumnName="NumberOfEmployments" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EducationCategoryUniversityBoardMappings">
+            <EntityTypeMapping TypeName="IPDModel.EducationCategoryUniversityBoardMapping">
+              <MappingFragment StoreEntitySet="EducationCategoryUniversityBoardMapping">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
+                <ScalarProperty Name="EducationCategoryID" ColumnName="EducationCategoryID" />
+                <ScalarProperty Name="EduCatUNiBodID" ColumnName="EduCatUNiBodID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

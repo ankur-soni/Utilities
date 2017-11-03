@@ -68,6 +68,7 @@ namespace Data
         public virtual DbSet<CandidateGraphProgressDetail> CandidateGraphProgressDetails { get; set; }
         public virtual DbSet<EmployeeEducationDetail> EmployeeEducationDetails { get; set; }
         public virtual DbSet<EmploymentCount> EmploymentCounts { get; set; }
+        public virtual DbSet<EducationCategoryUniversityBoardMapping> EducationCategoryUniversityBoardMappings { get; set; }
     
         public virtual ObjectResult<GetDocumentDetails_Result> GetDocumentDetails()
         {

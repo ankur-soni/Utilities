@@ -137,6 +137,7 @@ namespace Models
         
         public IPagedList<EducationDetailsHistory> EducationalDetailsList { get; set; }
 
+        public SelectList UniversityList { get; set; }
         //public SelectList EducationCategoryList { get; set; }
     }
 

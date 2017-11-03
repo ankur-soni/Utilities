@@ -294,7 +294,7 @@
                                                 <div class="form-group">
                                                     @Html.LabelFor(m => Model.educationDetialslist[i].University_BoardName, new { @class = "" }) <span class="red">*</span>
                                                     @Html.DropDownListFor(m => Model.educationDetialslist[i].University_BoardNameId,
-                                                new SelectList(university, "Value", "Text", Model.educationDetialslist[i].University_BoardNameId), "",
+                                                new SelectList(@Model.educationDetialslist[i].UniversityList, "Value", "Text", Model.educationDetialslist[i].University_BoardNameId), "",
                                                new
                                                {
                                                    id = "ED_ddlUniversity_BoardName" + i.ToString(),
@@ -1165,6 +1165,76 @@
             ""
         );
     });
+
+
+    $('#ED_ddlEducationCategory').change(function () {
+        var text = $("#ED_ddlEducationCategory option:selected").text();
+        if (text == 'Other') {
+            LoadBoardUniverSityByEducationCategoryId("");
+            /*
+            $('#txtOtherPlaceOfBirthState').show();
+            $("#txtOtherPlaceOfBirthState").val('');
+            $("#txtOtherPlaceOfBirthState").focus();
+            $("#txtOtherPlaceOfBirthState").attr('required', true);
+            */
+        }
+        else {
+            LoadBoardUniverSityByEducationCategoryId($("#ED_ddlEducationCategory").val());
+            /*
+            $("#txtOtherPlaceOfBirthState").hide();
+            $("#txtOtherPlaceOfBirthState").val('');
+            $("#txtOtherPlaceOfBirthState").attr('required', false);
+            */
+        }
+        $('#txtOtherPlaceOfBirthCity').hide();
+        $("#txtOtherPlaceOfBirthCity").val('');
+    });
+
+    if ('@Model.EducationCategoryId' != null && '@Model.EducationCategoryId' != '') {
+        LoadBoardUniverSityByEducationCategoryId('@Model.EducationCategoryId');
+    }
+
+    function LoadBoardUniverSityByEducationCategoryId(Id) {
+        var value = Id;
+        var url = "/Education/LoadBoardUniverSityByEducationCategoryId/";
+
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { EducationCategoryID: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+
+                var markup = "<option value=''></option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                markup += "<option value=" + '@university.LastOrDefault().Value' + ">" + '@university.LastOrDefault().Text' + "</option>";
+
+                $("#ED_ddlUniversity_BoardName").html(markup).show();
+
+                var otherBirthCity = $("#ED_txtOtherUniversity_BoardName").val();
+                if (otherBirthCity == '') {
+                    otherBirthCity = '@Model.OtherUniversityName';
+                }
+                if (otherBirthCity != '') {
+                    $("#ED_txtOtherUniversity_BoardName").show();
+                    $("#ED_ddlUniversity_BoardName option[value='" + @Model.University_BoardNameId + "']").attr('selected', 'selected')
+                    $("#ED_txtOtherUniversity_BoardName").val(otherCurrCity);
+                }
+                else {
+                    if (otherBirthCity == "" && '@Model.University_BoardNameId' != '' && data.length > 1)
+                        $("#ED_ddlUniversity_BoardName option[value='" + @Model.University_BoardNameId + "']").attr('selected', 'selected')
+                }
+            },
+            error: function (reponse) {
+
+            }
+        });
+    }
+
+
 </script>
 
 

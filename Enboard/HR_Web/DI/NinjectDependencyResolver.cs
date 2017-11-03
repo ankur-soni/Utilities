@@ -111,6 +111,10 @@ namespace HR_Web.DI
             Bind<IDocumentCatNewRepository>().To<DocumentCatNewRepository>();
             Bind<IDocumentCatNewService>().To<DocumentCatNewService>();
 
+
+            Bind<IEducationCategoryUniversityBoardMappingRepository>().To<EducationCategoryUniversityBoardMappingRepository>();
+            Bind<IEducationCategoryUniversityBoardMappingService>().To<EducationCategoryUniversityBoardMappingService>();
+
             Bind<IEducationDocumentCategoryMappingRepository>().To<EducationDocumentCategoryMappingRepository>();
             Bind<IEducationDocumentCategoryMappingService>().To<EducationDocumentCategoryMappingService>();
 

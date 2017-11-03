@@ -93,6 +93,9 @@
         <AssociationConnector Association="IPDModel.FK_EmployeeEducationDetail_Master_University" />
         <EntityTypeShape EntityType="IPDModel.EmploymentCount" Width="1.5" PointX="7.5" PointY="41.125" />
         <AssociationConnector Association="IPDModel.FK_EmploymentCount_LoginDetails" />
+        <EntityTypeShape EntityType="IPDModel.EducationCategoryUniversityBoardMapping" Width="1.5" PointX="10.5" PointY="56.5" />
+        <AssociationConnector Association="IPDModel.fk_EducationCategoryEducationCategoryID_MappingtableEducationCategoryID" />
+        <AssociationConnector Association="IPDModel.fk_UniversityBoardUniversityId_MappingtableUniversityId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

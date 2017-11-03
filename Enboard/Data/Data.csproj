@@ -80,6 +80,9 @@
     <Compile Include="DocumentStatus_Result.cs">
       <DependentUpon>HR_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="EducationCategoryUniversityBoardMapping.cs">
+      <DependentUpon>HR_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="EducationDocumentCategoryMapping.cs">
       <DependentUpon>HR_Model.tt</DependentUpon>
     </Compile>

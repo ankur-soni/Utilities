@@ -30,6 +30,7 @@ namespace HR_Web.Controllers
         private ISpecializationService _ISpecializationService;
         private IUniversityService _IUniversityService;
         private IUserService _IUserService;
+        private IEducationCategoryUniversityBoardMappingService _IEducationCategoryUniversityBoardMappingService;
 
         //Data class
         EmployeeEducationDetail _educationDetails;
@@ -39,9 +40,10 @@ namespace HR_Web.Controllers
         Master_EducationCategory _educationCategory;
         Master_Specialization _specialization;
         Master_University _university;
+        EducationCategoryUniversityBoardMapping _educationCategoryUniversityBoardMapping;
 
         public EducationController(IUserService IUserService, IEducationService IEducationService, IClassService IClassService, ICollegeService ICollegeService, IDisciplineService IDisciplineService,
-            IEducationCategoryService IEducationCategoryService, ISpecializationService ISpecializationService, IUniversityService IUniversityService)
+            IEducationCategoryService IEducationCategoryService, ISpecializationService ISpecializationService, IUniversityService IUniversityService, IEducationCategoryUniversityBoardMappingService IEducationCategoryUniversityBoardMappingService)
         {
             this._IUserService = IUserService;
             this._IEducationService = IEducationService;
@@ -58,6 +60,8 @@ namespace HR_Web.Controllers
             _specialization = new Master_Specialization();
             this._IUniversityService = IUniversityService;
             _university = new Master_University();
+            this._IEducationCategoryUniversityBoardMappingService = IEducationCategoryUniversityBoardMappingService;
+            _educationCategoryUniversityBoardMapping = new EducationCategoryUniversityBoardMapping();
 
         }
         public EducationController()
@@ -233,7 +237,9 @@ namespace HR_Web.Controllers
                     OtherCollegeName = x.OtherCollegeName,
                     University_BoardNameId = x.UniversityID,
                     OtherUniversityName = x.OtherUniversityName,
-                    Percentage = x.Percentage
+                    Percentage = x.Percentage,
+                    UniversityList = GetUniversityList(x.EducationCategoryID)
+
                 }).OrderByDescending(x => x.PassingYear).ToList();
 
                 foreach (var item in educationModel.educationDetialslist)
@@ -255,6 +261,50 @@ namespace HR_Web.Controllers
             var userDetails = _IUserService.GetById(userId);
             ViewBag.IsSubmitted = userDetails == null ? false : userDetails.IsSubmitted.HasValue && userDetails.IsSubmitted.Value == true;
             return View("NewEducationDetails", educationModel);
+        }
+
+        private SelectList GetUniversityList(int EducationCategoryID)
+        {
+            List<Master_University> List = new List<Master_University>();
+            //List<Master_University> MappingList = new List<Master_University>();
+            List<EducationCategoryUniversityBoardMapping> ListMapping = new List<EducationCategoryUniversityBoardMapping>();
+
+
+            if (EducationCategoryID > 0)
+            {
+                int _EducationCategoryID = Convert.ToInt32(EducationCategoryID);
+
+                List = _IUniversityService.GetAll(null, null, "").ToList();
+                ListMapping = _IEducationCategoryUniversityBoardMappingService.GetAll(null, null, "").Where(x => x.EducationCategoryID == _EducationCategoryID).ToList();
+
+
+            }
+
+            var MappingList = (from A in List join B in ListMapping on A.UniversityID equals B.UniversityID select new { A.UniversityID, A.University }).ToList();
+            SelectList selList = new SelectList(MappingList, "UniversityID", "University");
+
+            return selList;
+
+        }
+
+
+        [HttpPost]
+        public ActionResult LoadBoardUniverSityByEducationCategoryId(int EducationCategoryID)
+        {
+            try
+            {
+
+                SelectList selList = GetUniversityList(EducationCategoryID);
+
+                return Json(selList);
+                //Code change - EDMX Fix 
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public IPagedList<EducationDetailsHistory> EducationListPagedList(int userid)
@@ -411,7 +461,7 @@ namespace HR_Web.Controllers
                 disciplineList.Clear();
                 disciplineList.Add(item);
             }
-            else if(catId != 0 && catId != sscCatId && catId != hscCatId)
+            else if (catId != 0 && catId != sscCatId && catId != hscCatId)
             {
                 disciplineList = disciplineList.Where(m => m.DisciplineID != sscDisId && m.DisciplineID != hscDisId).ToList();
             }
@@ -750,7 +800,7 @@ namespace HR_Web.Controllers
         public ActionResult DeleteEducationDetails(int EducationID)
         {
             var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-            bool data = _IEducationService.DeleteEducationDetail(EducationID,userName);
+            bool data = _IEducationService.DeleteEducationDetail(EducationID, userName);
             return Json(new { result = data }, JsonRequestBehavior.AllowGet);
         }
 
