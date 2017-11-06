@@ -491,6 +491,7 @@
     <Content Include="Views\User\_PopupJobViteUserList.cshtml" />
     <Content Include="Views\User\_popupJobViteCandidateList.cshtml" />
     <Content Include="Views\User\LoginAs.cshtml" />
+    <Content Include="Views\Employement\_ChangeRequestForm.cshtml" />
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

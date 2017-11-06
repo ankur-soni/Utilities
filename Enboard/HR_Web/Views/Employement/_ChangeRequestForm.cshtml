@@ -1,0 +1,21 @@
+﻿@model Models.Employment
+@using (Ajax.BeginForm("SaveChangeRequestDetails", "Employement", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessForm" }, new { id = "PD_ChangeRequestFormId" }))
+{
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.LabelFor(m => m.NumberOfEmployments) <span class="red">*</span>
+                @Html.TextBoxFor(m => m.NumberOfEmployments, new { id = "CRtxtNumberOfEmployments", placeholder = "3", @class = "form-control titleSelect",@maxlength=2, @tabindex = 28 })
+                @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        numeric($('#CRtxtNumberOfEmployments'));
+    //Added below line of code for client side validations
+        $.validator.unobtrusive.parse("#PD_ChangeRequestFormId");
+    });
+</script>

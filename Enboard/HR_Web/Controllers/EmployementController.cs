@@ -46,7 +46,88 @@ namespace HR_Web.Controllers
             this._IUserService = IUserService;
             this._IEmploymentCountService = IEmploymentCountService;
         }
+        [HttpPost]
+        public ActionResult SaveChangeRequestDetails(Employment model)
+        {
+            //get user details from db from logindetails table
+            var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+            var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
+            var LoginDetails = _IUserService.GetById(userId);
+            if (model.NumberOfEmployments > 0)
+            {
+                if (LoginDetails.NoOfEmployments != model.NumberOfEmployments)
+                {
+                    CandidateChangeRequestsDetail obj = new CandidateChangeRequestsDetail();
+                    obj.UserID = userId;
+                    obj.FieldName = "NoOfEmployments";
+                    obj.FieldValue = model.NumberOfEmployments.ToString();
+                    //obj.IsApproved = false;
+                    obj.IsApproved = null;
+                    obj.CreatedBy = userName;
+                    obj.UpdatedBy = userName;
+                    obj.CreatedDate = DateTime.UtcNow;
+                    obj.UpdatedDate = DateTime.UtcNow;
+                    obj.OldValue = LoginDetails.NoOfEmployments.ToString();
+
+                    var result = _IUserService.AddChangeRequestDetails(obj);
+
+                }
+            }
+
+
+
+            return Json(new { result = true, Message = "Change request has been sent successfully!" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult CheckIfThereIsAnyChange(Employment model)
+        {
+
+            //get user details from db from logindetails table
+            var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+            var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+
+            //get login details
+            var LoginDetails = _IUserService.GetById(userId);
+
+            //All the fields on change request  fields should have values entered by Admin 
+            if (LoginDetails.NoOfEmployments != model.NumberOfEmployments)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet); //Change
+            }
+            else return Json(false, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        [HttpGet]
+        [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+        public ActionResult OpenChangeRequestForm()
+        {
+           
+
+            //Get logged in user details 
+            var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+            var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+
+            var LoginDetails = _IUserService.GetById(userId);
+
+            var Employment = new Employment();
+
+            if (LoginDetails != null)
+            {
+
+                
+                Employment.NumberOfEmployments = LoginDetails.NoOfEmployments;
+             
+
+            }
+
+            
+
+            return PartialView("_ChangeRequestForm", Employment);
+        }
         public ActionResult Index()
         {
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
@@ -55,12 +136,19 @@ namespace HR_Web.Controllers
             var employmentCount = _IEmploymentCountService.GetEmploymentCountByUserId(userId);
             Employment employment = new Employment();
 
-            if (employmentCount != null)
-            {
-                ViewBag.NumberOfEmployments = employmentCount.NumberOfEmployments;
-                employment.NumberOfEmployments = employmentCount.NumberOfEmployments;
-            }
+            ViewBag.NumberOfEmployments = userDetails.NoOfEmployments;
+            employment.NumberOfEmployments = userDetails.NoOfEmployments;
 
+            /* As per Change request EnBoard_Comments 01-11-2017.docx NoOfEmployments should update at admin side */
+            /* 
+               if (employmentCount != null)
+               {
+       
+                    ViewBag.NumberOfEmployments = employmentCount.NumberOfEmployments;
+                        employment.NumberOfEmployments = employmentCount.NumberOfEmployments;
+
+                }
+             */
             ViewData["Employment"] = employment;
             var employmentList = EmploymentDetailList(userId);
             EmployementModel employementModel = new EmployementModel();
@@ -71,7 +159,8 @@ namespace HR_Web.Controllers
             {
                 employementModel.IsCurrentEmployment = false;
             }
-
+            employementModel.NoOfEmployementAdmin = userDetails.NoOfEmployments == null ? 0 : Convert.ToInt32(userDetails.NoOfEmployments); 
+            employementModel.NoOfEmployementAdded = employmentList.Count;
             employementModel.CurrencyList = GetCurrencies();
             employementModel.EmploymnetDetailsList = EmploymnetListPagedList(employmentList.OrderByDescending(p => p.ToDate).ToList()).ToList();
             return View(employementModel);
@@ -96,6 +185,9 @@ namespace HR_Web.Controllers
 
                     var numberOfEmployment = _IEmploymentCountService.GetEmploymentCountByUserId((int)employementModel.UserId);
 
+                    #region commented Validation for Employee count 
+                    //==================As Per Comment of EnBoard_ Comments 01-11-2017.docx=====================    
+                    /*
                     if (numberOfEmployment != null)
                     {
                         if (numberOfEmployment.NumberOfEmployments == null || employmentList.Count >= numberOfEmployment.NumberOfEmployments)
@@ -119,6 +211,9 @@ namespace HR_Web.Controllers
                         };
                         return RedirectToAction("Index");
                     }
+                    */
+                    //==================End As Per Comment of EnBoard_ Comments 01-11-2017.docx=====================    
+                    #endregion
 
 
                     if (employmentList.Count != 0 && employmentList.Any(x => x.IsCurrentEmployment == true) && employementModel.IsCurrentEmployment == true)
@@ -433,10 +528,10 @@ namespace HR_Web.Controllers
 
             IEnumerable<SelectListItem> selList = from l in List
                                                   select new SelectListItem
-                                 {
-                                     Value = l.CurrencyID.ToString(),
-                                     Text = l.CurrencyCode + " ( " + l.CurrencySymbol + " )"
-                                 };
+                                                  {
+                                                      Value = l.CurrencyID.ToString(),
+                                                      Text = l.CurrencyCode + " ( " + l.CurrencySymbol + " )"
+                                                  };
             SelectList selectList = new SelectList(selList, "Value", "Text");
 
             return selectList;
@@ -499,7 +594,7 @@ namespace HR_Web.Controllers
             bool status = false;
             var UserId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             var employmentCount = _IEmploymentCountService.GetEmploymentCountByUserId(UserId);
-            
+
             if (employmentCount != null)
             {
                 if (employmentCount.NumberOfEmployments > 0 && employmentCount.NumberOfEmployments >= model.NumberOfEmployments)

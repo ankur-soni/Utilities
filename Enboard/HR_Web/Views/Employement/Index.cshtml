@@ -5,7 +5,8 @@
     ViewBag.CurrencyList = Model.CurrencyList;
     var msg = TempData["Message"] as Models.ErrorMessageModel;
 }
-
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="~/Scripts/EDP_Validations.js"></script>
 <div class="containerInner">
     <div class="row">
         <div class="col-lg-12">
@@ -26,6 +27,25 @@
             <a href="/Family/FamilyDetails" id="EM_Next" class="btn-save  mx-1" tabindex="21">Next</a>
         </div>
     </div>*@
+</div>
+<!-- Modal -->
+<div id="changeRequestModal" class="modal fade enbordModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Request to Edit Information </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-save pull-right" id="btnChangeRequestModalSave" onclick="SaveChangeRequestDetails()"> Send</a>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            </div>
+        </div>
+    </div>
 </div>
 @if (msg != null)
 {

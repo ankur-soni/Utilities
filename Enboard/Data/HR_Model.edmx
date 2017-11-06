@@ -348,6 +348,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="IsActive" Type="int" />
           <Property Name="IsDelete" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="NoOfEmployments" Type="int" />
         </EntityType>
         <EntityType Name="Master_Bloodgroup">
           <Key>
@@ -2646,6 +2647,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="CandidateGraphProgressDetails" Relationship="IPDModel.FK_Graph_Graph1" FromRole="LoginDetail" ToRole="CandidateGraphProgressDetail" />
           <NavigationProperty Name="EmployeeEducationDetails" Relationship="IPDModel.FK_EmployeeEducationDetail_LoginDetails" FromRole="LoginDetail" ToRole="EmployeeEducationDetail" />
           <NavigationProperty Name="EmploymentCounts" Relationship="IPDModel.FK_EmploymentCount_LoginDetails" FromRole="LoginDetail" ToRole="EmploymentCount" />
+          <Property Name="NoOfEmployments" Type="Int32" />
         </EntityType>
         <Association Name="FK_AdminEducationCategoryForUser_LoginDetails">
           <End Type="IPDModel.LoginDetail" Role="LoginDetail" Multiplicity="0..1" />
@@ -3584,6 +3586,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="LoginDetails">
             <EntityTypeMapping TypeName="IPDModel.LoginDetail">
               <MappingFragment StoreEntitySet="LoginDetails">
+                <ScalarProperty Name="NoOfEmployments" ColumnName="NoOfEmployments" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
