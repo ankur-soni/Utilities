@@ -275,12 +275,16 @@ namespace HR_Web.Controllers
                 int _EducationCategoryID = Convert.ToInt32(EducationCategoryID);
 
                 List = _IUniversityService.GetAll(null, null, "").ToList();
-                ListMapping = _IEducationCategoryUniversityBoardMappingService.GetAll(null, null, "").Where(x => x.EducationCategoryID == _EducationCategoryID).ToList();
+                ListMapping = _IEducationCategoryUniversityBoardMappingService.GetAll(null, null, "").Where(x => x.EducationCategoryID == _EducationCategoryID ).ToList();
 
 
             }
 
             var MappingList = (from A in List join B in ListMapping on A.UniversityID equals B.UniversityID select new { A.UniversityID, A.University }).ToList();
+            var other = (from A in List where A.University == "Other" select new { A.UniversityID, A.University }).FirstOrDefault();
+            MappingList.Add(other);
+
+
             SelectList selList = new SelectList(MappingList, "UniversityID", "University");
 
             return selList;

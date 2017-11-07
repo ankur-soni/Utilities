@@ -11,12 +11,13 @@
             <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="right" title="If you are a fresher then put value 0, otherwise put number of previous employments including current employment and count should not exceed 20."></label>
             @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger", id = "valNumberOfEmployments" })
         </div>
-        @if (ViewBag.NumberOfEmployments <= 0 || ViewBag.NumberOfEmployments == null)
+
+        @*@if (ViewBag.NumberOfEmployments <= 0 || ViewBag.NumberOfEmployments == null)
         {
             <div class="row btnRow">
                 <span class="pull-right userNote mx-1"> <i class="fa fa-certificate" aria-hidden="true"></i> Kindly add number of employments including current employment.</span>
             </div>
-        }
+        }*@
 
         <div class="row btnRow">
             <div class="row">
@@ -25,8 +26,8 @@
                 </div>
             </div>
             @*<a href="#" id="editNumberOfEmploymentsLink" class="mx-1 cancelText" tabindex="2"> Edit</a>*@
-            <a href="#" id="cancelEditNumberOfEmploymentsLink" class="mx-1 cancelText hide" tabindex="2"> Cancel</a>
-            <button id="addNumberOfEmployments" onclick="CheckNumberOfEmployments();" class="btn-save mx-1" tabindex="2"> Add</button>
+            @*<a href="#" id="cancelEditNumberOfEmploymentsLink" class="mx-1 cancelText hide" tabindex="2"> Cancel</a>
+            <button id="addNumberOfEmployments" onclick="CheckNumberOfEmployments();" class="btn-save mx-1" tabindex="2"> Add</button>*@
         </div>
     </div>
 
@@ -36,6 +37,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#txtNumberOfEmployments").prop("disabled", true);
+        /*
         var NumberOfEmployments = $("#txtNumberOfEmployments").val();
         if (NumberOfEmployments > 0) {
             $("#txtNumberOfEmployments").prop("disabled", true);
@@ -50,6 +53,7 @@
         } else if (NumberOfEmployments == '') {
             $("#editNumberOfEmploymentsLink").hide();
         }
+        */
     });
 
 
