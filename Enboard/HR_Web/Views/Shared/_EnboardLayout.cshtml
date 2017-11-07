@@ -270,6 +270,16 @@
         $(window).load(function () {
             ajaxindicatorstop();
         });
+        /*
+        window.onbeforeunload = function (event) {
+            ajaxindicatorstart('Loading.. please wait..');
+            setTimeout(ajaxindicatorstop(), 21000);
+        }
+
+        $(document).ajaxError(function () {
+            ajaxindicatorstop();
+        });
+        */
 
         $(document).ready(function () {
             ajaxindicatorstart('Loading.. please wait..');

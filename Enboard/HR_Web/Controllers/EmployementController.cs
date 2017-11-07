@@ -228,6 +228,8 @@ namespace HR_Web.Controllers
 
                     }
 
+                    #region Employee Can join same company more than one time 
+                    /*
                     if (employmentList.Any(x => x.CompanyName == employementModel.CompanyName))
                     {
                         TempData["EmployementModel"] = employementModel;
@@ -239,7 +241,8 @@ namespace HR_Web.Controllers
                         return RedirectToAction("Index");
 
                     }
-
+                    */
+                    #endregion Employee Can join same company more than one time 
                     if (employementModel.FromDate.HasValue && employementModel.ToDate.HasValue)
                     {
                         if (employementModel.FromDate.Value >= employementModel.ToDate.Value)
