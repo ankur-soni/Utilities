@@ -372,7 +372,7 @@ namespace HR_Web.Controllers
                 Mapper.CreateMap<EducationDetails, Data.EmployeeEducationDetail>();
                 EmployeeEducationDetail eduDetail = Mapper.Map<EducationDetails, Data.EmployeeEducationDetail>(details);
 
-                var obj = _IEducationService.GetEmployeeEducationDetailsByUserID(Convert.ToInt16(details.UserId)); //educationList.Where(u => u.UserID == details.UserId).ToList();
+                var obj = _IEducationService.GetEmployeeEducationDetailsByUserID(Convert.ToInt32(details.UserId)); //educationList.Where(u => u.UserID == details.UserId).ToList();
                 var objUpdate = obj.Where(u => u.UserID == details.UserId).ToList();
 
                 if (obj != null)
@@ -419,7 +419,7 @@ namespace HR_Web.Controllers
                     return Json(new { result = false, Message = "Success" }, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Json(new { result = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
             }
