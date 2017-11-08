@@ -1269,5 +1269,17 @@ input[type=text]::-ms-clear { display: none; }
 	
 }
 .LoginpageLogos li img {
-	height: 60px;
+	height: 40px;
 }
+@media (min-width: 1366px) {
+    .LoginpageLogos li img {
+        height: 45px;        
+    }
+}
+
+@media (min-width: 1600px) {
+    .LoginpageLogos li img {
+        height: 60px;
+    }
+}
+

@@ -173,3 +173,13 @@
         text-align: center;
     }
 }
+@media (min-width: 1366px) {
+    .LoginContainer .loginContent {
+    top: 5%;
+    }
+}
+@media (min-width: 1600px) {
+    .LoginContainer .loginContent {
+    top: 15%;
+    }
+}
