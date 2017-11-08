@@ -108,15 +108,25 @@
                         if (data.Sucess) {
                             $("#" + CandChangeReqID).remove();
                             if ($("#userGrid tbody tr").length == 0) {
+                                if(@Model.PageNumber>1)
+                                {
+                                    var url = "@Url.Action("CandidateChangeRequests","User",new { page = @Model.PageNumber - 1, sortOrder="", searchString="" })"
+                                    toastr.options.onShown = function () { location.href = url; }
+                                }
+                                
                                 $("#userGrid tbody").append('<tr><td style="text-align: center;" colspan="4">No Data Found</td></tr>');
+
                             }
                             //change request 2 - modified success and failure toastr
-                            if(Action)
-                            toastr.success('Change request is approved successfully.');
-                            else
-                            toastr.error('Change request is denied.');
+                            debugger;
 
+
+                            if (Action)
+                                toastr.success('Change request is approved successfully.');
+                            else
+                                toastr.error('Change request is denied.');
                             $('#myModalRequest').hide();
+
                         }
                         else {
                             toastr.error('Unable to ' + (Action ? 'approve' : 'deny') + ' this request.');
@@ -178,7 +188,7 @@
                 sorting($('#hdnSortOrder').val(), $('#hdnIndex').val());
             });
 
-            //search user by search string 
+            //search user by search string
             $("#focusedInput").keyup(function (event) {
                 if (event.keyCode == 13) {
                     $("#btnSearch").click();
