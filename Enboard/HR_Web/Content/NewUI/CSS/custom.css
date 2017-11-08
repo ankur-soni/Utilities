@@ -1255,3 +1255,19 @@ input[type=text]::-ms-clear { display: none; }
     margin: 0 auto !important;
     padding: 50px 20px !important;
 }
+
+.LoginpageLogos {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+.LoginpageLogos li {
+	display: inline-block;
+	margin: 15px 10px;
+	padding: 0px;
+
+	
+}
+.LoginpageLogos li img {
+	height: 60px;
+}

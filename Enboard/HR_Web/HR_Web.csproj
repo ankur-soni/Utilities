@@ -265,6 +265,13 @@
     <Content Include="Content\NewUI\images\glory.jpg" />
     <Content Include="Content\NewUI\images\inc_logo.png" />
     <Content Include="Content\NewUI\images\login.jpg" />
+    <Content Include="Content\NewUI\images\loginpage\cmmi-3.svg" />
+    <Content Include="Content\NewUI\images\loginpage\inc-5000.svg" />
+    <Content Include="Content\NewUI\images\loginpage\microsoft-gold-partner-1.svg" />
+    <Content Include="Content\NewUI\images\loginpage\microsoft-gold-partner-2.svg" />
+    <Content Include="Content\NewUI\images\loginpage\panacea.svg" />
+    <Content Include="Content\NewUI\images\loginpage\tuv-nord-27001.svg" />
+    <Content Include="Content\NewUI\images\loginpage\tuv-nord-9001.svg" />
     <Content Include="Content\NewUI\images\logo.png" />
     <Content Include="Content\NewUI\images\logo.svg" />
     <Content Include="Content\NewUI\images\neha.jpg" />
