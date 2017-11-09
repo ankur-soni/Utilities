@@ -272,17 +272,17 @@ namespace HR_Web.Controllers
 
         public ActionResult GetDecryptString()
         {
-            string Encrypt = "R19CZW5kZWxfMTIz";
-            string DeCryptString=  SessionManager.DecryptData(Encrypt);
+            string Encrypt = "U19TYXRoZV8xMjM=";
+            string DeCryptString = SessionManager.DecryptData(Encrypt);
             return new EmptyResult();
         }
 
         [HttpPost]
         public ActionResult LoginAs(ImpersonateUser details)
         {
-          
 
-          
+
+
 
             var user = _IUserService.GetAll(null, null, "").ToList();
 
@@ -303,7 +303,7 @@ namespace HR_Web.Controllers
 
             ModelState.AddModelError("", "User does not exist");
             return View(details);
-            
+
 
         }
 
@@ -430,21 +430,35 @@ namespace HR_Web.Controllers
         [ValidateRole]
         public ActionResult ChangeRequestAction(long CandChangeReqID, bool Action)
         {
-            CandidateChangeRequestsDetail result = new CandidateChangeRequestsDetail();
-            if (System.Web.HttpContext.Current.Request.IsAuthenticated)
+            string ErrorMessage = "";
+
+            try
             {
-                var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-                result = _IUserService.ChangeRequestAction(CandChangeReqID, Action, userName);
-                if (result != null)
+
+
+
+                CandidateChangeRequestsDetail result = new CandidateChangeRequestsDetail();
+                if (System.Web.HttpContext.Current.Request.IsAuthenticated)
                 {
-                    string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for " + getUIValue(result.FieldName) + " change has been " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "denied, Please contact SPOC for further details") + ".<br><br> From, <br/> Team Silicus <font face='Cambria' size= '2'  color ='#31849B'>  <br/> <br/> <br/> ***This is an auto generated email, please do not reply</body></html>";
-                    string subject = "Your change request has been " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "approved" : "denied");
-                    SendMailToUser(result.LoginDetail, htmlBody, subject);
-                    return this.Json(new { Sucess = true });
+                    var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+                    result = _IUserService.ChangeRequestAction(CandChangeReqID, Action, userName);
+                    if (result != null)
+                    {
+                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for " + getUIValue(result.FieldName) + " change has been " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "denied, Please contact SPOC for further details") + ".<br><br> From, <br/> Team Silicus <font face='Cambria' size= '2'  color ='#31849B'>  <br/> <br/> <br/> ***This is an auto generated email, please do not reply</body></html>";
+                        string subject = "Your change request has been " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "approved" : "denied");
+                        SendMailToUser(result.LoginDetail, htmlBody, subject);
+                        return this.Json(new { Sucess = true });
+                    }
+
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+
 
             }
-            return this.Json(new { Sucess = false });
+            return this.Json(new { Sucess = false, ErrorMessage = ErrorMessage });
 
         }
 
@@ -956,30 +970,33 @@ namespace HR_Web.Controllers
 
         private bool SendMailToUser(LoginDetail model, string body, string subject, string strto = null, Boolean isAttachment = false, string zipFilePath = null)
         {
-            string From = ConfigurationManager.AppSettings["EmailFrom"];
-            string To = model.Email;
-            if (strto != null)
-                To = strto;
-            System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(From, To, subject, body);
-            mailMessage.IsBodyHtml = true;
-            if (isAttachment)
-            {
-                Attachment data = new Attachment(zipFilePath);
-                mailMessage.Attachments.Add(data);
-            }
             SmtpClient client = new SmtpClient();
-
-            client.Host = ConfigurationManager.AppSettings["HostName"];
-            client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["PortNumber"]);
-            client.UseDefaultCredentials = true;
-            client.EnableSsl = true;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-
             try
             {
+                
+                string From = ConfigurationManager.AppSettings["EmailFrom"];
+                string To = model.Email;
+                if (strto != null)
+                    To = strto;
+                System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(From, To, subject, body);
+                mailMessage.IsBodyHtml = true;
+                if (isAttachment)
+                {
+                    Attachment data = new Attachment(zipFilePath);
+                    mailMessage.Attachments.Add(data);
+                }
+
+
+                client.Host = ConfigurationManager.AppSettings["HostName"];
+                client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["PortNumber"]);
+                client.UseDefaultCredentials = true;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+
                 client.EnableSsl = true;
 
-                ServicePointManager.ServerCertificateValidationCallback = delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+                ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
                 ThreadPool.QueueUserWorkItem(t =>
                 {
                     client.SendCompleted += (s, e) =>
@@ -1011,6 +1028,8 @@ namespace HR_Web.Controllers
             catch (Exception ex)
             {
                 client.Dispose();
+                throw ex;
+
             }
             return true;
         }
@@ -1045,7 +1064,7 @@ namespace HR_Web.Controllers
             {
                 client.EnableSsl = true;
 
-                ServicePointManager.ServerCertificateValidationCallback = delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+                ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
                 ThreadPool.QueueUserWorkItem(t =>
                 {
                     client.SendCompleted += (s, e) =>
@@ -2415,7 +2434,7 @@ namespace HR_Web.Controllers
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
-                    model.NoOfEmployments = obj.NoOfEmployments== null ? 0: (int)obj.NoOfEmployments;
+                    model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
 
                     //set selected values from AdminEducationCategoryForUser table
@@ -2495,7 +2514,8 @@ namespace HR_Web.Controllers
                             status = _IUserService.Update(obj, null, "");
 
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             throw;
                         }
                         //Update existing education caetgrories for that user
@@ -2595,7 +2615,7 @@ namespace HR_Web.Controllers
         }
 
 
-       // [HttpPost]
+        // [HttpPost]
         public async Task<ActionResult> SyncCandidates(int? page, string sortOrder, string searchString = "")
         {
 
@@ -2607,8 +2627,8 @@ namespace HR_Web.Controllers
             string JobVitesc = ConfigurationManager.AppSettings["JobVitesc"];
             string JobViteCandidateSelecttionStatus = ConfigurationManager.AppSettings["JobViteCandidateSelecttionStatus"];
 
-           string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
-        
+            string baseAddress = JobViteBaseURL + "=" + JobViteUserId + "&sc=" + JobVitesc + "&wflowstate=" + JobViteCandidateSelecttionStatus + "&format=json";
+
 
             try
             {
@@ -2633,8 +2653,8 @@ namespace HR_Web.Controllers
                                              //RequisitionID = candidate.application.job.requisitionId,
                                              //DepartmentName = candidate.application.job.department,
                                              //CountryCode= candidate.countryCode
-                                           
-                }).ToList();
+
+                                         }).ToList();
 
                     if (Request.HttpMethod != "GET")
                     {
@@ -2644,8 +2664,8 @@ namespace HR_Web.Controllers
                     int pageSize = 10000;
                     int pageNumber = (page ?? 1);
                     ViewBag.PageIndex = pageNumber;
-                   // ViewBag.SearchString = searchString;
-              
+                    // ViewBag.SearchString = searchString;
+
                     return PartialView("_popupJobViteCandidateList", candidateList.ToPagedList(pageNumber, pageSize));
                 }
             }
@@ -2665,7 +2685,7 @@ namespace HR_Web.Controllers
             string lastname = "";
 
 
-            
+
             if (System.Web.HttpContext.Current.Request.IsAuthenticated)
             {
                 userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
@@ -2747,9 +2767,9 @@ namespace HR_Web.Controllers
 
                     details.JoiningLocation = "Pune";   /*Change Request - Adding default Designation as first value in the list */
 
-                    
+
                     details.DesignationID = 1; /*Change Request - Adding default Designation as first value in the list */
-                    details.RoleID = 16; 
+                    details.RoleID = 16;
 
                     //details.ActivatedDate = DateTime.UtcNow; /*Change Request - Removing unwanted  details while adding user*/
 
@@ -2759,9 +2779,9 @@ namespace HR_Web.Controllers
                     details.IsActive = 0;
                     details.IsDelete = false;
                     details.LastLogin = DateTime.UtcNow;
-                    
+
                     status = _IUserService.AddUserDetails(details);
-                    
+
                     //Update existing education caetgrories for that user
                     _IUserService.UpdateEducationCategoryDetails(details.UserID, userName);
                     //Update existing education caetgrories for that user
@@ -2773,9 +2793,9 @@ namespace HR_Web.Controllers
                     educationCategoryDetails.CreatedBy = userName;
                     educationCategoryDetails.CreatedDate = DateTime.UtcNow;
                     var stat = _IUserService.AddEducationCategoryDetails(educationCategoryDetails, userName);
-                    
+
                 }
-             
+
             }
             if (status)
             {
@@ -2793,14 +2813,14 @@ namespace HR_Web.Controllers
             bool ifRecordExist = false;
             try
             {
-                
+
                 var employeedata = string.Empty;
                 var firstname = string.Empty;
                 var lastname = string.Empty;
                 var email = string.Empty;
                 foreach (AddEditUserModel model in jobViteCandidateList)
                 {
-                   
+
                     lastname = model.LastName;
                     firstname = Regex.Replace(model.FirstName, @"\s+", "");
                     lastname = model.LastName;
@@ -2954,7 +2974,7 @@ namespace HR_Web.Controllers
             .Select(x => new OfferCandidateModel()
             {
                 EmployeeName = x.FirstName + " " + x.LastName,
-                ShortDOB = (x.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))) :string.Empty, //convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))),
+                ShortDOB = (x.DOB != null) ? convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))) : string.Empty, //convertDateToShort(Convert.ToDateTime(SessionManager.DecryptData(x.DOB))),
                 EmailAddress = x.Email,
                 UserID = x.UserID
             })
@@ -4440,7 +4460,7 @@ namespace HR_Web.Controllers
                     {
                         return Json(new { result = false, Message = "Email Id already exists!" }, JsonRequestBehavior.AllowGet);
                     }
-                       
+
                     CandidateChangeRequestsDetail obj = new CandidateChangeRequestsDetail();
                     obj.UserID = userId;
                     obj.FieldName = "Email";
@@ -4536,17 +4556,35 @@ namespace HR_Web.Controllers
 
             if (details != null)
             {
-                activityDetails.PersonalDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.PersonalDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                activityDetails.ContactDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.ContactDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                activityDetails.EducationDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.EducationDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                activityDetails.EmploymentDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.EmploymentDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                activityDetails.FamilyDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.FamilyDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                activityDetails.UploadDocumentDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.UploadDocumentDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                if (details.PersonalDetailsDate != null)
+                {
+                    activityDetails.PersonalDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.PersonalDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
+                if (details.ContactDetailsDate != null)
+                {
+                    activityDetails.ContactDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.ContactDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
+                if (details.EducationDetailsDate != null)
+                {
+                    activityDetails.EducationDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.EducationDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
+                if (details.EmploymentDetailsDate != null)
+                {
+                    activityDetails.EmploymentDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.EmploymentDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
+                if (details.FamilyDetailsDate != null)
+                {
+                    activityDetails.FamilyDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.FamilyDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
+                if (details.UploadDocumentDetailsDate != null)
+                {
+                    activityDetails.UploadDocumentDetailsDate = TimeZoneInfo.ConvertTimeFromUtc(details.UploadDocumentDetailsDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                }
             }
 
             List<ActivityViewModel> activityList = new List<ActivityViewModel>();
 
-            activityList.Add(new ActivityViewModel { TabName = "Personal Details",LastModifiedDate = activityDetails.PersonalDetailsDate, TabURL = "/User/PersonalDetails"});
+            activityList.Add(new ActivityViewModel { TabName = "Personal Details", LastModifiedDate = activityDetails.PersonalDetailsDate, TabURL = "/User/PersonalDetails" });
             activityList.Add(new ActivityViewModel { TabName = "Contact Details", LastModifiedDate = activityDetails.ContactDetailsDate, TabURL = "/User/ContactDetails" });
             activityList.Add(new ActivityViewModel { TabName = "Education Details", LastModifiedDate = activityDetails.EducationDetailsDate, TabURL = "/Education/GetEducationalDetails" });
             activityList.Add(new ActivityViewModel { TabName = "Employment Details", LastModifiedDate = activityDetails.EmploymentDetailsDate, TabURL = "/Employement/Index" });
@@ -4641,7 +4679,7 @@ namespace HR_Web.Controllers
         #region Add admin user
 
         [HttpGet]
-        [Authorize] 
+        [Authorize]
         public ActionResult AdminUsers(int? page)
         {
             List<LoginDetails> userList = new List<LoginDetails>();
@@ -4678,7 +4716,7 @@ namespace HR_Web.Controllers
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
             }
 
-            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]);  
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PagingSize"]);
             int pageNumber = (page ?? 1);
 
             ViewBag.PageIndex = pageNumber;
@@ -4707,7 +4745,7 @@ namespace HR_Web.Controllers
                     userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
                     userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
                 }
-                
+
                 LoginDetail adminUserDetail = new LoginDetail();
                 adminUserDetail.CreatedDate = DateTime.UtcNow;
                 adminUserDetail.FirstName = model.FirstName;

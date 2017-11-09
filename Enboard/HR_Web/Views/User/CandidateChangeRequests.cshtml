@@ -130,6 +130,7 @@
                         }
                         else {
                             toastr.error('Unable to ' + (Action ? 'approve' : 'deny') + ' this request.');
+                            alert(data.ErrorMessage)
                             $('#myModalRequest').hide();
                         }
                     }
