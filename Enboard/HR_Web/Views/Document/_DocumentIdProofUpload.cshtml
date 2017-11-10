@@ -1,14 +1,14 @@
 ﻿@using HR_Web.Utilities;
 @model Models.DocumentDetailListViewModel
 @{
-    List<Data.DocumentDetail> _documentDetailList;
+    IEnumerable<Data.DocumentDetail> _documentDetailList;
     IEnumerable<Data.Master_Document> _Master_DocumentListIDProof = Model.Master_DocumentList;
 }
 
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
 {
     <ul class="docList">
-        @foreach (var item in _Master_DocumentListIDProof.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof).ToList())
+        @foreach (var item in _Master_DocumentListIDProof.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof).AsQueryable())
         {
             if (item.DocumentID != Constant.IDProof.ValidWorkVISA)
             {
@@ -29,7 +29,7 @@
                             </div>
                         </li>
                     </ul>
-                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).ToList();}
+                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
                     {
                         <ul class="docDescription">

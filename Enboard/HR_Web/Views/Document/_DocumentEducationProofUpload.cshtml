@@ -1,7 +1,7 @@
 ﻿@using HR_Web.Utilities;
 @model Models.DocumentDetailListViewModel
 @{
-    List<Data.DocumentDetail> _documentDetailList;
+    IEnumerable<Data.DocumentDetail> _documentDetailList;
     IEnumerable<Data.Master_Document> _Master_DocumentList = Model.Master_DocumentList;
 }
 
@@ -11,7 +11,7 @@
         @if (Model.EducationCategoryList.Any())
         {
             _Master_DocumentList = (from educationItem in Model.EducationCategoryList
-                                    join mappingItem in _Master_DocumentList.Where(x => x.DocCatID == Constant.DocumentCategory.Education).ToList()
+                                    join mappingItem in _Master_DocumentList.Where(x => x.DocCatID == Constant.DocumentCategory.Education).AsQueryable()
                                     on educationItem equals mappingItem.DocumentID
                                     select mappingItem);
 
@@ -33,7 +33,7 @@
                             </div>
                         </li>
                     </ul>
-                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).ToList();}
+                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
                     {
                         <ul class="docDescription">

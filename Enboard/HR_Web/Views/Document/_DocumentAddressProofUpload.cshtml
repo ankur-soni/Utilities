@@ -1,14 +1,14 @@
 ﻿@using HR_Web.Utilities;
 @model Models.DocumentDetailListViewModel
 @{
-    List<Data.DocumentDetail> _documentDetailList;
+    IEnumerable<Data.DocumentDetail> _documentDetailList;
     IEnumerable<Data.Master_Document> _Master_DocumentListAddress = Model.Master_DocumentList;
 }
 <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i>Upload Address Proof document each for Current and Permanent Address. Upload against any of the options below. </span>
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
 {
     <ul class="docList">
-        @foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof).ToList())
+        @foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof).AsQueryable())
         {
             if (item.DocumentID !=1)
             {
@@ -26,7 +26,7 @@
                             </div>
                         </li>
                     </ul>
-                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).ToList();}
+                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
                 {
                 <ul class="docDescription">

@@ -1,7 +1,7 @@
 ﻿@using HR_Web.Utilities;
 @model Models.DocumentDetailListViewModel
 @{
-    List<Data.DocumentDetail> _documentDetailList;
+    IEnumerable<Data.DocumentDetail> _documentDetailList;
     IEnumerable<Data.Master_Document> _Master_DocumentListAddress = Model.Master_DocumentList;
 }
 
@@ -25,7 +25,7 @@
                             <div class="panel-body">
                                 @if (documentId.IsCurrentEmployment.HasValue && documentId.IsCurrentEmployment.Value)
                                 {
-                                    foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.Employment && x.DocumentID != Constant.EmploymentProof.RelievingLetter && x.DocumentID != Constant.EmploymentProof.ExperienceLetter && x.DocumentID != Constant.EmploymentProof.LatestSalaryRevisionLetter).ToList())
+                                    foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.Employment && x.DocumentID != Constant.EmploymentProof.RelievingLetter && x.DocumentID != Constant.EmploymentProof.ExperienceLetter && x.DocumentID != Constant.EmploymentProof.LatestSalaryRevisionLetter).AsQueryable())
                                     {
                                         <ul class="docList">
                                             <li>
@@ -45,7 +45,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).ToList();}
+                                                @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).AsQueryable();}
 
                                                 @if (_documentDetailList.Any())
                                                 {
@@ -77,7 +77,7 @@
                                 }
                                 else
                                 {
-                                    foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.Employment && x.DocumentID != Constant.EmploymentProof.RelievingLetter && x.DocumentID != Constant.EmploymentProof.LatestSalaryRevisionLetter).ToList())
+                                    foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.Employment && x.DocumentID != Constant.EmploymentProof.RelievingLetter && x.DocumentID != Constant.EmploymentProof.LatestSalaryRevisionLetter).AsQueryable())
                                     {
                                         <ul class="docList">
                                             <li>
@@ -98,7 +98,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).ToList();}
+                                                @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).AsQueryable();}
 
                                                 @if (_documentDetailList.Any())
                                                 {
