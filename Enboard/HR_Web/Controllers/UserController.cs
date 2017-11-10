@@ -973,12 +973,16 @@ namespace HR_Web.Controllers
             SmtpClient client = new SmtpClient();
             try
             {
-                
+                string SMTPUserName = ConfigurationManager.AppSettings["SMTPUserName"];
+                string SMTPPassword = ConfigurationManager.AppSettings["SMTPPassword"];
+
+                NetworkCredential basicCredential = new NetworkCredential(SMTPUserName, SMTPPassword);
                 string From = ConfigurationManager.AppSettings["EmailFrom"];
                 string To = model.Email;
                 if (strto != null)
                     To = strto;
                 System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(From, To, subject, body);
+                mailMessage.From = new MailAddress(From, From);
                 mailMessage.IsBodyHtml = true;
                 if (isAttachment)
                 {
@@ -989,7 +993,8 @@ namespace HR_Web.Controllers
 
                 client.Host = ConfigurationManager.AppSettings["HostName"];
                 client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["PortNumber"]);
-                client.UseDefaultCredentials = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = basicCredential;
                 client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
