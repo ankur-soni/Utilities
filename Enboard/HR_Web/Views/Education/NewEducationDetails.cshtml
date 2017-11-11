@@ -1,0 +1,1241 @@
+﻿@model Models.EducationDetails
+@{
+    ViewBag.Title = "EducationalDetails";
+    Layout = "~/Views/Shared/_EnboardLayout.cshtml";
+
+    var classes = (SelectList)ViewBag.Classes;
+    var discipline = (SelectList)ViewBag.Discipline;
+    var college = (SelectList)ViewBag.Colleges;
+    var educationCategorylist = (SelectList)ViewBag.EducationCategory;
+
+    var specialization = (SelectList)ViewBag.Specialization;
+    var university = (SelectList)ViewBag.University;
+    var Months = (SelectList)ViewBag.Months;
+    var Years = (SelectList)ViewBag.Years;
+    var educategories = (SelectList)ViewBag.EducationCategoryForUser;
+
+
+}
+<script src="~/Scripts/EDP_Validations.js"></script>
+<div class="containerInner">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="panel-group educationDetails tabSection" id="accordion" role="tablist" aria-multiselectable="true">
+                @if (educategories.ToList().Count > 0)
+                {
+
+                    using (Html.BeginForm("EducationalDetails", "Education", FormMethod.Post, new { id = "ED_FormId", @class = "addFormClass" }))
+                {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.EducationCategoryId)
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#educationForm" aria-expanded="true">
+                                        Add Education Details
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="educationForm" class="panel-collapse collapse in" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.EducationCategory, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.EducationCategoryId, educategories, "", new { id = "ED_ddlEducationCategory", @class = "form-control", placeholder = "Select Education Category", tabindex = 1 })
+                                                @Html.ValidationMessageFor(model => model.EducationCategoryId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherEducationCategory, new { id = "ED_txtOtherEducationCategory", @class = "form-control otherTextBox", placeholder = "Please enter your Education Category", style = "display:none;", tabindex = 1 })
+                                                @Html.ValidationMessageFor(model => model.OtherEducationCategory, "", new { @class = "text-danger", id = "ED_valOtherEducationCategory" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.TypeofDegreeDeploma, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.TypeofDegreeDeplomaId, discipline, "", new { id = "ED_ddlTypeofDegreeDeploma", @class = "form-control", placeholder = "Select Discipline", tabindex = 2 })
+                                                @Html.ValidationMessageFor(model => model.TypeofDegreeDeplomaId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherDiscipline, new { id = "ED_txtOtherTypeofDegreeDeploma", @class = "form-control otherTextBox", placeholder = "Please enter your Discipline", style = "display:none;", tabindex = 2 })
+                                                @Html.ValidationMessageFor(model => model.OtherDiscipline, "", new { @class = "text-danger", id = "ED_OtherClass" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.PassingYear, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.PassingYear, Years, "", new { id = "CD_txtPassingYear", @class = "form-control", tabindex = 3 })
+                                                @Html.ValidationMessageFor(model => model.PassingYear, "", new { @class = "text-danger" })
+                                                <label id="lblPassingYearError" class="text-danger" style="display:none;"> </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Class, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.ClassId, classes, "", new { id = "ED_ddlClass", @class = "form-control", placeholder = "Select Class", tabindex = 4 })
+                                                @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Specialization, new { @class = "" }) <span class="red">*</span>
+                                                @Html.TextBoxFor(model => model.OtherSpecialization, new { id = "ED_txtOtherSpecialization", @class = "form-control mt-5", placeholder = "Please enter your Specialization", tabindex = 5 })
+                                                @Html.ValidationMessageFor(model => model.OtherSpecialization, "", new { @class = "text-danger", id = "ED_OtherClass" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.InstituteName, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.InstituteNameId, college, "", new { id = "ED_ddlInstituteName", @class = "form-control", placeholder = "Select Institute Name", tabindex = 6 })
+                                                @Html.ValidationMessageFor(model => model.InstituteNameId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherCollegeName, new { id = "ED_txtOtherInstituteName", @class = "form-control otherTextBox", placeholder = "Please enter your Institute Name", style = "display:none;", tabindex = 6 })
+                                                @Html.ValidationMessageFor(model => model.OtherCollegeName, "", new { @class = "text-danger", id = "ED_OtherInstituteName" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.FromDate, new { @class = "" }) <span class="red">*</span>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.FromDate.HasValue ? Convert.ToString(Model.FromDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedFrom", @class = "form-control", tabindex = 7 })
+                                                    <label class="input-group-addon btn" for="txtAttendedFrom">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.ToDate, new { @class = "" }) <span class="red">*</span>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.ToDate.HasValue ? Convert.ToString(Model.ToDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedTo", @class = "form-control", tabindex = 8 })
+                                                    <label class="input-group-addon btn" for="txtAttendedTo">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.University_BoardName, new { @class = "" }) <span class="red">*</span>
+                                                @Html.DropDownListFor(model => model.University_BoardNameId, university, "", new { id = "ED_ddlUniversity_BoardName", @class = "form-control", placeholder = "Select University/Board Name", tabindex = 9 })
+                                                @Html.ValidationMessageFor(model => model.University_BoardNameId, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(model => model.OtherUniversityName, new { id = "ED_txtOtherUniversity_BoardName", @class = "form-control otherTextBox", placeholder = "Please enter your University / BoardName", style = "display:none;", tabindex = 9 })
+                                                @Html.ValidationMessageFor(model => model.OtherUniversityName, "", new { @class = "text-danger", id = "ED_OtherUniversity_BoardName" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row"> @*gray-tooltip*@
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Percentage, new { @class = "" }) <span class="red">*</span>
+                                                <div class="form-inline">
+                                                    @Html.TextBoxFor(model => model.Percentage, new { id = "CD_txtPercentage", placeholder = "63.50", @class = "form-control", tabindex = 10, MaxLength = 5, @style = "min-width:293px !important" })
+                                                    <label class="glyphicon glyphicon-info-sign " style="width:25px;" data-toggle="tooltip" data-placement="right" title="If your result is in CGPI then please convert it into percentage value with appropriate formula and enter 'Percentage Score' value."></label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.BreaksDuringEducation)
+                                                @Html.TextAreaFor(model => model.BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks", placeholder = "Breaks During Education", @class = "form-control", tabindex = 11, MaxLength = 100 })
+                                                @Html.ValidationMessageFor(model => model.BreaksDuringEducation, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row btnRow">
+                                        <div class="col-md-12">
+                                            @*<a class="btn-save  mx-1" id="btnEdnAddMore"> +  Add More </a>
+                                                <a href="#" id="ED_SaveData" class="btn-save" tabindex="14"> Save & Next</a>*@
+
+                                            <button class="btn-reset cancelText" type="reset" tabindex="12"> Cancel </button>
+                                            <a class="btn-save" id="ED_SaveData" tabindex="13"> Save </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (Model.educationDetialslist != null)
+                {
+                    for (var i = 0; i < Model.educationDetialslist.Count; i++)
+                    {
+                        using (Html.BeginForm("EducationalDetails", "Education", FormMethod.Post, new { id = "ED_FormId" + i.ToString(), @class = "addFormClass" }))
+                        {
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#tr@(i)" aria-expanded="true" class="collapsed">
+                                            @Model.educationDetialslist[i].EducationCategory
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="tr@(i)" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].EducationCategory, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.DropDownListFor(m => Model.educationDetialslist[i].EducationCategoryId,
+                                                new SelectList(educationCategorylist, "Value", "Text", Model.educationDetialslist[i].EducationCategoryId), "",
+                                                      new
+                                                      {
+                                                          id = "ED_ddlEducationCategory" + i.ToString(),
+                                                          @class = "form-control",
+                                                          placeholder = "Select Education Category",
+                                                          tabindex = (@i + 1).ToString() + 14,
+                                                          onchange = "educationCategoryChange(this);"
+                                                      })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].EducationCategoryId, "", new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].OtherEducationCategory, new { id = "ED_txtOtherEducationCategory" + i, @class = "form-control otherTextBox", placeholder = "Please enter your Education Category", style = "display:none;", tabindex = (@i + 1).ToString() + 15 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherEducationCategory, "", new { @class = "text-danger", id = "ED_valOtherEducationCategory" + i.ToString() })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].TypeofDegreeDeploma, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.DropDownListFor(m => Model.educationDetialslist[i].TypeofDegreeDeplomaId,
+                                                new SelectList(discipline, "Value", "Text", Model.educationDetialslist[i].TypeofDegreeDeplomaId), "",
+                                               new
+                                               {
+                                                   id = "ED_ddlTypeofDegreeDeploma" + i.ToString(),
+                                                   @class = "form-control",
+                                                   placeholder = "Select Discipline",
+                                                   tabindex = (@i + 1).ToString() + 16,
+                                                   onchange = "disciplineChange(this);"
+                                               })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].TypeofDegreeDeplomaId, "", new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].OtherDiscipline, new { id = "ED_txtOtherTypeofDegreeDeploma" + i, @class = "form-control otherTextBox", placeholder = "Please enter your Discipline", style = "display:none;", tabindex = (@i + 1).ToString() + 16 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherDiscipline, "", new { @class = "text-danger", id = "ED_OtherClass" + i.ToString() })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].PassingYear, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.DropDownListFor(m => Model.educationDetialslist[i].PassingYear,
+                                                new SelectList(Years, "Value", "Text", Model.educationDetialslist[i].PassingYear), "",
+                                                new
+                                                {
+                                                    id = "CD_txtPassingYear" + i.ToString(),
+                                                    @class = "form-control",
+                                                    tabindex = (@i + 1).ToString() + 17
+                                                })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].PassingYear, "", new { @class = "text-danger" })
+                                                    <label id="lblPassingYearError" class="text-danger" style="display:none;"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].Class, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.DropDownListFor(m => Model.educationDetialslist[i].ClassId, new SelectList(classes, "Value", "Text", Model.educationDetialslist[i].ClassId), "", new { id = "ED_ddlClass" + i.ToString(), @class = "form-control", placeholder = "Select Class", tabindex = (@i + 1).ToString() + 18 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].ClassId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].Specialization, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].OtherSpecialization, Model.educationDetialslist[i].OtherSpecialization, new { id = "ED_txtOtherSpecialization" + i.ToString(), @class = "form-control mt-5", placeholder = "Please enter your Specialization", tabindex = (@i + 1).ToString() + 19 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherSpecialization, "", new { @class = "text-danger", id = "ED_OtherClass" + i.ToString() })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].InstituteName, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.DropDownListFor(m => Model.educationDetialslist[i].InstituteNameId,
+                                                new SelectList(college, "Value", "Text", Model.educationDetialslist[i].InstituteNameId), "",
+                                               new
+                                               {
+                                                   id = "ED_ddlInstituteName" + i.ToString(),
+                                                   @class = "form-control",
+                                                   placeholder = "Select Institute Name",
+                                                   tabindex = (@i + 1).ToString() + 20,
+                                                   onchange = "instituteNameChange(this);"
+                                               })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].InstituteNameId, "", new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].OtherCollegeName, Model.educationDetialslist[i].OtherCollegeName, new { id = "ED_txtOtherInstituteName" + i, @class = "form-control otherTextBox", placeholder = "Please enter your Institute Name", style = "display:none;", tabindex = (@i + 1).ToString() + 20 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherCollegeName, "", new { @class = "text-danger", id = "ED_OtherInstituteName" + i.ToString() })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].FromDate, new { @class = "" }) <span class="red">*</span>
+                                                    <div class="input-group">
+                                                        @Html.TextBoxFor(m => m.educationDetialslist[i].FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.educationDetialslist[i].FromDate.HasValue ? Convert.ToString(Model.educationDetialslist[i].FromDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedFrom" + i.ToString(), Name = "txtAttendedFrom" + i.ToString(), @class = "form-control", tabindex = (@i + 1).ToString() + 21 })
+                                                        <label class="input-group-addon btn" for="@("txtAttendedFrom"+@i.ToString())">
+                                                            <span class="fa fa-calendar"></span>
+                                                        </label>
+                                                    </div>
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].FromDate, "", new { @data_valmsg_for = "txtAttendedFrom" + i.ToString(), @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].ToDate, new { @class = "" }) <span class="red">*</span>
+                                                    <div class="input-group">
+                                                        @Html.TextBoxFor(m => m.educationDetialslist[i].ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.educationDetialslist[i].ToDate.HasValue ? Convert.ToString(Model.educationDetialslist[i].ToDate.Value.ToShortDateString()) : String.Empty))), new { id = "txtAttendedTo" + i.ToString(), Name = "txtAttendedTo" + i.ToString(), @class = "form-control", tabindex = (@i + 1).ToString() + 22 })
+                                                        <label class="input-group-addon btn" for="@("txtAttendedTo"+@i.ToString())">
+                                                            <span class="fa fa-calendar"></span>
+                                                        </label>
+                                                    </div>
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].ToDate, "", new { @data_valmsg_for = "txtAttendedTo" + i.ToString(), @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].University_BoardName, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.DropDownListFor(m => Model.educationDetialslist[i].University_BoardNameId,
+                                                new SelectList(@Model.educationDetialslist[i].UniversityList, "Value", "Text", Model.educationDetialslist[i].University_BoardNameId), "",
+                                               new
+                                               {
+                                                   id = "ED_ddlUniversity_BoardName" + i.ToString(),
+                                                   @class = "form-control",
+                                                   placeholder = "Select University/Board Name",
+                                                   tabindex = (@i + 1).ToString() + 23,
+                                                   onchange = "universityBoardNameChange(this);"
+                                               })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].University_BoardNameId, "", new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].OtherUniversityName, new { id = "ED_txtOtherUniversity_BoardName" + i, @class = "form-control otherTextBox", placeholder = "Please enter your University / BoardName", style = "display:none;", tabindex = (@i + 1).ToString() + 23 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherUniversityName, "", new { @class = "text-danger", id = "ED_OtherUniversity_BoardName" + i.ToString() })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].Percentage, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].Percentage, new { id = "CD_txtPercentage" + i.ToString(), placeholder = "63.50", @class = "form-control", tabindex = (@i + 1).ToString() + 24, MaxLength = 5 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].Percentage, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => Model.educationDetialslist[i].BreaksDuringEducation, new { @class = "" }) <span class="red">*</span>
+                                                    @Html.TextAreaFor(m => Model.educationDetialslist[i].BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks" + i.ToString(), placeholder = "Breaks During Education", @class = "form-control", tabindex = (@i + 1).ToString() + 25, MaxLength = 100 })
+                                                    @Html.ValidationMessageFor(m => Model.educationDetialslist[i].BreaksDuringEducation, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.HiddenFor(m => Model.educationDetialslist[i].EduDetID, new { id = "hdEduId" + i.ToString() })
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a class="btn-delete pull-right" href="#" id='btnEducationDelete@(i)' onclick="deleteEducationDetailsConfirmation(this)" tabindex="@((@i + 1).ToString() + 26)">Delete</a>
+                                                <a class="btn-reset pull-right" href="#" onclick="editEducationalDetails(this);" data-id='@i' id='btnEducationEdit@(i)' tabindex="@((@i + 1).ToString() + 26)">Edit</a>
+                                                <a class="btn-reset pull-right" href="#" onclick="saveEducationalDetails(this);" data-id='@i' id='btnEducationSave@(i)' style="display:none;" tabindex="@((@i + 1).ToString() + 26)">Save</a>
+                                                <a class="btn-reset pull-right" href="#" id="btnCancel@(i)" style="display:none;" onclick="resetEducationDetails(this);" tabindex="@((@i + 1).ToString() + 26)">Cancel</a>
+                                                @*<button class="btn-reset cancelText  pull-right" type="reset" id="btnCancel@(i)">Cancel</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+    @*Change request -Removed next button*@
+    @*<div class="row btnRow emplyomentDetailsNext">
+            <div class="col-md-12">
+                <a href="/Employement/Index" id="ED_Next" class="btn-save  mx-1" tabindex="900000">Next</a>
+            </div>
+        </div>*@
+</div>
+<style type="text/css">
+    .tooltip-inner {
+        width: 500px !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('#txtAttendedFrom').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            yearRange: "-100:+0",
+            onSelect: function (selected) {
+                $("#txtAttendedTo").datepicker("option", "minDate", selected)
+            }
+        });
+
+        $('#txtAttendedTo').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            yearRange: "-100:+0",
+            onSelect: function (selected) {
+                $("#txtAttendedFrom").datepicker("option", "maxDate", selected)
+            }
+        });
+
+
+        if ('@ViewBag.IsReadOnly' == 'True') {
+            $('input,select').attr('disabled', true);
+            $('#ED_SaveData').attr('disabled', true);
+        }
+        else {
+            $('#ED_SaveData').attr('disabled', false);
+        }
+        if ('@ViewBag.IsEditPage' == 'True') {
+            $('#ED_ddlEducationCategory').attr('disabled', true);
+        }
+        else {
+            $('#ED_ddlEducationCategory').attr('disabled', false);
+        }
+        if ($("#ED_ddlEducationCategory option:selected").text() == "SSC") {
+            $("#ED_ddlSpecialization").attr("disabled", "disabled");
+        }
+        else {
+            $("#ED_ddlSpecialization").attr("disabled", false);
+        }
+        //Other Education Category
+        if ('@Model.OtherEducationCategory' != '' || $("#ED_ddlEducationCategory option:selected").text() == 'Other') {
+            $('#ED_txtOtherEducationCategory').show();
+
+            $("#ED_txtOtherEducationCategory").attr('required', true);
+            if ('@Model.OtherEducationCategory' != '') {
+                $("#ED_txtOtherEducationCategory").val('@Model.OtherEducationCategory');
+            }
+        }
+        else {
+            $('#ED_txtOtherEducationCategory').hide();
+            $("#ED_txtOtherEducationCategory").val('');
+            $("#ED_txtOtherEducationCategory").attr('required', false);
+        }
+
+        //Other Institute Name
+        if ('@Model.OtherCollegeName' != '' && $("#ED_ddlInstituteName option:selected").text() == 'Other') {
+            $('#ED_txtOtherInstituteName').show();
+            $("#ED_txtOtherInstituteName").attr('required', true);
+            if ('@Model.OtherCollegeName' != '') {
+                $("#ED_txtOtherInstituteName").val('@Model.OtherCollegeName');
+            }
+        }
+        else {
+            $('#ED_txtOtherInstituteName').hide();
+            $("#ED_txtOtherInstituteName").val('');
+            $("#ED_txtOtherInstituteName").attr('required', false);
+        }
+
+        //Other University/BoardName
+        if ('@Model.OtherUniversityName' != '' && $("#ED_ddlUniversity_BoardName option:selected").text() == 'Other') {
+            $('#ED_txtOtherUniversity_BoardName').show();
+            $("#ED_txtOtherUniversity_BoardName").attr('required', true);
+            if ('@Model.OtherUniversityName' != '') {
+                $("#ED_txtOtherUniversity_BoardName").val('@Model.OtherUniversityName');
+            }
+        }
+        else {
+            $('#ED_txtOtherUniversity_BoardName').hide();
+            $("#ED_txtOtherUniversity_BoardName").val('');
+            $("#ED_txtOtherUniversity_BoardName").attr('required', false);
+        }
+
+        //Other Type of Degree/Deploma
+        if ('@Model.OtherDiscipline' != '' && $("#ED_ddlTypeofDegreeDeploma option:selected").text() == 'Other') {
+            $('#ED_txtOtherTypeofDegreeDeploma').show();
+            $("#ED_txtOtherTypeofDegreeDeploma").attr('required', true);
+            if ('@Model.OtherDiscipline' != '') {
+                $("#ED_txtOtherTypeofDegreeDeploma").val('@Model.OtherDiscipline');
+            }
+        }
+        else {
+            $('#ED_txtOtherTypeofDegreeDeploma').hide();
+            $("#ED_txtOtherTypeofDegreeDeploma").val('');
+            $("#ED_txtOtherTypeofDegreeDeploma").attr('required', false);
+        }
+
+        //Other Specialization
+        @*if ('@Model.OtherSpecialization' != '' && $("#ED_ddlSpecialization option:selected").text() == 'Other') {
+            $('#ED_txtOtherSpecialization').show();
+            $("#ED_txtOtherSpecialization").attr('required', true);
+        }
+        else {
+            $('#ED_txtOtherSpecialization').hide();
+            $("#ED_txtOtherSpecialization").val('');
+            $("#ED_txtOtherSpecialization").attr('required', false);
+        }*@
+
+        $('#ED_ddlEducationCategory').change(function () {
+            var text = $("#ED_ddlEducationCategory option:selected").text();
+
+            if (text == 'Other') {
+                $('#ED_txtOtherEducationCategory').show();
+                $("#ED_txtOtherEducationCategory").val('');
+                $("#ED_txtOtherEducationCategory").focus();
+                $("#ED_txtOtherEducationCategory").attr('required', true);
+            }
+            else {
+
+                $("#ED_txtOtherEducationCategory").hide();
+                $("#ED_txtOtherEducationCategory").val('');
+                $("#ED_txtOtherEducationCategory").attr('required', false);
+            }
+            if ($("#ED_ddlEducationCategory option:selected").text() == "SSC") {
+
+                $('#ED_ddlSpecialization option:selected').removeAttr('selected');
+                $("#ED_ddlSpecialization").attr("disabled", "disabled");
+            }
+            else {
+                $("#ED_ddlSpecialization").attr("disabled", false);
+            }
+        });
+
+        GetEducationList();
+        if ('@ViewBag.IsSubmitted'.toLowerCase() === 'true') {
+            $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save").attr('disabled', 'disabled');
+            $('#FD_Save').remove();
+            $("#accordion a.btn-reset,#accordion a.btn-delete").remove();
+            $("#accordion button").remove();
+            $("#ED_SaveData").remove();
+        }
+    });
+
+
+    $('#ED_ddlEducationCategory').change(function () {
+
+        GetRelevantDisciplines($('#ED_ddlEducationCategory').val());
+        var text = $("#ED_ddlEducationCategory option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherEducationCategory').show();
+            $("#ED_txtOtherEducationCategory").val('');
+            $("#ED_txtOtherEducationCategory").focus();
+            $("#ED_txtOtherEducationCategory").attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherEducationCategory").hide();
+            $("#ED_txtOtherEducationCategory").val('');
+            $("#ED_txtOtherEducationCategory").attr('required', false);
+        }
+    });
+
+    var text = $("#ED_ddlEducationCategory option:selected").text();
+
+    if (text == 'Other' || $("#ED_ddlEducationCategory").text() == 'Other') {
+        $('#ED_txtOtherEducationCategory').show();
+        $("#ED_txtOtherEducationCategory").val('');
+        $("#ED_txtOtherEducationCategory").focus();
+        $("#ED_txtOtherEducationCategory").attr('required', true);
+    }
+    else {
+
+        $("#ED_txtOtherEducationCategory").hide();
+        $("#ED_txtOtherEducationCategory").val('');
+        $("#ED_txtOtherEducationCategory").attr('required', false);
+    }
+
+    $('#ED_ddlInstituteName').change(function () {
+        var text = $("#ED_ddlInstituteName option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherInstituteName').show();
+            $("#ED_txtOtherInstituteName").val('');
+            $("#ED_txtOtherInstituteName").focus();
+            $("#ED_txtOtherInstituteName").attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherInstituteName").hide();
+            $("#ED_txtOtherInstituteName").val('');
+            $("#ED_txtOtherInstituteName").attr('required', false);
+        }
+    });
+
+    $('#ED_ddlUniversity_BoardName').change(function () {
+        var text = $("#ED_ddlUniversity_BoardName option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherUniversity_BoardName').show();
+            $("#ED_txtOtherUniversity_BoardName").val('');
+            $("#ED_txtOtherUniversity_BoardName").focus();
+            $("#ED_txtOtherUniversity_BoardName").attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherUniversity_BoardName").hide();
+            $("#ED_txtOtherUniversity_BoardName").val('');
+            $("#ED_txtOtherUniversity_BoardName").attr('required', false);
+        }
+    });
+
+    $('#ED_ddlTypeofDegreeDeploma').change(function () {
+        var text = $("#ED_ddlTypeofDegreeDeploma option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherTypeofDegreeDeploma').show();
+            $("#ED_txtOtherTypeofDegreeDeploma").val('');
+            $("#ED_txtOtherTypeofDegreeDeploma").focus();
+            $("#ED_txtOtherTypeofDegreeDeploma").attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherTypeofDegreeDeploma").hide();
+            $("#ED_txtOtherTypeofDegreeDeploma").val('');
+            $("#ED_txtOtherTypeofDegreeDeploma").attr('required', false);
+        }
+    });
+
+    $('#ED_ddlSpecialization').change(function () {
+        var text = $("#ED_ddlSpecialization option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherSpecialization').show();
+            $("#ED_txtOtherSpecialization").val('');
+            $("#ED_txtOtherSpecialization").focus();
+            $("#ED_txtOtherSpecialization").attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherSpecialization").hide();
+            $("#ED_txtOtherSpecialization").val('');
+            $("#ED_txtOtherSpecialization").attr('required', false);
+        }
+    });
+
+
+    function GetRelevantDisciplines(catId) {
+        var data = { categoryId: catId }
+        if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/Education/GetRelevantDisciplines",
+                data: data,
+                datatype: "json",
+                success: function (data) {
+                    var markup = "<option value=''></option>";
+                    for (var x = 0; x < data.length; x++) {
+                        markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                    }
+                    $("#ED_ddlTypeofDegreeDeploma").html(markup);
+                    $("#ED_ddlTypeofDegreeDeploma option[value='" + @Model.DisciplineID + "']").attr('selected', 'selected')
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    }
+
+    function GetEducationDetails(catId) {
+        var url = "/Education/EducationalDetails";
+        var data = { EducationCategoryId: catId }
+        if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/Education/EducationalDetails",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+
+                    $("body").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    }
+
+    function stringToDate(_date,_format,_delimiter)
+    {
+        var formatLowerCase=_format.toLowerCase();
+        var formatItems=formatLowerCase.split(_delimiter);
+        var dateItems=_date.split(_delimiter);
+        var monthIndex=formatItems.indexOf("mm");
+        var dayIndex=formatItems.indexOf("dd");
+        var yearIndex=formatItems.indexOf("yyyy");
+        var month=parseInt(dateItems[monthIndex]);
+        month-=1;
+        var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+        return formatedDate;
+    }
+
+    function compareDates() {
+        var startdate = stringToDate($('#txtAttendedFrom').val(),"dd/MM/yyyy","/");
+        var enddate = stringToDate($('#txtAttendedTo').val(),"dd/MM/yyyy","/");
+        var passingYear = $("#CD_txtPassingYear").val();
+        if (startdate > enddate) {
+            $('#lblCompareDateError').show();
+            $('#lblCompareDateError').text('To Month and To Year Should be greater than From Month and From Year');
+            toastr.error('Attended To date should be greater than Attended From date');
+            return false;
+        } else if (enddate.getFullYear() > passingYear) {
+            $('#lblPassingYearError').show();
+            $('#lblCompareDateError').text('');
+            toastr.error('Passing year should be equal to or greater than \'Attended To\' year!');
+            return false;
+        }
+        else {
+            $('#lblPassingYearError').text('');
+            $('#lblCompareDateError').text('');
+            return true;
+        }
+    }
+
+
+    $('#ED_SaveData').click(function () {
+        var flag = compareDates();
+        var url = "/Education/EducationalDetails";
+        var form = $('#ED_FormId');
+        $('#lblError').text('');
+        $.validator.unobtrusive.parse(form);
+        if (form.valid() && flag) {
+            $('#EducationCategoryId').val($('#ED_ddlEducationCategory').val());
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                url: "/Education/EducationalDetails",
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if(data.result == false && data.Message != "Success")
+                    {
+                        toastr.success(data.Message);
+                        ajaxindicatorstop();
+                    }
+                    else{
+                        toastr.success("Education details added successfully!!");
+                        ajaxindicatorstop();
+                        setTimeout(function(){
+                            ReloadEducationDetailsPage();
+                        }, 1000);
+
+                    }
+                },
+                error: function (error) {
+                    alert(JSON.stringify(error.responseText.trim()));
+                    alert('Some error occured!')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    });
+
+
+    $('#ED_Cancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            url: "/Education/EducationalDetailsGrid",
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+
+
+    // numeric($('#CD_txtPercentage'))
+    numeric($('#CD_txtPassingYear'))
+
+    // For Education List code by Sachin Khot
+    function GetEducationList()
+    {
+        var educationList = @Html.Raw(Json.Encode(Model.educationDetialslist));
+        for (var i = 0; i < educationList.length; i++)
+        {
+            $('#txtAttendedTo' + i.toString()).datepicker({
+                maxDate: 0,
+                showButtonPanel: false,
+                changeMonth: true,
+                changeYear: true,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                dateFormat: 'dd/mm/yy',
+                yearRange: "-100:+0"
+            });
+
+            $('#txtAttendedFrom' + i.toString()).datepicker({
+                maxDate: 0,
+                showButtonPanel: false,
+                changeMonth: true,
+                changeYear: true,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                dateFormat: 'dd/mm/yy',
+                yearRange: "-100:+0"
+            });
+            //Datepicker validation
+            //$('.hasDatepicker').attr('readonly', true);
+
+            //For loading data into discipline dropdown based on educationCategoryId and set selected value for discipline dropdown
+            var educationCatId = $('#ED_ddlEducationCategory' + i).val();
+            GetRelevantDisciplinesForEducationList(educationCatId, i, educationList[i].TypeofDegreeDeplomaId);
+            $('#ED_FormId' + i +" :input").prop("disabled", true);
+
+            //Other Education Category
+            if (educationList[i].OtherEducationCategory != '' && $("#ED_ddlEducationCategory" + i +" option:selected").text() == 'Other') {
+                $('#ED_txtOtherEducationCategory' + i).show();
+
+                $("#ED_txtOtherEducationCategory" + i).attr('required', true);
+                if (educationList[i].OtherEducationCategory != '') {
+                    $("#ED_txtOtherEducationCategory" + i).val(educationList[i].OtherEducationCategory);
+                }
+            }
+            else {
+                $('#ED_txtOtherEducationCategory' + i).hide();
+                $("#ED_txtOtherEducationCategory" + i).val('');
+                $("#ED_txtOtherEducationCategory" + i).attr('required', false);
+            }
+
+            //Other Institute Name
+            if (educationList[i].OtherCollegeName != '' && $("#ED_ddlInstituteName"+ i +" option:selected").text() == 'Other') {
+                $('#ED_txtOtherInstituteName'+ i).show();
+                $("#ED_txtOtherInstituteName"+ i).attr('required', true);
+                if (educationList[i].OtherCollegeName != '') {
+                    $("#ED_txtOtherInstituteName" + i).val(educationList[i].OtherCollegeName);
+                }
+            }
+            else {
+                $('#ED_txtOtherInstituteName'+ i).hide();
+                $("#ED_txtOtherInstituteName"+ i).val('');
+                $("#ED_txtOtherInstituteName"+ i).attr('required', false);
+            }
+
+            //Other University/BoardName
+            if (educationList[i].OtherUniversityName != '' && $("#ED_ddlUniversity_BoardName"+ i +" option:selected").text() == 'Other') {
+                $('#ED_txtOtherUniversity_BoardName' + i).show();
+                $("#ED_txtOtherUniversity_BoardName" + i).attr('required', true);
+                if (educationList[i].OtherUniversityName != '') {
+                    $("#ED_txtOtherUniversity_BoardName" + i).val(educationList[i].OtherUniversityName);
+                }
+            }
+            else {
+                $('#ED_txtOtherUniversity_BoardName' + i).hide();
+                $("#ED_txtOtherUniversity_BoardName" + i).val('');
+                $("#ED_txtOtherUniversity_BoardName" + i).attr('required', false);
+            }
+
+            //Other Type of Degree/Deploma
+            if (educationList[i].OtherDiscipline != '' && $("#ED_ddlTypeofDegreeDeploma" + i +" option:selected").text() == 'Other') {
+                $('#ED_txtOtherTypeofDegreeDeploma' + i).show();
+                $("#ED_txtOtherTypeofDegreeDeploma" + i).attr('required', true);
+                if (educationList[i].OtherDiscipline != '') {
+                    $("#ED_txtOtherTypeofDegreeDeploma" + i).val(educationList[i].OtherDiscipline);
+                }
+            }
+            else {
+                $('#ED_txtOtherTypeofDegreeDeploma' + i).hide();
+                $("#ED_txtOtherTypeofDegreeDeploma" + i).val('');
+                $("#ED_txtOtherTypeofDegreeDeploma" + i).attr('required', false);
+            }
+
+        }
+    }
+
+    function GetRelevantDisciplinesForEducationList(catId, elementId, selectedValue) {
+        var data = { categoryId: catId }
+        if ($('#ED_ddlEducationCategory' + elementId).val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/Education/GetRelevantDisciplines",
+                data: data,
+                datatype: "json",
+                success: function (data) {
+                    var markup = "<option value=''></option>";
+                    for (var x = 0; x < data.length; x++) {
+                        markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                    }
+                    $("#ED_ddlTypeofDegreeDeploma").html(markup);
+                    $("#ED_ddlTypeofDegreeDeploma option[value='" + @Model.DisciplineID + "']").attr('selected', 'selected')
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    }
+
+    function educationCategoryChange(ControlId){
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        var text = $("#ED_ddlEducationCategory" + index+" option:selected").text();
+
+        if (text == 'Other' || $("#ED_ddlEducationCategory" + index).text() == 'Other') {
+            $('#ED_txtOtherEducationCategory' + index).show();
+            $("#ED_txtOtherEducationCategory" + index).val('');
+            $("#ED_txtOtherEducationCategory" + index).focus();
+            $("#ED_txtOtherEducationCategory" + index).attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherEducationCategory" + index).hide();
+            $("#ED_txtOtherEducationCategory" + index).val('');
+            $("#ED_txtOtherEducationCategory" + index).attr('required', false);
+        }
+    }
+
+    function instituteNameChange(ControlId)
+    {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+
+        var text = $("#ED_ddlInstituteName" + index +" option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherInstituteName' + index ).show();
+            $("#ED_txtOtherInstituteName" + index).val('');
+            $("#ED_txtOtherInstituteName" + index).focus();
+            $("#ED_txtOtherInstituteName" + index).attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherInstituteName" + index).hide();
+            $("#ED_txtOtherInstituteName" + index).val('');
+            $("#ED_txtOtherInstituteName" + index).attr('required', false);
+        }
+    }
+
+    function universityBoardNameChange(ControlId)
+    {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        var text = $("#ED_ddlUniversity_BoardName" + index +" option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherUniversity_BoardName' + index).show();
+            $("#ED_txtOtherUniversity_BoardName" + index).val('');
+            $("#ED_txtOtherUniversity_BoardName" + index).focus();
+            $("#ED_txtOtherUniversity_BoardName" + index).attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherUniversity_BoardName" + index).hide();
+            $("#ED_txtOtherUniversity_BoardName" + index).val('');
+            $("#ED_txtOtherUniversity_BoardName" + index).attr('required', false);
+        }
+    }
+
+    function disciplineChange(ControlId) {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        var text = $("#ED_ddlTypeofDegreeDeploma" + index + " option:selected").text();
+
+        if (text == 'Other') {
+            $('#ED_txtOtherTypeofDegreeDeploma' + index).show();
+            $("#ED_txtOtherTypeofDegreeDeploma" + index).val('');
+            $("#ED_txtOtherTypeofDegreeDeploma" + index).focus();
+            $("#ED_txtOtherTypeofDegreeDeploma" + index).attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherTypeofDegreeDeploma" + index).hide();
+            $("#ED_txtOtherTypeofDegreeDeploma" + index).val('');
+            $("#ED_txtOtherTypeofDegreeDeploma" + index).attr('required', false);
+        }
+    }
+
+    function editEducationalDetails(ControlId)
+    {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        $("#ED_FormId"+ index+" :input").prop("disabled", false);
+        $('#ED_ddlEducationCategory' + index).prop( "disabled", true );
+        $('#btnEducationSave' + index).show();
+        $('#btnCancel' + index).show();
+        $('#btnEducationDelete'+ index).hide();
+        $('#btnEducationEdit'+ index).hide();
+    }
+
+    function saveEducationalDetails(ControlId)
+    {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        var flag = compareEdulistDates(index);
+
+        var url = "/Education/EducationalDetails";
+        var form = $('#ED_FormId' + index);
+
+        $('#lblError').text('');
+        $.validator.unobtrusive.parse(form);
+        if (form.valid() && flag) {
+            $('#EducationCategoryId' + index).val($('#ED_ddlEducationCategory' + index).val());
+
+            var someObj = {
+                EduDetID: $('#hdEduId' + index).val(),
+                EducationCategoryId: $('#ED_ddlEducationCategory' + index).val(),
+                OtherEducationCategory: $('#ED_txtOtherEducationCategory' + index).val(),
+                TypeofDegreeDeplomaId: $('#ED_ddlTypeofDegreeDeploma' + index).val(),
+                OtherDiscipline:$('#ED_txtOtherTypeofDegreeDeploma' + index).val(),
+                PassingYear:$('#CD_txtPassingYear' + index).val(),
+                ClassId:$('#ED_ddlClass' + index).val(),
+                OtherSpecialization:$('#ED_txtOtherSpecialization' + index).val(),
+                InstituteNameId:$('#ED_ddlInstituteName' + index).val(),
+                OtherCollegeName:$('#ED_txtOtherInstituteName' + index).val(),
+                FromDate:$('#txtAttendedFrom' + index).val(),
+                ToDate:$('#txtAttendedTo' + index).val(),
+                University_BoardNameId:$('#ED_ddlUniversity_BoardName' + index).val(),
+                OtherUniversityName:$('#ED_txtOtherUniversity_BoardName' + index).val(),
+                Percentage:$('#CD_txtPercentage' + index).val(),
+                BreaksDuringEducation:$('#CD_txtBreaks' + index).val()
+            };
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                url: "/Education/EducationalDetails",
+                // data: form.serialize(),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(someObj),
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if(data.result == false && data.Message != "Success")
+                    {
+                        toastr.success(data.Message);
+                        ajaxindicatorstop();
+                    }
+                    if (data.Message == "Error") {
+                        toastr.error("Error occured...");
+                        ajaxindicatorstop();
+                    }
+                    else if(data.Message == "Success") {
+                        toastr.success("Education details updated successfully!!");
+                        ajaxindicatorstop();
+                        setTimeout(function(){
+                            window.location.href = "GetEducationalDetails" ;
+                        }, 1000);
+
+                    }
+                },
+                error: function (error) {
+                    toastr.error("Error occured...");
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    }
+
+    function compareEdulistDates(index) {
+        var startdate = stringToDate($('#txtAttendedFrom' + index).val(),"dd/MM/yyyy","/");
+        var enddate = stringToDate($('#txtAttendedTo' + index).val(),"dd/MM/yyyy","/");
+        var passingYear = $("#CD_txtPassingYear"+ index).val();
+        if (startdate > enddate) {
+            $('#lblCompareDateError' + index).show();
+            $('#lblCompareDateError' + index).text('To Month and To Year Should be greater than From Month and From Year');
+            toastr.error('Attended To date should be greater than Attended From date');
+            return false;
+        } else if (enddate.getFullYear() > passingYear) {
+            $('#lblPassingYearError'+ index).show();
+            $('#lblCompareDateError' + index).text('');
+
+            toastr.error('Passing year should be equal to or greater than \'Attended To\' year!');
+            return false;
+        }
+        else {
+            $('#lblPassingYearError' + index).text('');
+            $('#lblCompareDateError' + index).text('');
+            return true;
+        }
+    }
+
+    function ReloadEducationDetailsPage()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/Education/GetEducationalDetails",
+            data: '',
+            datatype: "html",
+            success: function (data) {
+                $("container-fluid").html(data);
+                window.location.href = "GetEducationalDetails";
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+    }
+
+    function resetEducationDetails(ControlId)
+    {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        window.location.reload();
+    }
+
+    function deleteEducationDetailsConfirmation(ControlId)
+    {
+        var elementId = ControlId.id;
+        var index = elementId.substr(elementId.length - 1);
+        var eduDetId = $('#hdEduId' + index).val();
+
+        toastr.warning("<button type='button' id='confirmationRevertYes' class='btn btn-default'>Yes</button>" +
+            "   <button type='button' id='confirmationRevertNo' class='btn btn-default'>No</button>", 'Do you want to delete this information?',
+              {
+                  closeButton: false,
+                  allowHtml: true,
+                  onShown: function (toast) {
+                      $("#confirmationRevertYes").click(function () {
+                          deleteEducationDetails(eduDetId);
+                      });
+                      $("#confirmationRevertYes").click(function () {
+                          this.fadeOut();
+                      });
+                  }
+              });
+
+    }
+
+    function deleteEducationDetails(EducationID)
+    {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Education/DeleteEducationDetails",
+            data: { EducationId: EducationID },
+            datatype: "json",
+            success: function (data) {
+                if(data.result = true)
+                {
+                    toastr.success("Education details deleted successfully!!");
+                    setTimeout(function(){
+                        window.location.href = "GetEducationalDetails" ;
+                    }, 1000);
+                }
+                else
+                {
+                    toastr.error("Error occured while deleting education details.");
+                }
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+    }
+
+    $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+    $(function () {
+        $.validator.addMethod(
+            "date",
+            function (value, element) {
+                var bits = value.match(/([0-9]+)/gi), str;
+                if (!bits)
+                    return this.optional(element) || false;
+                str = bits[1] + '/' + bits[0] + '/' + bits[2];
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(str));
+            },
+            ""
+        );
+    });
+
+
+    $('#ED_ddlEducationCategory').change(function () {
+        var text = $("#ED_ddlEducationCategory option:selected").text();
+        if (text == 'Other') {
+            LoadBoardUniverSityByEducationCategoryId("");
+            /*
+            $('#txtOtherPlaceOfBirthState').show();
+            $("#txtOtherPlaceOfBirthState").val('');
+            $("#txtOtherPlaceOfBirthState").focus();
+            $("#txtOtherPlaceOfBirthState").attr('required', true);
+            */
+        }
+        else {
+            LoadBoardUniverSityByEducationCategoryId($("#ED_ddlEducationCategory").val());
+            /*
+            $("#txtOtherPlaceOfBirthState").hide();
+            $("#txtOtherPlaceOfBirthState").val('');
+            $("#txtOtherPlaceOfBirthState").attr('required', false);
+            */
+        }
+        $('#txtOtherPlaceOfBirthCity').hide();
+        $("#txtOtherPlaceOfBirthCity").val('');
+    });
+
+    if ('@Model.EducationCategoryId' != null && '@Model.EducationCategoryId' != '') {
+        LoadBoardUniverSityByEducationCategoryId('@Model.EducationCategoryId');
+    }
+
+    function LoadBoardUniverSityByEducationCategoryId(Id) {
+        var value = Id;
+        var url = "/Education/LoadBoardUniverSityByEducationCategoryId/";
+
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { EducationCategoryID: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+
+                var markup = "<option value=''></option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                markup += "<option value=" + '@university.LastOrDefault().Value' + ">" + '@university.LastOrDefault().Text' + "</option>";
+
+                $("#ED_ddlUniversity_BoardName").html(markup).show();
+
+                var otherBirthCity = $("#ED_txtOtherUniversity_BoardName").val();
+                if (otherBirthCity == '') {
+                    otherBirthCity = '@Model.OtherUniversityName';
+                }
+                if (otherBirthCity != '') {
+                    $("#ED_txtOtherUniversity_BoardName").show();
+                    $("#ED_ddlUniversity_BoardName option[value='" + @Model.University_BoardNameId + "']").attr('selected', 'selected')
+                    $("#ED_txtOtherUniversity_BoardName").val(otherCurrCity);
+                }
+                else {
+                    if (otherBirthCity == "" && '@Model.University_BoardNameId' != '' && data.length > 1)
+                        $("#ED_ddlUniversity_BoardName option[value='" + @Model.University_BoardNameId + "']").attr('selected', 'selected')
+                }
+            },
+            error: function (reponse) {
+
+            }
+        });
+    }
+
+
+</script>
+
+
+

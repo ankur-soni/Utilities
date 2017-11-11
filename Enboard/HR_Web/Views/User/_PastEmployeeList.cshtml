@@ -1,0 +1,165 @@
+﻿@model PagedList.IPagedList<Models.AddEmployeeModelList>
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+
+
+
+    }
+
+
+   
+    <script src="~/Scripts/jspdf.debug.js"></script>   
+    <div class="box-body table-responsive">
+
+        @*<span> <i class="fa fa-file-pdf-o"></i> </span>
+        <span  id="btnExporttoExcel" class="glyphicon glyphicon-download" title="Export To Excel"></span>
+        <span  id="btnExporttoPdf" class="glyphicon glyphicon-download" title="Export To Pdf"></span>*@
+        
+        @*<input type="button"  id="btnExporttoExcel" value=" Export Table data into Excel " />
+        <input type="button" id="btnExporttoPdf" value=" Export Table data into Pdf " />*@
+        <!--<div class="row"><div class="col-xs-6"></div><div class="col-xs-6"><div class="dataTables_filter" id="example1_filter"><label>Search: <input type="text" aria-controls="example1"></label></div></div></div>-->
+        @*@Html.HiddenFor(m => Model.PageCount)*@
+        @if (Model.Count() > 0)
+        {
+            <div id="divPastEmployees">
+            <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+                <thead style="background-color:#428bca;color:white; ">
+                    <tr>
+                        <th>Employee No</th>
+                        <th>Employee Name</th>
+                         <th>Email Address</th>
+                        <th>Reason for Leaving</th>                      
+                        <th>Leaving Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@Html.Raw(user.EmpNo) </td>
+                            <td>@Html.Raw(user.EmpName)</td>                      
+                            <td>@Html.Raw(user.Email)</td>
+                            <td>@Html.Raw(user.ReasonforLeaving)</td>
+                            <td>@Html.Raw(user.LeavingDate)</td>
+                          
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+                </div>
+        }
+        else
+        {            
+            <br />
+        <h4>No Records found</h4>
+        }
+
+        @if (Model.PageCount > 1)
+        {
+
+            @*@Html.PagedListPager((IPagedList)ViewBag.Names, page => Url.Action("Index", new { page }),
+                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "unobtrusive" }))*@
+            <div class="PastEmployeeList">
+                @Html.PagedListPager(Model, pageNo => Url.Action("PastEmployeeList", new { Page }))
+            </div>
+        }
+    </div>
+</div>
+<script>
+
+        $(document).ready(function () {
+
+            $('.PastEmployeeList a').click(function (event) {
+               
+                var data = { pageNo: this.text, searchString: $('#txtSearchPastEmployess').val(), FromDate: $('#PE_txtFromDate').val().trim().toLowerCase(), ToDate: $('#PE_txtToDate').val().trim().toLowerCase() }
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    type: "GET",
+                    url: "/User/PastEmployeeList",
+                    data: data,
+                    datatype: "html",
+                    success: function (data) {
+                       
+                        // $("#succdiv").(data);
+                        $("#divPastEmployees").html(data);
+                        ajaxindicatorstop();
+                    },
+                    error: function () {
+                        alert('some error occured')
+                        ajaxindicatorstop();
+                    }
+                });
+
+                event.preventDefault();
+
+            });
+
+            $("#lnkExporttoexcel").click(function (e) {
+                ajaxindicatorstart('Loading.. please wait..');
+                e.stopPropagation();
+                var table = $("#divPastEmployees");
+                window.open('data:application/vnd.ms-excel,filename=PastEmployeeList.excel;' + encodeURIComponent(table[0].innerHTML));
+                e.preventDefault();
+                ajaxindicatorstop();
+             
+            });
+
+            
+            
+            $('#lnkExporttoPdf').click(function () {
+                ajaxindicatorstart('Loading.. please wait..');
+                demoFromHTML();
+                ajaxindicatorstop();
+            });
+
+        });
+
+        function demoFromHTML() {
+            var pdf = new jsPDF('p', 'pt', 'a3');
+            // source can be HTML-formatted string, or a reference
+            // to an actual DOM element from which the text will be scraped.
+            
+            source = $('#divPastEmployees')[0];
+            // we support special element handlers. Register them with jQuery-style 
+            // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+            // There is no support for any other type of selectors 
+            // (class, of compound) at this time.
+            specialElementHandlers = {
+                // element with id of "bypass" - jQuery style selector
+                '.EmployeeList': function (element, renderer) {
+                    // true = "handled elsewhere, bypass text extraction"
+                    return true
+                }
+            };
+            margins = {
+                top: 80,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+            // all coords and widths are in jsPDF instance's declared units
+            // 'inches' in this case
+            pdf.fromHTML(
+            source, // HTML string or DOM elem ref.
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, // max width of content on PDF
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                // dispose: object with X, Y of the last line add to the PDF 
+                //          this allow the insertion of new lines after html
+                setTimeout(function () {
+                    pdf.save('PastEmployeeList.pdf');
+                }, 5);
+              
+            }, margins);
+        }
+      
+</script>
+

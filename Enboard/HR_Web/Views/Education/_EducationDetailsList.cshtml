@@ -1,0 +1,158 @@
+﻿@model Models.EducationDetails
+
+ @using (Html.BeginForm("EducationalDetails", "Education", FormMethod.Post, new { id = "ED_FormId" + i.ToString(), @class = "addFormClass" }))
+ {
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#tr@(i)" aria-expanded="true" class="collapsed">
+                @Model.educationDetialslist[i].EducationCategory
+            </a>
+        </h4>
+    </div>
+    <div id="tr@(i)" class="panel-collapse collapse" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].EducationCategory, new { @class = "" }) <span class="red">*</span>
+                        @Html.DropDownList("EducationCategoryId",
+                                                new SelectList(educationCategorylist, "Value", "Text", Model.educationDetialslist[i].EducationCategoryId), "Select Education Category",
+                                                      new
+                                                      {
+                                                          id = "ED_ddlEducationCategory" + i.ToString(),
+                                                          @class = "form-control",
+                                                          placeholder = "Select Education Category",
+                                                          tabindex = 1,
+                                                          onchange = "educationCategoryChange(this);"
+                                                      })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].EducationCategoryId, "", new { @class = "text-danger" })
+                        @Html.TextBox("OtherEducationCategory", Model.educationDetialslist[i].OtherEducationCategory, new { id = "ED_txtOtherEducationCategory" + i, @class = "form-control otherTextBox", placeholder = "Please enter your Education Category", style = "display:none;", tabindex = 1 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherEducationCategory, "", new { @class = "text-danger", id = "ED_valOtherEducationCategory" + i.ToString() })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].TypeofDegreeDeploma, new { @class = "" }) <span class="red">*</span>
+                        @Html.DropDownList("TypeofDegreeDeplomaId",
+                                                new SelectList(discipline, "Value", "Text", Model.educationDetialslist[i].TypeofDegreeDeplomaId), "Select Discipline",
+                                               new
+                                               {
+                                                   id = "ED_ddlTypeofDegreeDeploma" + i.ToString(),
+                                                   @class = "form-control",
+                                                   placeholder = "Select Discipline",
+                                                   tabindex = 2,
+                                                   onchange = "disciplineChange(this);"
+                                               })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].TypeofDegreeDeplomaId, "", new { @class = "text-danger" })
+                        @Html.TextBox("OtherTypeofDegreeDeploma", Model.educationDetialslist[i].OtherTypeofDegreeDeploma, new { id = "ED_txtOtherTypeofDegreeDeploma" + i, @class = "form-control otherTextBox", placeholder = "Please enter your Discipline", style = "display:none;", tabindex = 2 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherTypeofDegreeDeploma, "", new { @class = "text-danger", id = "ED_OtherClass" + i.ToString() })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].PassingYear, new { @class = "" }) <span class="red">*</span>
+                        @Html.DropDownList("PassingYear", new SelectList(Years, "Value", "Text", Model.educationDetialslist[i].PassingYear), "Select Year", new { id = "CD_txtPassingYear" + i.ToString(), @class = "form-control", tabindex = 6 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].PassingYear, "", new { @class = "text-danger" })
+                        <label id="lblPassingYearError" class="text-danger" style="display:none;"> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].Class, new { @class = "" }) <span class="red">*</span>
+                        @Html.DropDownList("ClassId", new SelectList(classes, "Value", "Text", Model.educationDetialslist[i].ClassId), "Select class", new { id = "ED_ddlClass" + i.ToString(), @class = "form-control", placeholder = "Select Class", tabindex = 10 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].ClassId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].Specialization, new { @class = "" }) <span class="red">*</span>
+                        @Html.TextBox("OtherSpecialization", Model.educationDetialslist[i].OtherSpecialization, new { id = "ED_txtOtherSpecialization" + i.ToString(), @class = "form-control mt-5", placeholder = "Please enter your Specialization", tabindex = 13 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherSpecialization, "", new { @class = "text-danger", id = "ED_OtherClass" + i.ToString() })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].InstituteName, new { @class = "" }) <span class="red">*</span>
+                        @Html.DropDownList("InstituteNameId",
+                                                new SelectList(college, "Value", "Text", Model.educationDetialslist[i].InstituteNameId), "Select Institute Name",
+                                               new
+                                               {
+                                                   id = "ED_ddlInstituteName" + i.ToString(),
+                                                   @class = "form-control",
+                                                   placeholder = "Select Institute Name",
+                                                   tabindex = 3,
+                                                   onchange = "instituteNameChange(this);"
+                                               })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].InstituteNameId, "", new { @class = "text-danger" })
+                        @Html.TextBox("OtherInstituteName", Model.educationDetialslist[i].OtherInstituteName, new { id = "ED_txtOtherInstituteName" + i, @class = "form-control otherTextBox", placeholder = "Please enter your Institute Name", style = "display:none;", tabindex = 3 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherInstituteName, "", new { @class = "text-danger", id = "ED_OtherInstituteName" + i.ToString() })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].AttendedFrom, new { @class = "" }) <span class="red">*</span>
+                        @Html.TextBox("AttendedFrom", Model.educationDetialslist[i].AttendedFrom, new { id = "txtAttendedFrom" + i.ToString(), @class = "form-control", tabindex = 5 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].AttendedFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].AttendedTo, new { @class = "" }) <span class="red">*</span>
+                        @Html.TextBox("AttendedTo", Model.educationDetialslist[i].AttendedTo, new { id = "txtAttendedTo" + i.ToString(), @class = "form-control", tabindex = 5 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].AttendedTo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].University_BoardName, new { @class = "" }) <span class="red">*</span>
+                        @Html.DropDownList("University_BoardNameId",
+                                                new SelectList(university, "Value", "Text", Model.educationDetialslist[i].University_BoardNameId), "Select University/Board Name",
+                                               new
+                                               {
+                                                   id = "ED_ddlUniversity_BoardName" + i.ToString(),
+                                                   @class = "form-control",
+                                                   placeholder = "Select University/Board Name",
+                                                   tabindex = 5,
+                                                   onchange = "universityBoardNameChange(this);"
+                                               })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].University_BoardNameId, "", new { @class = "text-danger" })
+                        @Html.TextBox("OtherUniversity_BoardName", Model.educationDetialslist[i].OtherUniversity_BoardName, new { id = "ED_txtOtherUniversity_BoardName" + i, @class = "form-control otherTextBox", placeholder = "Please enter your University / BoardName", style = "display:none;", tabindex = 5 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].OtherUniversity_BoardName, "", new { @class = "text-danger", id = "ED_OtherUniversity_BoardName" + i.ToString() })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].Percentage, new { @class = "" }) <span class="red">*</span>
+                        @Html.TextBox("Percentage", Model.educationDetialslist[i].Percentage, new { id = "CD_txtPercentage" + i.ToString(), placeholder = "63.50", @class = "form-control", tabindex = 11, MaxLength = 5 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].Percentage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.educationDetialslist[i].BreaksDuringEducation, new { @class = "" }) <span class="red">*</span>
+                        @Html.TextBox("BreaksDuringEducation", Model.educationDetialslist[i].BreaksDuringEducation, new { id = "CD_txtBreaks" + i.ToString(), placeholder = "63.50", @class = "form-control", tabindex = 11, MaxLength = 5 })
+                        @Html.ValidationMessageFor(m => Model.educationDetialslist[i].BreaksDuringEducation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            @Html.Hidden("EduDetID", Model.educationDetialslist[i].EduDetID, new { id = "hdEduId" + i.ToString() })
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn-delete pull-right" href="#">Delete</a>
+                    <a class="btn-reset pull-right" href="#" onclick="editEducationalDetails(this);" data-id='@i' id='btnEducationEdit@(i)'>Edit</a>
+                    <button type="submit" name="submit" title="submit" class="btn-reset pull-right" data-id='@i' id='btnEducationEdit@(i)'>Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+}

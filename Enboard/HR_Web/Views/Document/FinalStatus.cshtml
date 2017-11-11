@@ -1,0 +1,156 @@
+﻿@model Models.FinalSubmitViewModel
+@{
+    ViewBag.Title = "FinalStatus";
+    Layout = "~/Views/Shared/_EnboardLayout.cshtml";
+    bool flag = true;
+}
+<div class="containerInner">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-group FinalDetails tabSection" id="accordion" role="tablist" aria-multiselectable="false">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Final Status
+                            </a>
+                        </h4>
+                    </div>@using (Html.BeginForm("FinalStatus", "Document", FormMethod.Post, new { id = "PD_FormId" }))
+                    {
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <form>
+                                    <div class="row">
+                                        <div id="divDetails" class="col-md-12">
+                                            <div class="conditionText">
+                                                Following forms are incomplete. Please enter the missing details. 
+                                            </div>
+                                            <ul class="userNote" style="margin-left:15px;">
+                                                @if (!String.IsNullOrWhiteSpace(Model.PersonalDetailsError))
+                                                {
+                                                    flag = false;
+                                                    <li>@Model.PersonalDetailsError</li>
+
+                                                }
+                                                @if (!String.IsNullOrWhiteSpace(Model.ContactDetailsError))
+                                                {
+                                                    flag = false;
+                                                    <li>@Model.ContactDetailsError</li>
+
+                                                }
+                                                @if (!String.IsNullOrWhiteSpace(Model.EducationDetailsError))
+                                                {
+                                                    flag = false;
+                                                    <li>@Model.EducationDetailsError</li>
+
+                                                }
+                                                @if (!String.IsNullOrWhiteSpace(Model.EmploymentDetailsError))
+                                                {
+                                                    flag = false;
+                                                    <li>@Model.EmploymentDetailsError</li>
+
+                                                }
+                                                @if (!String.IsNullOrWhiteSpace(Model.FamilyDetailsError))
+                                                {
+                                                    flag = false;
+                                                    <li>@Model.FamilyDetailsError</li>
+
+                                                }
+                                                @if (!String.IsNullOrWhiteSpace(Model.UploadDetailsError))
+                                                {
+                                                    flag = false;
+                                                    <li>@Model.UploadDetailsError</li>
+
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div id="divSubmit" class="col-md-12">
+                                            <div class="conditionText">
+                                                I certify that the information entered on this portal is factually correct and complete.
+                                                I also undertake to inform you of any changes therein, immediately.
+                                                I am at present in sound mental and physical condition to undertake employment with Silicus Technologies India Pvt. Ltd.
+                                                If, at any time, I found to have concealed any material information or given any false details, my employment shall be liable to termination without notice and / or compensation.
+                                                By ticking the checkbox, I confirm my acceptance to the above clauses of employment.
+                                            </div>
+                                            <div class="conditionText">
+                                                I hereby confirm my acceptance to the above clauses of employment.
+                                                <div class="condtionCehckbox">
+                                                    @Html.CheckBoxFor(m => m.FinalStatus, new { id = "FinalStatus", @class = "checkboxStyle" })
+                                                    <label class="customCheckBox" for="FinalStatus"></label>
+                                                </div>
+                                            </div>
+                                            @if (!Model.FinalStatus)
+                                            {
+                                                <div class="conditionText">
+                                                    <span class="pull-left userNote"> <i class="fa fa-certificate" aria-hidden="true"></i> You will not be able to edit the forms once submitted. Contact the HR Point of Contact for any changes.</span>
+                                                    <button type="button" id="btnFinalSubmit" onclick="return chkClicked();" class="btn-submit pull-right">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="conditionText">
+                                                    <span class="pull-left userNote"> <i class="fa fa-certificate" aria-hidden="true"></i> Profile is submitted, please contact the HR Point of Contact for any changes.</span>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+            <script>
+                $(document).ready(function () {
+                    if ('@Model.FinalStatus'.toLowerCase() === 'true') {
+                        $("#FinalStatus").attr('disabled', 'disabled');
+                    }
+
+                    if ('@flag' === 'False') {
+                        $('#divDetails').show();
+                        $('#divSubmit').hide();
+                        $('#btnFinalSubmit').attr('disabled', 'true');
+                        $('#btnFinalSubmit').removeClass('btn-submit');
+                        $('#btnFinalSubmit').addClass('btn').addClass('disabled');
+                    }
+                    else {
+                        $('#divDetails').hide();
+                        $('#divSubmit').show();
+                    }
+                });
+
+                function ConfirmSubmit() {
+                    toastr.success("<br /><br /><button type='button' id='confirmationRevertYes' class='btn btn-default'>Yes</button>" +
+                        "   <button type='button' id='confirmationRevertNo' class='btn btn-default'>No</button>", 'Do you want to submit, Once you submit you are not able to modify?',
+                          {
+                              closeButton: false,
+                              allowHtml: true,
+                              onShown: function (toast) {
+                                  $("#confirmationRevertYes").click(function () {
+                                      $("#PD_FormId").submit();
+                                  });
+                                  $("#confirmationRevertYes").click(function () {
+                                      return false;
+                                      this.fadeOut();
+                                  });
+                              }
+                          });
+                }
+
+                function chkClicked() {
+                    if ($("#FinalStatus").is(':checked')) {
+                        ConfirmSubmit();
+                    }
+                    else {
+                        toastr.error('Please select checkbox.');
+                        return false;
+                    }
+                }
+
+            </script>

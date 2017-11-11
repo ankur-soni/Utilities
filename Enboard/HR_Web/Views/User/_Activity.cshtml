@@ -1,0 +1,57 @@
+﻿@*@model Models.ActivityDetails*@
+@model List<HR_Web.ViewModel.ActivityViewModel>
+
+
+@foreach (var item in Model)
+{
+    <div class="callout">
+        <div> You have edited <a href=@item.TabURL>@item.TabName </a> on </div>
+        <small class="text-muted mr-1"><i class="icon-calendar"></i> @item.LastModifiedDate</small>
+    </div>
+}
+
+
+
+@*@if (Model.PersonalDetailsDate != null) { 
+<div class="callout">
+    <div> You have edited <a href="/User/PersonalDetails">Personal Details  </a> on </div>
+    <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.PersonalDetailsDate </small>
+</div>
+}
+@if (Model.ContactDetailsDate != null)
+{
+<div class="callout">
+    <div> You have edited <a href="/User/ContactDetails">Contact Details </a> on  </div>
+    <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.ContactDetailsDate </small>
+</div>
+}
+@if (Model.EducationDetailsDate != null)
+{
+<div class="callout">
+    <div> You have edited <a href="/Education/GetEducationalDetails">Education Details</a>  on </div>
+    <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.EducationDetailsDate </small>
+</div>
+}
+
+@if (Model.EmploymentDetailsDate != null)
+{
+<div class="callout">
+    <div> You have edited <a href="/Employement/Index">Employment Details</a> on  </div>
+    <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.EmploymentDetailsDate </small>
+</div>
+}
+    @if (Model.FamilyDetailsDate != null)
+    {
+<div class="callout">
+    <div> You have edited <a href="/Family/FamilyDetails">Family Details</a>  on </div>
+    <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.FamilyDetailsDate </small>
+</div>
+
+    }
+@if (Model.UploadDocumentDetailsDate != null)
+{
+<div class="callout">
+    <div> You have edited <a href="/document/index">Document Details  </a>on </div>
+    <small class="text-muted mr-1"><i class="icon-calendar"></i> @Model.UploadDocumentDetailsDate </small>
+</div>
+}*@

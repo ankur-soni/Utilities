@@ -1,0 +1,214 @@
+﻿@model Models.LoginDetails
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="https://www.silicus.com/images/favicon.ico">
+    <title> EnBoard </title>
+    <link href="../Content/NewUI/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/simple-line-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900" rel="stylesheet">
+    <!-- Latest compiled and minified CSS Bootstrap v3.3.7-->
+    <link rel="stylesheet" href="../Content/NewUI/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Content/NewUI/css/bootstrap-select.min.css">
+    <link href="../Content/NewUI/css/style.css" rel="stylesheet">
+    <!--custom style--->    
+    <link href="../Content/NewUI/css/custom.css" rel="stylesheet" />
+    <link href="../Content/NewUI/css/scrollbar.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/login.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row LoginContainer">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="row loginLeft">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 loginContent">
+                        <div class="loginLogo"><img src="../Content/NewUI/images/logo.svg" /></div>
+                     
+                        @*<div class="paraContent">
+                           
+                            <p> Welcome to Enboard, the on-boarding tool for new members to the Silicus family! </p>
+                            <p> There are activities related to your onboarding which you must complete prior to joining Silicus. This activity should not take over 30 minutes of your time. </p>
+                            <p>While you are in this portal, please check the information pre-filled for you. We have entered the information you provided to Silicus Recruiting Team during your hiring process. If there are any corrections to this, you can edit the field(s) and send to us for an approval to change it. </p>
+                            <p>Taking time to complete this activity now will significantly cut down on the time to get you up and running on your first day of joining.  You can return to this portal at any point by saving your information which means that you will not have to complete everything in one sitting. Simply remember to save your information prior to exiting from the tool and then come back to it any time to complete the rest. </p>
+                            <p>We are delighted to have you onboard our organization and look forward to what we hope will be the beginning of a long-term and mutually beneficial career with Silicus. </p>
+                        </div>*@
+
+                        @*Change request - Modified content*@
+                        <div class="headerTitle">Welcome to Enboard!</div>
+                        <div class="paraContent">
+                            <p>At Silicus we understand the profound impact technology has in solving business and social challenges. We believe that technology-enabled connections between enterprises, people and devices hold the potential to address these challenges.</p>
+                            <p>Gain hands-on experience solving hot technology and industry challenges and keep pace with emerging ones, while benefitting from the experience of seasoned and talented professionals. Plus, get the benefits of great corporate visibility, high levels of project ownership, and  ongoing training and professional development. If you   possess the passion and commitment to achieve your career goals, work with us and watch your career soar!</p>
+                        </div> 
+                        <ul class="LoginpageLogos">
+                            <li><img src="../Content/NewUI/images/loginpage/cmmi-3.svg" /></li>
+                            <li><img src="../Content/NewUI/images/loginpage/tuv-nord-9001.svg" /></li>
+                            <li><img src="../Content/NewUI/images/loginpage/tuv-nord-27001.svg" /></li>
+                            @*<li><img src="../Content/NewUI/images/loginpage/inc-5000.svg" /></li>*@
+                            <li><img src="../Content/NewUI/images/loginpage/panacea.svg" /></li>
+                            <li><img src="../Content/NewUI/images/loginpage/microsoft-gold-partner-1.svg" /></li>
+                            <li><img src="../Content/NewUI/images/loginpage/microsoft-gold-partner-2.svg" /></li>
+                           
+                        </ul> 
+                        @*<img src="../Content/NewUI/images/cmmi3.png" />*@
+                        @*<img src="../Content/NewUI/images/cmmi3_logo.png" />*@
+                        <div class="copyRight">
+                            @*Change request - Removed hyperlink*@
+                            <a>Copyright © 2017 Silicus 
+                                <img src="../Content/NewUI/images/inc_logo.png" alt="INC 5000">@*<img src="../Content/NewUI/images/cmmi3.png" />*@</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="row loginRight">
+                    <div class="col-lg-12 loginInner">
+                        <div class="loginMobileInner">
+                            <div class="loginLogo hidden-lg-up"><img src="../Content/NewUI/images/logo.svg" /></div>
+                            <div class="headerTitle hidden-lg-up">Welcome to EnBoard</div>
+                    @using (Html.BeginForm("Login", "User", FormMethod.Post, new { role = "login" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @*<form action="index.html">*@
+                               
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "textLabel" })
+                                    <span class="red">*</span>
+                                     
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                                         
+                                    
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "textLabel" })
+                                        <span class="red">*</span>
+                                       
+                                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                            </div>
+                                        
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-lg btn-info waves-effect waves-light m-t-10">LOGIN</button>
+                                </div>
+                                <div class="form-group forgotPasword">
+                                     @Html.ActionLink("Forgot Password", "ForgotPassword", "User")
+                                </div>
+                            @*</form>*@
+}
+                            <div class="loginSocailIcon">
+                                @*Change request - Removed social sites icon from screen*@
+                                @*<ul class="socialIcon">
+                                    <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                    <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                </ul>*@
+                            </div>
+                        </div>
+                        <div class="copyRight hidden-lg-up">
+                            <a>Copyright © 2017 Silicus <img class="inc" src="../Content/NewUI/images/inc_logo.png" alt="INC 5000"> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <script src="../Scripts/NewJs/jquery.min.js"></script>
+
+    <!--minified JavaScript v- Bootstrap v3.3.7-->
+
+    <script src="../Scripts/NewJs/bootstrap.min.js"></script>
+
+    <!--login section responsive script -->
+    <script type="text/javascript">
+	$.fn.center = function () {
+			var topMargin = ($(window).height()  - $(this).outerHeight()) / 2;
+			var leftMargin = ($(window).width() - $(this).outerWidth()) / 2;
+			if(leftMargin<0){
+				leftMargin= 0;
+			}
+			if(topMargin<0){
+				topMargin= 0;
+			}
+			if($('.loginLeft').css('display') == 'block') {
+				leftMargin= 0;
+			}
+			return this.css({
+				'left': leftMargin,
+				'top': topMargin
+			});
+		};
+
+$(window).resize(function(){
+    $('.loginInner').center();
+});
+$(document).ready(function($){
+	$('.loginInner').center();
+});
+    </script>
+</body>
+</html>
+
+
+
+
+@*<meta name="viewport" content="width=device-width" />
+<title>Login</title>
+<link href="~/LoginContent/styles_for_login.css" rel="stylesheet" />
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+        font-weight: bold !important;
+        padding-left: 0;
+    }
+</style>
+<section class="container">
+    <section class="row">
+        <div class="login-form">
+            <div id="logo">
+                <a href="#"><img src="/Images/Silicus.png" alt="" /></a>
+            </div>
+            <div class="well">
+                @using (Html.BeginForm("Login", "User", FormMethod.Post, new { role = "login" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "label" })
+                        <span class="red">*</span>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label" })
+                        <span class="red">*</span>
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <section>
+                        <input type="submit" value="Sign In" class="btn btn-primary btn-block" />
+                        <p>@Html.ActionLink("Forgot Password", "ForgotPassword", "User")</p>
+                    </section>
+                }
+            </div>
+        </div>
+    </section>
+</section>*@
+
+
+
+

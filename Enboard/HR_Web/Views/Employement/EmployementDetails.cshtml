@@ -1,0 +1,166 @@
+﻿@model Models.EmployementModel
+@{
+    ViewBag.Title = "EmployementDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var CityList = (SelectList)ViewBag.Cities;
+    var StateList = (SelectList)ViewBag.States;
+    var CountryList = (SelectList)ViewBag.Countries;
+}
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+    .hline { width:100%; height:1px; background: #fff }
+</style>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/EDP_Validations.js"></script>
+
+
+
+<div id="accordion" role="tablist" aria-multiselectable="true">
+   
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" onclick="getdetails('EmployementNo1', collapseOne)">
+                    Employement #1
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            @*@Html.Partial("~/Views/Employement/_EmployementView.cshtml", Model.ElementAt(0))*@
+
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" onclick="getdetails('EmployementNo2', collapseTwo)">
+                    Employement #2
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            @*@Html.Partial("~/Views/Employement/_EmployementView.cshtml", Model.ElementAt(1))*@
+           
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onclick = "getdetails('EmployementNo3', collapseThree)">
+                    Employement #3
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            @*@Html.Partial("~/Views/Employement/_EmployementView.cshtml", Model.ElementAt(2))*@
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingFour">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour" onclick="getdetails('EmployementNo4', collapseFour)">
+                    Employement #4
+                </a>
+            </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+            @*@Html.Partial("~/Views/Employement/_EmployementView.cshtml", Model.ElementAt(3))*@
+           
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix" role="tab" id="headingFive">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive" onclick="getdetails('EmployementNo5', collapseFive)">
+                    Employement #5
+                </a>
+            </h4>
+        </div>
+        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+            @*@Html.Partial("~/Views/Employement/_EmployementView.cshtml", Model.ElementAt(4))*@
+           
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // getdetails('EmployementNo1', collapseOne)
+        ;
+        if (@Model.EmploymentDetID == null || @Model.EmploymentDetID==0)
+        {
+            getdetails('EmployementNo1', collapseOne)
+            return;
+    }
+
+    else{
+            if ('@Model.EmployementNo' != null) {
+                if ('@Model.EmployementNo' == 'EmployementNo2') {
+                    getdetails('EmployementNo2', collapseTwo)
+                }
+                else if ('@Model.EmployementNo' == 'EmployementNo3') {
+                    getdetails('EmployementNo3', collapseThree)
+                }
+                else if ('@Model.EmployementNo' == 'EmployementNo4') {
+                    getdetails('EmployementNo4', collapseFour)
+                }
+                else if ('@Model.EmployementNo' == 'EmployementNo5') {
+                    getdetails('EmployementNo5', collapseFive)
+                }
+                else {
+                    getdetails('EmployementNo1', collapseOne)
+                }
+            }
+    }
+    });
+
+
+
+
+    function getdetails(value, obj)
+    {
+        Empty();
+        ;
+        var url = "/Employement/getPartialView/";
+        $.ajax({
+            url: url,
+            data: { EmployementNo: value },
+            cache: false,
+            type: "GET",
+            success: function (data) {;
+                Empty();
+                $(obj).html(data);
+                $(obj).focus();
+                $(obj).addClass("in")
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+
+    function Empty()
+    {
+        $('#collapseOne').empty();      
+        $('#collapseTwo').empty();
+        $('#collapseThree').empty();
+        $('#collapseFour').empty();
+        $('#collapseFive').empty();
+
+        $('#collapseOne').removeClass("in");
+        $('#collapseTwo').removeClass("in");
+        $('#collapseThree').removeClass("in");
+        $('#collapseFour').removeClass("in");
+        $('#collapseFive').removeClass("in");
+       
+    }
+
+
+</script>
+

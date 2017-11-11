@@ -264,3 +264,5 @@ _Pvt_Extensions
 /Silicus.Ensure/Silicus.Ensure.Web/CandidateResume
 /Silicus.Ensure/Silicus.Ensure.Web/CandidateProfilePhoto
 /Encourage/Silicus.EncourageWithAzureAd.Web/UserProfilePicture
+/Enboard/.nuget
+/Enboard/HR_Web/UploadedDocuments

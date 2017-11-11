@@ -1,0 +1,65 @@
+﻿
+@model PagedList.IPagedList<Models.FamilyHistory>
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+
+        Layout = "";
+
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/EDP_Validations.js"></script>
+
+    <div class="box-body table-responsive" id="frmFamilyDetails">
+
+        <div class="box-body table-responsive">
+            <br />
+            <br />
+
+            @if (Model != null && Model.Count() > 0)
+            {
+                <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+                    <thead style="background-color:#428bca;color:white; ">
+                        <tr>
+                            <th>#.</th>
+                            <th>Relationship</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Date Of Birth</th>
+                            @*<th>Gender</th>
+                            <th>Dependent</th>*@
+                            <th>Contact Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var family in Model)
+                        {
+                            <tr>
+                                <td>@Html.Raw(family.ID)</td>
+                                <td>@Html.Raw(family.RelationShipName) </td>
+                                <td>@Html.Raw(family.FirstName)</td>
+                                <td>@Html.Raw(family.LastName)</td>
+                                <td>@Html.Raw(family.DOB)</td>
+                                @*<td>@Html.Raw(family.Gender)</td>
+                                <td>@Html.Raw(family.Dependent)</td>*@
+                                <td>@Html.Raw(family.ContactNumber)</td>
+                                <td>@Html.Raw(family.IsActive)</td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+            else
+            {
+                <h4>No Records found</h4>
+            }
+        </div>
+    </div>

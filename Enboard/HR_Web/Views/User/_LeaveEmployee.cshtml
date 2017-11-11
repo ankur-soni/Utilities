@@ -1,0 +1,208 @@
+﻿@model Models.AddEmployeeModel
+@{
+    ViewBag.Title = "Add Offer Candidate To Employee";
+    Layout = null;
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/EDP_Validations.js"></script>
+
+<div class="container">
+  
+    <!-- Row start -->
+    @using (Html.BeginForm("ExitEmployee", "User", FormMethod.Post, new { id = "frmEmployeeLeave" }))
+    {
+        @*@Html.AntiForgeryToken()*@
+   @Html.HiddenFor(m=>m.UserID)
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.EmpNo)
+    @Html.HiddenFor(m => m.Email)
+    @Html.HiddenFor(m => m.JoiningDate)
+    @Html.HiddenFor(m => m.EmpName)
+    @Html.HiddenFor(m => m.DOB)
+    <div class="panel panel-primary" id="succdiv">
+        <div class="panel-heading clearfix">
+            <i class="icon-calendar"></i>
+            <h3 class="panel-title">Employee Exit Form</h3>
+        </div>
+       
+        <div class="row">
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.Label("Employee No", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.EmpNo, new { id = "txtEmpNo", @class = "form-control", placeholder = "Employee No", tabindex = 1 , disabled="true"})
+                       
+                    </div>
+                  
+
+                    <div class="form-group">
+                        @Html.Label("Email Address", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Email, new { id = "txtEmail", @class = "form-control", placeholder = "Email Address", tabindex = 3, disabled = "true" })
+                      
+                    </div>
+                  
+                    <div class="form-group">
+                        @Html.Label("Joining Date", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.JoiningDate, String.Format("{0:dd/MM/yyyy}", Model.JoiningDate), new { id = "txtJoiningDate", @class = "form-control", placeholder = "Joining Date", tabindex = 3 })
+                       
+                        @*@Html.TextBoxFor(m => m.OtherClass, new { id = "ED_txtOtherClass", @class = "form-control", placeholder = "Please enter your Class", style = "display:none;" })*@
+                           @*@Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger", id = "ED_OtherClass" })*@
+                    </div>
+                </div>
+
+            </div>
+       
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.Label("Employee Name", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.EmpName, new { id = "txtEmpName", @class = "form-control", placeholder = "Employee Name", tabindex = 2, disabled = "true" })
+                      
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Date of Birth", new { @class = "label" })
+                        @Html.TextBoxFor(m => m.DOB, String.Format("{0:dd/MM/yyyy}", Model.DOB), new { id = "txtDOB", placeholder = "Date of Birth", @class = "form-control", tabindex = 3, disabled = "true" })                  
+                 
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Leaving Date", new { @class = "label" })<span class="red">*</span>
+                        @Html.TextBoxFor(m => m.LeavingDate, "", new { id = "txtleavingDate", placeholder = "Leaving Date", @class = "form-control", tabindex = 3})
+                        @Html.ValidationMessageFor(model => model.LeavingDate, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+
+            @*<div class="col-md-10 col-sm-10 col-xs-10">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.Label("Reason For Leaving", new { @class = "label" })
+                        @Html.TextAreaFor(m => m.ReasonforLeaving, 5, 0, new { id = "txtReasonForLeaving", placeholder = "Reason For Leaving", @class = "form-control", tabindex = 4 })
+                        @Html.ValidationMessageFor(model => model.ReasonforLeaving, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>*@
+            </div>
+
+    </div>
+                    @*<input type="button" value="Add Education Details" class="btn-primary" id="ED_SaveId" />*@
+
+            <a href="#" id="btnSave" class="btn btn-primary" tabindex="14"><span class="glyphicon glyphicon-saved"></span> Save</a>
+            <a href="#" id="btnCancel" class="btn btn-primary" tabindex="15"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+
+    
+    }
+        </div>
+
+        
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtleavingDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+     
+
+        $('#txtJoiningDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+
+        //Datepicker validation 
+        //$('.hasDatepicker').attr('readonly', true);
+    });
+
+    $('#btnSave').click(function () {
+       
+        var form = $('#frmEmployeeLeave');
+        $.validator.unobtrusive.parse(form);
+
+        if (form.valid()) {
+         
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({              
+                url: "/User/ExitEmployee",
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (data)
+                {
+                    if (data.result)
+                    {
+                        $.ajax({
+                            url: "/User/AddOfferCandidateToEmployee",
+                            cache: false,
+                            type: 'GET',
+                            success: function (data) {
+                                // $("#succdiv").(data);
+                                $("body").html(data);
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured btnsave')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    });
+
+
+    $('#btnCancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            url: "/User/AddOfferCandidateToEmployee",
+            cache: false,
+            type: 'GET',            
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+
+
+
+
+</script>

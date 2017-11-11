@@ -1,0 +1,218 @@
+﻿@model PagedList.IPagedList<Models.AddEmployeeModelList>
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+        var downArrow = "~/images/down-arrow.png";
+        var upArrow = "~/images/up-arrow.png";
+        var downArrowPath = @Url.Content(downArrow);
+        var upArrowPath = @Url.Content(upArrow);
+    }
+    <style type="text/css">
+        th:hover:not([data-sort=disabled]) {
+            cursor: pointer;
+        }
+
+        table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
+            background: #428bca;
+        }
+    </style>
+
+    <div class="box-body table-responsive">
+
+
+        <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+            <thead style="background-color:#f8f8f8;color:#000;">
+                <tr>
+                    <th onclick="javascript:sorting('@ViewBag.EmployeeNoParm','@ViewBag.PageIndex');">
+                        Employee No @if (@ViewBag.EmployeeNoParm == "EmployeeNo_DESC")
+                        {<i class="fa fa-sort-down"></i> }
+                        else
+                        {<i class="fa fa-sort-up"></i> }
+                    </th>
+
+                    <th onclick="javascript:sorting('@ViewBag.EmployeeNameParm','@ViewBag.PageIndex');">
+                        Employee Name @if (@ViewBag.EmployeeNameParm == "EmployeeName_DESC")
+                        {<i class="fa fa-sort-down"></i> }
+                        else
+                        {<i class="fa fa-sort-up"></i> }
+                    </th>
+                    <th>Employee Email</th>
+                    <th>
+                        Requisition Id
+                    </th>
+                    <th>
+                        Project Name
+                    </th>
+                    <th>
+                        Contact Number
+                    </th>
+                    <th>
+                        Offered Designation
+                    </th>
+                    <th>
+                        Department
+                    </th>
+                    <th>
+                        Date of Joining
+                    </th>
+                    <th>
+                        Joining Location
+                    </th>
+                    <th>
+                        Delete Reason
+                    </th>
+                    <th style="text-align:center;">Add to User Activation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@Html.Raw(user.EmpNo) </td>
+                            <td>@Html.Raw(user.EmpName)</td>
+                            <td>@Html.Raw(user.Email)</td>
+                            @*by Sachin khot - start*@
+                            <td>@Html.Raw(user.RequisitionID)</td>
+                            <td>@Html.Raw(user.ProjectName)</td>
+                            <td>@Html.Raw(user.ContactNumber)</td>
+                            <td>@Html.Raw(user.Designation)</td>
+                            <td>@Html.Raw(user.Department)</td>
+                            <td>@Html.Raw(user.ShortJoiningDate)</td>
+                            <td>@Html.Raw(user.JoiningLocation)</td>
+                            <td>@Html.Raw("No more employed.")</td>
+                            @*by Sachin khot - end*@
+                            <td align="center">
+                                <a href="#" onclick="AddToUserActivation('@user.ID');" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add</a>
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td style="text-align: center;" colspan="12">
+                            No Data Found
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+        @if (Model.PageCount > 1)
+        {
+
+            <div class="ExitedEmployeeList">
+                @Html.PagedListPager(Model, pageNo => Url.Action("ExitedEmployeeList", new { Page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.SearchString }), new PagedListRenderOptions
+           {
+               DisplayLinkToNextPage = PagedListDisplayMode.Never,
+               DisplayLinkToLastPage = PagedListDisplayMode.Never,
+               DisplayLinkToPreviousPage = PagedListDisplayMode.Never,
+               DisplayEllipsesWhenNotShowingAllPageNumbers = false
+           })
+            </div>
+            string sortOrder = ViewBag.CurrentSort;
+            int index = ViewBag.PageIndex != null ? ViewBag.PageIndex : 1;
+            @Html.Hidden("hdnSortOrder", sortOrder)
+            @Html.Hidden("hdnIndex", index)
+        }
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+
+        $('.ExitedEmployeeList a').click(function (event) {
+            var data = { pageIndex: this.text, sortOrder: $("#hdnSortOrder").val(), searchString: $('#txtSearchExistingEmployess').val() }
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/ExitedEmployeeList",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+                    $("#divExistingEmployees").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+
+            event.preventDefault();
+
+        });
+    });
+
+    function EditEmployee(EmpNo, UserId) {
+        $('#lblComparegreaterDateError').text('');
+        var data = { EmpNo: EmpNo, UserId: UserId }
+        //if ($('#ED_ddlEducationCategory').val() > 0) {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/User/EditExitedEmployees",
+            data: data,
+            //datatype: "html",
+            success: function (data) {
+                // $("#succdiv").(data);
+                $(".container .body-content").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+    }
+
+
+    function AddToUserActivation(UserId) {
+        var data = { UserId: UserId }
+
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/User/AddToUserActivation",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+    }
+
+    function sorting(sortOrder, pageIndex) {
+        $.ajax({
+            type: "GET",
+            url: '/User/GetExitedEmployeeSorted/',
+            data: {
+                sortOrder: sortOrder,
+                pageIndex: pageIndex,
+                searchString: $('#txtSearchExistingEmployess').val().trim().toLowerCase()
+            },
+            contentType: "application/json",
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+                return false;
+            },
+            success: function (data) {
+                if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                    HandleSessionTimeout();
+                    return;
+                }
+                $("#divExistingEmployees").html('');
+                $("#divExistingEmployees").html(data);
+            }
+        });
+    }
+</script>

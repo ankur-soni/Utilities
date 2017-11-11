@@ -1,0 +1,400 @@
+﻿@model Models.EmpSkillDetailsModel
+
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+        var YearLst = (SelectList)ViewBag.Year_lst;
+        var MonthLst = (SelectList)ViewBag.Month_lst; 
+    }
+
+    <style>
+        .label {
+            color: #6D6767;
+            font-size: inherit;
+        }
+        .table {
+    width: 75% !important;
+    margin-bottom: 20px;
+}
+     
+    </style>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <!-- Row start -->
+    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "AddTotExpr_FormId" }))
+    {   <div class="row">
+        <label id="lblTotError" class="text-danger"></label>
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-lg-2 col-sm-2">
+                <div class="">
+                    @Html.Label("Total Experience", new { @class = "label" })<span class="red">*</span>
+                </div>
+            </div>
+           
+            <div class="col-lg-2 col-sm-2">
+                <div class="">
+                    @Html.DropDownListFor(m => Model.ProfessionalDetailsModel.ExprInYears, YearLst, "Select Year", new { id = "ddlTotExprInYears", @class = "form-control", tabindex = 5 })
+                    @Html.ValidationMessageFor(model => Model.ProfessionalDetailsModel.ExprInYears, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-2">
+                <div class="">
+                    @Html.DropDownListFor(m => Model.ProfessionalDetailsModel.ExprInMonths, MonthLst, "Select Month", new { id = "ddlTotExprInMonths", @class = "form-control", tabindex = 5 })
+                    @Html.ValidationMessageFor(model => Model.ProfessionalDetailsModel.ExprInMonths, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-3">
+                <div class="">
+                    <a href="#" id="SaveTotExpr" onclick="SaveTotExpr()" class="btn btn-primary btn-primary" tabindex="14"> Save</a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+        @Html.HiddenFor(m => Model.ProfessionalDetailsModel.Id, new { id = "hndProffId" })
+    }
+
+
+    <div class="row">
+        &nbsp;
+    </div>
+
+
+
+    <div class="box-body table-responsive">
+
+
+
+        <a href="#" onclick="AddEmpSkills();" id="AddEmpSkillsId" class="btn btn-primary disabled"><span class="glyphicon glyphicon-plus"></span>  Add Employee Skills</a>
+        <br />
+        <br />
+        <!--<div class="row"><div class="col-xs-6"></div><div class="col-xs-6"><div class="dataTables_filter" id="example1_filter"><label>Search: <input type="text" aria-controls="example1"></label></div></div></div>-->
+        @*@Html.HiddenFor(m => Model.PageCount)*@
+        @if (Model.EmpSkillDetailsList.Count() > 0)
+        {
+            <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+                <colgroup>
+                    <col class="col-md-4">
+                    <col class="col-md-2">
+                    <col class="col-md-2">
+
+                </colgroup>
+                <thead style="background-color:#428bca;color:white; ">
+                    <tr>
+                        <th>Skill Name</th>
+                        <th>Experience</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model.EmpSkillDetailsList)
+                    {
+                        <tr>
+                            <td>@Html.Raw(user.SkillName) </td>
+                            <td>@Html.Raw(user.Skill_Experience)</td>
+                            <td align="center">
+
+                                <span class="glyphicon glyphicon-pencil" style="color:green; width:15px; height:15px;cursor:pointer" title="Edit Details" onclick="EditSkillDetails(@user.Id);"></span> @**@
+                                    @*<span class="glyphicon glyphicon-info-sign" style="color:green; width:15px; height:15px;cursor:pointer" title="View Details" onclick="ViewSkillDetails(@user.Id);"></span>*@
+                                @*<span class="glyphicon glyphicon-info-sign" style="color:green; width:15px; height:15px;cursor:pointer" title="View Details" onclick="ViewSkillDetails(@user.Id);"></span>*@
+<span class="glyphicon glyphicon-remove" style="color:red; width:15px; height:15px;cursor:pointer" title="Delete" onclick="DeleteIndex(@user.Id);"></span> @*onclick="return fnUpdateUser(@user.UserId,false)"*@
+
+</td>
+</tr>
+                    }
+
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <h4>No Records found</h4>
+        }
+    </div>
+
+   
+    <div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                    <h4 class="modal-title" id="hTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsg">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="DeleteSkillsDetails($('#hdnSelectedID').val())">Yes</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModalInformation" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="hTitleInfo"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsgInfo">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="cancel()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+    function AddEmpSkills()
+    {        
+        var data = { SkillId: 0 }
+        //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/ProfessionalDetails/AddEditSkills",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    // $("body").html(data);
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        //}
+
+    }
+
+    function EditSkillDetails(SkillID) {
+
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/ProfessionalDetails/AddEditSkills",
+            data: { SkillId: SkillID },
+            datatype: "html",
+            success: function (data) {;
+                // $("#succdiv").(data);
+                //$("body").html(data);
+                $(".container .body-content").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+        //}
+
+    }
+
+    function ViewSkillDetails(SkillID) {      
+      
+        //if ($('#ED_ddlEducationCategory').val() > 0) {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/ProfessionalDetails/AddEditSkills",
+            data: { SkillId: SkillID, IsReadOnly :true },
+            datatype: "html",
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+        //}
+
+    }
+    function DeleteIndex(SkillId)    {
+
+        $('#hdnSelectedID').val(SkillId);
+        $("#hTitle").html('Delete?');
+        $("#divMsg").html('Are you sure you want to delete this Record?');
+        $('#myModal').show();
+    }
+    function cancel() {
+        $('#myModal').hide();
+        $('#myModalInformation').hide();
+    }
+    function cancel() {
+        $('#myModal').hide();
+        $('#myModalInformation').hide();
+    }
+
+    function DeleteSkillsDetails(SkillId) {
+
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/ProfessionalDetails/DeleteSkillsDetails",
+            data: { SkillId: SkillId },
+            datatype: "json",
+            success: function (data) {
+                // $("#succdiv").(data);
+                if(data)
+                {
+                    $('#myModal').hide();
+                    $("#hTitleInfo").html('Deleted');
+                  $("#divMsgInfo").html('Record Deleted Successfully');
+                  $('#myModalInformation').show();
+                 
+                  $.ajax({
+                      urlGrid: "/ProfessionalDetails/SkillsDetailsGrid",
+                      cache: false,
+                      type: 'GET',
+                      success: function (data) {
+                          // $("#succdiv").(data);
+                          $("body").html(data);
+                          ajaxindicatorstop();
+                      },
+                      error: function () {
+                          alert('some error occured')
+                          ajaxindicatorstop();
+                      }
+                  });
+
+                }
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+        //}
+
+    }
+
+
+    function SaveTotExpr() {
+        var url = "/ProfessionalDetails/SaveTotalExperience";       
+        var form = $('#AddTotExpr_FormId');
+
+        $('#lblTotError').text('');
+        $.validator.unobtrusive.parse(form);
+
+        if (form.valid()) {
+
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                url: "/ProfessionalDetails/AddTotEmpExpr",
+                data: { TotExprYear: $('select#ddlTotExprInYears option:selected').val(), TotExprMonth: $('select#ddlTotExprInMonths option:selected').val(), Id: '@Model.ProfessionalDetailsModel.Id' },
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                  
+                    if (data.result == false) {
+                        $('#lblTotError').text(data.Message);
+                        ajaxindicatorstop();
+                        ajaxindicatorstop();
+                    }
+                    else {
+                        $('#lblTotError').text("Total Experience saved.").addClass('text-success');
+                        var Month = $("#ddlTotExprInMonths option:selected").text();
+                        var Year = $("#ddlTotExprInYears option:selected").text();
+                        ;
+                        if(Month>=1)
+                        {                           
+                            $('#AddEmpSkillsId').removeClass( "disabled" )
+                        }
+                        else if(Month==0 && Year>0)
+                        {
+                            $('#AddEmpSkillsId').removeClass( "disabled" )
+                        }
+                        else
+                        {
+                            $('#AddEmpSkillsId').addClass( "disabled" )
+                        }
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    }
+
+    $('#ED_Cancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+
+        $.ajax({
+            url: "/Education/DeleteEducationDetails",
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+ 
+   
+    $(document).ready(function () {
+        ;
+        var Year = $("#ddlTotExprInYears option:selected").text();
+        var Month = $("#ddlTotExprInMonths option:selected").text();
+
+        if(Month>=1)
+        {            
+            $('#AddEmpSkillsId').removeClass( "disabled" )
+        }
+        else if(Year>0 && Month==0)
+        {
+            $('#AddEmpSkillsId').removeClass( "disabled" )
+        }
+       
+       
+    });
+   
+
+   
+
+   
+    </script>
+

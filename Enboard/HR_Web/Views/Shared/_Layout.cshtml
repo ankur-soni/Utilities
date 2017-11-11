@@ -1,0 +1,325 @@
+﻿@using HR_Web.Utilities
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/Images/favicon.ico">
+    <title>Silicus </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="https://www.silicus.com/images/favicon.ico">
+    <title> EnBoard </title>
+    <link rel="stylesheet" href="../Content/NewUI/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Content/NewUI/css/bootstrap-select.min.css">
+    @Styles.Render("~/Content/css")
+ 
+    <link href="../Content/NewUI/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/simple-line-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900" rel="stylesheet">
+    <!-- Latest compiled and minified CSS Bootstrap v3.3.7-->
+ 
+    <link href="../Content/NewUI/css/style.css" rel="stylesheet">
+    <!--custom style--->
+  
+    <link href="../Content/NewUI/css/custom.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/mobile.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/scrollbar.css" rel="stylesheet">
+    <link href="../Content/NewUI/css/toastr.min.css" rel="stylesheet" />
+    <script src="../Scripts/LoadIndicator.js"></script>
+
+
+    
+    <!-- for alert/notification msg-->
+    <script src="../Scripts/NewJs/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "positionClass": "toast-top-center",
+            "closeButton": true,
+        }
+    </script>
+    
+    @Scripts.Render("~/bundles/jquery")
+   
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/jqueryuiStyle")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="../Scripts/NewJs/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "positionClass": "toast-top-center",
+            "closeButton": true,
+        }
+    </script>
+</head>
+<body class="app header-fixed sidebar-hidden aside-menu-hidden">
+    <header class="app-header navbar">        
+        <a class="navbar-brand" href="#"  onclick='window.location.href="@Url.Action("UserList","User")"' ></a>
+        
+        <div class="mobileAsideMenu hidden-lg-up">
+            <a class="menuBtn asideMobileBtn navbar-toggler aside-menu-toggler mobile-aside-menu" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    </div>
+        <div class="mobileSearchIcon hidden-lg-up">
+            <a class="glyphicon glyphicon-search"> </a>
+        </div>
+
+        <ul class="nav navbar-nav ml-auto hidden-md-down">
+            <li>
+
+                 @Html.Partial("_LoginPartial", SessionManager.LastLogin)
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link dropdown-toggle" id="dropdownMenu1" href="#" data-toggle="dropdown">
+                    <span class="hidden-md-down"> Welcome @System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0] </span>
+                    <img src="../Content/NewUI/images/user-avtar.png" class="img-avatar">
+                </a>
+                <ul class="dropdown-menu userMenu" aria-labelledby="dropdownMenu1">
+                    <li><a href="#" onclick="OpenChangePasswordForm()" id="changePassword">Change Password</a></li>
+                    <li><a href="/User/LogOut" id="btnLogOff">Log Out</a></li>
+                                        </ul>
+                                </li>
+                            </ul>
+    </header>
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb hidden-md-down">
+        <!-- Changes for account section and various menu on top right corner-->
+                            <!--  Code change- Adding new tab for welcome page-->
+                            @if (SessionManager.RoleId == 0) // 0 for General user
+                            {
+                    <!-- Code change - Added progress bar for candidate-->
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; background-color:green;">
+                                       0%
+                                    </div>
+                                </div>
+                                <li class=@Html.IsActive("Home", "Welcome") @*onclick="GetWelcomeCandidateDetails()"*@>@Html.ActionLink("Home", "Welcome", "Home")</li>
+                                <li class=@Html.IsActive("User", "PersonalDetails")>@Html.ActionLink("Personal Details", "PersonalDetails", "User")</li>
+                                <li class=@Html.IsActive("User", "ContactDetails")>@Html.ActionLink("Contact Details", "ContactDetails", "User")</li>
+                           
+                           <!-- Code change - Removed onboarded condition to show and hide tabs-->
+                            //if (SessionManager.IsOnBoarded)
+                            //{
+                                <li class=@Html.IsActive("Education", "EducationalDetailsGrid")>@Html.ActionLink("Educational Details", "EducationalDetailsGrid", "Education")</li>
+                               //Testing code for education detail 
+                                <li class=@Html.IsActive("Education", "TestEducationalDetailsGrid")>@Html.ActionLink("Test Educational Details", "TestEducationalDetailsGrid", "Education")</li>
+
+                                <li class=@Html.IsActive("Employement", "EmploymnetDetailsGrid")>@Html.ActionLink("Employment Details", "EmploymnetDetailsGrid", "Employement")</li>
+                                //}
+                                <li class=@Html.IsActive("FamilyDetails", "FamilyDetailsGrid")>@Html.ActionLink("Family Details", "FamilyDetailsGrid", "FamilyDetails")</li>
+                            <li style="padding-top :10px" class=@Html.IsActive("Document", "UploadDocuments")>@Html.ActionLink("Upload Documents", "UploadDocuments", "Document")</li>
+                                @*<li class=@Html.IsActive("ProfessionalDetails", "SkillsDetailsGrid")>@Html.ActionLink("Professional Details", "SkillsDetailsGrid", "ProfessionalDetails")</li>*@
+                                @*<li>@Html.ActionLink("Employee Attachemnts", "EmployeeAttachments", "Document")</li>*@
+                                @*<li><a href="login.html">Logout</a></li>*@
+                        }
+                        else if (SessionManager.RoleId == 1) // 1 for admin type of user
+                        {
+                            <li class=@Html.IsActive("User", "UserList")>@Html.ActionLink("User Activation", "UserList", "User")</li>
+                             
+                                @*<li class=@Html.IsActive("User", "DocList")>@Html.ActionLink("Document Status", "DocList", "User")</li>*@
+                                @*<li class="@Html.IsActive("User", "ReminderList")">@Html.ActionLink("Send Reminder", "ReminderList", "User")</li>*@
+                                <li class=@Html.IsActive("User", "CandidateChangeRequests")>@Html.ActionLink("Candidate Requests", "CandidateChangeRequests", "User")</li>
+                                <li class=@Html.IsActive("User", "ExitedEmployees")>@Html.ActionLink("Deleted Users", "ExitedEmployees", "User")</li>
+                                @*<li class=@Html.IsActive("User", "AdminUsers")>@Html.ActionLink("Admin Section", "AdminUsers", "User")</li>*@
+
+                        }
+                            else
+                            {
+
+
+                            }
+        <!-- Breadcrumb Menu-->
+
+
+       
+    </ol>   
+    <div class="app-body">
+       
+       
+        <main class="main">       
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="container-fluid">
+            <div class="row">
+                
+                <div class="navbar-collapse collapse row" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;  padding-top :10px">
+                    <ul class="nav navbar-nav"></ul>
+                        <div id="mydiv">
+                            <iframe id="frmReportViewer" hidden style="border:none;height:600px;width:100%;"></iframe>
+                        </div>
+                    </div>
+                </div>
+              </div>
+                <!-- /.navbar-collapse -->
+            <div id="divRenderBody" class="container-fluid body-content">
+            @RenderBody()
+        </div>
+            </main>
+    
+</div><!-- app-body close -->
+    <footer class="app-footer text-center">
+        <a class="copyRightText">Copyright © 2017 Silicus <img class="incLogo" src="../Content/NewUI/images/inc_logo.png" alt="INC 5000"> </a>
+        @*<span class="float-right socialIcon">*@
+            @*Change request - Removed social sites icon from admin screen*@
+            @*<ul>
+                <li><a onclick="OpenCreditsModal()" href="#">Credits</a></li>
+                <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+            </ul>*@
+        @*</span>*@
+    </footer>
+
+    <!--div for sucess messege -->
+    <div id="sucess-msg" class="modal fade in" aria-hidden="false" style="display:none;">
+        <div class="modal-backdrop fade in" style="z-index:0;"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="text-align: center;">
+                    <div class="deleted info-saved ">
+                        <img src="../images/information-saved.png" alt="" id="imageID">
+                        <h4 id="Smsg" style="color: black;">Information Saved</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
+<div id="creditsModal" class="modal fade enbordModal" role="dialog" style="text-align:center;">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" >
+                <h2 class="modal-title" style="font-size:larger"> Contributors </h2>
+            </div>
+            <div class="modal-body">
+
+                <p>If you like the application, thank these people.</p>
+                <br />
+                Navnath Kale, Varad Inamdar, Amit Kadam, Swapnali Gadade, Sagar Dhanve, Pritesh Bonde
+                <br />
+                Suraj Bangale, Kamlesh Mahajan, Dhananjay S Kulkarni, Lavesh Patil
+                <br /> Sambhaji Kalantre and Dhanaji Jathar
+                <br />
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-save pull-right" data-dismiss="modal"> OK</a>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Password Change Modal-->
+<div id="adminChangePasswordModal" class="modal fade enbordModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Change password </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-save pull-right" id="btnChangePasswordModalSave" onclick="SaveChangePasswordDetails()"> Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/bootstrap")
+<script src="../Scripts/NewJs/app.js"></script>
+<script>
+    $(document).ready(function () {
+        $('ul.nav li.dropdown').hover(function () {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+        }, function () {
+            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+        });
+
+        $("#liReportViewer").click(function () {
+            $("li").removeClass("active");
+            $("#liReportViewer").addClass("active");
+            $("#frmReportViewer").show();
+            $("#divRenderBody").hide();
+            $("#frmReportViewer").attr("src", "/ReportPage.aspx");
+            //$(".msrs-topBreadcrumb").hide();
+
+            //$("#frmReportViewer").load("http://localhost:52136/ReportPage.aspx");
+        });
+            function GetWelcomeCandidateDetails() {
+            $.ajax({
+                urlGrid: "/Home/Welcome",
+                cache: false,
+                type: 'GET',
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    $("#divWelcomeCandidateDetails").html(data);
+                    //ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    //ajaxindicatorstop();
+                }
+            });
+        }
+
+    });
+
+    //Function to open change request form
+    function OpenCreditsModal() {
+        //Show change Request form modal
+        $('#creditsModal').modal('show');
+
+    }
+
+
+    function OpenChangePasswordForm() {
+        $.ajax({
+            url: '/User/ChangePassword/',
+            method: 'GET',
+            success: function (data) {
+                $("#adminChangePasswordModal .modal-body").html(data);
+                $('#adminChangePasswordModal').modal('show');
+            },
+            error: function (data) {
+                toastr.error("Error occurred while opening Change Request Modal form.");
+            }
+        });
+    }
+
+    function SaveChangePasswordDetails() {
+        if ($("#txtPrevPassword").val() == "" || $("#txtNewPassword").val() == "") {
+            $("#frmChangePassword").submit();
+        }
+        else {
+            $.ajax({
+                url: '/User/ChangePassword/',
+                data: $("#frmChangePassword").serialize(),
+                type: 'POST',
+                dataType: 'json',
+                success: function (ChangePasswordResponse) {
+
+                    if (ChangePasswordResponse.Status == true) {
+                        $('#adminChangePasswordModal').modal('hide');
+                        toastr.success("Your password successfully changed!");
+                    }
+                    else {
+                        toastr.error(ChangePasswordResponse.Message);
+                        return;
+                    }
+                },
+                error: function (ChangePasswordResponse) {
+                    toastr.error("Error occurred while changing password!");
+                }
+            });
+        }
+    }
+</script>

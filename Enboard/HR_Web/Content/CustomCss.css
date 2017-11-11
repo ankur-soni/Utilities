@@ -1,0 +1,309 @@
+﻿#ED_txtOtherUniversity_BoardName {
+    margin-top: 5px;
+}
+#ED_txtOtherInstituteName {
+    margin-top: 5px;
+}
+.form-control.mt-5 {
+    margin-top: 5px;
+}
+/*#txtSearchExistingEmployess {
+    width: 96%;
+}*/
+.custom-table td {
+    padding-right: 5px!important;
+}
+.navbar-right.navbar-brand > span {
+    font-size: 15px;
+}
+navbar-right
+
+.log-out { font-size:10px!important;}
+
+/*Html css to fix footer issue*/
+html { min-height:100%; position:relative;}
+
+body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;}
+
+.navbar-nav > li > a {
+    background: #f1f1f1 ;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {background-color: #337AB7!important;}
+
+.fa.fa-key , glyphicon.glyphicon-log-out{color:#337ab7;}
+
+/*Button css*/
+.btn-primary { background-color:#337AB7!important; border-color:#337AB7!important}
+.btn-primary:hover {color: #fff;}
+
+/*Main Menu css*/
+.navbar-inverse .navbar-toggle {
+    border-color: rgb(0,175,236);
+}
+.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover { background:rgb(0,175,236)}
+
+.navbar-inverse { padding-top:10px;}
+
+/*Main Menu css after opening user details popup for Admin*/
+.navbar-inverse .navbar-nav > li > a:hover {background-color: #428BCA!important;}
+
+/*Penel css for candidate login*/
+.panel-primary > .panel-heading {border-color:#428BCA!important; background-color: #428BCA!important;}
+
+/*Icon button css*/
+.glyphicon.glyphicon-download, .glyphicon.glyphicon-envelope {color : green!important;}
+
+/*Cancel button css*/
+.btn-cancel {background-color:red!important; border-color:red!important; color:#fff!important;}
+.btn-cancel:hover {color: #fff!important;}
+
+/*Popup css for Add new user*/
+.pop-upNav .navbar-nav li.active a {
+    background-color: #337AB7!important;
+    color: #fff!important;
+}
+
+.pop-upNav .navbar-nav > li > a:hover {background-color: #428BCA!important;color: #fff!important;
+}
+
+/*Welcome user css*/
+.welcome:hover {
+    color: #23527c!important;
+}
+
+/*Last login css*/
+.navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover {color: #23527c!important;
+}
+
+/*Login account slide*/
+.navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover {
+background-color:#428bca!important;
+}
+
+/*Save button css*/
+.btn-save {background-color:green!important; border-color:green!important; color:#fff!important;}
+.btn-save:hover {color: #fff!important;}
+
+
+/*Reset button css*/
+.btn-reset {background-color:orange!important; border-color:orange!important; color:#fff!important;}
+.btn-reset:hover {color: #fff!important;}
+
+/* Footer css*/
+.footer {
+    left:0;
+    right:0;
+    bottom: 0;
+    width: 100%; 
+    padding: 0.5rem;
+    text-align: center;
+    position: absolute;
+    background-color: #428BCA;
+    color: #fff;
+   
+}
+.footer p{margin:0;}
+
+
+#divRenderBody {
+    padding-top: 20px;
+}
+
+
+body {
+    overflow-y: scroll !important;
+}
+.app-body {
+    display: block !important;
+    overflow-x: visible !important;
+}
+.progress-bar {
+    height: 2rem !important;
+}
+#btnCancel {
+    padding: 6px 20px 6px 20px !important;
+}
+.educationCategoryList input {
+    margin-right:15px !important;
+}
+#succdiv .panel-heading  i, #succdiv .panel-heading  h3, #divUserDetailsTab .panel-heading  i, #divUserDetailsTab .panel-heading  h3 {
+    display: inline-block;
+}
+#succdiv .panel-heading  i, #divUserDetailsTab .panel-heading  i {
+    margin-right:15px;
+}
+header.navbar li.nav-item {
+    margin-left: 30px !important;
+    border-left: 1px solid #ccc;
+    padding-left: 30px !important;
+}
+header.navbar .nav-item a {
+    background: none !important;
+}
+.box-body.table-responsive {    
+     overflow: inherit;
+}
+.box-body.table-responsive > a.btn.btn-primary {
+    float: right;
+    position: relative;
+    margin-top: -60px;
+   
+}
+#divJobvitetDetailsContent .box-body.table-responsive {    
+     overflow: auto;
+}
+#divRenderBody .model {
+    position:relative !important;
+}
+.custom-table .form-control {
+    height: 33px !important;    
+    width: 100%;
+}
+.custom-table .btn.btn-primary {
+    margin-left: 5px !important;
+}
+.breadcrumb {
+    padding-left: 0px !important;
+    text-align: center !important;
+}
+.breadcrumb > li {
+    margin-left: 3% !important;
+    margin-right: 3% !important;
+}
+.breadcrumb > li + li::before {
+    content: "" !important;
+}
+.table {
+    background:#fff;
+}
+.table-striped tbody tr:nth-of-type(2n+1) {
+    background: #f9f9f9 !important;
+}
+.table tr th {
+    font-size:13px !important; 
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    background:#e3e6ea !important;
+    color: #000 !important;
+
+}
+.panel-primary > .panel-heading {
+    border-color: #00aeef !important;
+background-color: #00aeef !important;
+}
+.input-group select, .input-group input {
+    z-index: 1 !important;
+}
+#WelcomeNote {
+    margin-bottom:30px;
+    height: 200px;
+    width: 100%;
+}
+#bs-example-navbar-collapse-1 ul.nav {
+    width: 100%;
+    display: block;
+    flex-direction: inherit;
+    text-align: center
+}
+#bs-example-navbar-collapse-1 ul.nav li {
+    border-right: 1px solid #fff
+}
+#bs-example-navbar-collapse-1 ul.nav a{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+#modalUserDetails .modal-lg {
+    max-width: 1024px !important;
+    width: 1024px !important;    
+}
+.pAddress input, .pAddress select {
+    margin-bottom: 10px;
+}
+ @media only screen and (max-width:1366px){
+   ol.breadcrumb {
+        padding-left: 100px !important;
+        text-align: center;
+    }
+}
+
+
+ .btn-group {
+	float: right;
+    font-family: 'Roboto', sans-serif !important;
+}
+.btn-group button {
+	border: none;
+	background: none !important;
+    color: #00aeef;
+    font-size: 20px;
+}
+
+.btn-group button:hover, .btn-group button:focus, .btn-group button:active {
+	background: none !important;
+	box-shadow: none !important;
+    color: #187fa3;
+}
+.btn-group .dropdown-menu {
+	width: 160px;
+	border-radius: 6px;
+	top: 36px;
+	padding: 0px;
+}
+.btn-group .dropdown-menu::before {
+    content: "";
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 16px;
+    margin-top: -8px;
+    border-width: 0 8px 8px 8px;
+    border-style: solid;
+    border-color: #cfd8dc transparent;
+}
+.btn-group .dropdown-menu li {
+	border-radius: 6px;
+	overflow: hidden;
+    padding: 5px 0px 5px 10px;
+	}
+.btn-group .dropdown-menu li span:before {
+    padding-right: 10px;
+}
+.btn-group .dropdown-menu li span span {
+    font-family: 'Roboto', sans-serif !important;
+    text-align: left;
+    }
+.btn-group .dropdown-menu li a:hover {
+	color: #000;
+}
+
+.btn-group .dropdown-menu li:hover {
+	background: #f4f6f9;
+}
+.btn-group .dropdown-menu li i {
+	margin-right: 10px;	
+	color: #97989a;	
+}
+.btn-primary.btn {
+	background:#00aeef !important;
+	padding:5px 10px 5px 10px !important;
+	color:#fff !important;
+	font-size:16px;
+	text-transform:uppercase !important;
+	border-radius:3px !important;
+	cursor:pointer !important;
+	border:1px solid #0491c9 !important;
+	text-decoration:none !important;
+}
+.addNewUser.btn-primary.btn {
+    	padding:10px 20px 10px 20px !important;
+}
+.btn-primary:hover{
+	text-decoration:none;
+}
+#searchList {
+    font-size: 0px;
+}
+#searchList i {
+    font-size: 16px;
+    padding: 2px 0;
+}

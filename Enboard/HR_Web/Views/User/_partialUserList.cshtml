@@ -1,0 +1,445 @@
+﻿@*@model IEnumerable<Models.LoginDetails>*@
+@model PagedList.IPagedList<Models.LoginDetails>
+@using PagedList;
+@using PagedList.Mvc;
+@*Model for confirmation*@
+
+@{
+    Layout = null;
+    var downArrow = "~/images/down-arrow.png";
+    var upArrow = "~/images/up-arrow.png";
+    var downArrowPath = @Url.Content(downArrow);
+    var upArrowPath = @Url.Content(upArrow);
+}
+
+
+
+
+<div class="box-body table-responsive">
+    <a href="#" onclick="ShowJobViteDetails();" class="btn btn-primary addNewUser"><span class="glyphicon glyphicon-plus"></span>  Add New User</a>
+
+    @*Code change - Added new fields as per the new requirement*@
+    <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter" aria-describedby="example1_info">
+        <thead style="background-color:#f8f8f8;color:#000;">
+            <tr>
+                @*<th>Emp no.</th>*@
+                <th style="border-bottom-width: 3px; " onclick="javascript:sorting('@ViewBag.NameParm','@ViewBag.PageIndex');">
+                    Name @if (@ViewBag.NameParm == "Name_DESC")
+                    {<i class="fa fa-sort-down"></i> }
+                    else
+                    {<i class="fa fa-sort-up"></i> }
+
+                </th>
+                <th style="border-bottom-width: 3px;" data-sort='disabled'> Overall Progress</th>
+                <th style="border-bottom-width: 3px;" data-sort='disabled'> Email Address </th>
+                <th style="border-bottom-width: 3px;" data-sort='disabled'> Contact Number </th>
+                <th style="border-bottom-width: 3px;">Offered Designation</th>
+                <th style="border-bottom-width: 3px; " onclick="javascript: sorting('@ViewBag.JoiningDateParm','@ViewBag.PageIndex');">
+                    Joining Date @if (@ViewBag.JoiningDateParm == "JoiningDate_DESC")
+                    {<i class="fa fa-sort-down"></i> }
+                    else
+                    {<i class="fa fa-sort-up"></i> }
+                </th>
+                <th style="border-bottom-width: 3px;" data-sort='disabled'> Joining Location </th>
+                <th style="border-bottom-width: 3px; " onclick="javascript: sorting('@ViewBag.StatusParm','@ViewBag.PageIndex');">
+                    Status @if (@ViewBag.StatusParm == "Status_DESC")
+                    {<i class="fa fa-sort-down"></i> }
+                    else
+                    {<i class="fa fa-sort-up"></i> }
+                </th>
+                <th style="border-bottom-width: 3px; width:5%; text-align:center;" data-sort='disabled'>Action</th>
+                <th style="text-align:center;" data-sort='disabled'>Onboarding Status</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var user in Model)
+                {
+                    var @strUserFullName = user.FirstName + " " + user.LastName;
+                    <tr id="@user.UserId">
+                        @*<td id="empNo"></td>*@
+                        <td onclick="return ShowUserDetails(@user.UserId)"><a data-target="#">@Html.Raw(strUserFullName)</a></td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0}", user.OverAllUploadPecentage) + "%"); color: lightsteelblue;">
+                                    @Html.Raw(String.Format("{0:0}", user.OverAllUploadPecentage) + "%")
+                                </div>
+                            </div>
+                        </td>
+                        <td>@Html.Raw(user.Email)</td>
+                        <td>@Html.Raw(user.ContactNumber)</td>
+                        <td>@Html.Raw(user.Designation)</td>
+                        <td>@Html.Raw(user.ShortJoiningDate)</td>
+                        <td>@Html.Raw(user.JoiningLocation)</td>
+                        <td> @Html.Raw(user.Active == 1 ? "Active" : "Inactive")</td>
+                        <td align="center">
+
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    @if (user.Active == 1)
+                                    {
+                                        <li class="inActiveButton">
+                                            <span class="glyphicon glyphicon-remove" style="color:slategray; font-weight:bold;cursor:pointer;" title="Make In-Active" onclick="return fnUpdateUser(@user.UserId,true, '@strUserFullName', @user.Active)"><span>Make In-Active</span></span>
+                                        </li>
+                                        <li class="editButton">
+                                            <span class="glyphicon glyphicon-pencil" style="color:cadetblue;font-weight:bold;cursor:pointer" title="Edit Details" onclick="EditUserDetails(@user.UserId);"><span>Edit Details</span></span>
+                                        </li>
+                                        <li class="deleteButton">
+                                            <span class="glyphicon glyphicon-trash" style="color:chocolate;font-weight:bold;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.UserId);"><span>Delete Details</span></span>
+                                        </li>
+                                        @*<a href="@Url.Action("DocList", "User", new { userId = user.UserId })">
+                                                <span class="glyphicon glyphicon-edit" title="Edit"> </span>
+                                            </a>*@
+                                    }
+                                    else // this block for user id 0 and 2
+                                    {
+                                        var @strtitle = user.Active == 2 ? "Make Re-Active" : "Make Active";
+                                        <li class="inActiveButton">
+                                            <span class="glyphicon glyphicon-ok" style="color:slategray;font-weight:bold;cursor:pointer;" title='@strtitle' onclick="return fnUpdateUser(@user.UserId,false, '@strUserFullName', @user.Active)"><span>Make Active</span></span>
+                                        </li>
+                                        <li class="editButton">
+                                            <span class="glyphicon glyphicon-pencil" style="color:cadetblue;font-weight:bold;cursor:pointer" title="Edit Details" onclick="EditUserDetails(@user.UserId);"><span>Edit Details</span></span>
+                                        </li>
+                                        <li class="deleteButton">
+                                            <span class="glyphicon glyphicon-trash" style="color:chocolate;font-weight:bold;cursor:pointer" title="Delete Details" onclick="DeleteIndex(@user.UserId);"><span>Delete Details</span></span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+
+                        
+                        
+                        @*Change request - Modified the condition for makeing Get onboard button visible*@
+                        @*@if ((user.Active == 1 && user.IsOnboarded == false) || (user.Email.Contains("@silicus.com") && user.IsOnboarded == false))//@if ((user.Active == 1 && user.IsOnboarded == false)*@
+                        @if(user.IsOnboarded == false)
+                        {
+                            <td align = "center">
+                                 <a href = "#" onclick = "AssignPno(@user.UserId);" class="btn btn-primary">Get On-board</a>
+                            </td>
+                        }
+                        else if (user.IsOnboarded == true)
+                        {
+                            @*Code change - used EmpNo for tooltip*@
+                            <td align="center" title="@user.EmpNo">
+                                <font color="green">Candidate has Onboarded</font>
+                            </td>
+                        }
+                        else
+                        {
+                            <td align="center"></td>
+                        }
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td style = "text-align: center;" colspan = "10">
+                        No Data Found
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+@*this div is used for apply pagging*@
+@if (Model.PageCount > 1)
+{
+    @Html.PagedListPager(Model, Page => Url.Action("UserList", new { Page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.SearchString }))
+    string sortOrder = ViewBag.CurrentSort;
+    int index = ViewBag.PageIndex != null ? ViewBag.PageIndex : 1;
+    @Html.Hidden("hdnSortOrder", sortOrder)
+    @Html.Hidden("hdnIndex", index)
+}
+
+    @*script for user defined functions*@
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("div .modal-backdrop").on("click", function () {
+                $('#modalUserDetails').hide();
+            });
+        });
+
+        function sorting(sortOrder, pageIndex) {
+            $.ajax({
+                type: "GET",
+                url: '/User/GetUserListSorted/',
+                data: {
+                    sortOrder: sortOrder,
+                    pageIndex: pageIndex,
+                    searchString: $('#focusedInput').val().trim().toLowerCase()
+                },
+                contentType: "application/json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + " " + errorThrown);
+                    return false;
+                },
+                success: function (data) {
+                    if (data.toString().toLowerCase() == "session expired" || data.toString().indexOf("loginForm" + "AfterSessionTimeout") > -1) {
+                        HandleSessionTimeout();
+                        return;
+                    }
+                    $("#divUserList").html('');
+                    $("#divUserList").html(data);
+                    //$(param).append('<span class="sign arrow up"></span>')
+                }
+            });
+        }
+
+        // function for show hidden model for confirmation
+        function fnUpdateUser(UserId, bolCurrentStatus, userFullName, active) {
+            $("#hdnuserId").val(UserId);
+            $("#hdCurrentStatus").val(bolCurrentStatus);
+            var mainMsg = "";
+            var title = "";
+            if (bolCurrentStatus == true || bolCurrentStatus == "true") {
+                mainMsg = "de-activate";
+                title = "De-activate";
+            }
+            else {
+                if (active) {
+                    mainMsg = "reactivate";
+                    title = "Re-activate";
+                }
+                else {
+                    mainMsg = "activate";
+                    title = "Activate";
+                }
+
+            }
+            $("#hTitle").html(title + ' User - ' + userFullName);
+            $("#divMsg").html('Are you sure you want to ' + mainMsg + ' user?');
+            var responce = ($('#myModal').show());
+        }
+
+        // function for hide model
+        function cancel() {
+            $('#myModal').hide();
+        }
+
+        function canceldelete() {
+            $('#myModalDelete').hide();
+
+        }
+        // function for Activate / deactivate user by user id
+        function Update() {
+            var intUserId = $("#hdnuserId").val();
+            var bolCurrentStatus = $("#hdCurrentStatus").val();
+            var strUrl = '/User/ActivateDeactivateUser' + '?UserId=' + intUserId;
+            //var strUrl = rootUrl + 'User/ActivateDeactivateUser' + '?UserId=' + intUserId;
+            $.ajax({
+                type: "GET",
+                url: strUrl,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + " " + errorThrown);
+                    return false;
+                },
+                success: function (data) {
+                    $('#myModal').hide();
+                    var mainMsg = "";
+                    if (bolCurrentStatus == true || bolCurrentStatus == "true") {
+                        mainMsg = "de-activated";
+                    }
+                    else {
+                        mainMsg = "activated";
+                    }
+                    var msg = "Candidate has been " + mainMsg + "!";
+                    $('#sucess-msg').find("#Smsg").html(msg);
+                    $('#sucess-msg').show();
+                    var flag = setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 3000)
+                    setTimeout(function () { window.location.reload() }, 3000)
+                    //window.location.reload();
+                }
+            });
+        }
+
+        /*Add Edit User*/
+
+        function AddUserDetails() {
+            $('#lblComparegreaterDateError').text('');
+            var data = { Id: 0 }
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/AddEditUserDetails",
+                data: data,
+                //datatype: "html",
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    //$("body").html(data);
+                    $(".body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+            //}
+
+        }
+
+        function EditUserDetails(UserId) {
+            $('#lblComparegreaterDateError').text('');
+            var data = { Id: UserId }
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/AddEditUserDetails",
+                data: data,
+                //datatype: "html",
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    $(".body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+
+
+        function DeleteIndex(UserID) {
+            $('#hdnSelectedID').val(UserID);
+            $("#hTitleDelete").html('Delete?');
+            $("#divMsgDelete").html('Are you sure you want to delete this Record?');
+            $('#myModalDelete').show();
+        }
+
+        function DeleteUserDetails(UserId) {
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/DeleteUserDetails",
+                data: { UserID: UserId },
+                datatype: "json",
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    if (data) {
+                        $('#myModalDelete').hide();
+                        $.ajax({
+                            url: "/User/GetUserList",
+                            cache: false,
+                            type: 'GET',
+                            data: {
+                                searchString: "", // $('#focusedInput').val().trim().toLowerCase(),
+                            },
+                            success: function (data) {
+                                // $("#succdiv").(data);
+                                $(".body-content").html(data);
+                                window.location.reload();
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+
+                    }
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+            //}
+
+        }
+
+
+        function AssignPno(userid) {
+
+            var data = { UserID: userid }
+            //if ($('#ED_ddlEducationCategory').val() > 0) {
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/User/AssignPNo",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+
+                    // $("#succdiv").(data);
+                    //$("body").html(data);
+                    $(".body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+            //}
+
+        }
+
+
+        function ShowUserDetails(UserId) {
+
+            $("#hdnuserId").val(UserId);
+            ajaxindicatorstart("Loading...Please wait..");
+            $.ajax({
+                type: "GET",
+                url: '/User/GetUserDetails',
+                data: { userId: UserId },
+                dataType: 'html',
+                async: false,
+                success: function (data) {
+
+                    $("#divUserDetailsContent").html("");
+                    $("#divUserDetailsContent").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function (error) {
+                    ajaxindicatorstop();
+                    alert(JSON.stringify(error.responseText.trim()));
+                }
+            });
+            $('#modalUserDetails').show();
+            $(window).scrollTop($('#modalUserDetails').offset().top);
+
+        }
+
+        function CloseUserDetails() {
+
+            $('#modalUserDetails').hide();
+        }
+
+
+
+    </script>
+
+    <script>
+
+        //Added below code to resolve account section issue on click of user details in grid
+        $(document).ready(function () {
+            //Click event for account toggle section on home page
+            $("#account").click(function (e) {
+                e.stopPropagation()
+                //Add open class to list control which to allow click events on dropdown
+                $("#account").toggleClass('open');
+            });
+        });
+
+    </script>

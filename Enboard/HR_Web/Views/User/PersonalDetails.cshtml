@@ -1,0 +1,783 @@
+﻿@model Models.PersonalDetails
+@{
+    ViewBag.Title = "PersonalDetails";
+    Layout = "~/Views/Shared/_EnboardLayout.cshtml";
+
+    var LangList = (SelectList)ViewBag.Languages;
+    var BloodGroupList = (SelectList)ViewBag.BloodGroupList;
+    var MaritalStatus = (SelectList)ViewBag.MaritalStatus;
+    var Countries = (SelectList)ViewBag.Countries;
+    var CountryCodeList = (SelectList)ViewBag.CountryCodeList;
+    var StateList = (SelectList)ViewBag.States;
+    var CityList = (SelectList)ViewBag.Cities;
+}
+
+<script src="~/Scripts/EDP_Validations.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@using (Html.BeginForm("PersonalDetails", "User", FormMethod.Post, new { id = "PD_FormId" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="containerInner">
+        <div class="row">
+            <label style="color:green" id="lblmsg"> </label>
+            <div class="col-lg-12">
+                <!--dropdown menu for mobile only -->
+                <div class="btn-group bootstrap-select hidden-lg-up">
+                    <button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Family Details"><span class="filter-option pull-left"><i class="fa fa-graduation-cap"></i> Family Details</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="fa fa-user"></span> <span class="text">Personal Details</span><span class="fa glyphicon-ok check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="fa fa-mobile"></span> <span class="text">Contact Details</span><span class="fa glyphicon-ok check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="fa fa-graduation-cap"></span> <span class="text">Education Details</span><span class="fa glyphicon-ok check-mark"></span></a></li><li data-original-index="3"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="fa fa-briefcase"></span> <span class="text">Emplyoment Details</span><span class="fa glyphicon-ok check-mark"></span></a></li><li data-original-index="4" class="selected"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="fa fa-graduation-cap"></span> <span class="text">Family Details</span><span class="fa glyphicon-ok check-mark"></span></a></li><li data-original-index="5"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="fa fa-cloud"></span> <span class="text">Upload Doucments</span><span class="fa glyphicon-ok check-mark"></span></a></li><li data-original-index="6"><a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="fa fa-th-list"></span> <span class="text">Final Status</span><span class="fa glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker hidden-lg-up" tabindex="-98">
+                        <option value="/User/PersonalDetails" data-icon="fa-user" selected="selected">Personal Details</option>
+                        <option value="/User/ContactDetails" data-icon="fa-mobile">Contact Details</option>
+                        <option value="/Education/EducationalDetailsGrid" data-icon="fa-graduation-cap">Education Details</option>
+                        <option value="#" data-icon="fa-briefcase">Emplyoment Details</option>
+                        <option value="/Family/FamilyDetailsGrid" data-icon="fa fa-users">Family Details</option>
+                        <option value="#" data-icon="fa-cloud">Upload Doucments</option>
+                        <option value="#" data-icon="fa-th-list">Final Status</option>
+                    </select>
+                </div>
+                <!-- dropdown menu end here-->
+                <div class="panel-group personalDetails" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Personal Details
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FirstName) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName", placeholder = "First Name", @class = "form-control", @tabindex = 1, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.LastName) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName", placeholder = "Last Name", @class = "form-control", @tabindex = 2, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.EmpEmail) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.EmpEmail, new { id = "txtEmpEmail", placeholder = "test@test.com", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.EmpEmail, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Gender) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.Gender, new { id = "txtGender", placeholder = "Gender", @class = "form-control", @tabindex = 4, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.DateofBirth) <span class="red">*</span>
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.DateofBirth, String.Format("{0:dd/MM/yyyy}", Model.DateofBirth), new { id = "PD_txtDOB", @class = "form-control", @readonly = "readonly", tabindex = 5, disabled = "disabled" })
+                                                <label class="input-group-addon btn" for="PD_txtDOB">
+                                                    <span class="fa fa-calendar"></span>
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.DateofBirth, "", new { @class = "text-danger" })
+                                            <label id="lblComparefutureDateError" class="text-danger" style="display:none;"> </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.Label("Contact Number") <span class="red">*</span>
+                                            <div class="input-group">
+                                                @Html.DropDownListFor(m => m.CountryCode, CountryCodeList, "Select", new { id = "PD_ddlCountryCode", @class = "form-control titleSelect", placeholder = "Select Country Code", tabindex = 6, disabled = "disabled" })
+                                                @Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })
+
+                                                @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtContactNumber", placeholder = "9863251474", @class = "form-control", @tabindex = 7, @maxlength = "20", disabled = "disabled", @type = "number" })
+                                            </div>
+
+                                            @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.Label("Offered Designation") <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.Designation, new { id = "txtDesignation", placeholder = "Software Engineer II", @class = "form-control", @tabindex = 8, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.Label("Department") <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.Department, new { id = "txtDepartment", placeholder = "Delivery", @class = "form-control", @tabindex = 9, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.Label("Date Of Joining") <span class="red">*</span>
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.JoiningDate, new { id = "txtJoiningDate", placeholder = "10/01/2017", @class = "form-control", @tabindex = 10, @maxlength = "20", disabled = "disabled" })
+                                                <label class="input-group-addon btn" for="txtJoiningDate">
+                                                    <span class="fa fa-calendar"></span>
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.Label("Joining Location") <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.JoiningLocation, new { id = "txtJoiningLocation", placeholder = "Pune", @class = "form-control", @tabindex = 11, @maxlength = "20", disabled = "disabled" })
+                                            @Html.ValidationMessageFor(model => model.JoiningLocation, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="pull-right userNote"> <i class="fa fa-certificate"></i> Request to <a href="#" onclick="OpenChangeRequestForm()" tabindex="12">Edit</a>  information! </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title otherDetails">
+                                @*Change Request - Fixed button issue on expanded panel *@
+                                <a @*class="collapsed"*@ role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Other Details
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.FatherName) <span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.FatherName, new { id = "PD_txtFatherName", placeholder = "Father Name", @class = "form-control", tabindex = 13, @maxlength = "30" })
+                                            @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Nationality) <span class="red">*</span>
+                                            @Html.DropDownListFor(m => m.Nationality, Countries, "", new { id = "PD_ddlNationality", @class = "form-control", placeholder = "Select Nationlity", tabindex = 14 })
+                                            @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.BloodGroup)<span class="red">*</span>
+                                            @Html.DropDownListFor(m => m.BloodGroup, BloodGroupList, "", new { id = "PD_ddlBloodGroup", @class = "form-control", placeholder = "Select Blood Group", tabindex = 15 })
+                                            @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.MaritalStatID) <span class="red">*</span>
+                                            @Html.DropDownListFor(m => m.MaritalStatID, MaritalStatus, "", new { id = "PD_ddlMaritalStatus", @class = "form-control", placeholder = "Select Marital Status", tabindex = 16 })
+                                            @Html.ValidationMessageFor(model => model.MaritalStatID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.SpouseName) <span class="red" id="spSpouse">*</span>
+                                            @Html.TextBoxFor(m => m.SpouseName, new { id = "PD_txtSpouseName", placeholder = "Spouse Name", @class = "form-control", tabindex = 16, @maxlength = "30" })
+                                            <label style="color:red" id="lblmsgSpouse"> </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.MotherTongue)<span class="red">*</span>
+                                            @Html.DropDownListFor(m => m.MotherTongue, LangList, "", new { id = "PD_ddlMotherTongue", @class = "form-control", placeholder = "Select Mother Tongue", tabindex = 17 })
+                                            @Html.ValidationMessageFor(model => model.MotherTongue, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.PANNumber)<span class="red">*</span>
+                                            @Html.TextBoxFor(m => m.PANNumber, new { id = "PD_txtPANNumber", placeholder = "PAN Number", @class = "form-control alphanumeric", tabindex = 17, @maxlength = "18" })
+                                            @Html.ValidationMessageFor(model => model.PANNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.AadharCardNumber)
+                                            @Html.TextBoxFor(m => m.AadharCardNumber, new { id = "PD_txtAadharCardNumber", placeholder = "Aadhar Card Number", @class = "form-control alphanumeric", maxlength = "12", tabindex = 19 })
+                                            @Html.ValidationMessageFor(model => model.AadharCardNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.UANNumber)
+                                            @Html.TextBoxFor(m => m.UANNumber, new { id = "PD_txtUANNumber", placeholder = "UAN Number", @class = "form-control alphanumeric", maxlength = "12", tabindex = 20 })
+                                            @Html.ValidationMessageFor(model => model.UANNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4" style="margin-bottom: -1.3rem;">
+                                        <div class="form-group">
+                                            @Html.Label("lblBirthPlace", "Birth Place", new { style = "font-weight:bold;" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.BirthState) <span class="red">*</span>
+                                            @Html.DropDownListFor(m => m.BirthState, StateList, "", new { id = "PD_lstPlaceofBirthState", @class = "form-control", placeholder = "Please select your State", tabindex = 21 })
+                                            @Html.ValidationMessageFor(model => model.BirthState, "", new { @class = "text-danger", id = "CD_valCurrentAddState" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(m => m.OtherBirthState, new { id = "txtOtherPlaceOfBirthState", @class = "form-control otherTextBox", placeholder = "Please enter your State", tabindex = 21 })
+                                            @Html.ValidationMessageFor(model => model.OtherBirthState, "", new { @class = "text-danger", id = "valOtherPlaceOfBirthState" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.BirthCity) <span class="red">*</span>
+                                            @Html.DropDownListFor(m => m.BirthCity, CityList, "", new { id = "PD_lstPlaceofBirthCity", @class = "form-control", placeholder = "Please select your City", tabindex = 22 })
+                                            @Html.ValidationMessageFor(model => model.BirthCity, "", new { @class = "text-danger", id = "CD_valCurrentAddCity" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(m => m.OtherBirthCity, new { id = "txtOtherPlaceOfBirthCity", @class = "form-control otherTextBox", placeholder = "Please enter your City", tabindex = 22 })
+                                            @Html.ValidationMessageFor(model => model.OtherBirthCity, "", new { @class = "text-danger", id = "valOtherPlaceOfBirthCity" })
+                                        </div>
+
+                                    </div>
+                                    @*<div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.NumberOfEmployments)
+                                                <div class="form-inline">
+                                                @Html.TextBoxFor(m => m.NumberOfEmployments, new { id = "txtNumberOfEmployments", placeholder = "Number of Employments, Including Current", @class = "form-control alphanumeric", maxlength = "2", tabindex = 19, @style = "min-width:293px !important" })
+                                                <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="top" title="If you are frehser then put value 0, otherwise put number of previous employments including current employment."></label>
+                                                @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger", id = "valNumberOfEmployments" })
+                                                </div>
+
+                                            </div>
+                                        </div>*@
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="passportCheckbox">
+                                            Do you have a passport : <label class="radio-inline">
+                                                @Html.RadioButtonFor(m => m.HavePassport, "yes", new { tabindex = 23, id = "rbtYes", name = "optradio" }) Yes
+                                            </label>
+                                            <label class="radio-inline">
+                                                @Html.RadioButtonFor(m => m.HavePassport, "no", new { tabindex = 23, id = "rbtNo", name = "optradio" }) No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="passportDetails" style="display:none">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.PassportNumber)<span class="red" id="spPassportNumber">*</span>
+                                                @Html.TextBoxFor(m => m.PassportNumber, new { id = "PD_txtPassportNumber", placeholder = "Passport Number", @class = "form-control alphanumeric", tabindex = 24, @maxlength = "10" })
+                                                <label style="color:red" id="lblmsgPassportNumber"> </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.NameOnPassport)<span class="red" id="spNameOnPassport">*</span>
+                                                @Html.TextBoxFor(m => m.NameOnPassport, new { id = "PD_txtNameOnPassport", placeholder = "Name On Passport", @class = "form-control alphanumeric", tabindex = 25, @maxlength = "50" })
+                                                <label style="color:red" id="lblmsgNameOnPassport"> </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.PassportExpiryDate)<span class="red" id="spPassportExpiryDate">*</span>
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(m => m.PassportExpiryDate, String.Format("{0:dd/MM/yyyy}", Model.PassportExpiryDate), new { data_mini = "true", id = "PD_txtPassportExpiryDate", placeholder = "DD/MM/YY", @class = "form-control", tabindex = 26 })
+                                                    <label class="input-group-addon btn" for="PD_txtPassportExpiryDate">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </label>
+                                                </div>
+                                                <label style="color:red" id="lblmsgPassportExpiryDate"> </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row btnRow">
+                                    <div class="col-md-12">
+                                        @*<a class="btn-reset" href="#">Edit</a>*@
+                                        @if (Model.FinalStatus == false)
+                                        {
+                                            <a href="#" id="PD_SaveId" class="btn-save" tabindex="27">Save</a>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(m => m.PerDetID)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedDate)
+            </div>
+        </div>
+        @*Change request -Removed next button*@
+        @*<div class="row btnRow contactDetailsNext">
+                <div class="col-md-12">
+                    <a href="/User/ContactDetails" class="btn-save  mx-1" tabindex="34">Next</a>
+                </div>
+            </div>*@
+    </div>
+}
+<!-- Modal -->
+<div id="changeRequestModal" class="modal fade enbordModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Request to Edit Information </h4>
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-save pull-right" id="btnChangeRequestModalSave" onclick="SaveChangeRequestDetails()"> Send</a>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    numeric($('#PD_txtAadharCardNumber'));
+    numeric($('#PD_txtUANNumber'));
+
+    //Function on click of send on change request modal
+    function SaveChangeRequestDetails() {
+        //Check if any of the textbox is blank
+        if ($("#txtCRFirstName").val() == "" || $("#txtCRLastName").val() == "" || $("#txtCREmpEmail").val() == "" ||
+            $("#txtCRDOB").val() == "" || $("#txtCRContactNumber").val() == "" || $("#ddlCRCountryCode").val() == "") {
+            $("#PD_ChangeRequestFormId").submit();
+        }
+
+        else {
+            var data = { FirstName: $("#txtCRFirstName").val(), LastName: $("#txtCRLastName").val(), ContactNumber: $("#txtCRContactNumber").val(), CountryCode: $("#ddlCRCountryCode").val(), EmpEmail: $("#txtCREmpEmail").val(), DateofBirth: $("#txtCRDOB").val() };
+            //Call method to check if values are changed or same as is it is
+            $.ajax({
+                url: '/User/CheckIfThereIsAnyChange',
+                data: data,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data == false) {
+
+                        toastr.error('You have not made any changes.');
+                        return;
+                    }
+                    else {  //call submit event
+                        $("#PD_ChangeRequestFormId").submit();
+                    }
+
+                },
+                error: function (data) {
+                    toastr.error("Error occurred while checking pending change requests.");
+                }
+            });
+
+        }
+    }
+
+    //Function on success of change request form
+    function OnSuccessForm(data) {
+        if (data.result == true) {
+            $('#changeRequestModal').modal('hide');
+            toastr.success(data.Message);
+        }
+        else {
+            toastr.error(data.Message);
+        }
+    }
+
+    //Function on success of change request form
+    function OnFailureForm(data) {
+
+        $('#changeRequestModal').modal('hide');
+
+        toastr.error("Error occurred  while saving your request.");
+    }
+
+    //Function to open change request form
+    function OpenChangeRequestForm() {
+        //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog
+        $.ajax({
+            url: '/User/OpenChangeRequestForm/',
+            success: function (data) {
+
+                //Set change Request  form body html with data
+                $("#changeRequestModal .modal-body").html(data);
+
+                //Show change Request form modal
+                $('#changeRequestModal').modal('show');
+            },
+            error: function (data) {
+                toastr.error("Error occurred while opening Change Request Modal form.");
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+
+        $(document).ready(function () {
+            if ('@ViewBag.IsSubmitted'.toLowerCase() === 'true') {
+                $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save").attr('disabled', 'disabled');
+                $('#FD_Save').remove();
+                $("#accordion a.btn-reset,#accordion a.btn-delete").remove();
+                $("#accordion button").remove();
+                $(".userNote").remove();
+            }
+        });
+
+        //Set controls and validations for spouse name
+        $("#lblmsgSpouse").text("Please enter Spouse Name");
+        $("#spSpouse").hide();
+        $("#lblmsgSpouse").hide();
+
+        var maritalStatus = $("#PD_ddlMaritalStatus").val();
+        if (maritalStatus == 1) //married
+        {
+            $("#spSpouse").show();
+        }
+        else {
+            $("#PD_txtSpouseName").prop("disabled", true);
+        }
+
+        $("#lblmsgPassportNumber").text("Please enter Passport Number");
+        $("#lblmsgNameOnPassport").text("Please enter Name On Passport");
+        $("#lblmsgPassportExpiryDate").text("Please enter Passport Expiry Date");
+
+        $("#lblmsgPassportNumber").hide();
+        $("#lblmsgNameOnPassport").hide();
+        $("#lblmsgPassportExpiryDate").hide();
+        $("#spPassportExpiryDate").hide();
+        $("#spNameOnPassport").hide();
+        $("#spPassportNumber").hide();
+
+        //Set controls validations for have passport radio button
+        var havePassport = $(".passportCheckbox input[type='radio']:checked").val();
+
+        if (havePassport == undefined)
+        { $(".passportCheckbox input[type='radio'][value=no]").attr('checked', true); }
+
+        if (havePassport == 'yes') {
+            //show passport details div
+            $('.passportDetails').show();
+            //show mandatory sign
+            $("#spPassportExpiryDate").show();
+            $("#spNameOnPassport").show();
+            $("#spPassportNumber").show();
+        }
+        else {
+            //hide passport details div
+            $('.passportDetails').hide();
+            //hide mandatory sign
+            $("#spPassportExpiryDate").hide();
+            $("#spNameOnPassport").hide();
+            $("#spPassportNumber").hide();
+        }
+
+        //Datepicker for PassportExpiryDate
+        $('#PD_txtPassportExpiryDate').datepicker({
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+        });
+
+        //Datepicker validation
+        //$('.hasDatepicker').attr('readonly', true);
+
+        //Click event for Have passport radio button
+        $('.passportCheckbox input[type="radio"]').click(function () {
+            if ($(this).attr('value') == 'yes') {
+                //show passport details div
+                $('.passportDetails').show();
+
+                //show mandatory sign
+                $("#spPassportExpiryDate").show();
+                $("#spNameOnPassport").show();
+                $("#spPassportNumber").show();
+            }
+            else {
+                //Blank values for passport details textboxes
+                $("#PD_txtPassportNumber").val("");
+                $("#PD_txtNameOnPassport").val("");
+                $("#PD_txtPassportExpiryDate").val("");
+                //hide passport details div
+                $('.passportDetails').hide();
+            }
+        });
+
+        //Save button click event
+        $("#PD_SaveId").click(function () {
+            var form = $('#PD_FormId');
+
+            //Spouse name validations
+            var maritalStatus = $("#PD_ddlMaritalStatus").val();
+            if (maritalStatus == 1) //married
+            {
+                $("#spSpouse").show();
+                if ($("#PD_txtSpouseName").val() == "") {
+                    $("#lblmsgSpouse").show();
+                    return;
+                }
+            }
+
+            //Passport details validations
+            var havePassport = $(".passportCheckbox input[type='radio']:checked").val();
+
+            if (havePassport == 'yes') {
+
+                if ($("#PD_txtPassportNumber").val() == "" || $("#PD_txtNameOnPassport").val() == "" || $("#PD_txtPassportExpiryDate").val() == "") {
+                    //check values in textboxes if empty
+                    if ($("#PD_txtPassportNumber").val() == "") { $("#lblmsgPassportNumber").show(); }
+                    if ($("#PD_txtNameOnPassport").val() == "") { $("#lblmsgNameOnPassport").show(); }
+                    if ($("#PD_txtPassportExpiryDate").val() == "") { $("#lblmsgPassportExpiryDate").show(); }
+
+                    return;
+                }
+            }
+
+            $.validator.unobtrusive.parse(form);
+            if (form.valid() && $('#lblComparefutureDateError').text().trim() == '') {
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    url: '@Url.Action("PersonalDetails", "User")',
+                    data: form.serialize(),
+                    cache: false,
+                    type: 'POST',
+                    success: function (result) {
+
+                        if (result) {
+
+                            toastr.success("Personal Details saved successfully!!");
+
+                            window.location.href = "/User/ContactDetails";
+                        }
+
+                        ajaxindicatorstop();
+                    },
+                    error: function (data) {
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+        });
+
+        //Change event for marital status dropdown
+        $("#PD_ddlMaritalStatus").change(function () {
+            var maritalStatus = $("#PD_ddlMaritalStatus").val();
+            if (maritalStatus == 1) //married
+            {
+                $("#spSpouse").show();
+                $("#PD_txtSpouseName").prop("disabled", false);
+            }
+            else {
+                $("#PD_txtSpouseName").prop("disabled", true);
+                $("#spSpouse").hide();
+                $("#lblmsgSpouse").hide();
+                $("#PD_txtSpouseName").val("");
+            }
+        });
+
+
+        //Change event for spouse textbox
+        $("#PD_txtSpouseName").change(function () {
+
+            var maritalStatus = $("#PD_ddlMaritalStatus").val();
+            if (maritalStatus == 1) //married
+            {
+                if ($("#PD_txtSpouseName").val() != "")
+                { $("#lblmsgSpouse").hide(); }
+            }
+            else {
+                $("#lblmsgSpouse").hide();
+                $("#PD_txtSpouseName").prop("disabled", true);
+            }
+        });
+
+        //Change event for passport number textbox
+        $("#PD_txtPassportNumber").change(function () {
+            if ($("#PD_txtPassportNumber").val() != "")
+            { $("#lblmsgPassportNumber").hide(); }
+        });
+
+
+        //Change event for passport name textbox
+        $("#PD_txtNameOnPassport").change(function () {
+            if ($("#PD_txtNameOnPassport").val() != "")
+            { $("#lblmsgNameOnPassport").hide(); }
+        });
+
+
+        //Change event for passport expiry date textbox
+        $("#PD_txtPassportExpiryDate").change(function () {
+            if ($("#PD_txtPassportExpiryDate").val() != "")
+            { $("#lblmsgPassportExpiryDate").hide(); }
+        });
+
+    });
+
+    if ('@Model.BirthState' != null && '@Model.BirthState' != '') {
+        LoadCityBySateId('@Model.BirthState');
+    }
+
+    //Function for datepicker issue , restricting datetpicker in validating date.
+    $(function () {
+        $.validator.addMethod(
+            "date",
+            function (value, element) {
+                var bits = value.match(/([0-9]+)/gi), str;
+                if (!bits)
+                    return this.optional(element) || false;
+                str = bits[1] + '/' + bits[0] + '/' + bits[2];
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(str));
+            },
+            ""
+        );
+    });
+
+    //Other place of birth
+    if ('@Model.OtherBirthState' != '' && $("#PD_lstPlaceofBirthState option:selected").text() == 'Other') {
+        $('#txtOtherPlaceOfBirthState').show();
+        $("#txtOtherPlaceOfBirthState").attr('required', true);
+        if ('@Model.OtherBirthState' != '') {
+            $("#txtOtherPlaceOfBirthState").val('@Model.OtherBirthState');
+        }
+    }
+    else {
+        $('#txtOtherPlaceOfBirthState').hide();
+        $("#txtOtherPlaceOfBirthState").val('');
+        $("#txtOtherPlaceOfBirthState").attr('required', false);
+    }
+
+    $('#PD_lstPlaceofBirthState').change(function () {
+        var text = $("#PD_lstPlaceofBirthState option:selected").text();
+        if (text == 'Other') {
+            LoadCityBySateId("");
+            $('#txtOtherPlaceOfBirthState').show();
+            $("#txtOtherPlaceOfBirthState").val('');
+            $("#txtOtherPlaceOfBirthState").focus();
+            $("#txtOtherPlaceOfBirthState").attr('required', true);
+        }
+        else {
+            LoadCityBySateId($("#PD_lstPlaceofBirthState").val());
+            $("#txtOtherPlaceOfBirthState").hide();
+            $("#txtOtherPlaceOfBirthState").val('');
+            $("#txtOtherPlaceOfBirthState").attr('required', false);
+        }
+        $('#txtOtherPlaceOfBirthCity').hide();
+        $("#txtOtherPlaceOfBirthCity").val('');
+    });
+
+    if ('@Model.OtherBirthCity' != '' && $("#PD_lstPlaceofBirthCity option:selected").text() == 'Other') {
+        $('#txtOtherPlaceOfBirthCity').show();
+        $("#txtOtherPlaceOfBirthCity").attr('required', true);
+        if ('@Model.OtherBirthCity' != '') {
+            $("#txtOtherPlaceOfBirthCity").val('@Model.OtherBirthCity');
+        }
+    }
+    else {
+        $('#txtOtherPlaceOfBirthCity').hide();
+        $("#txtOtherPlaceOfBirthCity").val('');
+        $("#txtOtherPlaceOfBirthCity").attr('required', false);
+    }
+
+    $('#PD_lstPlaceofBirthCity').change(function () {
+        var text = $("#PD_lstPlaceofBirthCity option:selected").text();
+
+        if (text == 'Other') {
+            $('#txtOtherPlaceOfBirthCity').show();
+            $("#txtOtherPlaceOfBirthCity").val('');
+            $("#txtOtherPlaceOfBirthCity").focus();
+            $("#txtOtherPlaceOfBirthCity").attr('required', true);
+        }
+        else {
+
+            $("#txtOtherPlaceOfBirthCity").hide();
+            $("#txtOtherPlaceOfBirthCity").val('');
+            $("#txtOtherPlaceOfBirthCity").attr('required', false);
+        }
+    });
+
+
+    function LoadCityBySateId(Id) {
+        var value = Id;
+        var url = "/User/LoadCityByStateId/";
+       
+        // and send it as AJAX request to the newly created action
+        $.ajax({
+            url: url,
+            data: { StateId: value },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value=''></option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                markup += "<option value=" + '@CityList.LastOrDefault().Value' + ">" + '@CityList.LastOrDefault().Text' + "</option>";
+
+                $("#PD_lstPlaceofBirthCity").html(markup).show();
+
+                var otherBirthCity = $("#txtOtherPlaceOfBirthCity").val();
+                if (otherBirthCity == '') {
+                    otherBirthCity = '@Model.OtherBirthCity';
+                }
+                if (otherBirthCity != '') {
+                    $("#txtOtherPlaceOfBirthCity").show();
+                    $("#PD_lstPlaceofBirthCity option[value='" + @Model.BirthCity + "']").attr('selected', 'selected')
+                    $("#txtOtherPlaceOfBirthCity").val(otherCurrCity);
+                }
+                else {
+                    if (otherBirthCity == "" && '@Model.BirthCity' != '' && data.length > 1)
+                        $("#PD_lstPlaceofBirthCity option[value='" + @Model.BirthCity + "']").attr('selected', 'selected')
+                }
+            },
+            error: function (reponse) {
+
+            }
+        });
+    }
+</script>	

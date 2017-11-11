@@ -1,0 +1,289 @@
+﻿@model Models.AddEmployeeModel
+@{
+    ViewBag.Title = "Past EMployee List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+
+    .col-md-3, .col-sm-3, .col-xs-6,.col-md-1, .col-sm-1 {
+    
+    padding-right: 1px !important;
+    padding-left: 1px !important;
+    }
+   
+</style>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<div>
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <form class="form-users">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group tl-search-grp">
+                    @*<table style="width: 75%;">
+                        <colgroup>
+                            <col class="col-md-3 col-sm-3 col-xs-6">
+                            <col class="col-md-3 col-sm-3 col-xs-6">
+                            <col class="col-md-3 col-sm-3 col-xs-6">
+                            <col class="col-md-3 col-sm-3 col-xs-6">
+                            <col class="col-md-3 col-sm-3 col-xs-6">
+
+                        </colgroup>
+                        <tr>
+                            <td>
+                                <input class="form-control" id="txtSearchPastEmployess" type="text" placeholder="Search">
+                            </td>
+
+                            <td>
+                                @if (Model.FromDate != null || Model.FromDate != DateTime.MinValue)
+                                {
+                                    @Html.TextBoxFor(m => m.FromDate, String.Format("{0:dd/MM/yyyy}", Model.FromDate), new { id = "PE_txtFromDate", placeholder = "From Date", @class = "form-control", tabindex = 9 })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.FromDate, new { id = "PE_txtFromDate", placeholder = "From Date", @class = "form-control", tabindex = 9 })
+                                }
+                            </td>
+
+                            <td>
+                                @if (Model.ToDate != null || Model.ToDate != DateTime.MinValue)
+                                {
+                                    @Html.TextBoxFor(m => m.ToDate, String.Format("{0:dd/MM/yyyy}", Model.ToDate), new { id = "PE_txtToDate", placeholder = "To Date", @class = "form-control", tabindex = 9 })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.ToDate, new { id = "PE_txtToDate", placeholder = "To Date", @class = "form-control", tabindex = 9 })
+                                }
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-primary" id="btnSearchPastEmplpoyees">Search</button>
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-primary" id="btnViewAllPastEmployees">View All</button>
+                            </td>
+                        </tr>
+                    </table>*@
+
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <input class="form-control" id="txtSearchPastEmployess" type="text" placeholder="Search">
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="form-group">
+                            @if (Model.FromDate != null || Model.FromDate != DateTime.MinValue)
+                            {
+                                @Html.TextBoxFor(m => m.FromDate, String.Format("{0:dd/MM/yyyy}", Model.FromDate), new { id = "PE_txtFromDate", placeholder = "From Date", @class = "form-control", tabindex = 9 })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.FromDate, new { id = "PE_txtFromDate", placeholder = "From Date", @class = "form-control", tabindex = 9 })
+                            }
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="form-group">
+                            @if (Model.ToDate != null || Model.ToDate != DateTime.MinValue)
+                            {
+                                @Html.TextBoxFor(m => m.ToDate, String.Format("{0:dd/MM/yyyy}", Model.ToDate), new { id = "PE_txtToDate", placeholder = "To Date", @class = "form-control", tabindex = 9 })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.ToDate, new { id = "PE_txtToDate", placeholder = "To Date", @class = "form-control", tabindex = 9 })
+                            }
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="btnSearchPastEmplpoyees"><i class="fa fa-search"></i>Search</button>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="btnViewAllPastEmployees"><i class="fa fa-eye"></i> View All</button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div style="padding: 5px;margin-left: 9px;">
+                <img src="~/Images/filetype_pdf.png" id="lnkExporttoPdf" style="max-height:20px;max-width:25px;cursor:pointer " title="Export to PDF" />
+                <img src="~/Images/excel.png" id="lnkExporttoexcel" style="max-height:20px;max-width:25px;cursor:pointer" title="Export to Excel" />
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div id="divPastEmployees" style="align-self:center;width:100%;">@Html.Partial("_PastEmployeeList", Model.EmployeeDetailsList)</div>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+
+
+
+
+    
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('#PE_txtFromDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+
+        $('#PE_txtToDate').datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+
+        });
+
+        $('#txtSearchPastEmployess').bind('input propertychange', function () {
+            GetEmployeeList($('#txtSearchPastEmployess').val().trim().toLowerCase(), $('#PE_txtFromDate').val().trim().toLowerCase(), $('#PE_txtToDate').val().trim().toLowerCase());
+        })
+
+        function GetEmployeeList(Searchvalue,FromDate,ToDate) {
+            var data = { pageNo: 1, searchString: Searchvalue, FromDate: $('#PE_txtFromDate').val().trim().toLowerCase(), ToDate: $('#PE_txtToDate').val().trim().toLowerCase() }
+
+            $.ajax({
+                type: "GET",
+                url: "/User/PastEmployeeList",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+                   
+                    // $("#succdiv").(data);
+                    $("#divPastEmployees").html(data);
+
+                },
+                error: function () {
+                    alert('some error occured')
+
+                }
+            });
+        }
+        //$('#txtSearchExistingEmployess').keydown(function (event) {
+
+
+
+        //});
+       
+
+        $('#btnSearchPastEmplpoyees').click(function (event) {
+           
+   
+    if ($('#txtSearchPastEmployess').val() || $('#PE_txtFromDate').val() || $('#PE_txtToDate').val()) {
+                ajaxindicatorstart('Loading.. please wait..');
+                var data = { pageNo: 1, searchString: $('#txtSearchPastEmployess').val(),FromDate: $('#PE_txtFromDate').val().trim().toLowerCase(), ToDate: $('#PE_txtToDate').val().trim().toLowerCase() }
+
+                $.ajax({
+                    type: "GET",
+                    url: "/User/PastEmployeeList",
+                    data: data,
+                    datatype: "html",
+                    success: function (data) {
+                       
+                        // $("#succdiv").(data);
+                        $("#divPastEmployees").html(data);
+                        ajaxindicatorstop();
+                    },
+                    error: function () {
+                        alert('some error occured')
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+
+        });
+
+
+        $('#btnViewAllPastEmployees').click(function (event) {
+            $("#txtSearchPastEmployess").val("");
+            $('#PE_txtFromDate').val("");
+            $('#PE_txtToDate').val("")
+
+
+            ajaxindicatorstart('Loading.. please wait..');
+            var data = { pageNo: 1, searchString: "ALL" }
+
+            $.ajax({
+                type: "GET",
+                url: "/User/PastEmployeeList",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+                    
+                    // $("#succdiv").(data);
+                    $("#divPastEmployees").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        });
+
+
+    });
+
+
+    $(function () {
+        $.validator.addMethod('date',
+        function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var ok = true;
+            try {
+                $.datepicker.parseDate('dd/mm/yy', value);
+            }
+            catch (err) {
+                ok = false;
+            }
+            return ok;
+        });
+        $(".datefield").datepicker({ dateFormat: 'dd/mm/yy', changeYear: true });
+
+        //Datepicker validation 
+        //$('.hasDatepicker').attr('readonly', true);
+    });
+
+
+</script>
+

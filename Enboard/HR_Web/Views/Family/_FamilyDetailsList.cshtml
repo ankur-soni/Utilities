@@ -1,0 +1,438 @@
+﻿@model Models.FamilyHistory
+@{
+    ViewBag.Title = "FamilyDetails";
+    var RelationList = (SelectList)ViewBag.Relationship;
+    var DependentList = (SelectList)ViewBag.DependentList;
+    var GenderList = (SelectList)ViewBag.GenderList;
+    var BloodGroupList = (SelectList)ViewBag.BloodGroupList;
+    var CountryCodeList = (SelectList)ViewBag.CountryCodeList;
+}
+<div class="panel panel-default" style="margin-bottom:15px;">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="@Html.Raw("#" + @Model.FamDetID)" aria-expanded="true" class="collapsed">
+                @Model.RelationShipName
+            </a>
+        </h4>
+    </div>
+
+    @using (Html.BeginForm("FamilyDetails", "Family", FormMethod.Get, new { id = "FamilyHistory_Form" + @Model.FamDetID }))
+    {
+        @Html.AntiForgeryToken()
+        <div id="@Html.Raw(@Model.FamDetID)" class="panel-collapse collapse" role="tabpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FirstName, new { @class = "label labelfont" }) <span class="red">*</span>
+                            @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName" + @Model.FamDetID, placeholder = "First Name", @class = "form-control", tabindex = (@Model.FamDetID + 1).ToString() + 10, @maxlength = "100", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group familyContact_@Model.FamDetID">
+                            @Html.LabelFor(m => m.ContactNumber, new { @class = "label labelfont" }) <span class="red" id="spContactNumber_@Model.FamDetID">*</span>
+                            <div class="input-group">
+                                @Html.DropDownListFor(m => m.CountryCode, CountryCodeList, "", new { id = "ddlCountryCode" + @Model.FamDetID, @class = "form-control titleSelect", placeholder = "Select Country Code", tabindex = (@Model.FamDetID + 1).ToString() + 13, disabled = "disabled" })
+                                @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtContactNumber" + @Model.FamDetID, placeholder = "Contact Number", @class = "form-control alphanumeric digit", tabindex = (@Model.FamDetID + 1).ToString() + 14, @maxlength = "15", disabled = "disabled" })
+                            </div>
+                            <label style="color:red" id="lblmsgContactNumber_@Model.FamDetID"> </label>
+
+                        </div>
+                        <div class="form-group childGender_@Model.FamDetID">
+
+                            <div>
+                                <div>
+                                    @Html.LabelFor(m => m.Gender, new { @class = "label labelfont" }) <span class="red" id="spContactNumber_@Model.FamDetID">*</span>
+                                </div>
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(m => m.Gender, "Male", new { tabindex = (@Model.FamDetID + 1).ToString() + 15, id = "rbtMale" + @Model.FamDetID, name = "optradio", disabled = "disabled" }) Male
+                                </label>
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(m => m.Gender, "Female", new { tabindex = (@Model.FamDetID + 1).ToString() + 15, id = "rbtFemale" + @Model.FamDetID, name = "optradio", disabled = "disabled" }) Female
+                                </label>
+                                <label class="text-danger field-validation-error" style="color:red" id="lblGenderMsg_@Model.FamDetID">
+                                    @*@Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })*@
+                                </label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.LastName, new { @class = "label labelfont" }) <span class="red">*</span>
+                            @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName" + @Model.FamDetID, placeholder = "Last Name", @class = "form-control", tabindex = (@Model.FamDetID + 1).ToString() + 11, @maxlength = "100", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="switchBox emergency_@Model.FamDetID">
+                            <label class="switch">
+                                <input type="checkbox" id="@Html.Raw("chk" + @Model.FamDetID)" checked="@Model.IsEmergencyContact" disabled name="chkBox">
+                                <span class="slider round" tabindex="@((@Model.FamDetID + 1).ToString() + 16)"></span>
+                            </label>
+                            @Html.HiddenFor(x => x.IsEmergencyContact, new { id = "IsEmergencyContact" + @Model.FamDetID })
+                            <span class="switchBoxTitle pull-left"> Emergency Contact </span>
+                        </div>
+                    </div>
+                    @if (Model.RelationShipName != "Sibling" && Model.RelationShipName != "Relative")
+                    {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DOB, new { @class = "label labelfont" }) <span class="red" id="spDOB_@Model.FamDetID">*</span>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.DOB, String.Format("{0:dd/MM/yyyy}", Model.DOB), new { id = "txtDOB" + @Model.FamDetID, placeholder = "", @class = "form-control", tabindex = (@Model.FamDetID + 1).ToString() + 12, @maxlength = "14", disabled = "disabled" })
+                                <label class="input-group-addon btn" for="@("txtDOB" + @Model.FamDetID)">
+                                    <span class="fa fa-calendar"></span>
+                                </label>
+                            </div>
+                            <label id="lblComparefutureDateError_@Model.FamDetID" class="text-danger" style="display:none;"> </label>
+                            <label style="color:red" id="lblmsgDOB_@Model.FamDetID"> </label>
+                        </div>
+                    </div>
+                    }
+                    <div class="col-md-4">
+
+                        
+
+                       
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn-delete pull-right" href="#" id="btnDelete_@Model.FamDetID" tabindex="@((@Model.FamDetID + 1).ToString() + 17)">Delete</a>
+                        <a class="btn-reset pull-right" href="#" id="btnEdit_@Model.FamDetID" tabindex="@((@Model.FamDetID + 1).ToString() + 17)">Edit</a>
+                        <button class="btn-save saveText pull-right" id="btnSave_@Model.FamDetID" tabindex="@((@Model.FamDetID + 1).ToString() + 17)">Save</button>
+                        <button class="btn-reset cancelText  pull-right" type="reset" id="btnCancel_@Model.FamDetID" tabindex="@((@Model.FamDetID + 1).ToString() + 17)">Cancel</button>
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.FamDetID)
+                @Html.HiddenFor(m => m.UserID)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedDate)
+                @Html.HiddenFor(m => m.RelationshipID)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $(".switchBox input").click(function () {
+            if ($(this).is(":checked")) {
+                $('#IsEmergencyContact' + @Model.FamDetID).val('true');
+            }
+            else {
+                $('#IsEmergencyContact' + @Model.FamDetID).val('false');
+            }
+        });
+
+        //Added below line of code for client side validations
+        $.validator.unobtrusive.parse("#FamilyHistory_Form"+@Model.FamDetID);
+
+        //Validations for DOB and Contact Number
+        $("#lblmsgContactNumber_@Model.FamDetID").text("Please enter Contact Number");
+        $("#lblmsgDOB_@Model.FamDetID").text("Please enter Date Of Birth");
+        $("#lblGenderMsg_@Model.FamDetID").text("Please select Gender");
+        $("#lblmsgContactNumber_@Model.FamDetID").hide();
+        $("#lblmsgDOB_@Model.FamDetID").hide();
+        $("#spContactNumber_@Model.FamDetID").hide();
+        $("#spDOB_@Model.FamDetID").hide();
+        $("#lblGenderMsg_@Model.FamDetID").hide();
+
+
+        $(".childGender_@Model.FamDetID").hide();
+
+        var relation = '@Model.RelationshipID';
+        if (relation == 4) {
+            $('.emergency_@Model.FamDetID').hide();
+            $('.familyContact_@Model.FamDetID').hide();
+            $(".childGender_@Model.FamDetID").show();
+        }
+        else {
+            $(".childGender_@Model.FamDetID").hide();
+            $('.familyContact_@Model.FamDetID').show();
+            $('.emergency_@Model.FamDetID').show();
+
+            if (relation == 3) {
+                $("#spContactNumber_@Model.FamDetID").show();
+                $("#spDOB_@Model.FamDetID").show();
+            }
+            else {
+                $("#spContactNumber_@Model.FamDetID").hide();
+                $("#spDOB_@Model.FamDetID").hide();
+
+                $("#lblmsgContactNumber_@Model.FamDetID").hide();
+                $("#lblmsgDOB_@Model.FamDetID").hide();
+            }
+        }
+
+        //Change event on country code dropdown
+        $('#ddlCountryCode'+@Model.FamDetID).change(function () {
+            var famId = '@Model.FamDetID';
+            if ($('@Html.Raw("#ddlCountryCode"+@Model.FamDetID)').val() != "" && $('#txtContactNumber'+famId).val() != "")
+            {
+                $("#lblmsgContactNumber_@Model.FamDetID").hide();
+            }
+        });
+
+        //Change event on contact number textbox
+        $('#txtContactNumber'+@Model.FamDetID).change(function () {
+            var famId = '@Model.FamDetID';
+            if ($('#txtContactNumber'+famId).val() != "" && $('#ddlCountryCode'+famId).val() != "")
+            {
+                $("#lblmsgContactNumber_@Model.FamDetID").hide();
+            }
+        });
+
+        //working code
+        //Hide save and cancel
+        $("#btnSave_@Model.FamDetID").hide();
+        $("#btnCancel_@Model.FamDetID").hide();
+
+        //On click of edit
+        $("#btnEdit_@Model.FamDetID").click(function () {
+
+            //$('#txtFullName' + @Model.FamDetID).prop('disabled', false);
+            $('#txtFirstName' + @Model.FamDetID).prop('disabled', false);
+            $('#txtLastName' + @Model.FamDetID).prop('disabled', false);
+            $('#txtDOB' + @Model.FamDetID).prop('disabled', false);
+            $('#ddlCountryCode' + @Model.FamDetID).prop('disabled', false);
+            $('#txtContactNumber' + @Model.FamDetID).prop('disabled', false);
+
+            $('#rbtMale'+@Model.FamDetID).prop('disabled', false);
+            $('#rbtFemale'+@Model.FamDetID).prop('disabled', false);
+            $('#chk' + @Model.FamDetID).prop('disabled', false);
+
+
+            $("#btnEdit_@Model.FamDetID").hide();
+            $("#btnDelete_@Model.FamDetID").hide();
+            $("#btnSave_@Model.FamDetID").show();
+            $("#btnCancel_@Model.FamDetID").show();
+
+        });
+
+        //on click of cancel
+        $("#btnCancel_@Model.FamDetID").click(function () {
+            //$('#txtFullName' + @Model.FamDetID).prop('disabled', true);
+            $('#txtFirstName' + @Model.FamDetID).prop('disabled', true);
+            $('#txtLastName' + @Model.FamDetID).prop('disabled', true);
+            $('#txtDOB' + @Model.FamDetID).prop('disabled', true);
+            $('#ddlCountryCode' + @Model.FamDetID).prop('disabled', true);
+            $('#txtContactNumber' + @Model.FamDetID).prop('disabled', true);
+
+            $('#rbtMale'+@Model.FamDetID).prop('disabled', true);
+            $('#rbtFemale'+@Model.FamDetID).prop('disabled', true);
+            $('#chk' + @Model.FamDetID).prop('disabled', true);
+
+            $("#btnEdit_@Model.FamDetID").show();
+            $("#btnDelete_@Model.FamDetID").show();
+            $("#btnSave_@Model.FamDetID").hide();
+            $("#btnCancel_@Model.FamDetID").hide();
+        });
+
+        //On click of save
+        $("#btnSave_@Model.FamDetID").click(function () {
+            var famId = '@Model.FamDetID';
+            var relation = '@Model.RelationshipID';
+            if (relation == 3)
+            {
+                $("#spContactNumber_@Model.FamDetID").show();
+                $("#spDOB_@Model.FamDetID").show();
+
+                if ($('#ddlCountryCode' + famId).val() == "" || $('#txtContactNumber'+famId).val() == "") {
+                    $("#lblmsgContactNumber_@Model.FamDetID").show();
+                    return false;
+                }
+
+                if ($('#txtDOB' + famId).val() == "") {
+                    $("#lblmsgDOB_@Model.FamDetID").show();
+                    return false;
+                }
+
+            }
+            else if(relation == 4)
+            {
+                if ($('#txtDOB' + famId).val() == "") {
+                    $("#lblmsgDOB_@Model.FamDetID").show();
+                    return false;
+                }
+                if (!$("#rbtMale" + @Model.FamDetID + ":checked").val() && !$("#rbtFemale" + @Model.FamDetID + ":checked").val()) {
+                    $("#lblGenderMsg_@Model.FamDetID").show();
+                    //isSucess = false;
+                    return false;
+                }
+            }
+
+            var form = $('#FamilyHistory_Form'+famId);
+            $.validator.unobtrusive.parse(form);
+            if (form.valid() && $('#lblComparefutureDateError_@Model.FamDetID').text().trim() == '') {
+                ajaxindicatorstart('Loading.. please wait..');
+                $.ajax({
+                    url: "/Family/EditFamilyDetails",
+                    data: form.serialize(),
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+                        if(data == true)
+                        {
+                            //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog
+                            $.ajax({
+                                url: '/User/GetActivityDetails/',
+                                success: function (data) {
+
+                                    //Set change Request  form body html with data
+                                    $("#activity").html(data);
+                                },
+                                error: function (data) {
+                                    toastr.error("Error occurred while getting activity log.");
+                                }
+                            });
+
+                            toastr.success("Family details updated successfully!!");
+                            setTimeout(function(){
+                                window.location.href = '@Url.Action("FamilyDetails", "Family")';
+                            }, 5000);
+                        }
+                        else{ toastr.error("Error occurred while updating family details.");}
+                    },
+                    error: function (request, status, error) {
+                        toastr.error(request.responseText);
+                        ajaxindicatorstop();
+                    }
+                });
+            }
+        });
+
+        //cLICK EVENT ON DELETE BUTTON
+        $("#btnDelete_@Model.FamDetID").click(function () {
+
+            //Confirmation box before deleting details
+            toastr.warning("<button type='button' id='confirmationRevertYes' class='btn btn-default'>Yes</button>" +
+           "   <button type='button' id='confirmationRevertNo' class='btn btn-default'>No</button>", 'Do you want to delete this information?',
+             {
+                 closeButton: false,
+                 allowHtml: true,
+                 onShown: function (toast) {
+                     $("#confirmationRevertYes").click(function () {
+                         var famId = '@Model.FamDetID';
+
+                         $.ajax({
+                             url: "/Family/DeleteFamilyDetails",
+                             data: {FamDetID : famId},
+                             cache: false,
+                             type: 'POST',
+                             success: function (data) {
+                                 if(data == "True")
+                                 {
+                                     toastr.success("Family details deleted successfully!!");
+                                     setTimeout(function(){
+                                         window.location.href = '@Url.Action("FamilyDetails", "Family")';
+                                     }, 1000);
+
+                                 }
+                                 else{ toastr.error("Error occurred while deleting family details.");}
+                             },
+                             error: function (request, status, error) {
+                                 toastr.error(request.responseText);
+                                 ajaxindicatorstop();
+                             }
+                         });
+                     });
+                     $("#confirmationRevertYes").click(function () {
+                         this.fadeOut();
+                     });
+                 }
+             });
+
+            @*var famId = '@Model.FamDetID';
+
+            $.ajax({
+                url: "/Family/DeleteFamilyDetails",
+                data: {FamDetID : famId},
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                    if(data == "True")
+                    {
+                        toastr.success("Family details deleted successfully!!");
+                        setTimeout(function(){
+                            window.location.href = '@Url.Action("FamilyDetails", "Family")';
+                        }, 1000);
+
+                    }
+                    else{ toastr.error("Error occurred while deleting family details.");}
+                },
+                error: function (request, status, error) {
+                    toastr.error(request.responseText);
+                    ajaxindicatorstop();
+                }
+            });*@
+
+        });
+
+        //Datepicker for DOB
+        $('#txtDOB'+@Model.FamDetID).datepicker({
+            maxDate: 0,
+            showButtonPanel: false,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            dateFormat: 'dd/mm/yy',
+            yearRange: "-100:+0",
+            onSelect: function (dateText, inst) {
+                var famId = '@Model.FamDetID';
+                if ($('#txtDOB'+famId).val() != "") {
+                    $("#lblmsgDOB_@Model.FamDetID").hide();
+                }
+
+                $('#lblComparefutureDateError_@Model.FamDetID').text('');
+                if ($('#txtDOB'+famId).val() != '' || $('#txtDOB'+famId).val() != "" || $('#txtDOB'+famId).val() != null || $('#txtDOB'+famId).val().length != 0) {
+
+                    var date = $('#txtDOB'+famId).val();
+                    var arrDate = date.split("/");
+                    var today = new Date();
+                    useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
+
+                    var d = new Date(),
+                    date = d.getDate();
+                    n = d.getMonth(),
+
+                    y = d.getFullYear();
+
+                    if (arrDate[0] == date && arrDate[1] - 1 == n) {
+                        if (arrDate[2] > y) {
+                            $('#lblComparefutureDateError_@Model.FamDetID').show();
+                            $('#lblComparefutureDateError_@Model.FamDetID').text('Invalid Date of Birth');
+                            return false;
+                        }
+                        else {
+                            $('#lblComparefutureDateError_@Model.FamDetID').text('');
+                            return true;
+                        }
+                    }
+                }
+            }
+        });
+
+        //Function for datepicker issue , restricting datetpicker in validating date.
+        $(function () {
+            $.validator.addMethod(
+                "date",
+                function (value, element) {
+                    var bits = value.match(/([0-9]+)/gi), str;
+                    if (!bits)
+                        return this.optional(element) || false;
+                    str = bits[1] + '/' + bits[0] + '/' + bits[2];
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(str));
+                },
+                ""
+            );
+        });
+
+        //Datepicker validation
+        //$('.hasDatepicker').attr('readonly', true);
+
+    });
+</script>

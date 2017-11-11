@@ -1,0 +1,295 @@
+﻿@model Models.EmpSkillDetailsModel
+@{
+    Layout = null;   
+    var SkillLst = (SelectList)ViewBag.Skill_lst;
+    var YearLst = (SelectList)ViewBag.Year_lst;
+    var MonthLst = (SelectList)ViewBag.Month_lst;
+}
+
+
+<style>
+    .label {
+        color: #6D6767;
+        font-size: inherit;
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<div class="container">
+
+         
+       
+@using (Html.BeginForm("AddSkills", "ProfessionalDetails", FormMethod.Post, new { id = "AddSkill_FormId" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.SkillId)
+
+    <label id="lblError" class="text-danger"></label>
+        <div class="panel panel-primary" id="succdiv">
+        <div class="panel-heading clearfix">
+            <i class="icon-calendar"></i>
+            <h3 class="panel-title">Add Skill </h3>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel-body">
+
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="">
+                            @Html.Label("Select Skills", new { @class = "label" }) <span class="red">*</span>
+                            @Html.DropDownListFor(m => m.Skill_Id, SkillLst, "Select Skill", new { id = "ddlskills", @class = "form-control", placeholder = "Select Skill", tabindex = 2 })
+                            @Html.ValidationMessageFor(model => model.Skill_Id, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(m => m.OtherSkill, new { id = "txtOtherskill", @class = "form-control", placeholder = "Please enter your Skill", style = "display:none;", tabindex = 2 })
+                            @Html.ValidationMessageFor(model => model.OtherSkill, "", new { @class = "text-danger", id = "" })
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="">
+
+                            @Html.Label("Experience in Years", new { @class = "label" }) <span class="red">*</span>
+                            @Html.DropDownListFor(m => m.ExprInYears, YearLst, "Select Year", new { id = "ddlExprInYears", @class = "form-control", tabindex = 5 })
+                            @Html.ValidationMessageFor(model => model.ExprInYears, "", new { @class = "text-danger" })
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="">
+                            @Html.Label("Experience in months", new { @class = "label" }) <span class="red">*</span>
+                            @Html.DropDownListFor(m => m.ExprInMonths, MonthLst, "Select Month", new { id = "ddlExprInMonths", @class = "form-control", tabindex = 5 })
+                            @Html.ValidationMessageFor(model => model.ExprInMonths, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+        @Html.HiddenFor(m => m.Id)
+      
+
+        @*<input type="button" value="Add Education Details" class="btn-primary" id="ED_SaveId" />*@
+
+        <a href="#" id="ED_SaveData" class="btn btn-primary" tabindex="14"><span class="glyphicon glyphicon-saved"></span> Save</a>
+        <a href="#" id="ED_Cancel" class="btn btn-primary" tabindex="15"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+
+        @*<input type="button" value="Save" class="btn-primary"  />
+            @*<input type="button" value="Delete" class="btn-primary" id="ED_DeleteData" />*@
+        @*<input type="button" value="Cancel" class="btn-primary"  />*@
+
+        @*<div class="panel-heading clearfix">
+                <h3 class="panel-title">Education Details</h3>
+                <br />
+
+                    <div id="grdEducationList">
+                        <div class="row">
+                           @Html.Partial("~/Views/Education/_EducationList.cshtml", Model.EducationalDetailsList)
+                        </div>
+                    </div>
+
+            </div>*@
+    }
+</div>
+
+<div id="myModalInformation" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnSelectedID" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                <h4 class="modal-title" id="hTitleInfo"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsgInfo">
+                    @*Are you sure you want to active / in-active user?*@
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="cancel()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        if ('@ViewBag.IsReadOnly' == 'True') {
+            $('input,select').attr('disabled', true);
+            $('#ED_SaveData').attr('disabled', true);
+        }
+        else {
+            $('#ED_SaveData').attr('disabled', false);
+        }
+
+
+        //Other University/BoardName
+        if ('@Model.OtherSkill' != '' && $("#ddlskills option:selected").text() == 'Other') {
+            $('#txtOtherskill').show();
+            $("#txtOtherskill").attr('required', true);
+        }
+        else {
+            $('#txtOtherskill').hide();
+            $("#txtOtherskill").val('');
+            $("#txtOtherskill").attr('required', false);
+        }
+    });
+
+
+    $('#ddlskills').change(function () {
+        var text = $("#ddlskills option:selected").text();
+
+        if (text == 'Other') {
+            $('#txtOtherskill').show();
+            $("#txtOtherskill").val('');
+            $("#txtOtherskill").focus();
+            $("#txtOtherskill").attr('required', true);
+        }
+        else {
+
+            $("#ED_txtOtherUniversity_BoardName").hide();
+            $("#ED_txtOtherUniversity_BoardName").val('');
+            $("#ED_txtOtherUniversity_BoardName").attr('required', false);
+        }
+
+      
+    });
+
+
+
+    $('#ED_SaveData').click(function () {
+       
+        var form = $('#AddSkill_FormId');
+
+        $('#lblError').text('');
+        $.validator.unobtrusive.parse(form);
+
+        if (form.valid()) {
+
+
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                url: "/ProfessionalDetails/AddEditSkills",
+                data: form.serialize(),
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                   
+                    if (data.result == false) {
+                        $('#lblError').text(data.Message);
+                        ajaxindicatorstop();
+                    }
+                    else {
+                        // var urlGrid = "/Education/DeleteEducationDetails";
+                        $.ajax({
+                            urlGrid: "/ProfessionalDetails/SkillsDetailsGrid",
+                            cache: false,
+                            type: 'GET',
+                            success: function (data) {
+                                // $("#succdiv").(data);
+                                $("body").html(data);
+                                ajaxindicatorstop();
+                            },
+                            error: function () {
+                                alert('some error occured')
+                                ajaxindicatorstop();
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+        }
+
+    });
+
+
+    $('#ED_Cancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            url: "/ProfessionalDetails/SkillsDetailsGrid",
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+
+
+    $('#ddlExprInYears').change(function () {
+
+        var TYears = parseInt('@Model.ProfessionalDetailsModel.ExprInYears');
+        var TMonths = parseInt('@Model.ProfessionalDetailsModel.ExprInMonths');
+
+        var SYears = parseInt($("#ddlExprInYears option:selected").text());
+        var SMonths = parseInt($("#ddlExprInMonths option:selected").text());
+       
+        if (SYears > TYears) {
+
+            $("#hTitleInfo").html('Note');
+            $("#divMsgInfo").html('Year should be equal or less than Total Years of experience.');
+            $('#myModalInformation').show();
+
+            // $("#ddlExprInYears option[value='" + 0 + "']").attr('selected', 'selected')
+            $("#ddlExprInYears").attr('selectedIndex', 0);
+        }
+
+    });
+
+    $('#ddlExprInMonths').change(function () {
+        var TYears = parseInt('@Model.ProfessionalDetailsModel.ExprInYears');
+        var TMonths = parseInt('@Model.ProfessionalDetailsModel.ExprInMonths');
+
+        var SYears = parseInt($("#ddlExprInYears option:selected").text());
+        var SMonths = parseInt($("#ddlExprInMonths option:selected").text());
+      
+
+        if (SYears == TYears && SMonths > TMonths) {
+
+            $("#hTitleInfo").html('Note');
+            $("#divMsgInfo").html('Skill Experience should be equal or less than Total Years of experience.');
+            $('#myModalInformation').show();
+        }  
+    });
+
+
+    function cancel() {
+        $('#myModalInformation').hide();
+        $("#ddlExprInYears").attr('selectedIndex', 2);
+        $("#ddlExprInYears").val('');
+        $("#ddlExprInMonths").val('');
+      
+    }
+</script>
+
+

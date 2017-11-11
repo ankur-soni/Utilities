@@ -1,0 +1,300 @@
+﻿@model Models.EmploymetDetailsHistory
+
+<div class="panel panel-default" style="margin-bottom:15px" id="@Html.Raw("div"+@Model.EmploymentId)">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="@Html.Raw("#"+@Model.EmploymentId)" aria-expanded="true" class="collapsed">
+                @Model.CompanyName
+                <span class="font-weight-bold">(@Convert.ToDateTime(@Model.FromDate).ToString("dd MMMM yyyy")</span> -
+                @if (Model.IsCurrentEmployment)
+                {
+                    <span class="font-weight-bold">Till date)</span>
+                }
+                else
+                {
+                    <span class="font-weight-bold">@Convert.ToDateTime(@Model.ToDate).ToString("dd MMMM yyyy"))</span>
+                }
+                
+            </a>
+        </h4>
+    </div>
+    @using (Html.BeginForm("EditSave", "Employement", FormMethod.Post, new { id = @Html.Raw("frmEdit" + @Model.EmploymentId) }))
+    {
+        <input type="hidden" id="@Html.Raw("EmployementNo" + @Model.EmploymentId)" name="EmployementNo" value="@Model.EmployementNo" />
+        <input type="hidden" id="@Html.Raw("EmploymentId" + @Model.EmploymentId)" name="EmploymentDetID" value="@Model.EmploymentId" />
+        <input type="hidden" id="@Html.Raw("CompanyName" + @Model.EmploymentId)" name="CompanyName" value="@Model.CompanyName" />
+        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?" false":"true")" />
+        @Html.AntiForgeryToken()
+        <div id="@Html.Raw(@Model.EmploymentId)" class="panel-collapse collapse" role="tabpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Company Name</label><span class="red">*</span>
+                            @Html.TextBox("CompanyName", @Model.CompanyName,
+                        new
+                        {
+                            id = @Html.Raw("CompanyName" + @Model.EmploymentId),
+                            disabled = true,
+                            @class = "form-control",
+                            @tabindex = (@Model.EmploymentId + 1).ToString() + 13,
+                            @maxlength = "50"
+
+                        })
+                            @Html.ValidationMessage("CompanyName", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="company">Company Address</label><span class="red">*</span>
+                            @Html.TextBox("CompanyAddress", @Model.CompanyAddress,
+                        new
+                        {
+                            id = @Html.Raw("CompanyAddress" + @Model.EmploymentId),
+                            disabled = true,
+                            @class = "form-control",
+                            @tabindex = (@Model.EmploymentId + 1).ToString() + 14,
+                            @maxlength = "50"
+                        })
+                            @Html.ValidationMessage("CompanyAddress", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Current Salary per Annum </label><span class="red">*</span> <em>
+                                <i class="infoIcon fa fa-info-circle"
+                                   aria-hidden="true" data-toggle="tooltip" title="Enter 500,000 for Rs. 5 Lacs per annum"></i>
+                            </em>
+                            @Html.TextBox("CTC", @Model.CTC,
+                        new
+                        {
+                            id = @Html.Raw("CTC" + @Model.EmploymentId),
+                            disabled = true,
+                            @class = "form-control",
+                            @tabindex = (@Model.EmploymentId + 1).ToString() + 15,
+                            @maxlength = "50"
+                        })
+                            @Html.ValidationMessage("CTC", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Select Currency</label><span class="red">*</span>
+                            @Html.DropDownList("CurrencyID",
+                        (from l in ViewBag.CurrencyList as SelectList
+                         select new SelectListItem
+                         {
+                             Value = l.Value,
+                             Text = l.Text,
+                             Selected = (Convert.ToInt64(l.Value) == Convert.ToInt64(Model.CurrencyID)) ? true : false
+
+                         }) as IEnumerable<SelectListItem>
+                        ,
+                        "",
+                        new
+                        {
+                            disabled = true,
+                            @class = "form-control",
+                            id = @Html.Raw("CurrencyID" + @Model.EmploymentId),
+                            placeholder = "Select",
+                            tabindex = (@Model.EmploymentId + 1).ToString() + 16,
+                        })
+                            @Html.ValidationMessage("CurrencyID", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>
+                                Designation @if (Model.IsCurrentEmployment == false)
+                                {<span> (On Leaving)</span>}
+                            </label><span class="red">*</span>
+                            @Html.TextBox("Designation", @Model.Designation,
+                        new
+                        {
+                            id = @Html.Raw("Designation" + @Model.EmploymentId),
+                            disabled = true,
+                            @class = "form-control",
+                            @tabindex = (@Model.EmploymentId + 1).ToString() + 17,
+                            @maxlength = "50"
+                        })
+                            @Html.ValidationMessage("Designation", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Date of Joining</label><span class="red">*</span>
+                            <div class="input-group">
+                                @Html.TextBox("FromDate", @Model.FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : Convert.ToString(Model.FromDate))),
+                                new
+                                {
+                                    id = @Html.Raw("FromDate" + @Model.EmploymentId),
+                                    @class = "form-control",
+                                    disabled = true,
+                                    tabindex = (@Model.EmploymentId + 1).ToString() + 18
+                                })
+                                <label class="input-group-addon btn" for="@(Html.Raw("FromDate" + @Model.EmploymentId))">
+                                    <span class="fa fa-calendar"></span>
+                                </label>
+                            </div>
+                            @Html.ValidationMessage("FromDate", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>
+                                Date of @if (Model.IsCurrentEmployment == true)
+                                {<span>Tentative</span>} Relieving
+                            </label><span class="red">*</span>
+                            <div class="input-group">
+                                @Html.TextBox("ToDate", @Model.ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : Convert.ToString(Model.ToDate))),
+                                new
+                                {
+                                    id = @Html.Raw("ToDate" + @Model.EmploymentId),
+                                    @class = "form-control",
+                                    disabled = true,
+                                    tabindex = (@Model.EmploymentId + 1).ToString() + 19
+                                })
+                                <label class="input-group-addon btn" for="@(Html.Raw("ToDate" + @Model.EmploymentId))">
+                                    <span class="fa fa-calendar"></span>
+                                </label>
+                            </div>
+                            @Html.ValidationMessage("ToDate", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="switchBox">
+                            <label class="switch">
+                                <input type="checkbox" id="@Html.Raw("chk" + @Model.EmploymentId)" checked="@Model.IsCurrentEmployment" disabled name="chkBox">
+                                <span class="slider round"></span>
+                            </label>
+                            @Html.HiddenFor(x => x.IsCurrentEmployment)
+                            <span class="switchBoxTitle pull-left"> I currently work here </span>
+                        </div>
+                        @*<script>
+                                $(document).ready(function () {
+                                    if ('@Model.IsCurrentEmployment' === 'True') {
+                                        $('@Html.Raw("#chk" + @Model.EmploymentId)').attr('checked', true);
+                                    }
+                                });
+                            </script>*@
+                    </div>
+                </div>
+                <div class="row">
+                    @if (Model.IsCurrentEmployment == false)
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Reason for Leaving</label><span class="red">*</span>
+
+                                @Html.EditorFor(x => x.ReasonForLeave,
+                        new
+                        {
+
+                            @class = "form-control",
+                            @tabindex = (@Model.EmploymentId + 1).ToString() + 20,
+                            @maxlength = "500",
+                            htmlAttributes = new { rows = 3, style = "width: 100%;", id = @Html.Raw("ReasonForLeave" + @Model.EmploymentId), disabled = true }
+                        })
+                                @Html.ValidationMessageFor(model => model.ReasonForLeave, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="@Html.Raw("save" + Model.EmploymentId)" style="display:none">
+                            <button class="btn-reset cancelText  pull-right" type="reset" onclick="EditCancel(@Model.EmploymentId,'@Html.Raw("#save" + Model.EmploymentId)','@Html.Raw("#cancel" + Model.EmploymentId)',true);" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)">Cancel</button>
+                            <button class="btn-save saveText pull-right" type="submit" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)"> Save   </button>
+                        </div>
+                        <div id="@Html.Raw("cancel" + Model.EmploymentId)" style="display:block">
+                            <a class="btn-delete pull-right" href="#" onclick="ConfirmDeleteRow(@Model.EmploymentId)" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)">Delete</a>
+                            <a class="btn-reset pull-right" href="#" onclick="EditCancel(@Model.EmploymentId,'@Html.Raw("#save" + Model.EmploymentId)','@Html.Raw("#cancel" + Model.EmploymentId)',false);" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ConfirmDeleteRow(id) {
+        toastr.warning("<button type='button' id='confirmationRevertYes' class='btn btn-default'>Yes</button>" +
+            "   <button type='button' id='confirmationRevertNo' class='btn btn-default'>No</button>", 'Do you want to delete this information?',
+              {
+                  closeButton: false,
+                  allowHtml: true,
+                  onShown: function (toast) {
+                      $("#confirmationRevertYes").click(function () {
+                          window.location.href = "DeleteEmploymentDetails?Id=" + id;
+                      });
+                      $("#confirmationRevertYes").click(function () {
+                          this.fadeOut();
+                      });
+                  }
+              });
+    }
+
+    function EditCancel(editId, save, cancel, flag) {
+        // $('#CompanyName' + editId).prop('disabled', flag);
+        $('#CompanyAddress' + editId).prop('disabled', flag);
+        $('#CTC' + editId).prop('disabled', flag);
+        $('#CurrencyID' + editId).prop('disabled', flag);
+        $('#Designation' + editId).prop('disabled', flag);
+        $('#FromDate' + editId).prop('disabled', flag);
+        $('#ToDate' + editId).prop('disabled', flag);
+        $('#ReasonForLeave' + editId).prop('disabled', flag);
+        $('#chk' + editId).prop('disabled', flag);
+        
+        if (flag == false) {
+            $(save).css('display', 'block');
+            $(cancel).css('display', 'none');
+
+
+            $('#ToDate' + editId).datepicker({
+                // maxDate: 0,
+                showButtonPanel: false,
+                changeMonth: true,
+                changeYear: true,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                dateFormat: 'dd/mm/yy',
+                onSelect: function (selected) {
+                    $('#FromDate' + editId).datepicker("option", "maxDate", selected)
+                }
+
+            });
+
+            $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+
+            $('#FromDate' + editId).datepicker({
+                maxDate: 0,
+                showButtonPanel: false,
+                changeMonth: true,
+                changeYear: true,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                dateFormat: 'dd/mm/yy',
+                onSelect: function (selected) {
+                    $('#ToDate' + editId).datepicker("option", "minDate", selected)
+                }
+            });
+
+            $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
+        }
+        else {
+            $(cancel).css('display', 'block');
+            $(save).css('display', 'none');
+
+        }
+        //$('.hasDatepicker').attr('readonly', true);
+    }
+
+</script>

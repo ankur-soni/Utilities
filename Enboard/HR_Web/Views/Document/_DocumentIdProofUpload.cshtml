@@ -1,0 +1,63 @@
+﻿@using HR_Web.Utilities;
+@model Models.DocumentDetailListViewModel
+@{
+    IEnumerable<Data.DocumentDetail> _documentDetailList;
+    IEnumerable<Data.Master_Document> _Master_DocumentListIDProof = Model.Master_DocumentList;
+}
+
+@using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
+{
+    <ul class="docList">
+        @foreach (var item in _Master_DocumentListIDProof.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof).AsQueryable())
+        {
+            if (item.DocumentID != Constant.IDProof.ValidWorkVISA)
+            {
+                <li>
+                    <h6 class="docName">
+                        @item.Document @if (item.DocumentID == Constant.IDProof.PANCard)
+                        {
+                            <span style="color:red">*</span>
+                        }
+                    </h6>
+                    <ul class="docUpload">
+                        <li>
+                            <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files.</span>
+
+                            <div class="btn btn-primary btn-upload btn-sm pull-right">
+                                <span>Upload</span>
+                                <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                            </div>
+                        </li>
+                    </ul>
+                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
+                    @if (_documentDetailList.Any())
+                    {
+                        <ul class="docDescription">
+                            @foreach (var itemDetails in _documentDetailList)
+                            {
+
+                                if (item != null)
+                                {
+                                    <li>
+                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        <span class="uploadName @(item.DocumentID == Constant.IDProof.PANCard ? "mand idproofdoc" : string.Empty)">
+                                            <a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a>
+                                        </span>
+                                        <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
+                                    </li>
+                                }
+                            }
+                            <li class="addDocument">
+                                <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files. </span>
+                                <div class="btn btn-primary btn-upload btn-sm pull-right">
+                                    <span>Upload</span>
+                                    <input id=@("SaveUpload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                </li>
+            }
+        }
+    </ul>
+}
