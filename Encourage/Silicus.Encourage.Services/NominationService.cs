@@ -459,7 +459,7 @@ namespace Silicus.Encourage.Services
 
             toBeExcludedUserIds.Add(managerId);
 
-            return _commonDataBaseContext.Query<User>().Where(u => !toBeExcludedUserIds.Contains(u.ID)).ToList();
+            return _commonDataBaseContext.Query<User>().Where(u => !toBeExcludedUserIds.Contains(u.ID) && u.InactiveDate == null).ToList();
         }
 
         #region Get Saved Nominations Details
