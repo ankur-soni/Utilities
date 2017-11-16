@@ -1,4 +1,4 @@
-﻿@model Models.Employment
+﻿@*@model Models.Employment
 
 @using (Html.BeginForm("AddNumberOfEmployments", "Employement", FormMethod.Post, new { id = "frmNumberOfEmployments" }))
 {
@@ -11,54 +11,25 @@
             <label class="glyphicon glyphicon-info-sign" style="width:25px;" data-toggle="tooltip" data-placement="right" title="If you are a fresher then put value 0, otherwise put number of previous employments including current employment and count should not exceed 20."></label>
             @Html.ValidationMessageFor(model => model.NumberOfEmployments, "", new { @class = "text-danger", id = "valNumberOfEmployments" })
         </div>
-
-        @*@if (ViewBag.NumberOfEmployments <= 0 || ViewBag.NumberOfEmployments == null)
-        {
-            <div class="row btnRow">
-                <span class="pull-right userNote mx-1"> <i class="fa fa-certificate" aria-hidden="true"></i> Kindly add number of employments including current employment.</span>
-            </div>
-        }*@
-
         <div class="row btnRow">
             <div class="row">
                 <div class="col-md-12">
                     <span class="pull-right userNote"> <i class="fa fa-certificate"></i> Request to <a href="#" onclick="OpenChangeRequestForm()" tabindex="12">Edit</a>  information! </span>
                 </div>
             </div>
-            @*<a href="#" id="editNumberOfEmploymentsLink" class="mx-1 cancelText" tabindex="2"> Edit</a>*@
-            @*<a href="#" id="cancelEditNumberOfEmploymentsLink" class="mx-1 cancelText hide" tabindex="2"> Cancel</a>
-            <button id="addNumberOfEmployments" onclick="CheckNumberOfEmployments();" class="btn-save mx-1" tabindex="2"> Add</button>*@
         </div>
     </div>
 
-}
+}*@
 
 
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(document).ready(function () {
         $("#txtNumberOfEmployments").prop("disabled", true);
-        /*
-        var NumberOfEmployments = $("#txtNumberOfEmployments").val();
-        if (NumberOfEmployments > 0) {
-            $("#txtNumberOfEmployments").prop("disabled", true);
-            $("#addNumberOfEmployments").hide();
-            $("editNumberOfEmploymentsLink").show();
-        } else if (NumberOfEmployments == null) {
-            $("#addNumberOfEmployments").hide();
-            $("#txtNumberOfEmployments").prop("disabled", false);
-            $("editNumberOfEmploymentsLink").hide();
-            $("#addNumberOfEmployments").text("Add");
-            $("#editNumberOfEmploymentsLink").hide();
-        } else if (NumberOfEmployments == '') {
-            $("#editNumberOfEmploymentsLink").hide();
-        }
-        */
+      
     });
 
-
-    //Function on click of send on change request modal
-    
     //Function on success of change request form
     function OnSuccessForm(data) {
         if (data.result == true) {
@@ -77,64 +48,6 @@
 
         toastr.error("Error occurred  while saving your request.");
     }
-
-
-    //Function to open change request form
-    function OpenChangeRequestForm() {
-        //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog
-        $.ajax({
-            url: '/Employement/OpenChangeRequestForm/',
-            success: function (data) {
-
-                //Set change Request  form body html with data
-                $("#changeRequestModal .modal-body").html(data);
-
-                //Show change Request form modal
-                $('#changeRequestModal').modal('show');
-            },
-            error: function (data) {
-                toastr.error("Error occurred while opening Change Request Modal form.");
-            }
-        });
-    }
-
-
-    function SaveChangeRequestDetails() {
-        //Check if any of the textbox is blank
-        if ($("#CRtxtNumberOfEmployments").val() == "") {
-            $("#PD_ChangeRequestFormId").submit();
-        }
-
-        else {
-            var data = { NumberOfEmployments: $("#CRtxtNumberOfEmployments").val() };
-            //Call method to check if values are changed or same as is it is
-            $.ajax({
-                url: '/Employement/CheckIfThereIsAnyChange',
-                data: data,
-                type: 'POST',
-                dataType: 'json',
-                success: function (data) {
-
-                    if (data == false) {
-
-                        toastr.error('You have not made any changes.');
-                        return;
-                    }
-                    else {  //call submit event
-                       
-                        $("#PD_ChangeRequestFormId").submit();
-                    }
-
-                },
-                error: function (data) {
-                    toastr.error("Error occurred while checking pending change requests.");
-                }
-            });
-
-        }
-    }
-
-
 
     function CheckNumberOfEmployments() {
         var caption = $("#addNumberOfEmployments").text();
@@ -166,4 +79,4 @@
         $("#txtNumberOfEmployments").val(@ViewBag.NumberOfEmployments);
     });
 
-</script>
+</script>*@

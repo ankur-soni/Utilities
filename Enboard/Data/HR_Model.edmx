@@ -348,7 +348,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="IsActive" Type="int" />
           <Property Name="IsDelete" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
-          <Property Name="NoOfEmployments" Type="int" />
         </EntityType>
         <EntityType Name="Master_Bloodgroup">
           <Key>
@@ -566,6 +565,17 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="Master_SubDocumentsCategory">
+          <Key>
+            <PropertyRef Name="SubDocCatID" />
+          </Key>
+          <Property Name="SubDocCatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocCatID" Type="int" Nullable="false" />
+          <Property Name="SubDocCategoryName" Type="varchar" MaxLength="50" />
+          <Property Name="IsNeeded" Type="bit" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="Master_University">
           <Key>
             <PropertyRef Name="UniversityID" />
@@ -574,6 +584,57 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="University" Type="varchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PendingCandidateDetails">
+          <Key>
+            <PropertyRef Name="Ped_Cand_ID" />
+          </Key>
+          <Property Name="Ped_Cand_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Gender" Type="varchar" MaxLength="8" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OnBoarding_Dev.dbo.temp_city' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="temp_city">
+          <Key>
+            <PropertyRef Name="CityID" />
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="CityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="StateID" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OnBoarding_Dev.dbo.temp_uni' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="temp_uni">
+          <Key>
+            <PropertyRef Name="UniversityID" />
+          </Key>
+          <Property Name="UniversityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="University" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Test_CandidateChangeRequestsDetails">
+          <Key>
+            <PropertyRef Name="CandChangeReqID" />
+          </Key>
+          <Property Name="CandChangeReqID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="FieldName" Type="varchar" MaxLength="100" />
+          <Property Name="FieldValue" Type="varchar" MaxLength="255" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -632,6 +693,18 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="CandidateChangeRequestsDetails">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
+          <End Role="LoginDetails" Type="Self.LoginDetails" Multiplicity="1" />
+          <End Role="Test_CandidateChangeRequestsDetails" Type="Self.Test_CandidateChangeRequestsDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoginDetails">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Test_CandidateChangeRequestsDetails">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1152,6 +1225,18 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Master_SubDocumentCategory_Master_DocumentCategory">
+          <End Role="Master_DocumentCategory" Type="Self.Master_DocumentCategory" Multiplicity="1" />
+          <End Role="Master_SubDocumentsCategory" Type="Self.Master_SubDocumentsCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Master_DocumentCategory">
+              <PropertyRef Name="DocCatID" />
+            </Principal>
+            <Dependent Role="Master_SubDocumentsCategory">
+              <PropertyRef Name="DocCatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_UniversityBoardUniversityId_MappingtableUniversityId">
           <End Role="Master_University" Type="Self.Master_University" Multiplicity="1" />
           <End Role="EducationCategoryUniversityBoardMapping" Type="Self.EducationCategoryUniversityBoardMapping" Multiplicity="*" />
@@ -1223,7 +1308,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySet Name="Master_SkillSet" EntityType="Self.Master_SkillSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_Specialization" EntityType="Self.Master_Specialization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_State" EntityType="Self.Master_State" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Master_SubDocumentsCategory" EntityType="Self.Master_SubDocumentsCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_University" EntityType="Self.Master_University" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PendingCandidateDetails" EntityType="Self.PendingCandidateDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test_CandidateChangeRequestsDetails" EntityType="Self.Test_CandidateChangeRequestsDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WelcomeNoteDetails" EntityType="Self.WelcomeNoteDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EducationCategoryUniversityBoardMapping" EntityType="Self.EducationCategoryUniversityBoardMapping" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1233,6 +1321,23 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
     [EducationCategoryUniversityBoardMapping].[CreatedBy] AS [CreatedBy], 
     [EducationCategoryUniversityBoardMapping].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[EducationCategoryUniversityBoardMapping] AS [EducationCategoryUniversityBoardMapping]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="temp_city" EntityType="Self.temp_city" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [temp_city].[CityID] AS [CityID], 
+    [temp_city].[City] AS [City], 
+    [temp_city].[StateID] AS [StateID], 
+    [temp_city].[CreatedBy] AS [CreatedBy], 
+    [temp_city].[CreatedDate] AS [CreatedDate]
+    FROM [dbo].[temp_city] AS [temp_city]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="temp_uni" EntityType="Self.temp_uni" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [temp_uni].[UniversityID] AS [UniversityID], 
+    [temp_uni].[University] AS [University], 
+    [temp_uni].[CreatedBy] AS [CreatedBy], 
+    [temp_uni].[CreatedDate] AS [CreatedDate]
+    FROM [dbo].[temp_uni] AS [temp_uni]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="UserReminder" EntityType="Self.UserReminder" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1254,6 +1359,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <AssociationSet Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails" Association="Self.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails">
             <End Role="LoginDetails" EntitySet="LoginDetails" />
             <End Role="CandidateChangeRequestsDetails" EntitySet="CandidateChangeRequestsDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" Association="Self.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
+            <End Role="LoginDetails" EntitySet="LoginDetails" />
+            <End Role="Test_CandidateChangeRequestsDetails" EntitySet="Test_CandidateChangeRequestsDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_DocumentDetails_LoginDetails1" Association="Self.FK_DocumentDetails_LoginDetails1">
             <End Role="LoginDetails" EntitySet="LoginDetails" />
@@ -1427,6 +1536,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             <End Role="Master_Country" EntitySet="Master_Country" />
             <End Role="Master_State" EntitySet="Master_State" />
           </AssociationSet>
+          <AssociationSet Name="FK_Master_SubDocumentCategory_Master_DocumentCategory" Association="Self.FK_Master_SubDocumentCategory_Master_DocumentCategory">
+            <End Role="Master_DocumentCategory" EntitySet="Master_DocumentCategory" />
+            <End Role="Master_SubDocumentsCategory" EntitySet="Master_SubDocumentsCategory" />
+          </AssociationSet>
           <AssociationSet Name="fk_UniversityBoardUniversityId_MappingtableUniversityId" Association="Self.fk_UniversityBoardUniversityId_MappingtableUniversityId">
             <End Role="Master_University" EntitySet="Master_University" />
             <End Role="EducationCategoryUniversityBoardMapping" EntitySet="EducationCategoryUniversityBoardMapping" />
@@ -1565,6 +1678,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="DocumentDetails" Relationship="IPDModel.FK_DocumentDetails_Master_DocumentCategory" FromRole="Master_DocumentCategory" ToRole="DocumentDetail" />
           <NavigationProperty Name="DocumentDetails1" Relationship="IPDModel.FK_DocumentDetails_Master_SubDocumentCategory" FromRole="Master_DocumentCategory" ToRole="DocumentDetail" />
           <NavigationProperty Name="Master_Document" Relationship="IPDModel.FK_Master_Document_Master_DocumentCategory" FromRole="Master_DocumentCategory" ToRole="Master_Document" />
+          <NavigationProperty Name="Master_SubDocumentsCategory" Relationship="IPDModel.FK_Master_SubDocumentCategory_Master_DocumentCategory" FromRole="Master_DocumentCategory" ToRole="Master_SubDocumentsCategory" />
         </EntityType>
         <EntityType Name="Master_EducationCategory">
           <Key>
@@ -1990,6 +2104,19 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <AssociationSet Name="fk_UniversityBoardUniversityId_MappingtableUniversityId" Association="IPDModel.fk_UniversityBoardUniversityId_MappingtableUniversityId">
             <End Role="Master_University" EntitySet="Master_University" />
             <End Role="EducationCategoryUniversityBoardMapping" EntitySet="EducationCategoryUniversityBoardMappings" />
+          </AssociationSet>
+          <EntitySet Name="Master_SubDocumentsCategory" EntityType="IPDModel.Master_SubDocumentsCategory" />
+          <EntitySet Name="PendingCandidateDetails" EntityType="IPDModel.PendingCandidateDetail" />
+          <EntitySet Name="Test_CandidateChangeRequestsDetails" EntityType="IPDModel.Test_CandidateChangeRequestsDetails" />
+          <EntitySet Name="temp_city" EntityType="IPDModel.temp_city" />
+          <EntitySet Name="temp_uni" EntityType="IPDModel.temp_uni" />
+          <AssociationSet Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" Association="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
+            <End Role="LoginDetail" EntitySet="LoginDetails" />
+            <End Role="Test_CandidateChangeRequestsDetails" EntitySet="Test_CandidateChangeRequestsDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Master_SubDocumentCategory_Master_DocumentCategory" Association="IPDModel.FK_Master_SubDocumentCategory_Master_DocumentCategory">
+            <End Role="Master_DocumentCategory" EntitySet="Master_DocumentCategory" />
+            <End Role="Master_SubDocumentsCategory" EntitySet="Master_SubDocumentsCategory" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="EmployeeMaster">
@@ -2647,7 +2774,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="CandidateGraphProgressDetails" Relationship="IPDModel.FK_Graph_Graph1" FromRole="LoginDetail" ToRole="CandidateGraphProgressDetail" />
           <NavigationProperty Name="EmployeeEducationDetails" Relationship="IPDModel.FK_EmployeeEducationDetail_LoginDetails" FromRole="LoginDetail" ToRole="EmployeeEducationDetail" />
           <NavigationProperty Name="EmploymentCounts" Relationship="IPDModel.FK_EmploymentCount_LoginDetails" FromRole="LoginDetail" ToRole="EmploymentCount" />
-          <Property Name="NoOfEmployments" Type="Int32" />
+          <NavigationProperty Name="Test_CandidateChangeRequestsDetails" Relationship="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" FromRole="LoginDetail" ToRole="Test_CandidateChangeRequestsDetails" />
         </EntityType>
         <Association Name="FK_AdminEducationCategoryForUser_LoginDetails">
           <End Type="IPDModel.LoginDetail" Role="LoginDetail" Multiplicity="0..1" />
@@ -3004,6 +3131,90 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
             </Principal>
             <Dependent Role="EducationCategoryUniversityBoardMapping">
               <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Master_SubDocumentsCategory">
+          <Key>
+            <PropertyRef Name="SubDocCatID" />
+          </Key>
+          <Property Name="SubDocCatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocCatID" Type="Int32" Nullable="false" />
+          <Property Name="SubDocCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsNeeded" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Master_DocumentCategory" Relationship="IPDModel.FK_Master_SubDocumentCategory_Master_DocumentCategory" FromRole="Master_SubDocumentsCategory" ToRole="Master_DocumentCategory" />
+        </EntityType>
+        <EntityType Name="PendingCandidateDetail">
+          <Key>
+            <PropertyRef Name="Ped_Cand_ID" />
+          </Key>
+          <Property Name="Ped_Cand_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="ContactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Test_CandidateChangeRequestsDetails">
+          <Key>
+            <PropertyRef Name="CandChangeReqID" />
+          </Key>
+          <Property Name="CandChangeReqID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="FieldName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FieldValue" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="LoginDetail" Relationship="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" FromRole="Test_CandidateChangeRequestsDetails" ToRole="LoginDetail" />
+        </EntityType>
+        <EntityType Name="temp_city">
+          <Key>
+            <PropertyRef Name="CityID" />
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="CityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StateID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="temp_uni">
+          <Key>
+            <PropertyRef Name="UniversityID" />
+          </Key>
+          <Property Name="UniversityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="University" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
+          <End Type="IPDModel.LoginDetail" Role="LoginDetail" Multiplicity="1" />
+          <End Type="IPDModel.Test_CandidateChangeRequestsDetails" Role="Test_CandidateChangeRequestsDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoginDetail">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Test_CandidateChangeRequestsDetails">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Master_SubDocumentCategory_Master_DocumentCategory">
+          <End Type="IPDModel.Master_DocumentCategory" Role="Master_DocumentCategory" Multiplicity="1" />
+          <End Type="IPDModel.Master_SubDocumentsCategory" Role="Master_SubDocumentsCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Master_DocumentCategory">
+              <PropertyRef Name="DocCatID" />
+            </Principal>
+            <Dependent Role="Master_SubDocumentsCategory">
+              <PropertyRef Name="DocCatID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3586,7 +3797,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="LoginDetails">
             <EntityTypeMapping TypeName="IPDModel.LoginDetail">
               <MappingFragment StoreEntitySet="LoginDetails">
-                <ScalarProperty Name="NoOfEmployments" ColumnName="NoOfEmployments" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -3699,6 +3909,68 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
                 <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
                 <ScalarProperty Name="EducationCategoryID" ColumnName="EducationCategoryID" />
                 <ScalarProperty Name="EduCatUNiBodID" ColumnName="EduCatUNiBodID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Master_SubDocumentsCategory">
+            <EntityTypeMapping TypeName="IPDModel.Master_SubDocumentsCategory">
+              <MappingFragment StoreEntitySet="Master_SubDocumentsCategory">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsNeeded" ColumnName="IsNeeded" />
+                <ScalarProperty Name="SubDocCategoryName" ColumnName="SubDocCategoryName" />
+                <ScalarProperty Name="DocCatID" ColumnName="DocCatID" />
+                <ScalarProperty Name="SubDocCatID" ColumnName="SubDocCatID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PendingCandidateDetails">
+            <EntityTypeMapping TypeName="IPDModel.PendingCandidateDetail">
+              <MappingFragment StoreEntitySet="PendingCandidateDetails">
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Ped_Cand_ID" ColumnName="Ped_Cand_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test_CandidateChangeRequestsDetails">
+            <EntityTypeMapping TypeName="IPDModel.Test_CandidateChangeRequestsDetails">
+              <MappingFragment StoreEntitySet="Test_CandidateChangeRequestsDetails">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="FieldValue" ColumnName="FieldValue" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CandChangeReqID" ColumnName="CandChangeReqID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="temp_city">
+            <EntityTypeMapping TypeName="IPDModel.temp_city">
+              <MappingFragment StoreEntitySet="temp_city">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="temp_uni">
+            <EntityTypeMapping TypeName="IPDModel.temp_uni">
+              <MappingFragment StoreEntitySet="temp_uni">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="University" ColumnName="University" />
+                <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

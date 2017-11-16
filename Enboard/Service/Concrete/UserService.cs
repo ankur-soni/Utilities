@@ -618,9 +618,9 @@ namespace Service
                                 case "Email":
                                     request.LoginDetail.Email = request.FieldValue;
                                     break;
-                                case "NoOfEmployments":
-                                    request.LoginDetail.NoOfEmployments = Convert.ToInt32(request.FieldValue);
-                                    break;
+                                //case "NoOfEmployments":
+                                //    request.LoginDetail.NoOfEmployments = Convert.ToInt32(request.FieldValue);
+                                //    break;
                                 case "DOB":
                                       string strmsg = string.Empty;
                                       byte[] encode = new byte[request.FieldValue.Length];

@@ -155,7 +155,7 @@ namespace Models
 
         public SelectList CurrencyList { get; set; }
 
-        public int NoOfEmployementAdmin { get; set; }
+        //public int NoOfEmployementAdmin { get; set; }
 
         public int NoOfEmployementAdded { get; set; }
 
@@ -222,11 +222,11 @@ namespace Models
         public string Message {get;set;}
     }
 
-    public class Employment
-    {
-        [Display(Name = "Enter number of employments in your career")]
-        [Range(0, 20, ErrorMessage = "Please enter total number of Employments including current and it should not exceed 20.(In case of fresher put 0)")]
-        [Required(ErrorMessage = "Please enter No. of employments")]
-        public int? NumberOfEmployments { get; set; }
-    }
+    //public class Employment
+    //{
+    //    [Display(Name = "Enter number of employments in your career")]
+    //    [Range(0, 20, ErrorMessage = "Please enter total number of Employments including current and it should not exceed 20.(In case of fresher put 0)")]
+    //    [Required(ErrorMessage = "Please enter No. of employments")]
+    //    public int? NumberOfEmployments { get; set; }
+    //}
 }

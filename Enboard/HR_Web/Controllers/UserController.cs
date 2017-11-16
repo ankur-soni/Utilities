@@ -485,9 +485,9 @@ namespace HR_Web.Controllers
                 case "CountryCode":
                     return "Country Code";
                     break;
-                case "NoOfEmployments":
-                    return "No. of Employment(s)";
-                    break;
+                //case "NoOfEmployments":
+                //    return "No. of Employment(s)";
+                //    break;
                 default:
                     return string.Empty;
                     break;
@@ -2439,7 +2439,7 @@ namespace HR_Web.Controllers
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
-                    model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
+                    //model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
 
                     //set selected values from AdminEducationCategoryForUser table
@@ -2511,7 +2511,7 @@ namespace HR_Web.Controllers
                         //newly added
                         obj.CountryCode = model.CountryCode;
                         obj.Gender = model.Gender;
-                        obj.NoOfEmployments = model.NoOfEmployments;
+                        //obj.NoOfEmployments = model.NoOfEmployments;
 
                         try
                         {
@@ -2586,7 +2586,7 @@ namespace HR_Web.Controllers
                     //newly added
                     userDetails.CountryCode = model.CountryCode;
                     userDetails.Gender = model.Gender;
-                    userDetails.NoOfEmployments = model.NoOfEmployments;
+                    //userDetails.NoOfEmployments = model.NoOfEmployments;
                     status = _IUserService.AddUserDetails(userDetails);
 
                     //Update existing education caetgrories for that user
