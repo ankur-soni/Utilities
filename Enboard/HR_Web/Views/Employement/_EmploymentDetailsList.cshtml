@@ -23,7 +23,7 @@
         <input type="hidden" id="@Html.Raw("EmployementNo" + @Model.EmploymentId)" name="EmployementNo" value="@Model.EmployementNo" />
         <input type="hidden" id="@Html.Raw("EmploymentId" + @Model.EmploymentId)" name="EmploymentDetID" value="@Model.EmploymentId" />
         <input type="hidden" id="@Html.Raw("CompanyName" + @Model.EmploymentId)" name="CompanyName" value="@Model.CompanyName" />
-        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?" false":"true")" />
+        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" class="@Html.Raw("IsCurrentEmployment"+@Model.EmploymentId) name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?" false":"true")" />
         @Html.AntiForgeryToken()
         <div id="@Html.Raw(@Model.EmploymentId)" class="panel-collapse collapse" role="tabpanel">
             <div class="panel-body">
@@ -172,16 +172,9 @@
                                 <input type="checkbox" id="@Html.Raw("chk" + @Model.EmploymentId)" checked="@Model.IsCurrentEmployment" disabled name="chkBox">
                                 <span class="slider round"></span>
                             </label>
-                            @Html.HiddenFor(x => x.IsCurrentEmployment)
-                            <span class="switchBoxTitle pull-left"> I currently work here </span>
+                            @Html.HiddenFor(x => x.IsCurrentEmployment, new { @class = "IsCurrentEmployment"+Model.EmploymentId })
+                            <span class="switchBoxTitle pull-left">Recent Tenure</span>
                         </div>
-                        @*<script>
-                                $(document).ready(function () {
-                                    if ('@Model.IsCurrentEmployment' === 'True') {
-                                        $('@Html.Raw("#chk" + @Model.EmploymentId)').attr('checked', true);
-                                    }
-                                });
-                            </script>*@
                     </div>
                 </div>
                 <div class="row">

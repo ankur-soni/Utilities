@@ -64,8 +64,7 @@
                                                             <input type="checkbox" name="chkAdd" checked="@Model.IsCurrentEmployment.Value">
                                                             <span class="slider round" tabindex="7"></span>
                                                         </label>
-
-                                                        <span class="switchBoxTitle pull-left"> I currently work here </span>
+                                                        <span class="switchBoxTitle pull-left">Recent Tenure</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,7 +119,7 @@
 
 
                                                     <button class="btn-reset cancelText" type="reset" tabindex="12"> Cancel </button>
-                                                    <button class="btn-save" type="submit" onclick="EditCancel('PD_FormId')" tabindex="12"> Save </button>
+                                                    <button class="btn-save" type="submit" onclick="EditCancel('PD_FormId')" tabindex="12"> Add </button>
 
                                                     @*<button type="submit" onclick="EditCancel('PD_FormId')" class="btn-save mx-1" style="float:right"> +  Add More </button>*@
                                                 </div>
@@ -154,15 +153,25 @@
 
         }
         $(".switchBox input").click(function () {
+            var clickedId = $(this).attr('id');
+            var id = 0;
+            if (clickedId != "" && clickedId != undefined) {
+                 id = clickedId.substring(3);
+            }
             if ($(this).is(":checked")) {
                 $('.PastEmployment').fadeOut();
                 $('.currentEmployment').fadeIn();
-                $('#IsCurrentEmployment').val('true');
+                    if (id > 0)
+                    {
+                        $('.IsCurrentEmployment' + id).val('true');
+                    }
             }
             else {
                 $('.currentEmployment').fadeOut();
                 $('.PastEmployment').fadeIn();
-                $('#IsCurrentEmployment').val('false');
+                if (id > 0) {
+                    $('.IsCurrentEmployment' + id).val('false');
+                }
             }
         });
 
