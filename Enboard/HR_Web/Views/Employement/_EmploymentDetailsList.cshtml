@@ -23,7 +23,7 @@
         <input type="hidden" id="@Html.Raw("EmployementNo" + @Model.EmploymentId)" name="EmployementNo" value="@Model.EmployementNo" />
         <input type="hidden" id="@Html.Raw("EmploymentId" + @Model.EmploymentId)" name="EmploymentDetID" value="@Model.EmploymentId" />
         <input type="hidden" id="@Html.Raw("CompanyName" + @Model.EmploymentId)" name="CompanyName" value="@Model.CompanyName" />
-        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" class="@Html.Raw("IsCurrentEmployment"+@Model.EmploymentId) name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?" false":"true")" />
+        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" class="@Html.Raw("IsCurrentEmployment"+@Model.EmploymentId)" name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?" false":"true")" />
         @Html.AntiForgeryToken()
         <div id="@Html.Raw(@Model.EmploymentId)" class="panel-collapse collapse" role="tabpanel">
             <div class="panel-body">

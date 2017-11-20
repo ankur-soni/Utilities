@@ -153,24 +153,40 @@
 
         }
         $(".switchBox input").click(function () {
+            var data = [];
             var clickedId = $(this).attr('id');
             var id = 0;
-            if (clickedId != "" && clickedId != undefined) {
-                 id = clickedId.substring(3);
-            }
-            if ($(this).is(":checked")) {
-                $('.PastEmployment').fadeOut();
-                $('.currentEmployment').fadeIn();
-                    if (id > 0)
-                    {
+            $("input[name='IsCurrentEmployment']").each(function () {
+                if ($(this).val() == "True") {
+                    data.push($(this).val());
+                }
+
+            });
+            if (data.length >= 1 && $(this).is(":checked")) {
+                $(this).attr("checked", false);
+                toastr.error("You can not set multiple 'Recent Tenure'");
+                $('.IsCurrentEmployment' + id).val('false');
+            } else {
+                if (clickedId != "" && clickedId != undefined) {
+                    id = clickedId.substring(3);
+                }
+                if ($(this).is(":checked")) {
+                    $('.PastEmployment').fadeOut();
+                    $('.currentEmployment').fadeIn();
+                    if (id > 0) {
                         $('.IsCurrentEmployment' + id).val('true');
+                    } else {
+                        $('#IsCurrentEmployment').val('true');
                     }
-            }
-            else {
-                $('.currentEmployment').fadeOut();
-                $('.PastEmployment').fadeIn();
-                if (id > 0) {
-                    $('.IsCurrentEmployment' + id).val('false');
+                }
+                else {
+                    $('.currentEmployment').fadeOut();
+                    $('.PastEmployment').fadeIn();
+                    if (id > 0) {
+                        $('.IsCurrentEmployment' + id).val('false');
+                    } else {
+                        $('#IsCurrentEmployment').val('false');
+                    }
                 }
             }
         });

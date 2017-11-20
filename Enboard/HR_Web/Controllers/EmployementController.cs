@@ -154,7 +154,7 @@ namespace HR_Web.Controllers
             //ViewData["Employment"] = employment;
             var employmentList = EmploymentDetailList(userId);
             EmployementModel employementModel = new EmployementModel();
-            employementModel.IsCurrentEmployment = true;
+            employementModel.IsCurrentEmployment = false;
             if (TempData["EmployementModel"] != null)
                 employementModel = (EmployementModel)TempData["EmployementModel"];
             else if (employmentList.Any(x => x.IsCurrentEmployment == true))
