@@ -176,27 +176,27 @@ namespace HR_Web.ViewModel
                 int averageCount = 0;
                 var userEmployemntList = userDetails.EmploymentDetails.Where(x => x.IsActive == true);
 
-                var employmentCount = _IEmploymentCountService.GetEmploymentCountByUserId((int)userDetails.UserID);
+                var employmentCount = 1;
                 
-                if (employmentCount != null)
-                {
-                    var NumberOfEmployments = employmentCount.NumberOfEmployments ?? 0;
-                    if (NumberOfEmployments > 0)
+                //if (employmentCount != null)
+                //{
+                    var numberOfEmployments = employmentCount;
+                    if (numberOfEmployments > 0)
                     {
                         if (userEmployemntList.Any() && userEmployemntList.Count() != 0)
                         {
                             averageCount = userEmployemntList.Count();
-                            if (averageCount >= NumberOfEmployments)
+                            if (averageCount >= numberOfEmployments)
                             {
                                 employementDetialsPercentage = Convert.ToDouble(100);
                             }
                             else
                             {
-                                employementDetialsPercentage = Convert.ToDouble(averageCount) / Convert.ToDouble(NumberOfEmployments) * Convert.ToDouble(100);
+                                employementDetialsPercentage = Convert.ToDouble(averageCount) / Convert.ToDouble(numberOfEmployments) * Convert.ToDouble(100);
                             }
                         }
                     }
-                }
+                //}
             }
             return employementDetialsPercentage;
         }
