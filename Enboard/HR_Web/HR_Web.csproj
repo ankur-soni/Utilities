@@ -293,6 +293,7 @@
     <Content Include="Content\NewUI\images\newsletter\1.jpg" />
     <Content Include="Content\NewUI\images\our-values\1.jpg" />
     <Content Include="Content\NewUI\images\our-vision\1.jpg" />
+    <Content Include="Content\NewUI\images\sign\email_sign.png" />
     <Content Include="Content\NewUI\images\sports\1.jpg" />
     <Content Include="Content\NewUI\images\user-avtar.png" />
     <Content Include="Content\NewUI\images\user.png" />

@@ -431,7 +431,7 @@ namespace HR_Web.Controllers
         public ActionResult ChangeRequestAction(long CandChangeReqID, bool Action)
         {
             string ErrorMessage = "";
-
+            string strWebUrl = ConfigurationManager.AppSettings["WebUrl"];
             try
             {
 
@@ -445,7 +445,7 @@ namespace HR_Web.Controllers
                     if (result != null)
                     {
                         var status = (result.IsApproved.HasValue && result.IsApproved.Value);
-                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <stron>" + getUIValue(result.FieldName) + "</stron> change on the Enboard Portal has been " + ( status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboarding-india@silicus.com'></a> for further information or contact the Onboarding team.") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <font face='Cambria' Size= '3' color ='#33C4FF'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 |<br/> Tel: +91.20.3020 4000 |<br/></font>< font face='Cambria' size= '2'  color ='#31849B'> <br/> ***This is an auto generated email, please do not reply</font></body></html>";
+                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <strong>" + getUIValue(result.FieldName) + "</strong> change on the Enboard Portal has been " + ( status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a> for further information or contact the Onboarding team") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img "+"src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/><br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020<br/> Tel: +91.20.3020 4000<br/></font></body></html>";
                         string subject = "Enboard: Change Request " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "Denied");
                         SendMailToUser(result.LoginDetail, htmlBody, subject);
                         return this.Json(new { Sucess = true });
@@ -921,6 +921,7 @@ namespace HR_Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ForgotPassword(LostPasswordModel model)
         {
+            string strWebUrl = ConfigurationManager.AppSettings["WebUrl"];
             if (String.IsNullOrEmpty(model.Email))
             {
                 ModelState.Remove("FirstName");
@@ -948,16 +949,17 @@ namespace HR_Web.Controllers
                         string content = "<font face='Cambria' size= '3' color ='black'> "
                                          + "Dear " + loginDetail.FirstName + ", <br><br> "
                                          + "Your login credentials to the Enboard Portal have been reset.You may now proceed to complete the"
-                                         + "<br/> remaining process in the tool"
-                                         + "Details are as below:<ul><br/><br/>"
+                                         + "<br/> remaining process in the tool."
+                                         + "<br/> Details are as below:<ul><br/><br/>"
                                          + "<li>UserName: <font color ='blue'>" + loginDetail.Email + " </font> </li>"
                                          + "<li>Password: <font color = 'blue'>" + SessionManager.DecryptData(loginDetail.Password) + " </font> </li></ul><br/>"
-                                         + "<br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions. You can write to us at <a href='mailto:onboarding-india@silicus.com'></a>."
+                                         + "<br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions. You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>."
                                          + "<font face='Cambria' size= '3'><br> <br><br> Regards, " +
-                                         " <br/> Onboarding Team @ Silicus <font face='Cambria' Size= '3' color ='#33C4FF'>" +
-                                         " <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020" +
-                                         " |<br/> Tel: +91.20.3020 4000 |<br/></font>< font face='Cambria' size= '2'  color ='#31849B'> " +
-                                         "<br/> ***This is an auto generated email, please do not reply</font></body></html>";
+                                         " <br/> Onboarding Team @ Silicus " +
+                                         "<br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/>" +
+                                         " <br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020" +
+                                         " <br/> Tel: +91.20.3020 4000<br/></font>" +
+                                         "</body></html>";
                         SendMailToUser(loginDetail, content, "Enboard (Onboarding Portal) Credential Reset: Silicus Technologies");
                     }
                     catch (Exception e)
@@ -1474,9 +1476,9 @@ namespace HR_Web.Controllers
                                "issued to you along with the Offer letter." 
                                +
                                " Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions." +
-                               " You can write to us at<a href='mailto:onboarding-india@silicus.com'</a>. " +
-                               " <br><br> Regards, <br/> Onboarding Team @ Silicus <font face='Cambria' Size= '3' color ='#33C4FF'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 |<br/> Tel: +91.20.3020 4000 |<br/></font>" +
-                               "< font face='Cambria' size= '2'  color ='#31849B'> <br/> ***This is an auto generated email, please do not reply</font></body></html>";
+                               " You can write to us at<a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>. " +
+                               " <br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>" +
+                               "</body></html>";
                     subject = "Enboard (Onboarding Portal) login credentials: Silicus Technologies";
                 }
                 else if (user.IsActive == 1)
@@ -1492,10 +1494,11 @@ namespace HR_Web.Controllers
                                "<li> UserName: <font color ='blue'>" + user.Email.Trim() + "</font>  </li>" +
                                "<li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim() + "</font></li>" +
                                "</ul><br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions.<br/> " +
-                               "You can write to us at <a href='mailto:onboarding-india@silicus.com'></a>.<br><br> Regards," +
-                               "<br/> Onboarding Team @ Silicus <font face='Cambria' Size= '3' color ='#33C4FF'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road," +
-                               "<br/>Bhau Patil Marg, Pune 411020 |<br/> Tel: +91.20.3020 4000 |<br/></font>< font face='Cambria' size= '2'  color ='#31849B'>" +
-                               "<br/> ***This is an auto generated email, please do not reply</font></body></html>";
+                               "You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>.<br><br> Regards," +
+                               "<br/> Onboarding Team @ Silicus<br/>" +
+                               "<img" + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/>" +
+                               "<br/> <font face='Cambria' Size= '3' color ='#2C567C'> Pune IT Park, 6th & 7th Floor, 34 Aundh Road," +
+                               "<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <font/></body></html>";
                     subject = "Enboard (Onboarding Portal) Reactivation credentials: Silicus Technologies";
                 }
                 _IUserService.Update(user, null, null);
@@ -4675,9 +4678,7 @@ namespace HR_Web.Controllers
                                 + "Your login credentials are : <ul>"
                                 + "<li> User Name: <font color ='blue'>" + loginDetail.Email + " </font> </li>"
                                 + "<li> New Password: <font>" + changePassword.NewPassword + " </font> </li></ul><br/>"
-                                + "<font face='Cambria' size= '3'> From, <br/> Team Silicus!!! "
-                                + "<font face='Cambria' size= '2'  color ='#31849B'>  <br><br><br><br><br><br>"
-                                + " ***This is an auto generated mail, please do not reply***</body>";
+                                + "<font face='Cambria' size= '3'> From, <br/> Team Silicus!!!</body>";
 
                                 if (loginDetail.Email.ToLower() == "admin")
                                 {
