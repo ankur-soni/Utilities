@@ -138,6 +138,10 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Silicus.FrameWorx.Logger, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Silicus.FrameWorx.Logger.1.0.1\lib\net45\Silicus.FrameWorx.Logger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -372,8 +376,16 @@
     <Content Include="Content\NewUI\fonts\Simple-Line-Icons.woff" />
     <Content Include="Content\NewUI\fonts\Simple-Line-Icons.woff2" />
     <Content Include="Content\NewUI\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\beta-enboard - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\beta-enboard - FTP %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\beta-enboard - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\beta-enboard - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\beta-enboard - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\beta-enboard - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\enboard - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\enboard - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\enboard-beta - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\enboard-beta - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Enboard.pubxml" />
     <None Include="Properties\PublishProfiles\HR_WebPublish.pubxml" />
     <None Include="Properties\PublishProfiles\MVC_IDP.pubxml" />

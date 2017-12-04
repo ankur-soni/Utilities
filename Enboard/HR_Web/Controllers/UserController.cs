@@ -8,6 +8,7 @@ using Data;
 using System.Web.Security;
 using System.Net.Mail;
 using System.Configuration;
+using System.Data.Entity.Infrastructure.Interception;
 using AutoMapper;
 using System.Net;
 using System.Net.Security;
@@ -28,6 +29,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using HR_Web.ViewModel;
+using Silicus.FrameWorx.Logger;
 
 namespace HR_Web.Controllers
 {
@@ -73,6 +75,7 @@ namespace HR_Web.Controllers
         EmployeeProfessionalDetail _employeeProffesionlaDetails;
         Master_Bloodgroup _bloodgroup;
         Master_EducationCategory _educationCategory;
+        private readonly ILogger _logger;
 
         public UserController(IUserService IUserService, IPersonalService IPersonalService,
             ILanguageservice ILanguageservice, ICityService ICityService, IStateService IStateService,
@@ -111,6 +114,8 @@ namespace HR_Web.Controllers
             _ICandidateProgressDetailService = ICandidateProgressDetailService;
             _IRelationService = IRelationService;
             _IEmploymentCountService = IEmploymentCountService;
+            _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty),
+                (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
         }
 
         public UserController()
@@ -132,6 +137,7 @@ namespace HR_Web.Controllers
         {
             Mapper.CreateMap<Data.LoginDetail, Models.LoginDetails>();
             var user = Mapper.Map<Data.LoginDetail, Models.LoginDetails>(_Logindetails);
+            _logger.Log("Login");
             return View(user);
         }
         /// <summary>
@@ -978,14 +984,17 @@ namespace HR_Web.Controllers
         private bool SendMailToUser(LoginDetail model, string body, string subject, string strto = null, Boolean isAttachment = false, string zipFilePath = null)
         {
             SmtpClient client = new SmtpClient();
+            _logger.Log("SendEmailToUser-Start");
             try
             {
                 string SMTPUserName = ConfigurationManager.AppSettings["SMTPUserName"];
                 string SMTPPassword = ConfigurationManager.AppSettings["SMTPPassword"];
-
+               
                 NetworkCredential basicCredential = new NetworkCredential(SMTPUserName, SMTPPassword);
                 string From = ConfigurationManager.AppSettings["EmailFrom"];
+                _logger.Log("SendEmailToUser-From"+ From  );
                 string To = model.Email;
+                _logger.Log("SendEmailToUser-To"+To);
                 if (strto != null)
                     To = strto;
                 System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(From, To, subject, body);
@@ -1004,10 +1013,9 @@ namespace HR_Web.Controllers
                 client.Credentials = basicCredential;
                 client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-
-
                 client.EnableSsl = true;
 
+                _logger.Log("SendEmailToUser-before-QueueUserWorkItem");
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
                 ThreadPool.QueueUserWorkItem(t =>
                 {
@@ -1018,31 +1026,38 @@ namespace HR_Web.Controllers
 
                         if (e.Cancelled)
                         {
+                            _logger.Log("SendEmailToUser-Cancelled");
                             // prompt user with "send cancelled" message 
                         }
                         if (e.Error != null)
                         {
+                            _logger.Log("SendEmailToUser-error"+e.Error.Message);
                             // prompt user with error message 
                         }
                         else
                         {
+                            _logger.Log("SendEmailToUser-Sent");
                             // prompt user with message sent!
                             // as we have the message object we can also display who the message
                             // was sent to etc 
                         }
                     };
                     client.SendMailAsync(mailMessage);
-
+                    _logger.Log("SendEmailToUser-QueueUserWorkItem");
                 });
 
                 TempData["emailsucc"] = "Password is sent to your Email address.";
             }
             catch (Exception ex)
             {
+                _logger.Log("Before Dispose");
                 client.Dispose();
+                _logger.Log(ex);
+                _logger.Log("SendEmailToUser-"+ex.Message);
                 throw ex;
 
             }
+            _logger.Log("SendEmailToUser-End");
             return true;
         }
 
