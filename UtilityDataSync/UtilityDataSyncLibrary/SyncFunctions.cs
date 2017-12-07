@@ -39,7 +39,7 @@ namespace UtilityDataSyncLibrary
                     SyncEngagementTypes(enableContext, utilityContainerContext);
                     SyncDepartments(enableContext, utilityContainerContext);
                     //SyncLocations(enableContext, utilityContainerContext);
-                    SyncResourceTypes(enableContext, utilityContainerContext);
+                    //SyncResourceTypes(enableContext, utilityContainerContext);
                     SyncSkills(enableContext, utilityContainerContext);
 
                     // Data

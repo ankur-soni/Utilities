@@ -9,6 +9,6 @@ namespace Silicus.UtilityContainer.Security.Interface
     public interface IAuthorization
     {
         List<string> GetRoleForUtility(string email, string utiltyName);
-        List<string> GetNameOfContributors();
+        List<string> GetNameOfContributors(int utilityId);
     }
 }
