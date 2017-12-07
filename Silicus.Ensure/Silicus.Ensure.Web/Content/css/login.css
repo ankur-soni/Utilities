@@ -174,3 +174,24 @@
         text-align: center;
     }
 }
+
+.LoginpageLogos {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+.LoginpageLogos li {
+	display: inline-block;
+	margin: 15px 10px;
+	padding: 0px;
+
+	
+}
+.LoginpageLogos li img {
+	height: 60px;
+}
+@media (min-width: 1366px) {
+    .LoginpageLogos li img {
+        height: 45px;        
+    }
+}

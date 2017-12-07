@@ -21,12 +21,12 @@
                                                             .BindTo(new List<SelectListItem>
                                                             () {
                                                             new SelectListItem(){
-                                                            Text=Convert.ToString(CandidateStatus.Selected.CandidateStatusString()),
-                                                            Value=((int)CandidateStatus.Selected)+""
+                                                            Text=Convert.ToString(CandidateStatus.TestPassed.CandidateStatusString()),
+                                                            Value=((int)CandidateStatus.TestPassed)+""
                                                             },
                                                             new SelectListItem(){
-                                                            Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
-                                                            Value=((int)CandidateStatus.Rejected)+""
+                                                            Text=Convert.ToString(CandidateStatus.TestFailed.CandidateStatusString()),
+                                                            Value=((int)CandidateStatus.TestFailed)+""
                                                             }
                                                             ,
                                                             new SelectListItem(){

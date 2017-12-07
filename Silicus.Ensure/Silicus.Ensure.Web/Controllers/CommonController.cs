@@ -36,7 +36,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var utilityId = GetUtilityId();
             var roleDetails = _roleService.GetRoleByRoleName("Panel");
-            var panellist = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList(); 
+            var panellist = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList();
             
             return Json(panellist, JsonRequestBehavior.AllowGet);
         }

@@ -280,7 +280,7 @@
                                             <span class="arrow"></span>
                                         </a>
                                         <ul class="sub-menu" id="candidate-submenu">
-                                            @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                                            @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()))
                                             {
                                                 <li class="nav-item start" id="candidate-assignTest">
                                                     <a href="/jobvite/index" class="nav-link ">
@@ -290,13 +290,16 @@
                                                     </a>
                                                 </li>
                                             }
-                                            <li class="nav-item start" id="candidate-reviewTest">
-                                                <a href="/Admin/ReviewAssignedTest?ReviewType=2" class="nav-link ">
-                                                    <i class="fa fa-question" aria-hidden="true"></i>
-                                                    <span class="title">Review Test</span>
-                                                </a>
-                                            </li>
+                                            @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                                            {
+                                                <li class="nav-item start" id="candidate-reviewTest">
+                                                    <a href="/Admin/ReviewAssignedTest?ReviewType=2" class="nav-link ">
+                                                        <i class="fa fa-question" aria-hidden="true"></i>
+                                                        <span class="title">Review Test</span>
+                                                    </a>
+                                                </li>
 
+                                            }
                                         </ul>
                                     </li>
                                 }
@@ -337,6 +340,9 @@
 
                                         </ul>
                                     </li>
+                                }
+                                @if (role.Contains(RoleName.Recruiter.ToString()) || role.Contains(RoleName.Admin.ToString()))
+                                {
                                     <li class="nav-item start" id="testsuite-link">
                                         <a href="/TestSuite/List" class="nav-link nav-toggle">
                                             <i class="fa fa-file-text-o"></i>
@@ -346,6 +352,7 @@
                                         </a>
                                     </li>
                                 }
+
 
                             </ul>
                         }
@@ -360,7 +367,7 @@
                     <!-- BEGIN CONTENT BODY -->
                     <div class="page-content">
                         <!-- BEGIN THEME PANEL -->
-                        <div class="theme-panel hidden-xs hidden-sm">
+                        <div class="theme-panel hidden-xs hidden-sm hide">
                             <div class="toggler"> </div>
                             <div class="toggler-close"> </div>
                             <div class="theme-options">
@@ -622,24 +629,24 @@
                 $(subMenuSelector).addClass("active");
             }
         }
-        //$(document).ready(function () {
-        //    var url = '/Technology/GetAllTechnologiesWithQuestionCount';
+        $(document).ready(function () {
+            var url = '/Technology/GetAllTechnologiesWithQuestionCount';
+           
+            $.getJSON(url, function (data) {
+                $.each(data, function (key, val) {
+                    if (val.Count > 0) {
+                        var technologies = '<li><span class="details"><a href="/QuestionReview/Index?technologyId=' + val.TechnologyId + '&IsReadyForReview=true' + '"><div class="mail-content"><span>' + val.TechnologyName + '</span>  <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
+                    }
+                    else {
+                        var technologies = '<li><span class="details"><a href="#"><div class="mail-content"><span>' + val.TechnologyName + '</span>   <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
+                    }//var user = '<tr><td>' + val.FirstName + '</td></tr>';
+                    debugger;
+                    $('#TechnologyList').append(technologies);
 
-        //    $.getJSON(url, function (data) {
-        //        $.each(data, function (key, val) {
-        //            if (val.Count > 0) {
-        //                var technologies = '<li><span class="details"><a href="/QuestionReview/Index?technologyId=' + val.TechnologyId + '&IsReadyForReview=true' + '"><div class="mail-content"><span>' + val.TechnologyName + '</span>  <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
-        //            }
-        //            else {
-        //                var technologies = '<li><span class="details"><a href="#"><div class="mail-content"><span>' + val.TechnologyName + '</span>   <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
-        //            }//var user = '<tr><td>' + val.FirstName + '</td></tr>';
+                });
+            });
 
-        //            $('#TechnologyList').append(technologies);
-
-        //        });
-        //    });
-
-        //});
+        });
     </script>
     <script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>

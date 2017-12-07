@@ -16,7 +16,7 @@ using Silicus.Ensure.Web.Filters;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
+    [CustomAuthorize("Admin", "Recruiter")]
     public class TestSuiteController : Controller
     {
         private readonly ITestSuiteService _testSuiteService;

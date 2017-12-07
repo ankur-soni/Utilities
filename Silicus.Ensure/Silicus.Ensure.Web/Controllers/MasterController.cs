@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Silicus.Ensure.Web.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [CustomAuthorize("Admin", "Recruiter")]
     public class MasterController : Controller
     {
         // GET: Master

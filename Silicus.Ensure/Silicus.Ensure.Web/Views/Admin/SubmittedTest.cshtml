@@ -257,11 +257,11 @@
 
                                             new SelectListItem(){
                                             Text= "Test Passed",
-                                            Value=((int)CandidateStatus.Selected).ToString()
+                                            Value=((int)CandidateStatus.TestPassed).ToString()
                                             },
                                             new SelectListItem(){
                                             Text="Test Failed",
-                                            Value=((int)CandidateStatus.Rejected).ToString()
+                                            Value=((int)CandidateStatus.TestFailed).ToString()
                                             }
                                             }).HtmlAttributes(new { style = "width: 200px;" })
                                             )
@@ -270,11 +270,11 @@
                                         }
                                         else
                                         {
-                                            if (Model.Status == ((int)CandidateStatus.Selected).ToString())
+                                            if (Model.Status == ((int)CandidateStatus.TestPassed).ToString())
                                             {
                                                 <span>Test Passed</span>
                                             }
-                                            if (Model.Status == ((int)CandidateStatus.Rejected).ToString())
+                                            if (Model.Status == ((int)CandidateStatus.TestFailed).ToString())
                                             {
                                                 <span>Test Failed</span>
                                             }

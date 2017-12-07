@@ -35,7 +35,7 @@ using System.Web.Script.Serialization;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [CustomAuthorize("Admin","Panel", "Recruiter")]
+    [CustomAuthorize("Admin", "Panel", "Recruiter")]
     public class AdminController : Controller
     {
         private readonly IEmailService _emailService;
@@ -1021,7 +1021,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 else
                 {
-                    var user = UserManager.FindById(userTestSuitDetails.CandidateID); 
+                    var user = UserManager.FindById(userTestSuitDetails.CandidateID);
                     submittedTestViewModel.FirstName = user != null ? user.FirstName : "";
                     submittedTestViewModel.LastName = user != null ? user.LastName : "";
                 }
@@ -1048,12 +1048,12 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.UserId = userTestSuitDetails.CandidateID;
                 submittedTestViewModel.TestSuiteId = EmployeeTestSuitId;
                 submittedTestViewModel.ReviewDate = userTestSuitDetails.ReviewDate;
-                if(userTestSuitDetails.ReviewerId != null && userTestSuitDetails.ReviewerId > 0)
+                if (userTestSuitDetails.ReviewerId != null && userTestSuitDetails.ReviewerId > 0)
                 {
-                   var reviwer = userList.Where(u => u.ID == userTestSuitDetails.ReviewerId).FirstOrDefault();
-                    submittedTestViewModel.ReviewerName = reviwer != null ? reviwer.FirstName  + " " + reviwer.LastName : "";
+                    var reviwer = userList.Where(u => u.ID == userTestSuitDetails.ReviewerId).FirstOrDefault();
+                    submittedTestViewModel.ReviewerName = reviwer != null ? reviwer.FirstName + " " + reviwer.LastName : "";
                 }
-               
+
                 //if(testSuitDetails.Position.HasValue)
                 //{
                 //    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
@@ -1129,12 +1129,13 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetTestSuitsforEvaluation([DataSourceRequest] DataSourceRequest request)
         {
+
             var userlist = _containerUserService.GetAllUsers();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false);
             var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.StatusId >= (int)CandidateStatus.TestSubmitted);
 
             var ReviewType = (int)Session["ReviewType"];
-            if (ReviewType ==1)
+            if (ReviewType == 1)
             {
                 TestSuits = TestSuits.Where(t => t.EmployeeId > 0);
             }
@@ -1144,71 +1145,79 @@ namespace Silicus.Ensure.Web.Controllers
             }
             var userEmailId = User.Identity.Name;
             var Currentuser = _containerUserService.FindUserByEmail(userEmailId);
-            
+
 
             //var utilityId = GetUtilityId();
             //var roleDetails = _roleService.GetRoleByRoleName("Admin");
             //var AdminUserList = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID).OrderByDescending(model => model.DisplayName).ToList();
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
-            if (! roles.Any(r=>r == "Admin"))
+            if (!roles.Any(r => r == "Admin"))
                 TestSuits = TestSuits.Where(t => t.AssignedReviewers.Split(',').Contains(Currentuser.ID.ToString())).ToList();
 
             var TestResults = new List<EmployeeTestResultViewModel>();
 
-            foreach (var tests in TestSuits)
+            try
             {
-                var currentTs = new EmployeeTestResultViewModel();
 
-                currentTs.MaxScore = tests.MaxScore;
-                currentTs.MaxScore = tests.MaxScore;
-                currentTs.MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum();
-                currentTs.TestSuitId = tests.TestSuiteId;
-                currentTs.EmployeeTestSuiteId = tests.EmployeeTestSuiteId;
 
-                var testDetail = testSuitelist.Where(ts => ts.TestSuiteId == tests.TestSuiteId).FirstOrDefault();
-                if (testDetail != null)
-                    currentTs.TestSuitName = testDetail.TestSuiteName;
-
-                currentTs.AttemptDate = tests.AttemptDate;
-                currentTs.StatusId = tests.StatusId;
-                currentTs.ReviewDate = tests.ReviewDate;
-                var Reviwerusers = userlist.Where(u => tests.AssignedReviewers.Split(',').Contains(u.ID.ToString())).ToList();
-                var counter = 1;
-
-                currentTs.ActualReviewerName = " ";
-                var rUser = userlist.Where(u=>u.ID == tests.ReviewerId).FirstOrDefault();
-                if (rUser != null)
-                    currentTs.ActualReviewerName = rUser.FirstName + " " + rUser.LastName;
-
-                foreach (var Reviweruser in Reviwerusers)
+                foreach (var tests in TestSuits)
                 {
-                    currentTs.AssignedReviewerName = currentTs.AssignedReviewerName + Reviweruser.FirstName + " " + Reviweruser.LastName;
+                    var currentTs = new EmployeeTestResultViewModel();
 
-                    if(counter < Reviwerusers.Count)
+                    currentTs.MaxScore = tests.MaxScore;
+                    currentTs.MaxScore = tests.MaxScore;
+                    currentTs.MarksObtained = tests.EmployeeTestDetails.Select(x => x.Mark).Sum();
+                    currentTs.TestSuitId = tests.TestSuiteId;
+                    currentTs.EmployeeTestSuiteId = tests.EmployeeTestSuiteId;
+
+                    var testDetail = testSuitelist.Where(ts => ts.TestSuiteId == tests.TestSuiteId).FirstOrDefault();
+                    if (testDetail != null)
+                        currentTs.TestSuitName = testDetail.TestSuiteName;
+
+                    currentTs.AttemptDate = tests.AttemptDate;
+                    currentTs.StatusId = tests.StatusId;
+                    currentTs.ReviewDate = tests.ReviewDate;
+                    var Reviwerusers = userlist.Where(u => tests.AssignedReviewers.Split(',').Contains(u.ID.ToString())).ToList();
+                    var counter = 1;
+
+                    currentTs.ActualReviewerName = " ";
+                    var rUser = userlist.Where(u => u.ID == tests.ReviewerId).FirstOrDefault();
+                    if (rUser != null)
+                        currentTs.ActualReviewerName = rUser.FirstName + " " + rUser.LastName;
+
+                    foreach (var Reviweruser in Reviwerusers)
                     {
-                        currentTs.AssignedReviewerName = currentTs.AssignedReviewerName + "<br>Or<br>";
-                        counter++;
-                    }
-                }
-                 
+                        currentTs.AssignedReviewerName = currentTs.AssignedReviewerName + Reviweruser.FirstName + " " + Reviweruser.LastName;
 
-                if (tests.EmployeeId > 0)
-                {
-                    var user = userlist.Where(u => u.ID == tests.EmployeeId).FirstOrDefault();
-                    if (user != null)
-                        currentTs.EmpName = user.FirstName + " " + user.LastName;
+                        if (counter < Reviwerusers.Count)
+                        {
+                            currentTs.AssignedReviewerName = currentTs.AssignedReviewerName + "<br>Or<br>";
+                            counter++;
+                        }
+                    }
+
+
+                    if (tests.EmployeeId > 0)
+                    {
+                        var user = userlist.Where(u => u.ID == tests.EmployeeId).FirstOrDefault();
+                        if (user != null)
+                            currentTs.EmpName = user.FirstName + " " + user.LastName;
+                    }
+                    else
+                    {
+                        var user = UserManager.FindById(tests.CandidateID);
+                        if (user != null)
+                            currentTs.EmpName = user.FirstName + " " + user.LastName;
+                    }
+                    TestResults.Add(currentTs);
+
                 }
-                else
-                {
-                    var user = UserManager.FindById(tests.CandidateID);
-                    if (user != null)
-                        currentTs.EmpName = user.FirstName + " " + user.LastName;
-                }
-                TestResults.Add(currentTs);
+            }
+            catch (Exception ex)
+            {
 
             }
-
             DataSourceResult result = TestResults.ToDataSourceResult(request);
             return Json(result);
 
@@ -1267,7 +1276,7 @@ namespace Silicus.Ensure.Web.Controllers
                     count++;
                 }
 
-               // _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
+                // _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
                 //var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
                 //user.TestStatus = CandidateStatus.TestSubmitted.ToString();
                 //user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
@@ -1279,7 +1288,7 @@ namespace Silicus.Ensure.Web.Controllers
                 _testSuiteService.UpdateEmployeeTestSuite(userTestSuitDetails);
 
                 // Update the status of JobVite Candidate
-                if(userTestSuitDetails.EmployeeId == 0)
+                if (userTestSuitDetails.EmployeeId == 0)
                 {
                     UpDateJobViteCandidateStatus(userTestSuitDetails.CandidateID, userTestSuitDetails.StatusId);
                 }
@@ -1314,14 +1323,15 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 string json = new JavaScriptSerializer().Serialize(new
                 {
-                    candidate= new {
+                    candidate = new
+                    {
                         application = new
                         {
                             eId = JobViteID,
                             workflowState = workflowStatus
                         }
                     },
-                   
+
                 });
 
                 streamWriter.Write(json);
@@ -1334,11 +1344,11 @@ namespace Silicus.Ensure.Web.Controllers
                     var result = streamReader.ReadToEnd();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            
+
         }
 
         #region Mail Send

@@ -13,7 +13,7 @@
         $("#questionbank-submenu").css("display", "block");
         $("#questionbank-link a span.arrow").addClass("open");
         //SetNavigationMenuActive('Marksheer');
-        debugger;
+      
         var model = @Html.Raw(Json.Encode(Model));
 
         Highcharts.chart('container', {
@@ -248,7 +248,7 @@
     </div>
 </div>
 
-<div id="exTab1" class="container">
+<div id="exTab1" class="">
     <div id="Tabs" role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -265,7 +265,7 @@
             <div class="tab-content clearfix" role="tabpanel">
                 <div class="tab-pane active" id="1a">
                     <h3>Question Summary</h3>
-                    <div id="container" style="min-width: 250px; height: 400px; margin: 0 auto"></div>
+                    <div id="container" style="min-width: 350px; height: 450px; margin: 0 auto"></div>
                 </div>
                 <div class="tab-pane" id="2a">
                     @*<div id="GridChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@

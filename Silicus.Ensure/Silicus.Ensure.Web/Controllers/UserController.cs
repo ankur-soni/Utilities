@@ -105,27 +105,34 @@ namespace Silicus.Ensure.Web.Controllers
             var UtilityId = GetUtilityId();
             var userRoles = _utilityUserRoleService.GetAllUserRolesForUtility(UtilityId);
 
-            var userWithRoles = (from userinRoles in userRoles
-                                 join allUsers in userlistViewModel
-                                 on userinRoles.UserId equals allUsers.UserId
-                                 where userinRoles.IsActive
-                                 select new UserDetailViewModel
-                                 {
-                                     RoleName = userinRoles?.Role?.Name,
-                                     UserName = allUsers.UserName,
-                                     Department = allUsers.Department,
-                                     Designation = allUsers.Designation,
-                                     Email = allUsers.Email,
-                                     FirstName = allUsers.FirstName,
-                                     FullName = allUsers.FullName,
-                                     LastName = allUsers.LastName,
-                                     MiddleName = allUsers.MiddleName,
-                                     RoleId = userinRoles.Role.ID,
-                                     UserId = allUsers.UserId
-                                 }).ToList();
+            try
+            {
+                var userWithRoles = (from userinRoles in userRoles
+                                     join allUsers in userlistViewModel
+                                     on userinRoles.UserId equals allUsers.UserId
+                                     where userinRoles.IsActive
+                                     select new UserDetailViewModel
+                                     {
+                                         RoleName = userinRoles?.Role?.Name,
+                                         UserName = allUsers.UserName,
+                                         Department = allUsers.Department,
+                                         Designation = allUsers.Designation,
+                                         Email = allUsers.Email,
+                                         FirstName = allUsers.FirstName,
+                                         FullName = allUsers.FullName,
+                                         LastName = allUsers.LastName,
+                                         MiddleName = allUsers.MiddleName,
+                                         RoleId = userinRoles.Role.ID,
+                                         UserId = allUsers.UserId
+                                     }).ToList();
 
-            DataSourceResult result = userWithRoles.ToDataSourceResult(request);
-            return Json(result);
+                DataSourceResult result = userWithRoles.ToDataSourceResult(request);
+                return Json(result);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         private int GetUtilityId()

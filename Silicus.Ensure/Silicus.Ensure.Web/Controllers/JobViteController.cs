@@ -9,6 +9,7 @@ using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.JobVite;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Web.Models.JobVite;
 using System;
@@ -24,7 +25,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize]
+    [CustomAuthorize("Admin", "Recruiter")]
     public class JobViteController : Controller
     {
         private readonly ITestSuiteService _testSuiteService;
@@ -175,7 +176,8 @@ namespace Silicus.Ensure.Web.Controllers
                                      Email = candidate.Email,
                                      CandidateStatus = candidate.CandidateStatus,
                                      JobViteId = candidate.JobViteId,
-                                     Position = candidate.Position
+                                     Position = candidate.Position,
+                                     NewPassword = candidate.PhoneNumber
                                  }).ToList();
             DataSourceResult cList = candidateList.ToDataSourceResult(request);
             return Json(cList);
@@ -253,8 +255,13 @@ namespace Silicus.Ensure.Web.Controllers
                 user.Position = model.Position;
                 user.CandidateStatus = model.CandidateStatus;
                 user.Email = model.Email;
-                var NewPassword = model.FirstName.ToUpper() + model.LastName.ToLower() + "@123456";
-                var ConfirmPassword = model.FirstName.ToUpper() + model.LastName.ToLower() + "@123456";
+                //var NewPassword = model.FirstName.ToUpper() + model.LastName.ToLower() + "@123456";
+                //var ConfirmPassword = model.FirstName.ToUpper() + model.LastName.ToLower() + "@123456";
+
+                var NewPassword = System.Web.Security.Membership.GeneratePassword(8, 1);
+                var ConfirmPassword = NewPassword;
+
+                user.PhoneNumber = NewPassword;
 
                 var userResult = await UserManager.CreateAsync(user, NewPassword);
                 if (userResult.Succeeded)

@@ -781,7 +781,7 @@ namespace Silicus.Ensure.Services
 
         public EmployeeTestSuite GetUserTestSuite(string userId)
         {
-            return _context.Query<EmployeeTestSuite>().Where(x => x.CandidateID == userId).FirstOrDefault();
+            return _context.Query<EmployeeTestSuite>().Where(x => x.CandidateID == userId).OrderBy(x=>x.StatusId).FirstOrDefault();
         }
 
         public List<int> GetAllUserIdsForTestSuite(int testSuiteId)

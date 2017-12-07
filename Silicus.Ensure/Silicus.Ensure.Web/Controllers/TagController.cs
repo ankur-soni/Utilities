@@ -10,10 +10,11 @@ using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using System.Web;
 using System.Web.UI;
+using Silicus.Ensure.Web.Filters;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize]
+    [CustomAuthorize("Admin", "Recruiter")]
     public class TagController : Controller
     {
         private readonly ITagsService _tagsService;

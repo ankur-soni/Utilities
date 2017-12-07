@@ -8,8 +8,8 @@
         TestAssigned = 2,
         TestSubmitted = 3,
         UnderEvaluation = 4,
-        Selected = 5,
-        Rejected = 6,
+        TestPassed = 5,
+        TestFailed = 6,
         OnHold =7,
         Archived = 8
     }
@@ -88,12 +88,12 @@
             {
                 case CandidateStatus.New:
                     return "New";
-                case CandidateStatus.Rejected:
-                    return "Rejected";
-                case CandidateStatus.Selected:
-                    return "Selected";
+                case CandidateStatus.TestFailed:
+                    return "Test Failed";
+                case CandidateStatus.TestPassed:
+                    return "Test Passed";
                 case CandidateStatus.TestAssigned:
-                    return "Test assigned";
+                    return "Test Assigned";
                 case CandidateStatus.TestSubmitted:
                     return "Test submitted";
                 case CandidateStatus.UnderEvaluation:

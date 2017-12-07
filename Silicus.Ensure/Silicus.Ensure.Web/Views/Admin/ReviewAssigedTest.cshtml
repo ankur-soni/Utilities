@@ -35,6 +35,22 @@
 
 <h1 class="page-title">Review Tests</h1>
 
+<script>
+    function StatusDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: [
+               { text: "Test Assigned", value: 2 },
+                { text: "Test Submitted", value: 3 },
+               { text: "Test Passed", value: 5 },
+               { text: "Test Failed", value: 6 }              
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+</script>
 <div class="table-responsive M-B15">
 
 
@@ -42,14 +58,14 @@
 
          .Columns(columns =>
          {
-             columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(150);
-             columns.Bound(p => p.EmpName).Title(Model == 2 ? "Candidate Name" : "Employee Name");
-             columns.Bound(p => p.MaxScore).Title("Total Marks").Width(80);//.ClientTemplate(@"#=Duration# Mins");
+             columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(200);
+             columns.Bound(p => p.EmpName).Title(Model == 2 ? "Candidate Name" : "Employee Name").Width(200);
+             columns.Bound(p => p.MaxScore).Title("Total Marks").Width(80).Filterable(false);//.ClientTemplate(@"#=Duration# Mins");
              //columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
-             columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0 && StatusId > 3 ? MarksObtained : 'NA'#").Width(80);
+             columns.Bound(p => p.MarksObtained).ClientTemplate(@"#=MarksObtained > 0 && StatusId > 3 ? MarksObtained : 'NA'#").Width(80).Filterable(false);
              columns.Bound(p => p.AttemptDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false);
              columns.Bound(p => p.AssignedReviewerName).Title("Assigned Reviewer Name").Encoded(false).Width(150);
-             columns.Bound(p => p.ActualReviewerName).Title("Reviewer Name").Encoded(false).Width(100);
+             columns.Bound(p => p.ActualReviewerName).Title("Reviewer Name").Encoded(false).Width(150);
              columns.Bound(p => p.ReviewDate).Format("{0:dd-MMM-yyyy hh:mm:ss tt}").Filterable(false).Width(100);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
@@ -73,7 +89,7 @@
                                                                         else{#
                                                                             #=StatusId#
                                                                         #}
-                                                                        #").Title("Status").Width(180);
+                                                                        #").Title("Status").Width(180).Title("Status").Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("StatusDropDownList").ShowOperators(false))); 
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==3){#
                                                                             <a onclick='StartEvaluationofTest(#=EmployeeTestSuiteId#)'>Start Evaluation</a>
@@ -85,7 +101,7 @@
                                                                           /
                                                                             <a onclick='GeneratePDF(#=EmployeeTestSuiteId#)'>View QuestionSet(PDF)</a>
                                                                         #}
-                                                                        #").Title("Test Action").Width(250);
+                                                                        #").Title("Test Action").Width(250).Filterable(false);
          })
                                        .DataSource(dataSource => dataSource
                                        .Ajax()
@@ -96,7 +112,7 @@
                                        })
 
                                        .Read(read => read.Action("GetTestSuitsforEvaluation", "Admin"))
-
+                                       .Sort(sort => sort.Add("EmployeeTestSuiteId").Descending())
                                        .PageSize(100)
                                        .ServerOperation(true)
                                        )
@@ -104,6 +120,7 @@
                                        .Pageable(p => p.PageSizes(false))
                                         .Scrollable(scrollable => scrollable.Virtual(true))
                                        .Sortable()
+                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
                                        .Resizable(resizing => resizing.Columns(true))
     )
 

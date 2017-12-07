@@ -20,7 +20,7 @@
 
     .textArea {
         width: 100%;
-        height: 100px;
+        height: 180px;
         resize: none;
     }
 
@@ -45,7 +45,7 @@
             Candidate List
         </h1>
 
-        <div class="pull-right">
+        <div class="pull-right padding-tb-15">
             <button type="button" class="btn btn-default" onclick="TestResult()">Sync With JobVite</button>
         </div>
     </div>
@@ -66,6 +66,7 @@
         columns.Bound(p => p.CandidateStatus);
         columns.Bound(p => p.JobViteId);
         columns.Bound(p => p.Position);
+        columns.Bound(p => p.NewPassword).Title("Account Password");
         columns.Command(cmd =>
         {
             cmd.Custom("Test Details").Click("TestDetail");
@@ -158,7 +159,12 @@
         <div class="modal-footer">
             <label class="syncLog">Sync Log:</label>
             <div class="col-sm-12">
-                <textarea class="textArea" id="syncLog" rows="10"></textarea>
+                <textarea class="textArea" id="syncLog" rows="12" readonly></textarea>
+            </div>
+
+            <div class="">
+                <br />
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -188,7 +194,7 @@
                     $("#progressIndicator").attr("aria-valuenow", 0);
 
                      $(".loader-overlay").hide();
-                     $("#syncLog").text('Connection with JobVite server established\n Received the data from API\n');
+                     $("#syncLog").text('Connection with JobVite server established\nReceived the data from API\n');
                      var candidatecnt = 1;
                     for (i = 0; i < data.Items.length; i++) {                        
                         $.ajax({
@@ -208,7 +214,7 @@
                                 if (candidatecnt > data.Items.length) {
                                     var logtext = $("#syncLog").text();
                                     $("#syncLog").text("");
-                                    $("#syncLog").text(logtext + '\nSyncing data from API is completed');
+                                    $("#syncLog").text(logtext + '\nProcessed total ' + data.Items.length + ' Candidate profiles. \nSyncing data from API is completed.\n');
                                     $("#CandidateGrid").data("kendoGrid").dataSource.read();
                                 }
                             },

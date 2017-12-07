@@ -167,6 +167,7 @@ namespace Silicus.Ensure.Web
             var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
             string utility = WebConfigurationManager.AppSettings["ProductName"];
             var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
+            
             return commonRoles;
         }
 

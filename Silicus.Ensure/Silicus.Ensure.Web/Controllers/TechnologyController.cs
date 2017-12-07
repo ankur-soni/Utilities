@@ -9,9 +9,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
+using Silicus.Ensure.Web.Filters;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+   [Authorize]
     public class TechnologyController : Controller
     {
         // GET: Technology
@@ -25,6 +27,7 @@ namespace Silicus.Ensure.Web.Controllers
             _containerUserService = containerUserService;
         }
 
+        [CustomAuthorize("Admin", "Recruiter")]
         public ActionResult GetAllTechnologies([DataSourceRequest] DataSourceRequest request)
         {
             var technologies = _technologyService.GetAllTechnologies();
@@ -33,11 +36,13 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 
+        [CustomAuthorize("Admin", "Recruiter")]
         public ActionResult List()
         {
             return View("Technologies");
         }
 
+        [CustomAuthorize("Admin", "Recruiter")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Save([DataSourceRequest] DataSourceRequest dsRequest, TechnologyViewModel technology)
         {
@@ -62,6 +67,7 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(true);
         }
 
+        [CustomAuthorize("Admin", "Recruiter")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest dsRequest, TechnologyViewModel technology)
         {
@@ -114,6 +120,7 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(technologiesViewModel, JsonRequestBehavior.AllowGet);
         }
 
+        [CustomAuthorize("Admin", "Recruiter", "Panel")]
         public ActionResult GetAllTechnologiesWithQuestionCount([DataSourceRequest] DataSourceRequest request)
         {
             var userEmailId = User.Identity.Name;
