@@ -21,9 +21,9 @@ namespace Silicus.UtilityContainer.Security
             return result;
         }
 
-        public List<string> GetNameOfContributors()
+        public List<string> GetNameOfContributors(int utilityId)
         {
-            return _commonDBContext.Query<Credits>().Where(x => x.UtilityId == 3).OrderBy(x => x.Name).Select(x => x.Name).ToList();
+            return _commonDBContext.Query<Credits>().Where(x => x.UtilityId == utilityId).OrderBy(x => x.Name).Select(x => x.Name).ToList();
         }
     }
 }
