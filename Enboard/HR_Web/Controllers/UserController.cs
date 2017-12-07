@@ -451,7 +451,7 @@ namespace HR_Web.Controllers
                     if (result != null)
                     {
                         var status = (result.IsApproved.HasValue && result.IsApproved.Value);
-                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <strong>" + getUIValue(result.FieldName) + "</strong> change on the Enboard Portal has been " + ( status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a> for further information or contact the Onboarding team") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img "+"src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/><br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020<br/> Tel: +91.20.3020 4000<br/></font></body></html>";
+                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <strong>" + getUIValue(result.FieldName) + "</strong> change on the Enboard Portal has been " + ( status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboard-india@silicus.com'>onboard-india@silicus.com</a> for further information or contact the Onboarding team") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img "+"src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/><br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020<br/> Tel: +91.20.3020 4000<br/></font></body></html>";
                         string subject = "Enboard: Change Request " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "Denied");
                         SendMailToUser(result.LoginDetail, htmlBody, subject);
                         return this.Json(new { Sucess = true });
@@ -959,7 +959,7 @@ namespace HR_Web.Controllers
                                          + "<br/> Details are as below:<ul><br/><br/>"
                                          + "<li>UserName: <font color ='blue'>" + loginDetail.Email + " </font> </li>"
                                          + "<li>Password: <font color = 'blue'>" + SessionManager.DecryptData(loginDetail.Password) + " </font> </li></ul><br/>"
-                                         + "<br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions. You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>."
+                                         + "<br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions. You can write to us at <a href='mailto:onboard-india@silicus.com'>onboard-india@silicus.com</a>."
                                          + "<font face='Cambria' size= '3'><br> <br><br> Regards, " +
                                          " <br/> Onboarding Team @ Silicus " +
                                          "<br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/>" +
@@ -1490,7 +1490,7 @@ namespace HR_Web.Controllers
                                "issued to you along with the Offer letter." 
                                +
                                " Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions." +
-                               " You can write to us at<a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>. " +
+                               " You can write to us at<a href='mailto:onboard-india@silicus.com'>onboard-india@silicus.com</a>. " +
                                " <br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>" +
                                "</body></html>";
                     subject = "Enboard (Onboarding Portal) login credentials: Silicus Technologies";
@@ -1508,7 +1508,7 @@ namespace HR_Web.Controllers
                                "<li> UserName: <font color ='blue'>" + user.Email.Trim() + "</font>  </li>" +
                                "<li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim() + "</font></li>" +
                                "</ul><br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions.<br/> " +
-                               "You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>.<br><br> Regards," +
+                               "You can write to us at <a href='mailto:onboard-india@silicus.com'>onboard-india@silicus.com</a>.<br><br> Regards," +
                                "<br/> Onboarding Team @ Silicus<br/>" +
                                "<img" + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/>" +
                                "<br/> <font face='Cambria' Size= '3' color ='#2C567C'> Pune IT Park, 6th & 7th Floor, 34 Aundh Road," +
