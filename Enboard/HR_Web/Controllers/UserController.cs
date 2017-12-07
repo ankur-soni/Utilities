@@ -989,7 +989,7 @@ namespace HR_Web.Controllers
             {
                 string SMTPUserName = ConfigurationManager.AppSettings["SMTPUserName"];
                 string SMTPPassword = ConfigurationManager.AppSettings["SMTPPassword"];
-               
+
                 NetworkCredential basicCredential = new NetworkCredential(SMTPUserName, SMTPPassword);
                 string From = ConfigurationManager.AppSettings["EmailFrom"];
                 _logger.Log("SendEmailToUser-From"+ From  );
@@ -1011,7 +1011,6 @@ namespace HR_Web.Controllers
                 client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["PortNumber"]);
                 client.UseDefaultCredentials = false;
                 client.Credentials = basicCredential;
-                client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.EnableSsl = true;
 
