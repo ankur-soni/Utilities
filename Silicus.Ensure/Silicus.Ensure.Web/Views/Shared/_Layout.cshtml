@@ -1,4 +1,5 @@
 ﻿@using Silicus.Ensure.Models.Constants;
+@using Silicus.Ensure.Web
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,404 +84,436 @@
 
 </head>
 <body class="page-header-fixed page-footer-fixed page-sidebar-closed-hide-logo page-content-white page-md">
-    @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
+@if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
+{
+    var contributors = MvcApplication.getDevelopersName();
+    var data = "";
+    var count = contributors.Count;
+    var recentCount = 0;
+    foreach (var item in contributors)
     {
-        <div class="page-wrapper">
-            <!-- BEGIN HEADER -->
-            <div class="page-header navbar navbar-fixed-top">
-                <!-- BEGIN HEADER INNER -->
-                <div class="page-header-inner ">
-                    <!-- BEGIN LOGO -->
-                    <div class="page-logo">
-                        <a href="#">
+        recentCount++;
+        if (recentCount == count)
+        {
+            data += item + ". ";
+        }
+        else
+        {
+            data += item + ", ";
+        }
+    }
+    <div id="credits-data" style="display:none;">
+        @data
+    </div>
+    <div class="page-wrapper">
+    <!-- BEGIN HEADER -->
+    <div class="page-header navbar navbar-fixed-top">
+        <!-- BEGIN HEADER INNER -->
+        <div class="page-header-inner ">
+            <!-- BEGIN LOGO -->
+            <div class="page-logo">
+                <a href="#">
 
-                            <img src="~/Images/logo.gif" alt="logo" class="logo-default" />
-                        </a>
-                        <div class="menu-toggler sidebar-toggler">
-                            <span></span>
-                        </div>
-                    </div>
-                    <!-- END LOGO -->
-                    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-                    <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span></span>
-                    </a>
-                    <!-- END RESPONSIVE MENU TOGGLER -->
-                    <!-- BEGIN TOP NAVIGATION MENU -->
-                    <div class="top-menu">
-                        <ul class="nav navbar-nav pull-right">
-                            @if (role.Contains(RoleName.Panel.ToString()))
-                            {
+                    <img src="~/Images/logo.gif" alt="logo" class="logo-default" />
+                </a>
+                <div class="menu-toggler sidebar-toggler">
+                    <span></span>
+                </div>
+            </div>
+            <!-- END LOGO -->
+            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                <span></span>
+            </a>
+            <!-- END RESPONSIVE MENU TOGGLER -->
+            <!-- BEGIN TOP NAVIGATION MENU -->
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    @if (role.Contains(RoleName.Panel.ToString()))
+                    {
 
-                                <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
-                                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                        
-                                    </a>
-                                   
-                                    <ul class="dropdown-menu mailbox animated bounceInDown">
+                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="fa fa-pencil-square-o"></i>
 
-                                        <li class="external">
-                                            <h3>
-                                                <span class="drop-title">
-                                                    <b>Technologies</b>
-                                                </span>
-                                            </h3>
-                                            
-                                        </li>
-                                        <li>
-                                            <ul class="dropdown-menu-list scroller" style="height:100px;" data-handle-color="#637283">
+                            </a>
 
-                                                    <span id="TechnologyList" class="message-center">
-                                                    </span>
-                                            </ul>
-                                        </li>
-                                            
+                            <ul class="dropdown-menu mailbox animated bounceInDown">
 
-                                        </ul>
-                                    <!-- /.dropdown-messages -->
+                                <li class="external">
+                                    <h3>
+                                        <span class="drop-title">
+                                            <b>Technologies</b>
+                                        </span>
+                                    </h3>
+
                                 </li>
-                            }
-                            @if (Request.IsAuthenticated)
-                            {
-                                var userName = @User.Identity.Name;
-                        
-                        <!-- BEGIN USER LOGIN DROPDOWN -->
-                                <li class="dropdown dropdown-user">
-                                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                        <img alt="" class="img-circle" src="~/Images/avatar3_small.jpg" />
+                                <li>
+                                    <ul class="dropdown-menu-list scroller" style="height: 100px;" data-handle-color="#637283">
 
-                                        <span class="username username-hide-on-mobile"> @userName </span>
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-default">
-
-                                        <li>
-                                            <a href="@Url.Action("SignOut", "Account")">
-                                                <i class="icon-key"></i> Log Out
-                                            </a>
-                                        </li>
+                                        <span id="TechnologyList" class="message-center">
+                                        </span>
                                     </ul>
                                 </li>
-                        <!-- END USER LOGIN DROPDOWN -->
-                            }
 
-                        </ul>
-                    </div>
-                    <!-- END TOP NAVIGATION MENU -->
-                </div>
-                <!-- END HEADER INNER -->
+
+                            </ul>
+                            <!-- /.dropdown-messages -->
+                        </li>
+                    }
+                    @if (Request.IsAuthenticated)
+                    {
+                        var userName = @User.Identity.Name;
+                        <!-- BEGIN USER LOGIN DROPDOWN -->
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <img alt="" class="img-circle" src="~/Images/avatar3_small.jpg"/>
+
+                                <span class="username username-hide-on-mobile"> @userName </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+
+                                <li>
+                                    <a href="@Url.Action("SignOut", "Account")">
+                                        <i class="icon-key"></i> Log Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- END USER LOGIN DROPDOWN -->
+                    }
+
+                </ul>
             </div>
-            <!-- END HEADER -->
-            @*<!-- BEGIN HEADER & CONTENT DIVIDER -->
+            <!-- END TOP NAVIGATION MENU -->
+        </div>
+        <!-- END HEADER INNER -->
+    </div>
+    <!-- END HEADER -->
+    @*<!-- BEGIN HEADER & CONTENT DIVIDER -->
             <div class="clearfix"> </div>
             <!-- END HEADER & CONTENT DIVIDER -->*@
-            <!-- BEGIN CONTAINER -->
-            <div class="loader-overlay" style="display:none;">
-                <div class="loader">
+    <!-- BEGIN CONTAINER -->
+    <div class="loader-overlay" style="display: none;">
+        <div class="loader">
 
-                </div>
-            </div>
-            <div class="page-container">
-                <!-- BEGIN SIDEBAR -->
-                <div class="page-sidebar-wrapper">
-                    <!-- BEGIN SIDEBAR -->
+        </div>
+    </div>
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <!-- BEGIN SIDEBAR -->
 
-                    <div class="page-sidebar navbar-collapse collapse">
-                        <!-- BEGIN SIDEBAR MENU -->
-                        
-                        @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
-                        {
-                            <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
-                                <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-                                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                                <li class="sidebar-toggler-wrapper hide">
-                                    <div class="sidebar-toggler">
-                                        <span></span>
-                                    </div>
-                                </li>
-                                <!-- END SIDEBAR TOGGLER BUTTON -->
-                                @if (role.Contains(RoleName.Admin.ToString()))
-                                {
-                                    <li class="nav-item start" id="user-mgmt-link">
-                                        <a href="/ManageUser/Index" class="nav-link nav-toggle">
-                                            <i class="fa fa-users"></i>
-                                            <span class="title">User Management</span>
-                                            <span class="selected"></span>
-                                            @*<span class="arrow open"></span>*@
-                                        </a>
-                                    </li>
-                                    <li class="nav-item start" id="setup-link">
-                                        <a href="/Master/Index" class="nav-link nav-toggle">
-                                            <i class="fa fa-gear"></i>
-                                            <span class="title">Setup</span>
-                                            <span class="selected"></span>
-                                            @*<span class="arrow open"></span>*@
-                                        </a>
-                                    </li>
-                                }
-                                <li class="nav-item start" id="candidate-link">
-                                    <a href="/Admin/Candidates" class="nav-link nav-toggle">
-                                        <i class="fa fa-user"></i>
-                                        <span class="title">Candidate</span>
-                                        <span class="selected"></span>
-                                        @*<span class="arrow open"></span>*@
-                                    </a>
-                                </li>
-                                <li class="nav-item start" id="questionbank-link">
-                                    <a href="/QuestionBank/QuestionBank" class="nav-link nav-toggle">
-                                        <i class="fa fa-question-circle"></i>
-                                        <span class="title">Question Bank</span>
-                                        <span class="selected"></span>
-                                        @*<span class="arrow open"></span>*@
-                                    </a>
-                                </li>
-                                <li class="nav-item start" id="testsuite-link">
-                                    <a href="/TestSuite/List" class="nav-link nav-toggle">
-                                        <i class="fa fa-file-text-o"></i>
-                                        <span class="title">Test Suite</span>
-                                        <span class="selected"></span>
-                                        @*<span class="arrow open"></span>*@
-                                    </a>
-                                </li>
+            <div class="page-sidebar navbar-collapse collapse">
+                <!-- BEGIN SIDEBAR MENU -->
 
-                            </ul>
-                        }
-                        <!-- END SIDEBAR MENU -->
-                        <!-- END SIDEBAR MENU -->
-                    </div>
-                    <!-- END SIDEBAR -->
-                </div>
-                <!-- END SIDEBAR -->
-                <!-- BEGIN CONTENT -->
-                <div class="page-content-wrapper">
-                    <!-- BEGIN CONTENT BODY -->
-                    <div class="page-content">
-                        <!-- BEGIN THEME PANEL -->
-                        <div class="theme-panel hidden-xs hidden-sm">
-                            <div class="toggler"> </div>
-                            <div class="toggler-close"> </div>
-                            <div class="theme-options">
-                                <div class="theme-option theme-colors clearfix">
-                                    <span> THEME COLOR </span>
-                                    <ul>
-                                        <li class="color-default current tooltips" data-style="default" data-container="body" data-original-title="Default"> </li>
-                                        <li class="color-darkblue tooltips" data-style="darkblue" data-container="body" data-original-title="Dark Blue"> </li>
-                                        <li class="color-blue tooltips" data-style="blue" data-container="body" data-original-title="Blue"> </li>
-                                        <li class="color-grey tooltips" data-style="grey" data-container="body" data-original-title="Grey"> </li>
-                                        <li class="color-light tooltips" data-style="light" data-container="body" data-original-title="Light"> </li>
-                                        <li class="color-light2 tooltips" data-style="light2" data-container="body" data-html="true" data-original-title="Light 2"> </li>
-                                    </ul>
-                                </div>
+                @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                {
+                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                        <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+                        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                        <li class="sidebar-toggler-wrapper hide">
+                            <div class="sidebar-toggler">
+                                <span></span>
                             </div>
-                        </div>
-                        <!-- END THEME PANEL -->
-                        <!-- BEGIN PAGE BAR -->
-                        <div class="page-bar">
-                            <ul class="page-breadcrumb">
-                                <li>
-                                    <a href="#">Home</a>
-                                    <i class="fa fa-circle"></i>
-                                </li>
-                                <li>
-                                    <span id="CurrentPageTitle"></span>
-                                </li>
+                        </li>
+                        <!-- END SIDEBAR TOGGLER BUTTON -->
+                        @if (role.Contains(RoleName.Admin.ToString()))
+                        {
+                            <li class="nav-item start" id="user-mgmt-link">
+                                <a href="/ManageUser/Index" class="nav-link nav-toggle">
+                                    <i class="fa fa-users"></i>
+                                    <span class="title">User Management</span>
+                                    <span class="selected"></span>
+                                    @*<span class="arrow open"></span>*@
+                                </a>
+                            </li>
+                            <li class="nav-item start" id="setup-link">
+                                <a href="/Master/Index" class="nav-link nav-toggle">
+                                    <i class="fa fa-gear"></i>
+                                    <span class="title">Setup</span>
+                                    <span class="selected"></span>
+                                    @*<span class="arrow open"></span>*@
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item start" id="candidate-link">
+                            <a href="/Admin/Candidates" class="nav-link nav-toggle">
+                                <i class="fa fa-user"></i>
+                                <span class="title">Candidate</span>
+                                <span class="selected"></span>
+                                @*<span class="arrow open"></span>*@
+                            </a>
+                        </li>
+                        <li class="nav-item start" id="questionbank-link">
+                            <a href="/QuestionBank/QuestionBank" class="nav-link nav-toggle">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="title">Question Bank</span>
+                                <span class="selected"></span>
+                                @*<span class="arrow open"></span>*@
+                            </a>
+                        </li>
+                        <li class="nav-item start" id="testsuite-link">
+                            <a href="/TestSuite/List" class="nav-link nav-toggle">
+                                <i class="fa fa-file-text-o"></i>
+                                <span class="title">Test Suite</span>
+                                <span class="selected"></span>
+                                @*<span class="arrow open"></span>*@
+                            </a>
+                        </li>
+
+                    </ul>
+                }
+                <!-- END SIDEBAR MENU -->
+                <!-- END SIDEBAR MENU -->
+            </div>
+            <!-- END SIDEBAR -->
+        </div>
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <!-- BEGIN CONTENT BODY -->
+            <div class="page-content">
+                <!-- BEGIN THEME PANEL -->
+                <div class="theme-panel hidden-xs hidden-sm">
+                    <div class="toggler"> </div>
+                    <div class="toggler-close"> </div>
+                    <div class="theme-options">
+                        <div class="theme-option theme-colors clearfix">
+                            <span> THEME COLOR </span>
+                            <ul>
+                                <li class="color-default current tooltips" data-style="default" data-container="body" data-original-title="Default"> </li>
+                                <li class="color-darkblue tooltips" data-style="darkblue" data-container="body" data-original-title="Dark Blue"> </li>
+                                <li class="color-blue tooltips" data-style="blue" data-container="body" data-original-title="Blue"> </li>
+                                <li class="color-grey tooltips" data-style="grey" data-container="body" data-original-title="Grey"> </li>
+                                <li class="color-light tooltips" data-style="light" data-container="body" data-original-title="Light"> </li>
+                                <li class="color-light2 tooltips" data-style="light2" data-container="body" data-html="true" data-original-title="Light 2"> </li>
                             </ul>
-
                         </div>
-                        <!-- END PAGE BAR -->
-                        @RenderBody()
                     </div>
-                    <!-- END CONTENT BODY -->
                 </div>
-                <!-- END CONTENT -->
+                <!-- END THEME PANEL -->
+                <!-- BEGIN PAGE BAR -->
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                            <i class="fa fa-circle"></i>
+                        </li>
+                        <li>
+                            <span id="CurrentPageTitle"></span>
+                        </li>
+                    </ul>
 
+                </div>
+                <!-- END PAGE BAR -->
+                @RenderBody()
             </div>
-            <!-- END CONTAINER -->
-            <!-- BEGIN FOOTER -->
-            <div class="page-footer">
-                <div class="page-footer-inner">
-                    Copyright © 2016 Silicus Technologies, LLC
-                </div>
-                <div class="scroll-to-top">
-                    <i class="icon-arrow-up"></i>
-                </div>
-            </div>
-            <!-- END FOOTER -->
+            <!-- END CONTENT BODY -->
         </div>
-                            }
-                            else
-                            {
-                                @RenderBody()
-                            }
+        <!-- END CONTENT -->
 
-    <!--Start Show Session Expire Warning Popup here -->
-
-    <div id="session-expire-warning-modal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Session Expire Warning</h4>
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            Copyright © 2016 Silicus Technologies, LLC
         </div>
-        <div class="modal-body">
-            Your session will expire in <span id="seconds-timer"></span> seconds. Do you want to extend the session?
-        </div>
-        <div class="modal-footer">
-            <button id="btnOk" type="button" class="btn green">Ok</button>
-            <button id="btnSessionExpiredCancelled" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button id="btnLogoutNow" type="button" class="btn btn-default">Logout now</button>
+        <span id="credits" class="pull-right page-footer-inner" style="font-weight: bold;">Credits</span>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
         </div>
     </div>
-
-    <!--End Show Session Expire Warning Popup here -->
-    <!--Start Show Session Expire Popup here -->
-    <div id="session-expired-modal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Session Expired</h4>
-        </div>
-        <div class="modal-body">
-            Your session is expired.
-        </div>
-        <div class="modal-footer">
-            <button id="btnExpiredOk" onclick="sessionExpiredRedirect()" type="button" class="modal-btn btn green" data-dismiss="modal">Ok</button>
-        </div>
+    <!-- END FOOTER -->
     </div>
+}
+else
+{
+    @RenderBody()
+}
 
-    @RenderSection("scripts", required: false)
-    <script src="~/Scripts/sessionTimeout.js"></script>
+<!--Start Show Session Expire Warning Popup here -->
+
+<div id="session-expire-warning-modal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Session Expire Warning</h4>
+    </div>
+    <div class="modal-body">
+        Your session will expire in <span id="seconds-timer"></span> seconds. Do you want to extend the session?
+    </div>
+    <div class="modal-footer">
+        <button id="btnOk" type="button" class="btn green">Ok</button>
+        <button id="btnSessionExpiredCancelled" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="btnLogoutNow" type="button" class="btn btn-default">Logout now</button>
+    </div>
+</div>
+
+<!--End Show Session Expire Warning Popup here -->
+<!--Start Show Session Expire Popup here -->
+<div id="session-expired-modal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Session Expired</h4>
+    </div>
+    <div class="modal-body">
+        Your session is expired.
+    </div>
+    <div class="modal-footer">
+        <button id="btnExpiredOk" onclick="sessionExpiredRedirect()" type="button" class="modal-btn btn green" data-dismiss="modal">Ok</button>
+    </div>
+</div>
+
+@RenderSection("scripts", required: false)
+<script src="~/Scripts/sessionTimeout.js"></script>
 
 
 
-    <!--[if lt IE 9]>
-                <script src=" assets/global/plugins/respond.min.js"></script>
+<!--[if lt IE 9]>
+    <script src=" assets/global/plugins/respond.min.js"></script>
     <script src=" assets/global/plugins/excanvas.min.js"></script>
     <script src=" assets/global/plugins/ie8.fix.min.js"></script>
-    <![endif]-->
-    <!-- BEGIN CORE PLUGINS -->
+<![endif]-->
+<!-- BEGIN CORE PLUGINS -->
 
-    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/Content/plugins/js.cookie.min.js"></script>
-    <script src="~/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/Content/plugins/jquery.blockui.min.js"></script>
-    <script src="~/Content/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-    <script src="~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js"></script>
-    <script src="~/Content/plugins/ui-extended-modals.min.js"></script>
+<script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/Content/plugins/js.cookie.min.js"></script>
+<script src="~/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="~/Content/plugins/jquery.blockui.min.js"></script>
+<script src="~/Content/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js"></script>
+<script src="~/Content/plugins/ui-extended-modals.min.js"></script>
 
-    <script src="~/Content/plugins/moment.min.js"></script>
+<script src="~/Content/plugins/moment.min.js"></script>
 
-    <link href="~/Content/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+<link href="~/Content/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet"/>
 
-    <script src="~/Content/plugins/morris/morris.min.js"></script>
+<script src="~/Content/plugins/morris/morris.min.js"></script>
 
-    <script src="~/Content/plugins/morris/raphael-min.js"></script>
+<script src="~/Content/plugins/morris/raphael-min.js"></script>
 
-    <script src="~/Content/plugins/counterup/jquery.waypoints.min.js"></script>
+<script src="~/Content/plugins/counterup/jquery.waypoints.min.js"></script>
 
-    <script src="~/Content/plugins/counterup/jquery.counterup.min.js"></script>
+<script src="~/Content/plugins/counterup/jquery.counterup.min.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/amcharts.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/amcharts.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/serial.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/serial.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/pie.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/pie.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/radar.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/radar.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/themes/light.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/themes/light.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/themes/patterns.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/themes/patterns.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amcharts/themes/chalk.js"></script>
+<script src="~/Content/plugins/amcharts/amcharts/themes/chalk.js"></script>
 
-    <script src="~/Content/plugins/amcharts/ammap/ammap.js"></script>
+<script src="~/Content/plugins/amcharts/ammap/ammap.js"></script>
 
-    <script src="~/Content/plugins/amcharts/ammap/maps/js/worldLow.js"></script>
+<script src="~/Content/plugins/amcharts/ammap/maps/js/worldLow.js"></script>
 
-    <script src="~/Content/plugins/amcharts/amstockcharts/amstock.js"></script>
+<script src="~/Content/plugins/amcharts/amstockcharts/amstock.js"></script>
 
-    <script src="~/Content/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Content/plugins/fullcalendar/fullcalendar.min.js"></script>
 
-    <script src="~/Content/plugins/horizontal-timeline/horizontal-timeline.js"></script>
+<script src="~/Content/plugins/horizontal-timeline/horizontal-timeline.js"></script>
 
-    <script src="~/Content/plugins/flot/jquery.flot.min.js"></script>
+<script src="~/Content/plugins/flot/jquery.flot.min.js"></script>
 
-    <script src="~/Content/plugins/flot/jquery.flot.resize.min.js"></script>
+<script src="~/Content/plugins/flot/jquery.flot.resize.min.js"></script>
 
-    <script src="~/Content/plugins/flot/jquery.flot.categories.min.js"></script>
+<script src="~/Content/plugins/flot/jquery.flot.categories.min.js"></script>
 
-    <script src="~/Content/plugins/jquery-easypiechart/jquery.easypiechart.min.js"></script>
+<script src="~/Content/plugins/jquery-easypiechart/jquery.easypiechart.min.js"></script>
 
-    <script src="~/Content/plugins/jquery.sparkline.min.js"></script>
+<script src="~/Content/plugins/jquery.sparkline.min.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/jquery.vmap.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/jquery.vmap.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js"></script>
 
-    <script src="~/Content/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js"></script>
+<script src="~/Content/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js"></script>
 
 
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL SCRIPTS -->
-    <script src="~/Content/plugins/scripts/app.min.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="~/Content/plugins/scripts/app.min.js"></script>
 
-    <!-- END THEME GLOBAL SCRIPTS -->
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="~/Content/plugins/scripts/dashboard.min.js"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="~/Content/plugins/scripts/dashboard.min.js"></script>
 
-    <!-- END PAGE LEVEL SCRIPTS -->
-    <!-- BEGIN THEME LAYOUT SCRIPTS -->
-    <script src="~/Content/plugins/scripts/layout.min.js"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="~/Content/plugins/scripts/layout.min.js"></script>
 
-    <script src="~/Content/plugins/scripts/demo.min.js"></script>
+<script src="~/Content/plugins/scripts/demo.min.js"></script>
 
-    <script src="~/Content/plugins/scripts/quick-sidebar.min.js"></script>
+<script src="~/Content/plugins/scripts/quick-sidebar.min.js"></script>
 
-    <script src="~/Content/plugins/scripts/quick-nav.min.js"></script>
+<script src="~/Content/plugins/scripts/quick-nav.min.js"></script>
 
-    <!-- END THEME LAYOUT SCRIPTS -->
-    <script>
-        $(document).ajaxStop(function () {
-            $(".loader-overlay").hide();
-        });
+<!-- END THEME LAYOUT SCRIPTS -->
+<script>
+    $("#credits").css('cursor', 'pointer');
+    $("#credits").click(function() {
+        swal({
+                title: "Contributors",
+                text: "If you like the application, thank these people \n" + $("#credits-data").text(),
+                showCancelButton: false,
+                confirmButtonColor: "#32c5d2",
+                confirmButtonText: "Ok"
+            }
+        );
+    });
 
-        $(document).ajaxStart(function () {
-            showCustomLoader();
-        });
+    $(document).ajaxStop(function() {
+        $(".loader-overlay").hide();
+    });
 
-        function pageContentSectionheight() {
-            var pageContentSectionheight = 0;
-            pageContentSectionheight = $(window).height() - $(".page-header.navbar").outerHeight();
-            $(".page-content").css("min-height", pageContentSectionheight);
-        };
+    $(document).ajaxStart(function() {
+        showCustomLoader();
+    });
 
-        $(document).ready(function () {
-            pageContentSectionheight();
-            
-        });
-        $(window).resize(function () {
-            pageContentSectionheight();
-            
-        });
-        function showConfirmationWindow(message, header) {
-            return showWindow('#confirmationTemplate', message, header)
-        };
+    function pageContentSectionheight() {
+        var pageContentSectionheight = 0;
+        pageContentSectionheight = $(window).height() - $(".page-header.navbar").outerHeight();
+        $(".page-content").css("min-height", pageContentSectionheight);
+    };
 
-        function showWindow(template, message, header) {
-            var dfd = new jQuery.Deferred();
-            var result = false;
+    $(document).ready(function() {
+        pageContentSectionheight();
 
-            $("<div id='popupWindow'></div>")
+    });
+    $(window).resize(function() {
+        pageContentSectionheight();
+
+    });
+
+    function showConfirmationWindow(message, header) {
+        return showWindow('#confirmationTemplate', message, header)
+    };
+
+    function showWindow(template, message, header) {
+        var dfd = new jQuery.Deferred();
+        var result = false;
+
+        $("<div id='popupWindow'></div>")
             .appendTo("body")
             .kendoWindow({
                 width: "400px",
@@ -488,57 +521,73 @@
                 title: "",
                 modal: true,
                 visible: false,
-                close: function (e) {
+                close: function(e) {
                     this.destroy();
                     dfd.resolve(result);
                 }
             }).data('kendoWindow').content($(template).html()).center().open();
-            $('.k-window-titlebar').html(header);
-            $('.popupMessage').html(message);
-            $('.dialog_buttons').css('float', 'right');
-            $('#popupWindow .confirm_yes').val('Yes');
-            $('#popupWindow .confirm_no').val('No');
+        $('.k-window-titlebar').html(header);
+        $('.popupMessage').html(message);
+        $('.dialog_buttons').css('float', 'right');
+        $('#popupWindow .confirm_yes').val('Yes');
+        $('#popupWindow .confirm_no').val('No');
 
-            $('#popupWindow .confirm_no').click(function () {
-                $('#popupWindow').data('kendoWindow').close();
-            });
-
-            $('#popupWindow .confirm_yes').click(function () {
-                result = true;
-                $('#popupWindow').data('kendoWindow').close();
-            });
-            return dfd.promise();
-        };
-        initSessionMonitor();
-
-
-        function SelectedMenu(mainMenuSelector, subMenuSelector) {
-            $(mainMenuSelector).addClass("active");
-
-            if (subMenuSelector) {
-                $(subMenuSelector).addClass("active");
-            }
-        }
-        $(document).ready(function () {
-            var url = '/Technology/GetAllTechnologiesWithQuestionCount';
-
-            $.getJSON(url, function (data) {
-                $.each(data, function (key, val) {
-                    if (val.Count > 0) {
-                        var technologies = '<li><span class="details"><a href="/QuestionReview/Index?technologyId=' + val.TechnologyId + '&IsReadyForReview=true' + '"><div class="mail-content"><span>' + val.TechnologyName + '</span>  <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
-                    }
-                    else {
-                        var technologies = '<li><span class="details"><a href="#"><div class="mail-content"><span>' + val.TechnologyName + '</span>   <span class="badge pull-right">' + val.Count + '</span></div></a></span></li>';
-                    }//var user = '<tr><td>' + val.FirstName + '</td></tr>';
-
-                    $('#TechnologyList').append(technologies);
-
-                });
-            });
-
+        $('#popupWindow .confirm_no').click(function() {
+            $('#popupWindow').data('kendoWindow').close();
         });
-    </script>
-    <script id="confirmationTemplate" type="text/x-kendo-template">
+
+        $('#popupWindow .confirm_yes').click(function() {
+            result = true;
+            $('#popupWindow').data('kendoWindow').close();
+        });
+        return dfd.promise();
+    };
+
+    initSessionMonitor();
+
+
+    function SelectedMenu(mainMenuSelector, subMenuSelector) {
+        $(mainMenuSelector).addClass("active");
+
+        if (subMenuSelector) {
+            $(subMenuSelector).addClass("active");
+        }
+    }
+
+    $(document).ready(function() {
+        var url = '/Technology/GetAllTechnologiesWithQuestionCount';
+
+        $.getJSON(url,
+            function(data) {
+                $.each(data,
+                    function(key, val) {
+                        if (val.Count > 0) {
+                            var technologies =
+                                '<li><span class="details"><a href="/QuestionReview/Index?technologyId=' +
+                                    val.TechnologyId +
+                                    '&IsReadyForReview=true' +
+                                    '"><div class="mail-content"><span>' +
+                                    val.TechnologyName +
+                                    '</span>  <span class="badge pull-right">' +
+                                    val.Count +
+                                    '</span></div></a></span></li>';
+                        } else {
+                            var technologies =
+                                '<li><span class="details"><a href="#"><div class="mail-content"><span>' +
+                                    val.TechnologyName +
+                                    '</span>   <span class="badge pull-right">' +
+                                    val.Count +
+                                    '</span></div></a></span></li>';
+                        } //var user = '<tr><td>' + val.FirstName + '</td></tr>';
+
+                        $('#TechnologyList').append(technologies);
+
+                    });
+            });
+
+    });
+</script>
+<script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>
         <br />
         <hr />
