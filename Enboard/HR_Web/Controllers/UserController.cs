@@ -8,6 +8,7 @@ using Data;
 using System.Web.Security;
 using System.Net.Mail;
 using System.Configuration;
+using System.Data.Entity.Infrastructure.Interception;
 using AutoMapper;
 using System.Net;
 using System.Net.Security;
@@ -28,6 +29,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using HR_Web.ViewModel;
+using Silicus.FrameWorx.Logger;
 
 namespace HR_Web.Controllers
 {
@@ -73,6 +75,7 @@ namespace HR_Web.Controllers
         EmployeeProfessionalDetail _employeeProffesionlaDetails;
         Master_Bloodgroup _bloodgroup;
         Master_EducationCategory _educationCategory;
+        private readonly ILogger _logger;
 
         public UserController(IUserService IUserService, IPersonalService IPersonalService,
             ILanguageservice ILanguageservice, ICityService ICityService, IStateService IStateService,
@@ -111,6 +114,8 @@ namespace HR_Web.Controllers
             _ICandidateProgressDetailService = ICandidateProgressDetailService;
             _IRelationService = IRelationService;
             _IEmploymentCountService = IEmploymentCountService;
+            _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty),
+                (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
         }
 
         public UserController()
@@ -132,6 +137,7 @@ namespace HR_Web.Controllers
         {
             Mapper.CreateMap<Data.LoginDetail, Models.LoginDetails>();
             var user = Mapper.Map<Data.LoginDetail, Models.LoginDetails>(_Logindetails);
+            _logger.Log("Login");
             return View(user);
         }
         /// <summary>
@@ -431,7 +437,7 @@ namespace HR_Web.Controllers
         public ActionResult ChangeRequestAction(long CandChangeReqID, bool Action)
         {
             string ErrorMessage = "";
-
+            string strWebUrl = ConfigurationManager.AppSettings["WebUrl"];
             try
             {
 
@@ -444,8 +450,9 @@ namespace HR_Web.Controllers
                     result = _IUserService.ChangeRequestAction(CandChangeReqID, Action, userName);
                     if (result != null)
                     {
-                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for " + getUIValue(result.FieldName) + " change has been " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "denied, Please contact SPOC for further details") + ".<br><br> From, <br/> Team Silicus <font face='Cambria' size= '2'  color ='#31849B'>  <br/> <br/> <br/> ***This is an auto generated email, please do not reply</body></html>";
-                        string subject = "Your change request has been " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "approved" : "denied");
+                        var status = (result.IsApproved.HasValue && result.IsApproved.Value);
+                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <strong>" + getUIValue(result.FieldName) + "</strong> change on the Enboard Portal has been " + ( status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a> for further information or contact the Onboarding team") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img "+"src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/><br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020<br/> Tel: +91.20.3020 4000<br/></font></body></html>";
+                        string subject = "Enboard: Change Request " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "Denied");
                         SendMailToUser(result.LoginDetail, htmlBody, subject);
                         return this.Json(new { Sucess = true });
                     }
@@ -485,9 +492,9 @@ namespace HR_Web.Controllers
                 case "CountryCode":
                     return "Country Code";
                     break;
-                case "NoOfEmployments":
-                    return "No. of Employment(s)";
-                    break;
+                //case "NoOfEmployments":
+                //    return "No. of Employment(s)";
+                //    break;
                 default:
                     return string.Empty;
                     break;
@@ -920,6 +927,7 @@ namespace HR_Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ForgotPassword(LostPasswordModel model)
         {
+            string strWebUrl = ConfigurationManager.AppSettings["WebUrl"];
             if (String.IsNullOrEmpty(model.Email))
             {
                 ModelState.Remove("FirstName");
@@ -945,15 +953,20 @@ namespace HR_Web.Controllers
                     try
                     {
                         string content = "<font face='Cambria' size= '3' color ='black'> "
-                        + "Dear " + loginDetail.FirstName + ", <br><br> "
-                        + "Your login credentials are : <ul>"
-                        + "<li> UserName: <font color ='blue'>" + loginDetail.Email + " </font> </li>"
-                        + "<li>Password: <font>" + SessionManager.DecryptData(loginDetail.Password) + " </font> </li></ul><br/>"
-                        + "<font face='Cambria' size= '3'> From, <br/> Team Silicus!!! "
-                        + "<font face='Cambria' size= '2'  color ='#31849B'>  <br><br><br><br><br><br>"
-                        + " ***This is an auto generated mail, please do not reply***</body>";
-
-                        SendMailToUser(loginDetail, content, "Your credentials after reset!!");
+                                         + "Dear " + loginDetail.FirstName + ", <br><br> "
+                                         + "Your login credentials to the Enboard Portal have been reset.You may now proceed to complete the"
+                                         + "<br/> remaining process in the tool."
+                                         + "<br/> Details are as below:<ul><br/><br/>"
+                                         + "<li>UserName: <font color ='blue'>" + loginDetail.Email + " </font> </li>"
+                                         + "<li>Password: <font color = 'blue'>" + SessionManager.DecryptData(loginDetail.Password) + " </font> </li></ul><br/>"
+                                         + "<br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions. You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>."
+                                         + "<font face='Cambria' size= '3'><br> <br><br> Regards, " +
+                                         " <br/> Onboarding Team @ Silicus " +
+                                         "<br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/>" +
+                                         " <br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020" +
+                                         " <br/> Tel: +91.20.3020 4000<br/></font>" +
+                                         "</body></html>";
+                        SendMailToUser(loginDetail, content, "Enboard (Onboarding Portal) Credential Reset: Silicus Technologies");
                     }
                     catch (Exception e)
                     {
@@ -971,6 +984,7 @@ namespace HR_Web.Controllers
         private bool SendMailToUser(LoginDetail model, string body, string subject, string strto = null, Boolean isAttachment = false, string zipFilePath = null)
         {
             SmtpClient client = new SmtpClient();
+            _logger.Log("SendEmailToUser-Start");
             try
             {
                 string SMTPUserName = ConfigurationManager.AppSettings["SMTPUserName"];
@@ -978,7 +992,9 @@ namespace HR_Web.Controllers
 
                 NetworkCredential basicCredential = new NetworkCredential(SMTPUserName, SMTPPassword);
                 string From = ConfigurationManager.AppSettings["EmailFrom"];
+                _logger.Log("SendEmailToUser-From"+ From  );
                 string To = model.Email;
+                _logger.Log("SendEmailToUser-To"+To);
                 if (strto != null)
                     To = strto;
                 System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(From, To, subject, body);
@@ -995,12 +1011,10 @@ namespace HR_Web.Controllers
                 client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["PortNumber"]);
                 client.UseDefaultCredentials = false;
                 client.Credentials = basicCredential;
-                client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-
-
                 client.EnableSsl = true;
 
+                _logger.Log("SendEmailToUser-before-QueueUserWorkItem");
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
                 ThreadPool.QueueUserWorkItem(t =>
                 {
@@ -1011,31 +1025,38 @@ namespace HR_Web.Controllers
 
                         if (e.Cancelled)
                         {
+                            _logger.Log("SendEmailToUser-Cancelled");
                             // prompt user with "send cancelled" message 
                         }
                         if (e.Error != null)
                         {
+                            _logger.Log("SendEmailToUser-error"+e.Error.Message);
                             // prompt user with error message 
                         }
                         else
                         {
+                            _logger.Log("SendEmailToUser-Sent");
                             // prompt user with message sent!
                             // as we have the message object we can also display who the message
                             // was sent to etc 
                         }
                     };
                     client.SendMailAsync(mailMessage);
-
+                    _logger.Log("SendEmailToUser-QueueUserWorkItem");
                 });
 
                 TempData["emailsucc"] = "Password is sent to your Email address.";
             }
             catch (Exception ex)
             {
+                _logger.Log("Before Dispose");
                 client.Dispose();
+                _logger.Log(ex);
+                _logger.Log("SendEmailToUser-"+ex.Message);
                 throw ex;
 
             }
+            _logger.Log("SendEmailToUser-End");
             return true;
         }
 
@@ -1457,8 +1478,22 @@ namespace HR_Web.Controllers
                     var monthName = dt.ToString("MMMM", CultureInfo.InvariantCulture);
                     string strJoiningDate = dt.DayOfWeek.ToString() + " " + dt.Day + " " + monthName + " " + dt.Year + " ";
                     string hrEmailID = ConfigurationManager.AppSettings["HREmailId"];
-                    htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + user.FirstName + ",<br><br> Welcome to Silicus.<br/><br/> As a part of joining formalities, you need to fill the necessary details. <br><br> Please login to our webpage and update the details.<br><br>Your login credentials are as below:<ul><li><a href=" + strWebUrl + " target='_blank'>Click</a> to open the web page </li><li> UserName: <font color ='blue'>" + user.Email.Trim() + "</font>  </li><li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim() + "</font> </li></ul> <br/>  We look forward you to join from <b>" + strJoiningDate + "</b>. Before joining you are required to upload the scanned copies of the documents enlisted in the ‘Joining Document Check list’on website.<br/><br/> Feel free to write an email to <a href='onboarding-india@silicus.com' target='_blank'>" + hrEmailID.Trim() + "</a> in case of any questions. <br><br> Congratulations once again!!! <br/><br/>  From, <br/> Team Silicus!!! <font face='Cambria' size= '2'  color ='#31849B'>  <br/> <br/> <br/> ***This is an auto generated email, please do not reply</body></html>";
-                    subject = "Login credentials";
+                    htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " 
+                                + user.FirstName + ",<br><br>" +
+                               "Congratulations on your selection at Silicus! We look forward towards your joining on <strong>" +strJoiningDate+"</strong>"+
+                               ".<br/>Please login to the Silicus Onboarding Portal – <strong>Enboard</strong> – to initiate the pre-joining process" +
+                              "<br><br>The credentials are as below:<ul><li><a href="
+                               + strWebUrl + " target='_blank'>Click</a> here to login </li><li> UserName: <font color ='blue'>"
+                               + user.Email.Trim() + "</font>  </li><li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim()
+                               + "</font> </li></ul> <br/> " 
+                               + "You are required to fill the necessary forms and upload all the documents as listed in the <br/>‘Joining Document Checklist’ " +
+                               "issued to you along with the Offer letter." 
+                               +
+                               " Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions." +
+                               " You can write to us at<a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>. " +
+                               " <br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>" +
+                               "</body></html>";
+                    subject = "Enboard (Onboarding Portal) login credentials: Silicus Technologies";
                 }
                 else if (user.IsActive == 1)
                 {
@@ -1467,8 +1502,18 @@ namespace HR_Web.Controllers
                 else if (user.IsActive == 2)
                 {
                     user.IsActive = 1;
-                    htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + user.FirstName + ",<br><br>Your login has been reactivated.<br/><br/> Please login the webpage and complete the remaining process. <br><br> Your login credentials are as below:<ul><li><a href=" + strWebUrl + " target='_blank'>Click</a> to open the web page </li><li> UserName: <font color ='blue'>" + user.Email.Trim() + "</font>  </li><li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim() + "</font></li></ul><br/> Feel free to write an email to <a href='onboarding-india@silicus.com target='_blank'>onboarding-india@silicus.com</a> in case of any questions. <br><br> From, <br/> Team Silicus!!! <font face='Cambria' size= '2'  color ='#31849B'>  <br/> <br/> <br/> ***This is an auto generated email, please do not reply</body></html>";
-                    subject = "Your account has been reactivated";
+                    htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + user.FirstName + ",<br><br>Your login to Enboard has been reactivated. Please login and complete the remaining process in the tool.<br><br>" +
+                               "Your login credentials are as below:<ul>" +
+                               "<li><a href=" + strWebUrl + " target='_blank'>Click</a> to open the portal </li>" +
+                               "<li> UserName: <font color ='blue'>" + user.Email.Trim() + "</font>  </li>" +
+                               "<li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim() + "</font></li>" +
+                               "</ul><br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions.<br/> " +
+                               "You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>.<br><br> Regards," +
+                               "<br/> Onboarding Team @ Silicus<br/>" +
+                               "<img" + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/>" +
+                               "<br/> <font face='Cambria' Size= '3' color ='#2C567C'> Pune IT Park, 6th & 7th Floor, 34 Aundh Road," +
+                               "<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <font/></body></html>";
+                    subject = "Enboard (Onboarding Portal) Reactivation credentials: Silicus Technologies";
                 }
                 _IUserService.Update(user, null, null);
 
@@ -2439,7 +2484,7 @@ namespace HR_Web.Controllers
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
-                    model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
+                    //model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
 
                     //set selected values from AdminEducationCategoryForUser table
@@ -2511,7 +2556,7 @@ namespace HR_Web.Controllers
                         //newly added
                         obj.CountryCode = model.CountryCode;
                         obj.Gender = model.Gender;
-                        obj.NoOfEmployments = model.NoOfEmployments;
+                        //obj.NoOfEmployments = model.NoOfEmployments;
 
                         try
                         {
@@ -2586,7 +2631,7 @@ namespace HR_Web.Controllers
                     //newly added
                     userDetails.CountryCode = model.CountryCode;
                     userDetails.Gender = model.Gender;
-                    userDetails.NoOfEmployments = model.NoOfEmployments;
+                    //userDetails.NoOfEmployments = model.NoOfEmployments;
                     status = _IUserService.AddUserDetails(userDetails);
 
                     //Update existing education caetgrories for that user
@@ -4647,9 +4692,7 @@ namespace HR_Web.Controllers
                                 + "Your login credentials are : <ul>"
                                 + "<li> User Name: <font color ='blue'>" + loginDetail.Email + " </font> </li>"
                                 + "<li> New Password: <font>" + changePassword.NewPassword + " </font> </li></ul><br/>"
-                                + "<font face='Cambria' size= '3'> From, <br/> Team Silicus!!! "
-                                + "<font face='Cambria' size= '2'  color ='#31849B'>  <br><br><br><br><br><br>"
-                                + " ***This is an auto generated mail, please do not reply***</body>";
+                                + "<font face='Cambria' size= '3'> From, <br/> Team Silicus!!!</body>";
 
                                 if (loginDetail.Email.ToLower() == "admin")
                                 {

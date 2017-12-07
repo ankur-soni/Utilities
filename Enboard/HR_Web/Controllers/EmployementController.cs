@@ -46,98 +46,100 @@ namespace HR_Web.Controllers
             this._IUserService = IUserService;
             this._IEmploymentCountService = IEmploymentCountService;
         }
-        [HttpPost]
-        public ActionResult SaveChangeRequestDetails(Employment model)
-        {
-            //get user details from db from logindetails table
-            var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-            var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-
-            var LoginDetails = _IUserService.GetById(userId);
-            if (model.NumberOfEmployments > 0)
-            {
-                if (LoginDetails.NoOfEmployments != model.NumberOfEmployments)
-                {
-                    CandidateChangeRequestsDetail obj = new CandidateChangeRequestsDetail();
-                    obj.UserID = userId;
-                    obj.FieldName = "NoOfEmployments";
-                    obj.FieldValue = model.NumberOfEmployments.ToString();
-                    //obj.IsApproved = false;
-                    obj.IsApproved = null;
-                    obj.CreatedBy = userName;
-                    obj.UpdatedBy = userName;
-                    obj.CreatedDate = DateTime.UtcNow;
-                    obj.UpdatedDate = DateTime.UtcNow;
-                    obj.OldValue = LoginDetails.NoOfEmployments.ToString();
-
-                    var result = _IUserService.AddChangeRequestDetails(obj);
-
-                }
-            }
 
 
+        //[HttpPost]
+        //public ActionResult SaveChangeRequestDetails(Employment model)
+        //{
+        //    //get user details from db from logindetails table
+        //    var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //    var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
-            return Json(new { result = true, Message = "Change request has been sent successfully!" }, JsonRequestBehavior.AllowGet);
-        }
+        //    var LoginDetails = _IUserService.GetById(userId);
+        //    if (model.NumberOfEmployments > 0)
+        //    {
+        //        if (LoginDetails.NoOfEmployments != model.NumberOfEmployments)
+        //        {
+        //            CandidateChangeRequestsDetail obj = new CandidateChangeRequestsDetail();
+        //            obj.UserID = userId;
+        //            obj.FieldName = "NoOfEmployments";
+        //            obj.FieldValue = model.NumberOfEmployments.ToString();
+        //            //obj.IsApproved = false;
+        //            obj.IsApproved = null;
+        //            obj.CreatedBy = userName;
+        //            obj.UpdatedBy = userName;
+        //            obj.CreatedDate = DateTime.UtcNow;
+        //            obj.UpdatedDate = DateTime.UtcNow;
+        //            obj.OldValue = LoginDetails.NoOfEmployments.ToString();
 
-        [HttpPost]
-        public JsonResult CheckIfThereIsAnyChange(Employment model)
-        {
+        //            var result = _IUserService.AddChangeRequestDetails(obj);
 
-            //get user details from db from logindetails table
-            var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-            var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-
-            //get login details
-            var LoginDetails = _IUserService.GetById(userId);
-
-            //All the fields on change request  fields should have values entered by Admin 
-            if (LoginDetails.NoOfEmployments != model.NumberOfEmployments)
-            {
-                return Json(true, JsonRequestBehavior.AllowGet); //Change
-            }
-            else return Json(false, JsonRequestBehavior.AllowGet);
+        //        }
+        //    }
 
 
-        }
 
-        [HttpGet]
-        [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
-        public ActionResult OpenChangeRequestForm()
-        {
+        //    return Json(new { result = true, Message = "Change request has been sent successfully!" }, JsonRequestBehavior.AllowGet);
+        //}
+
+        //[HttpPost]
+        //public JsonResult CheckIfThereIsAnyChange(Employment model)
+        //{
+
+        //    //get user details from db from logindetails table
+        //    var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //    var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+
+        //    //get login details
+        //    var LoginDetails = _IUserService.GetById(userId);
+
+        //    //All the fields on change request  fields should have values entered by Admin 
+        //    if (LoginDetails.NoOfEmployments != model.NumberOfEmployments)
+        //    {
+        //        return Json(true, JsonRequestBehavior.AllowGet); //Change
+        //    }
+        //    else return Json(false, JsonRequestBehavior.AllowGet);
+
+
+        //}
+
+        //[HttpGet]
+        //[OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+        //public ActionResult OpenChangeRequestForm()
+        //{
            
 
-            //Get logged in user details 
-            var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-            var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+        //    //Get logged in user details 
+        //    var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //    var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
-            var LoginDetails = _IUserService.GetById(userId);
+        //    var LoginDetails = _IUserService.GetById(userId);
 
-            var Employment = new Employment();
+        //    var Employment = new Employment();
 
-            if (LoginDetails != null)
-            {
+        //    if (LoginDetails != null)
+        //    {
 
                 
-                Employment.NumberOfEmployments = LoginDetails.NoOfEmployments;
+               //Employment.NumberOfEmployments = LoginDetails.NoOfEmployments;
              
 
-            }
+        //    }
 
             
 
-            return PartialView("_ChangeRequestForm", Employment);
-        }
+        //    return PartialView("_ChangeRequestForm", Employment);
+        //}
         public ActionResult Index()
         {
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             var userDetails = _IUserService.GetById(userId);
             ViewBag.IsSubmitted = userDetails == null ? false : userDetails.IsSubmitted.HasValue && userDetails.IsSubmitted.Value;
             var employmentCount = _IEmploymentCountService.GetEmploymentCountByUserId(userId);
-            Employment employment = new Employment();
+            //Employment employment = new Employment();
 
-            ViewBag.NumberOfEmployments = userDetails.NoOfEmployments;
-            employment.NumberOfEmployments = userDetails.NoOfEmployments;
+            //ViewBag.NumberOfEmployments = userDetails.NoOfEmployments;
+            //employment.NumberOfEmployments = userDetails.NoOfEmployments;
 
             /* As per Change request EnBoard_Comments 01-11-2017.docx NoOfEmployments should update at admin side */
             /* 
@@ -149,17 +151,17 @@ namespace HR_Web.Controllers
 
                 }
              */
-            ViewData["Employment"] = employment;
+            //ViewData["Employment"] = employment;
             var employmentList = EmploymentDetailList(userId);
             EmployementModel employementModel = new EmployementModel();
-            employementModel.IsCurrentEmployment = true;
+            employementModel.IsCurrentEmployment = false;
             if (TempData["EmployementModel"] != null)
                 employementModel = (EmployementModel)TempData["EmployementModel"];
             else if (employmentList.Any(x => x.IsCurrentEmployment == true))
             {
                 employementModel.IsCurrentEmployment = false;
             }
-            employementModel.NoOfEmployementAdmin = userDetails.NoOfEmployments == null ? 0 : Convert.ToInt32(userDetails.NoOfEmployments); 
+            //employementModel.NoOfEmployementAdmin = userDetails.NoOfEmployments == null ? 0 : Convert.ToInt32(userDetails.NoOfEmployments); 
             employementModel.NoOfEmployementAdded = employmentList.Count;
             employementModel.CurrencyList = GetCurrencies();
             employementModel.EmploymnetDetailsList = EmploymnetListPagedList(employmentList.OrderByDescending(p => p.ToDate).ToList()).ToList();
@@ -479,49 +481,49 @@ namespace HR_Web.Controllers
             return ModelList.ToList();
         }
 
-        public ActionResult getPartialView(string EmployementNo = "EmployementNo1")
-        {
+        //public ActionResult getPartialView(string EmployementNo = "EmployementNo1")
+        //{
 
-            List<EmploymentDetail> emplymentList = new List<EmploymentDetail>();
+        //    List<EmploymentDetail> emplymentList = new List<EmploymentDetail>();
 
-            EmploymentDetail model;
+        //    EmploymentDetail model;
 
-            if (System.Web.HttpContext.Current.Request.IsAuthenticated)
-            {
-                userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-                userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+        //    if (System.Web.HttpContext.Current.Request.IsAuthenticated)
+        //    {
+        //        userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //        userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
-                var EmploymentDetails_lst = _IEmployementService.GetAll(null, null, "");
-                Session["EmployDetails_lst"] = EmploymentDetails_lst;
+        //        var EmploymentDetails_lst = _IEmployementService.GetAll(null, null, "");
+        //        Session["EmployDetails_lst"] = EmploymentDetails_lst;
 
-                var obj = EmploymentDetails_lst.Where(u => u.UserID == userId).ToList();
+        //        var obj = EmploymentDetails_lst.Where(u => u.UserID == userId).ToList();
 
-                if (obj.Count < 5)
-                {
-                    for (int i = obj.Count; i < 5; ++i)
-                    {
-                        model = new EmploymentDetail();
-                        model.EmployementNo = "EmployementNo" + (i + 1);
-                        obj.Add(model);
-                    }
-                }
-                emplymentList = obj;
+        //        if (obj.Count < 5)
+        //        {
+        //            for (int i = obj.Count; i < 5; ++i)
+        //            {
+        //                model = new EmploymentDetail();
+        //                model.EmployementNo = "EmployementNo" + (i + 1);
+        //                obj.Add(model);
+        //            }
+        //        }
+        //        emplymentList = obj;
 
-            }
-            var emplymentList1 = emplymentList.Where(u => u.UserID == userId && u.EmployementNo == EmployementNo).FirstOrDefault();
+        //    }
+        //    var emplymentList1 = emplymentList.Where(u => u.UserID == userId && u.EmployementNo == EmployementNo).FirstOrDefault();
 
-            Mapper.CreateMap<EmploymentDetail, EmployementModel>();
-            var user = Mapper.Map<Data.EmploymentDetail, Models.EmployementModel>(emplymentList1);
+        //    Mapper.CreateMap<EmploymentDetail, EmployementModel>();
+        //    var user = Mapper.Map<Data.EmploymentDetail, Models.EmployementModel>(emplymentList1);
 
-            if (user != null)
-            {
-                user.CompanyCountryId = Convert.ToInt32(user.CompanyCountry);
-                user.CompanyStateId = Convert.ToInt32(user.CompanyState);
-                user.CompanyCityId = Convert.ToInt32(user.ComapnyCity);
-            }
-            else { user = new EmployementModel(); }
-            return PartialView("_EmployementView", user);
-        }
+        //    if (user != null)
+        //    {
+        //        user.CompanyCountryId = Convert.ToInt32(user.CompanyCountry);
+        //        user.CompanyStateId = Convert.ToInt32(user.CompanyState);
+        //        user.CompanyCityId = Convert.ToInt32(user.ComapnyCity);
+        //    }
+        //    else { user = new EmployementModel(); }
+        //    return PartialView("_EmployementView", user);
+        //}
 
         public SelectList GetCurrencies()
         {
@@ -590,63 +592,63 @@ namespace HR_Web.Controllers
             return ModelList.ToPagedList(pageIndex, pageSize);
         }
 
-        [HttpPost]
-        [Authorize]
-        public ActionResult AddNumberOfEmployments(Employment model)
-        {
-            bool status = false;
-            var UserId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-            var employmentCount = _IEmploymentCountService.GetEmploymentCountByUserId(UserId);
+        //[HttpPost]
+        //[Authorize]
+        //public ActionResult AddNumberOfEmployments(Employment model)
+        //{
+        //    bool status = false;
+        //    var UserId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //    var employmentCount = _IEmploymentCountService.GetEmploymentCountByUserId(UserId);
 
-            if (employmentCount != null)
-            {
-                if (employmentCount.NumberOfEmployments > 0 && employmentCount.NumberOfEmployments >= model.NumberOfEmployments)
-                {
-                    TempData["Message"] = new ErrorMessageModel()
-                    {
-                        MessageType = "error",
-                        Message = "Value should be greater than previous value of Number Of Employments!"
-                    };
-                    return RedirectToAction("Index");
-                }
+        //    if (employmentCount != null)
+        //    {
+        //        if (employmentCount.NumberOfEmployments > 0 && employmentCount.NumberOfEmployments >= model.NumberOfEmployments)
+        //        {
+        //            TempData["Message"] = new ErrorMessageModel()
+        //            {
+        //                MessageType = "error",
+        //                Message = "Value should be greater than previous value of Number Of Employments!"
+        //            };
+        //            return RedirectToAction("Index");
+        //        }
 
-                employmentCount.NumberOfEmployments = model.NumberOfEmployments;
-                status = _IEmploymentCountService.Update(employmentCount, null, "");
-                if (status)
-                {
-                    TempData["Message"] = new ErrorMessageModel()
-                    {
-                        MessageType = "success",
-                        Message = "Number Of Employments added successfully."
-                    };
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    TempData["Message"] = new ErrorMessageModel()
-                    {
-                        MessageType = "error",
-                        Message = "Number Of Employments not added!"
-                    };
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                EmploymentCount EmploymentCount = new Data.EmploymentCount();
-                EmploymentCount.NumberOfEmployments = model.NumberOfEmployments;
-                EmploymentCount.UserID = UserId;
-                status = _IEmploymentCountService.Insert(EmploymentCount, null, "");
-                if (status == true)
-                {
-                    TempData["Message"] = new ErrorMessageModel()
-                    {
-                        MessageType = "success",
-                        Message = "Number Of Employments added successfully."
-                    };
-                }
-                return RedirectToAction("Index");
-            }
-        }
+        //        employmentCount.NumberOfEmployments = model.NumberOfEmployments;
+        //        status = _IEmploymentCountService.Update(employmentCount, null, "");
+        //        if (status)
+        //        {
+        //            TempData["Message"] = new ErrorMessageModel()
+        //            {
+        //                MessageType = "success",
+        //                Message = "Number Of Employments added successfully."
+        //            };
+        //            return RedirectToAction("Index");
+        //        }
+        //        else
+        //        {
+        //            TempData["Message"] = new ErrorMessageModel()
+        //            {
+        //                MessageType = "error",
+        //                Message = "Number Of Employments not added!"
+        //            };
+        //            return RedirectToAction("Index");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        EmploymentCount EmploymentCount = new Data.EmploymentCount();
+        //        EmploymentCount.NumberOfEmployments = model.NumberOfEmployments;
+        //        EmploymentCount.UserID = UserId;
+        //        status = _IEmploymentCountService.Insert(EmploymentCount, null, "");
+        //        if (status == true)
+        //        {
+        //            TempData["Message"] = new ErrorMessageModel()
+        //            {
+        //                MessageType = "success",
+        //                Message = "Number Of Employments added successfully."
+        //            };
+        //        }
+        //        return RedirectToAction("Index");
+        //    }
+        //}
     }
 }

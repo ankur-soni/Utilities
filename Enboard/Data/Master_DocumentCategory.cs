@@ -20,6 +20,7 @@ namespace Data
             this.DocumentDetails = new HashSet<DocumentDetail>();
             this.DocumentDetails1 = new HashSet<DocumentDetail>();
             this.Master_Document = new HashSet<Master_Document>();
+            this.Master_SubDocumentsCategory = new HashSet<Master_SubDocumentsCategory>();
         }
     
         public int DocCatID { get; set; }
@@ -34,5 +35,7 @@ namespace Data
         public virtual ICollection<DocumentDetail> DocumentDetails1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Master_Document> Master_Document { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Master_SubDocumentsCategory> Master_SubDocumentsCategory { get; set; }
     }
 }

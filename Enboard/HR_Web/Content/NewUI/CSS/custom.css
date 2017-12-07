@@ -1283,3 +1283,85 @@ input[type=text]::-ms-clear { display: none; }
     }
 }
 
+#aboutSilicusCarousel {
+    width: 90%;
+    margin: 0px auto;
+    margin-top: 30px;
+}
+.outerGridLayout {
+    margin-top: 30px;
+}
+.outerGridLayout .carousel-indicators li {
+    height: 10px !Important;
+    margin: 0px 3px !important;
+    width: 10px !important;
+    max-width: 10px !important;
+}
+.outerGridLayout .carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    z-index: 15;
+    width: 60%;
+    padding-left: 0;
+    margin-left: -30%;
+    text-align: center;
+    list-style: none;
+}
+
+.LoginpageLogos {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+.LoginpageLogos li {
+    display: inline-block;
+    margin: 15px 10px;
+    padding: 0px;
+
+	
+}
+.LoginpageLogos li img {
+    height: 60px;
+}
+.outerGridLayout {	
+    display: block;
+    overflow: hidden;
+    -moz-column-count:2;
+    -moz-column-gap: 2em;
+    -moz-column-width: 50%;
+    -webkit-column-count:2;
+    -webkit-column-gap: 2em;
+    -webkit-column-width: 50%;
+    column-count: 2;
+    column-gap: 2em;
+    column-width: 50%;
+
+}
+.gridLayout {
+    padding: 0px;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 2em;
+    background: #fff;
+    float: none;
+}
+.gridLayout img {
+    width: 100%;
+}
+.textOuter {
+    padding: 30px;
+}
+.textOuter ul {
+    padding: 0px 0 0 15px;
+	
+}
+.textOuter h4 {
+    color: #333;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {    
+    .gridLayout {
+        float: left;
+    }     
+}
+

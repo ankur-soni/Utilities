@@ -1,4 +1,4 @@
-﻿@model Models.Employment
+﻿@*@model Models.Employment
 @using (Ajax.BeginForm("SaveChangeRequestDetails", "Employement", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessForm" }, new { id = "PD_ChangeRequestFormId" }))
 {
     <div class="row">
@@ -18,4 +18,4 @@
     //Added below line of code for client side validations
         $.validator.unobtrusive.parse("#PD_ChangeRequestFormId");
     });
-</script>
+</script>*@

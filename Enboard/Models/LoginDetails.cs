@@ -173,10 +173,10 @@ namespace Models
         public IEnumerable<EducationCategory> AvailableEducationCategories { get; set; }
         public IEnumerable<EducationCategory> SelectedEducationCategories { get; set; }
         public PostedEducationCategories PostedEducationCategories { get; set; }
-        [Display(Name = "No. of employments")]
-        [Required(ErrorMessage = "Please enter No. of employments")]
-        [RegularExpression(@"^[0-9]{1,2}$", ErrorMessage = "Not a valid No. of employments")]
-        public int NoOfEmployments { get; set; }
+        //[Display(Name = "No. of employments")]
+        //[Required(ErrorMessage = "Please enter No. of employments")]
+        //[RegularExpression(@"^[0-9]{1,2}$", ErrorMessage = "Not a valid No. of employments")]
+        //public int NoOfEmployments { get; set; }
 
     }
 

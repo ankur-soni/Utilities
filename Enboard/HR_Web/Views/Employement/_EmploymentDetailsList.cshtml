@@ -23,7 +23,7 @@
         <input type="hidden" id="@Html.Raw("EmployementNo" + @Model.EmploymentId)" name="EmployementNo" value="@Model.EmployementNo" />
         <input type="hidden" id="@Html.Raw("EmploymentId" + @Model.EmploymentId)" name="EmploymentDetID" value="@Model.EmploymentId" />
         <input type="hidden" id="@Html.Raw("CompanyName" + @Model.EmploymentId)" name="CompanyName" value="@Model.CompanyName" />
-        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?" false":"true")" />
+        <input type="hidden" id="@Html.Raw("IsCurrentEmployment" + @Model.IsCurrentEmployment)" class="@Html.Raw("IsCurrentEmployment"+@Model.EmploymentId)" name="IsCurrentEmployment" value="@(Model.IsCurrentEmployment==false?"false":"true")" />
         @Html.AntiForgeryToken()
         <div id="@Html.Raw(@Model.EmploymentId)" class="panel-collapse collapse" role="tabpanel">
             <div class="panel-body">
@@ -172,16 +172,9 @@
                                 <input type="checkbox" id="@Html.Raw("chk" + @Model.EmploymentId)" checked="@Model.IsCurrentEmployment" disabled name="chkBox">
                                 <span class="slider round"></span>
                             </label>
-                            @Html.HiddenFor(x => x.IsCurrentEmployment)
-                            <span class="switchBoxTitle pull-left"> I currently work here </span>
+                            @Html.HiddenFor(x => x.IsCurrentEmployment, new { @class = "IsCurrentEmployment"+Model.EmploymentId })
+                            <span class="switchBoxTitle pull-left">Recent Tenure</span>
                         </div>
-                        @*<script>
-                                $(document).ready(function () {
-                                    if ('@Model.IsCurrentEmployment' === 'True') {
-                                        $('@Html.Raw("#chk" + @Model.EmploymentId)').attr('checked', true);
-                                    }
-                                });
-                            </script>*@
                     </div>
                 </div>
                 <div class="row">
@@ -210,7 +203,7 @@
                     <div class="col-md-12">
                         <div id="@Html.Raw("save" + Model.EmploymentId)" style="display:none">
                             <button class="btn-reset cancelText  pull-right" type="reset" onclick="EditCancel(@Model.EmploymentId,'@Html.Raw("#save" + Model.EmploymentId)','@Html.Raw("#cancel" + Model.EmploymentId)',true);" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)">Cancel</button>
-                            <button class="btn-save saveText pull-right" type="submit" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)"> Save   </button>
+                            <button class="btn-save saveText pull-right @Html.Raw("save-"+Model.EmploymentId)" id="edit-save" type="submit" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)"> Save   </button>
                         </div>
                         <div id="@Html.Raw("cancel" + Model.EmploymentId)" style="display:block">
                             <a class="btn-delete pull-right" href="#" onclick="ConfirmDeleteRow(@Model.EmploymentId)" tabindex="@((@Model.EmploymentId + 1).ToString() + 21)">Delete</a>
@@ -225,21 +218,59 @@
 
 <script type="text/javascript">
 
+    var getCurrentDate = function() {
+        var todaysDate = new Date();
+        var todaysDateParts = [];
+        todaysDateParts.push(todaysDate.getFullYear());
+        todaysDateParts.push(todaysDate.getMonth());
+        todaysDateParts.push(todaysDate.getDate());
+        var date = new Date(todaysDateParts[0], todaysDateParts[1], todaysDateParts[2]);
+        return date;
+    };
+    $(".saveText").unbind().click(function(e) {
+        debugger;
+        var employmentId =  $(this).closest('form').find('input[name="EmploymentDetID"]').val();
+        if ($(this).hasClass("save-"+employmentId)) {
+            e.preventDefault();
+            var toDate = $("#ToDate" + employmentId).val();
+            var dateParts = toDate.split("/");
+            var currentDate = getCurrentDate();
+            var selectedDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+            if ($(".IsCurrentEmployment"+employmentId).val().toLowerCase() === "true"  && toDate!= "") {
+                if (currentDate.getTime() > selectedDate.getTime()) {
+                    $("#chk" + employmentId).attr("checked", false);
+                    $(".IsCurrentEmployment" + employmentId).val(false);
+                    toastr.error("Relieving date should be greater than todays date.");
+                    $("#ToDate" + employmentId).focus();
+                    return;
+                }
+            } else if ($(".IsCurrentEmployment"+employmentId).val().toLowerCase() === "false" && toDate!= "") {
+                if (currentDate.getTime() <= selectedDate.getTime()) {
+                    toastr.error("Relieving date should be lesser than todays date.");
+                    $("#ToDate" + employmentId).focus();
+                    return;
+                }
+           
+            }
+        
+            $("#frmEdit" + employmentId).submit(); 
+        }
+    });
     function ConfirmDeleteRow(id) {
         toastr.warning("<button type='button' id='confirmationRevertYes' class='btn btn-default'>Yes</button>" +
             "   <button type='button' id='confirmationRevertNo' class='btn btn-default'>No</button>", 'Do you want to delete this information?',
-              {
-                  closeButton: false,
-                  allowHtml: true,
-                  onShown: function (toast) {
-                      $("#confirmationRevertYes").click(function () {
-                          window.location.href = "DeleteEmploymentDetails?Id=" + id;
-                      });
-                      $("#confirmationRevertYes").click(function () {
-                          this.fadeOut();
-                      });
-                  }
-              });
+            {
+                closeButton: false,
+                allowHtml: true,
+                onShown: function (toast) {
+                    $("#confirmationRevertYes").click(function () {
+                        window.location.href = "DeleteEmploymentDetails?Id=" + id;
+                    });
+                    $("#confirmationRevertYes").click(function () {
+                        this.fadeOut();
+                    });
+                }
+            });
     }
 
     function EditCancel(editId, save, cancel, flag) {
