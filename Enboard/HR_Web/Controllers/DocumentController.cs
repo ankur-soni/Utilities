@@ -415,7 +415,10 @@ namespace HR_Web.Controllers
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             var userDetails = _IUserService.GetById(userId);
             var relationList = _IRelationService.GetAll(null, null, "");
+            CandidateProgressDetails candidateProgressDetails = new CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
+            var candidateGraphProgressDetailViewModel = candidateProgressDetails.SaveCandidateProgressDetails(userId);
             FinalSubmitViewModel finalSubmitViewModel = new FinalSubmitViewModel();
+
             if (userDetails != null)
             {
                 finalSubmitViewModel.FinalStatus = userDetails.IsSubmitted == null ? false : userDetails.IsSubmitted.Value;
@@ -439,9 +442,14 @@ namespace HR_Web.Controllers
 
                 }
 
-                if (!userEmployemntList.Any(x => x.IsCurrentEmployment == true))
+                //if (!userEmployemntList.Any(x => x.IsCurrentEmployment == true))
+                //{
+                //        finalSubmitViewModel.EmploymentDetailsError = "Employment Details";
+                //}
+
+                if (candidateGraphProgressDetailViewModel.EmploymentDetailsPercentage != null && candidateGraphProgressDetailViewModel.EmploymentDetailsPercentage < 100)
                 {
-                        finalSubmitViewModel.EmploymentDetailsError = "Employment Details";
+                    finalSubmitViewModel.EmploymentDetailsError = "Employment Details";
                 }
 
                 if (userEducationList.Any() && assignedEducationCategaries.Any())
@@ -488,55 +496,60 @@ namespace HR_Web.Controllers
                 }
                 if (documentDetails.Any() && documentDetails.Count() != 0)
                 {
-                    var docValidation = true;
-                    
-                    if (documentDetails.FirstOrDefault(x => x.DocumentID == Constant.IDProof.PANCard) == null)
-                    {
-                        docValidation = false;
-                            
-                    }
+                   
+                    //var docValidation = true;
 
-                  
-                    foreach (var item in userDetails.AdminEducationCategoryForUsers)
-                    {
-                        var education= item.Master_EducationCategory.EducationDocumentCategoryMappings.FirstOrDefault();
-                        if (education != null)
-                        {
-                            var docid = education.DocumentID;
-                            if (!documentDetails.Any(x => x.DocumentID == docid))
-                            {
-                                docValidation = false;
-                            }
-                        }
-                    }
+                    //if (documentDetails.FirstOrDefault(x => x.DocumentID == Constant.IDProof.PANCard) == null)
+                    //{
+                    //    docValidation = false;
+
+                    //}
 
 
-                    foreach (var item in userEmployemntList)
-                    {
-                        if (item.IsCurrentEmployment.HasValue && item.IsCurrentEmployment.Value)
-                        {
-                            if (!documentDetails.Any(x => x.EmploymentDetID == item.EmploymentDetID && x.DocumentID == Constant.EmploymentProof.Latest3PaySlips))
-                            {
-                                docValidation = false;
-                            }
-                        }
-                        else
-                        {
-                            if (!documentDetails.Any(x => x.EmploymentDetID == item.EmploymentDetID && (x.DocumentID == Constant.EmploymentProof.Latest3PaySlips)))
-                            {
-                                docValidation = false;
-                            }
-
-                            if (!documentDetails.Any(x => x.EmploymentDetID == item.EmploymentDetID && (x.DocumentID == Constant.EmploymentProof.ExperienceLetter)))
-                            {
-                                docValidation = false;
-                            }
+                    //foreach (var item in userDetails.AdminEducationCategoryForUsers)
+                    //{
+                    //    var education= item.Master_EducationCategory.EducationDocumentCategoryMappings.FirstOrDefault();
+                    //    if (education != null)
+                    //    {
+                    //        var docid = education.DocumentID;
+                    //        if (!documentDetails.Any(x => x.DocumentID == docid))
+                    //        {
+                    //            docValidation = false;
+                    //        }
+                    //    }
+                    //}
 
 
-                        }
-                    }
+                    //foreach (var item in userEmployemntList)
+                    //{
+                    //    if (item.IsCurrentEmployment.HasValue && item.IsCurrentEmployment.Value)
+                    //    {
+                    //        if (!documentDetails.Any(x => x.EmploymentDetID == item.EmploymentDetID && x.DocumentID == Constant.EmploymentProof.Latest3PaySlips))
+                    //        {
+                    //            docValidation = false;
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        if (!documentDetails.Any(x => x.EmploymentDetID == item.EmploymentDetID && (x.DocumentID == Constant.EmploymentProof.Latest3PaySlips)))
+                    //        {
+                    //            docValidation = false;
+                    //        }
 
-                    if (!docValidation)
+                    //        if (!documentDetails.Any(x => x.EmploymentDetID == item.EmploymentDetID && (x.DocumentID == Constant.EmploymentProof.ExperienceLetter)))
+                    //        {
+                    //            docValidation = false;
+                    //        }
+
+
+                    //    }
+                    //}
+
+                    //if (!docValidation)
+                    //{
+                    //    finalSubmitViewModel.UploadDetailsError = "Upload Documents";
+                    //}
+                    if (candidateGraphProgressDetailViewModel.UploadDcoumentsPercentage < 100)
                     {
                         finalSubmitViewModel.UploadDetailsError = "Upload Documents";
                     }
