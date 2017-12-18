@@ -96,6 +96,26 @@
 <body class="page-header-fixed page-footer-fixed page-sidebar-closed-hide-logo page-content-white page-md">
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
+        var contributors = Silicus.Ensure.Web.MvcApplication.getDevelopersName();
+        var data = "";
+        var count = contributors.Count;
+        var recentCount = 0;
+        foreach (var item in contributors)
+        {
+            recentCount++;
+            if (recentCount == count)
+            {
+                data += item + ". ";
+            }
+            else
+            {
+                data += item + ", ";
+            }
+        }
+        <div id="credits-data" style="display:none;">
+            @data
+        </div>
+
         <div class="page-wrapper">
             <!-- BEGIN HEADER -->
             <div class="page-header navbar navbar-fixed-top">
@@ -412,6 +432,7 @@
                 <div class="page-footer-inner">
                     Copyright © 2016 Silicus Technologies, LLC
                 </div>
+                <span id="credits" class="pull-right page-footer-inner" style="font-weight: bold;">Credits</span>
                 <div class="scroll-to-top">
                     <i class="icon-arrow-up"></i>
                 </div>
@@ -575,6 +596,19 @@
         };
 
         $(document).ready(function () {
+            $("#credits").css('cursor', 'pointer');
+
+            $("#credits").click(function () {
+                swal({
+                    title: "Contributors",
+                    text: "If you like the application, thank these people \n" + $("#credits-data").text(),
+                    showCancelButton: false,
+                    confirmButtonColor: "#32c5d2",
+                    confirmButtonText: "Ok"
+                }
+                );
+            });
+
             pageContentSectionheight();
 
         });

@@ -181,9 +181,23 @@ namespace Silicus.Ensure.Web
 
         public static List<string> getDevelopersName()
         {
+
             var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
-            var developers = authorizationService.GetNameOfContributors();
+            var productId = ConfigurationManager.AppSettings["ProductId"];
+            var utilityId = 0;
+            if (!string.IsNullOrEmpty(productId))
+            {
+                utilityId = Convert.ToInt32(productId);
+            }
+
+            var developers = authorizationService.GetNameOfContributors(utilityId);
+
             return developers;
+
+            //var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+            //var developers = authorizationService.GetNameOfContributors();
+            //return developers;
+
         }
 
 
