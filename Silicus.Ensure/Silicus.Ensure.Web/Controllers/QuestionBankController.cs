@@ -63,6 +63,7 @@ namespace Silicus.Ensure.Web.Controllers
             var ChartData = new { catList = catList, BeginerList = BeginerList, ItermidiateList = ItermidiateList, ExpertList = ExpertList };
 
             var fromJson = Json(ChartData);
+
             return View(fromJson);
         }
 
@@ -77,7 +78,7 @@ namespace Silicus.Ensure.Web.Controllers
                 Count = qu.Count()
             }).ToList();
 
-            foreach(var obj in QList)
+            foreach (var obj in QList)
             {
                 //obj.CreatedBy = GetCreatedByName(int.Parse(obj.CreatedBy));
                 obj.Technology = GetTechnologyName(int.Parse(obj.Technology));
@@ -90,7 +91,84 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(QList.ToDataSourceResult(request));
         }
 
+        public ActionResult GetEmployeeWiseQuestionsStastistics([DataSourceRequest] DataSourceRequest request)
+        {
+            var questions = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
+            var QList = questions.GroupBy(q => new { q.CreatedBy, q.TechnologyId }).Select(qu => new Questionstatistics()
+            {
+                CreatedBy = qu.Key.CreatedBy.ToString(),
+                Technology = qu.Key.TechnologyId.ToString(),             
+                Count = qu.Count()
+            }).ToList();
 
+            foreach (var obj in QList)
+            {
+                obj.CreatedBy = GetCreatedByName(int.Parse(obj.CreatedBy));
+                obj.Technology = GetTechnologyName(int.Parse(obj.Technology));               
+            }
+
+            //var jsonResult = Json(QList.ToArray().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+            return Json(QList.ToDataSourceResult(request));
+        }
+
+        public ActionResult GetTagWiseQuestionsStastistics([DataSourceRequest] DataSourceRequest request)
+        {
+            var questions = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
+            var QList = questions.GroupBy(q => new {q.TechnologyId, q.Tags }).Select(qu => new Questionstatistics()
+            {
+               // CreatedBy = qu.Key.CreatedBy.ToString(),
+                Technology = qu.Key.Tags.ToString(),
+                ProficiencyLevel = qu.Key.TechnologyId.ToString(),
+                Count = qu.Count()
+            }).ToList();
+
+            List<Questionstatistics> updatedList = new List<Questionstatistics>();
+
+            foreach (var obj in QList)
+            {               
+                if (obj.Technology.IndexOf(",") > 0)
+                {                  
+                        int temp;
+                        var tagIds = obj.Technology.Split(',')
+                                      .Select(s => new { P = int.TryParse(s, out temp), I = temp })
+                                      .Where(x => x.P)
+                                      .Select(x => x.I)
+                                      .ToList();
+
+                        var tagNames = _tagsService.GetTagNames(tagIds);
+
+                        foreach (var item in tagNames)
+                        {
+                            var AlreadyPresentTag = updatedList.FirstOrDefault(x => x.Technology == item && x.ProficiencyLevel == obj.ProficiencyLevel);
+
+                            if (AlreadyPresentTag == null)
+                                updatedList.Add(new Questionstatistics() { Technology = item, Count = obj.Count, ProficiencyLevel = GetTechnologyName(int.Parse(obj.ProficiencyLevel))});
+                            else
+                                AlreadyPresentTag.Count += obj.Count;
+                        }                        
+                }
+                else
+                {
+                    var AlreadyPresentTag = updatedList.FirstOrDefault(x => x.Technology == obj.Technology && x.ProficiencyLevel == obj.ProficiencyLevel);
+
+                    if (AlreadyPresentTag == null)
+                        updatedList.Add(new Questionstatistics() { Technology = GetTagNames(obj.Technology), Count = obj.Count, ProficiencyLevel = GetTechnologyName(int.Parse(obj.ProficiencyLevel)) });
+                    else
+                        AlreadyPresentTag.Count += obj.Count;                    
+                }              
+            }
+
+            updatedList = updatedList.GroupBy(q => new { q.ProficiencyLevel, q.Technology }).Select(qu => new Questionstatistics()
+            {            
+                ProficiencyLevel = qu.Key.ProficiencyLevel,
+                Technology = qu.Key.Technology.ToString(),              
+                Count = qu.Sum(c => c.Count)
+            }).ToList();
+
+            return Json(updatedList.ToDataSourceResult(request));
+        }
+        
         public ActionResult AddQuestions(string questionId)
         {
             QuestionModel que = new QuestionModel { QuestionType = "0", OptionCount = 2, SkillTagsList = Tags() };
@@ -219,6 +297,31 @@ namespace Silicus.Ensure.Web.Controllers
             tagNamesString = string.Join(" | ", tagNames);
             return tagNamesString;
         }
+
+        //    private string GetTagNamesWithCount(string tags, int count,string createdBy, List<Questionstatistics> list)
+        //    {
+        //        var tagNamesString = "";
+        //        var tagNames = new List<string>();
+        //        if (tags != null)
+        //        {
+        //            int temp;
+        //            var tagIds = tags.Split(',')
+        //.Select(s => new { P = int.TryParse(s, out temp), I = temp })
+        //.Where(x => x.P)
+        //.Select(x => x.I)
+        //.ToList();
+        //            tagNames = _tagsService.GetTagNames(tagIds);
+        //        }
+
+        //        foreach(var item in tagNames)
+        //        {
+        //            list.Add(new Questionstatistics() { Technology = item, Count = count, CreatedBy = createdBy });
+        //        }
+
+        //        tagNamesString = string.Join(" | ", tagNames);
+        //        return tagNamesString;
+        //    }
+
 
         public ActionResult QuestionBank()
         {

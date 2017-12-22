@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Dashboard";
 }
+<script src="~/Scripts/jszip.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 
 <script>
@@ -13,7 +14,11 @@
         $("#questionbank-submenu").css("display", "block");
         $("#questionbank-link a span.arrow").addClass("open");
         //SetNavigationMenuActive('Marksheer');
-      
+
+        $("#TagWiseQuestionList").find(".k-grid-content").height(440);
+
+        $("#EmployeeWiseQuestionList").find(".k-grid-content").height(440);
+        
         var model = @Html.Raw(Json.Encode(Model));
 
         Highcharts.chart('container', {
@@ -92,122 +97,7 @@
     function onDataBound()
     {
 
-        //var test = $('#questionList').data('kendoGrid').dataSource.data();
-
-        //var categories = new Array();
-        //var BeginerList = new Array();
-        //var ItermidiateList = new Array();
-        //var ExpertList = new Array();
-
-        //$.each(test, function (index, data) {
-        //    if(-1 !== (idx = jQuery.inArray(data.CreatedBy, categories))) {
-        //    } else {
-        //        categories.push(data.CreatedBy);
-        //    }
-        //});
-
-        //$.each(categories, function (index, cat) {
-        //    var p=i=e=false;
-        //    $.each(test, function (index1, data) {
-        //        if(data.CreatedBy == cat)
-        //        {
-        //            if(data.ProficiencyLevel == "Beginner")
-        //            {
-        //                p= true;
-        //                BeginerList.push(data.Count);
-        //            }
-        //            if(data.ProficiencyLevel == "Intermediate")
-        //            {
-        //                i = true;
-        //                ItermidiateList.push(data.Count);
-        //            }
-        //            if(data.ProficiencyLevel == "Expert")
-        //            {
-        //                e= true;
-        //                ExpertList.push(data.Count);
-        //            }
-        //        }
-        //    });
-
-        //    if(p==false)
-        //        BeginerList.push(0);
-        //    if(i==false)
-        //        ItermidiateList.push(0);
-        //    if(e==false)
-        //        ExpertList.push(0);
-        //});
-
-        //debugger;
-        //Highcharts.chart('GridChart', {
-        //    //data: {
-        //    //    table: test
-        //    //},
-        //    chart: {
-        //        type: 'column'
-        //    },
-        //    title: {
-        //        text: 'Contributor wise Question Count'
-        //    },
-        //    xAxis: {
-        //        categories: categories,
-        //        crosshair: true
-        //    },
-        //    yAxis: {
-        //        allowDecimals: false,
-        //        title: {
-        //            text: 'Units'
-        //        },
-        //        stackLabels: {
-        //            enabled: true,
-        //            style: {
-        //                fontWeight: 'bold',
-        //                color:'gray'
-        //            }
-        //            , formatter: function()
-        //            {
-        //                return '<b> Total :' + this.total + '</b>'
-        //            }
-        //        }
-        //    },
-        //    series: [{
-        //        name: 'Beginner',
-        //        data: BeginerList
-
-        //    }, {
-        //        name: 'Intermediate',
-        //        data: ItermidiateList
-
-        //    }, {
-        //        name: 'Expert',
-        //        data: ExpertList
-
-        //    }],plotOptions: {
-        //        column: {
-        //            stacking: 'normal',
-        //            dataLabels: {
-        //                enabled: true,
-        //                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-        //                style: {
-        //                    textOutline: false
-        //                },
-        //                formatter: function() {
-        //                    if (this.y > 0) {
-        //                        return this.y ;
-        //                    } else {
-        //                        return '';
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    },
-
-        //    tooltip: {
-        //        formatter: function () {
-        //            return '<b>' + this.series.name + '</b> : ' +
-        //                this.point.y
-        //        }
-        //    }
-        //});
+   
     }
 
     function StatusDropDownList(args) {
@@ -252,31 +142,36 @@
     <div id="Tabs" role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-      
-                <li class="active">
-                    <a href="#1a" data-toggle="tab">Summary</a>
-                </li>
-                <li>
-                    <a href="#2a" data-toggle="tab">Detail</a>
-                </li>
 
-            </ul>
+            <li class="active">
+                <a href="#1a" data-toggle="tab">Summary</a>
+            </li>
+            <li>
+                <a href="#2a" data-toggle="tab">Status Wise Question</a>
+            </li>
+            <li>
+                <a href="#3a" data-toggle="tab">Tag Wise Questions</a>
+            </li>
+            <li>
+                <a href="#4a" data-toggle="tab">Contributor Wise Questions</a>
+            </li>
+        </ul>
 
-            <div class="tab-content clearfix" role="tabpanel">
-                <div class="tab-pane active" id="1a">
-                    <h3>Question Summary</h3>
-                    <div id="container" style="min-width: 350px; height: 450px; margin: 0 auto"></div>
-                </div>
-                <div class="tab-pane" id="2a">
-                    @*<div id="GridChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
-                    <h3>Question Details</h3>
-                    <div class="table-responsive">
+        <div class="tab-content clearfix" role="tabpanel">
+            <div class="tab-pane active" id="1a">
+                <h3>Status Wise Question</h3>
+                <div id="container" style="min-width: 350px; height: 450px; margin: 0 auto"></div>
+            </div>
+            <div class="tab-pane" id="2a">
+                @*<div id="GridChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
+                <h3>Question Details</h3>
+                <div class="table-responsive">
 
-                        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>().Name("questionList")
+                    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>().Name("questionList")
                                 .Columns(columns =>
                                 {
                                     //columns.Bound(q => q.CreatedBy);
-                                    columns.Bound(q => q.Technology).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false))).ClientGroupHeaderTemplate("Technology: #= value #"); 
+                                    columns.Bound(q => q.Technology).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false))).ClientGroupHeaderTemplate("Technology: #= value #");
                                     columns.Bound(q => q.ProficiencyLevel).Title("Status").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("StatusDropDownList").ShowOperators(false)));
                                     columns.Bound(q => q.Count).ClientGroupFooterTemplate("Count: #=sum#");
 
@@ -300,11 +195,92 @@
 
                                              .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
                                              .Resizable(resizing => resizing.Columns(true))
-                        )
+                    )
 
-                    </div>
                 </div>
             </div>
+
+            <div class="tab-pane" id="3a">
+                <h3>Tag Wise Question Details</h3>
+                <div class="table-responsive">
+
+                    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>
+                        ().Name("TagWiseQuestionList")
+                      
+                        .Columns(columns =>
+                        {
+                           columns.Bound(q => q.ProficiencyLevel).Title("Technology");
+                            columns.Bound(q => q.Technology).Title("Tag").Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").ShowOperators(true))).ClientGroupHeaderTemplate("Tags: #= value #"); ;
+                          //  columns.Bound(q => q.CreatedBy);//.Title("Created By").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").ShowOperators(false)));
+                            columns.Bound(q => q.Count).ClientGroupFooterTemplate("Count: #=sum#");
+                        }).DataSource(dataSource => dataSource.Ajax()
+                        .Aggregates(aggregates =>
+                        {
+                            aggregates.Add(p => p.Count).Sum();
+                        })
+                        .Sort(s => s.Add("Count"))
+                      //  .Group(groups => groups.Add(p => p.Technology))
+                        .Read(read => read.Action("GetTagWiseQuestionsStastistics", "QuestionBank"))
+                        .PageSize(2000)
+                        .ServerOperation(false)
+                        ).Pageable(p => p.PageSizes(false))
+                        .Sortable()
+                        .Resizable(resizing => resizing.Columns(true)).Excel(excel => excel
+   .FileName("EmployeeTest Result Export.xlsx")
+   .Filterable(true)
+   .ProxyURL(Url.Action("Excel_Export_Save", "Common"))
+    )
+     .ToolBar(tools => tools.Excel())
+     
+       .Scrollable(scrollable => scrollable.Virtual(false))
+             .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+            .Resizable(resizing => resizing.Columns(true))
+                    )
+
+                </div>
+            </div>
+
+            <div class="tab-pane" id="4a">
+                <h3>Employee Wise Question Details</h3>
+                <div class="table-responsive">
+
+                    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>
+                        ().Name("EmployeeWiseQuestionList")
+
+                        .Columns(columns =>
+                        {
+                            columns.Bound(q => q.Technology).Title("Technology");
+                            columns.Bound(q => q.CreatedBy).Title("Created By").Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").ShowOperators(true))).ClientGroupHeaderTemplate("CreatedBy: #= value #"); ;
+                            //  columns.Bound(q => q.CreatedBy);//.Title("Created By").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").ShowOperators(false)));
+                            columns.Bound(q => q.Count).ClientGroupFooterTemplate("Count: #=sum#");
+                        }).DataSource(dataSource => dataSource.Ajax()
+                        .Aggregates(aggregates =>
+                        {
+                            aggregates.Add(p => p.Count).Sum();
+                        })
+                        .Sort(s => s.Add("Count"))
+                        //  .Group(groups => groups.Add(p => p.Technology))
+                        .Read(read => read.Action("GetEmployeeWiseQuestionsStastistics", "QuestionBank"))
+                        .PageSize(2000)
+                        .ServerOperation(false)
+                        ).Pageable(p => p.PageSizes(false))
+                        .Sortable()
+                        .Resizable(resizing => resizing.Columns(true)).Excel(excel => excel
+   .FileName("EmployeeTest Result Export.xlsx")
+   .Filterable(true)
+   .ProxyURL(Url.Action("Excel_Export_Save", "Common"))
+    )
+     .ToolBar(tools => tools.Excel())
+
+       .Scrollable(scrollable => scrollable.Virtual(false))
+             .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+            .Resizable(resizing => resizing.Columns(true))
+                    )
+
+                </div>
+            </div>
+
+        </div>
 
     </div>
 </div>
