@@ -394,6 +394,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\EDP_Validations.js" />
+    <None Include="Properties\PublishProfiles\prod-enboard - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-enboard - Web Deploy %282%29.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\educationlist.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
@@ -439,7 +441,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

@@ -95,9 +95,9 @@ namespace HR_Web.ViewModel
                                                     Convert.ToString(personalDetail.MaritalStatID),
                                                     Convert.ToString(personalDetail.SpouseName), 
                                                     Convert.ToString(personalDetail.MotherTongue),
-                                                    Convert.ToString(personalDetail.AadharCardNumber), 
+                                                    //Convert.ToString(personalDetail.AadharCardNumber), 
                                                     Convert.ToString(personalDetail.PANNumber),
-                                                    Convert.ToString(personalDetail.UANNumber),
+                                                    //Convert.ToString(personalDetail.UANNumber),
                                                     Convert.ToString(personalDetail.PassportNumber),
                                                     Convert.ToString(personalDetail.NameOnPassport),
                                                     Convert.ToString(personalDetail.PassportExpiryDate.HasValue?personalDetail.PassportExpiryDate.Value:personalDetail.PassportExpiryDate) 
@@ -138,18 +138,18 @@ namespace HR_Web.ViewModel
                 {
                     String[] _chosenOtherDetails = new string[] 
                                                 { 
-                                                    Convert.ToString(contactDetail.HomePhone), 
+                                                   // Convert.ToString(contactDetail.HomePhone), 
                                                     Convert.ToString(contactDetail.AnotherContact),
                                                     Convert.ToString(contactDetail.CurrentAddLine1), 
                                                     Convert.ToString(contactDetail.CurrentCountryID),
                                                     Convert.ToString(contactDetail.CurrentStateID), 
                                                     Convert.ToString(contactDetail.CurrentCityID),
-                                                    Convert.ToString(contactDetail.CurrentZipcode), 
+                                                    //Convert.ToString(contactDetail.CurrentZipcode), 
                                                     Convert.ToString(contactDetail.PermanantAddLine1), 
                                                     Convert.ToString(contactDetail.PermanantCountryID),
                                                     Convert.ToString(contactDetail.PermanantStateID), 
                                                     Convert.ToString(contactDetail.PermanantCityID),
-                                                    Convert.ToString(contactDetail.PermanantZipcode),
+                                                  //  Convert.ToString(contactDetail.PermanantZipcode),
                                                 };
 
                     int acuatalCount = 0;
@@ -264,7 +264,12 @@ namespace HR_Web.ViewModel
         private double GetUploadDocumentPercentage(LoginDetail userDetails)
         {
             double uploadDocumentPercentage = 0.0;
-
+            var contactDetail = userDetails.EmployeeContactDetails.FirstOrDefault();
+            var requiredCountForAddress = 0;
+            if (contactDetail!= null)
+            {
+                requiredCountForAddress = contactDetail.IsBothAddSame == true ? 1 : 2;
+            }
             if (userDetails != null && userDetails.DocumentDetails.Any())
             {
                 List<DocumentDetail> userEducationDocumentCatList = new List<DocumentDetail>();
@@ -302,7 +307,7 @@ namespace HR_Web.ViewModel
                 }
 
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentagEducation(userEducationDocumentCatList);
-                uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageAddressProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof));
+                uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageAddressProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof), requiredCountForAddress);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageIDProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof));
 
                 uploadDocumentPercentage = (uploadDocumentPercentage / Convert.ToDouble(4));
@@ -322,52 +327,60 @@ namespace HR_Web.ViewModel
                     {
                         case Constant.IDProof.PANCard: acuatalCount++;
                             break;
-                        case Constant.IDProof.DrivingLicence: acuatalCount++;
-                            break;
-                        case Constant.IDProof.VoterID: acuatalCount++;
-                            break;
-                        case Constant.IDProof.MarriageCertificate: acuatalCount++;
-                            break;
+                        //case Constant.IDProof.DrivingLicence: acuatalCount++;
+                        //    break;
+                        //case Constant.IDProof.VoterID: acuatalCount++;
+                        //    break;
+                        //case Constant.IDProof.MarriageCertificate: acuatalCount++;
+                        //    break;
                         default:
                             break;
                     }
                 }
-                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(4)) * Convert.ToDouble(100);
+                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(1)) * Convert.ToDouble(100);
             }
             return uploadDocumentPercentage;
         }
 
-        private double GetDocumentPercentageAddressProof(IEnumerable<DocumentDetail> DocumentDetails)
+        private double GetDocumentPercentageAddressProof(IEnumerable<DocumentDetail> DocumentDetails, int requiredCount)
         {
             double uploadDocumentPercentage = 0.0;
-            int acuatalCount = 0;
+            int actualCount = 0;
+
             if (DocumentDetails.Any() && DocumentDetails.Count() != 0)
             {
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
                 {
                     switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
                     {
-                        case Constant.AddressProof.AadharCard: acuatalCount++;
+                        case Constant.AddressProof.AadharCard: actualCount++;
                             break;
-                        case Constant.AddressProof.Passport: acuatalCount++;
+                        case Constant.AddressProof.Passport: actualCount++;
                             break;
-                        case Constant.AddressProof.ElectricityBill: acuatalCount++;
+                        case Constant.AddressProof.ElectricityBill: actualCount++;
                             break;
-                        case Constant.AddressProof.BSNLLandlineBill: acuatalCount++;
+                        case Constant.AddressProof.BSNLLandlineBill: actualCount++;
                             break;
-                        case Constant.AddressProof.NationalizedBanksAccountStatement: acuatalCount++;
+                        case Constant.AddressProof.NationalizedBanksAccountStatement: actualCount++;
                             break;
-                        case Constant.AddressProof.ValidRentAgreement: acuatalCount++;
+                        case Constant.AddressProof.ValidRentAgreement: actualCount++;
                             break;
-                        case Constant.AddressProof.Rationcard: acuatalCount++;
+                        case Constant.AddressProof.Rationcard: actualCount++;
                             break;
-                        case Constant.AddressProof.VoterId: acuatalCount++;
+                        case Constant.AddressProof.VoterId: actualCount++;
                             break;
                         default:
                             break;
                     }
                 }
-                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(8)) * Convert.ToDouble(100);
+                if (actualCount >= requiredCount)
+                {
+                    uploadDocumentPercentage = 100;
+                }
+                else
+                {
+                   uploadDocumentPercentage = (Convert.ToDouble(actualCount) / Convert.ToDouble(requiredCount)) * Convert.ToDouble(100);
+                }
             }
             return uploadDocumentPercentage;
         }
@@ -424,17 +437,39 @@ namespace HR_Web.ViewModel
         {
             double uploadDocumentPercentage = 0.0;
             int acuatalCount = 0;
-            int totalCount = DocumentDetails.GroupBy(x => x.DocumentID).Distinct().Count();
-            if (totalCount != 0)
+            //int totalCount = DocumentDetails.GroupBy(x => x.DocumentID).Distinct().Count();
+            //if (totalCount != 0)
+            //{
+            //    foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
+            //    {
+            //        if (!String.IsNullOrWhiteSpace(item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentName : null))
+            //        {
+            //            acuatalCount++;
+            //        }
+            //    }
+            //    uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(totalCount)) * Convert.ToDouble(100);
+            //}
+            int requiredCount = 3;
+            if (DocumentDetails.Any())
             {
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
                 {
-                    if (!String.IsNullOrWhiteSpace(item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentName : null))
+                    switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
                     {
-                        acuatalCount++;
+                        case Constant.EducationProof.HSC:
+                            acuatalCount++;
+                            break;
+                        case Constant.EducationProof.SSC:
+                            acuatalCount++;
+                            break;
+                        case Constant.EducationProof.Graduation:
+                            acuatalCount++;
+                            break;
+                        default:
+                            break;
                     }
                 }
-                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(totalCount)) * Convert.ToDouble(100);
+                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(requiredCount)) * Convert.ToDouble(100);
             }
             return uploadDocumentPercentage;
         }

@@ -469,24 +469,28 @@ namespace HR_Web.Controllers
 
                 if (familydetails.Any())
                 {
-                    if (personalDetail != null && personalDetail.MaritalStatID == Constants.Single)
+                    //if (personalDetail != null && personalDetail.MaritalStatID == Constants.Single)
+                    //{
+                    //    relationList = relationList.Where(r => r.RelationID != Constants.Spouse && r.RelationID != Constants.Child && r.RelationID != Constants.Sibling && r.RelationID != Constants.Relative).ToList();
+
+                    //    if (familydetails.Where(a => a.RelationshipID == Constants.Father || a.RelationshipID ==  Constants.Mother).ToList().Count != relationList.Count())
+                    //    {
+                    //        finalSubmitViewModel.FamilyDetailsError = "Family Details";
+                    //    }
+                    //}
+                    //else if (personalDetail != null && personalDetail.MaritalStatID == Constants.Married)
+                    //{
+
+                    //    relationList = relationList.Where(r => r.RelationID != Constants.Child && r.RelationID != Constants.Sibling && r.RelationID != Constants.Relative).ToList();
+
+                    //    if (familydetails.Count <= relationList.Count())
+                    //    {
+                    //        finalSubmitViewModel.FamilyDetailsError = "Family Details";
+                    //    }
+                    //}
+                    if (candidateGraphProgressDetailViewModel.FamilyDetailsPercentage < 100)
                     {
-                        relationList = relationList.Where(r => r.RelationID != Constants.Spouse && r.RelationID != Constants.Child && r.RelationID != Constants.Sibling && r.RelationID != Constants.Relative).ToList();
-
-                        if (familydetails.Where(a => a.RelationshipID == Constants.Father || a.RelationshipID ==  Constants.Mother).ToList().Count != relationList.Count())
-                        {
-                            finalSubmitViewModel.FamilyDetailsError = "Family Details";
-                        }
-                    }
-                    else if (personalDetail != null && personalDetail.MaritalStatID == Constants.Married)
-                    {
-
-                        relationList = relationList.Where(r => r.RelationID != Constants.Child && r.RelationID != Constants.Sibling && r.RelationID != Constants.Relative).ToList();
-
-                        if (familydetails.Count <= relationList.Count())
-                        {
-                            finalSubmitViewModel.FamilyDetailsError = "Family Details";
-                        }
+                        finalSubmitViewModel.FamilyDetailsError = "Family Details";
                     }
 
                 }

@@ -106,8 +106,10 @@ namespace Models
         public long UserID { get; set; }
         public string Password { get; set; }
         [Required(ErrorMessage = "Please enter First Name")]
+        [RegularExpression("[a-zA-Z ]*$", ErrorMessage = "Not a valid First Name")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Please enter Last Name")]
+        [RegularExpression("[a-zA-Z ]*$", ErrorMessage = "Not a valid Last Name")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Please enter Date of Birth")]
         public string DOB { get; set; }
@@ -121,6 +123,7 @@ namespace Models
         public Nullable<System.DateTime> JoiningDate { get; set; }
         [Display(Name = "Contact Number")]
         [Required(ErrorMessage = "Please enter Contact Number")]
+        [RegularExpression(@"^[0-9]{8,10}$", ErrorMessage = "Not a valid Phone number")]
         public string ContactNumber { get; set; }
         public string RequisitionID { get; set; }
         [Display(Name = "Joining Location")]
