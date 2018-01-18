@@ -544,15 +544,15 @@ namespace HR_Web.ViewModel
                             }
                         }
 
-                        var childDetails = userDetails.EmployeeFamilyDetails.Where(x => x.IsActive == true && x.RelationshipID == Constants.Child).FirstOrDefault();
-                        if (childDetails != null && !String.IsNullOrEmpty(childDetails.FirstName) && !String.IsNullOrEmpty(childDetails.LastName) && !String.IsNullOrEmpty(childDetails.Gender))
-                        {
+                        //var childDetails = userDetails.EmployeeFamilyDetails.Where(x => x.IsActive == true && x.RelationshipID == Constants.Child).FirstOrDefault();
+                        //if (childDetails != null && !String.IsNullOrEmpty(childDetails.FirstName) && !String.IsNullOrEmpty(childDetails.LastName) && !String.IsNullOrEmpty(childDetails.Gender))
+                        //{
+                        //    educationDetialsPercentage = educationDetialsPercentage + 100.00;
+                        //}
+                        //else
+                        //{
                             educationDetialsPercentage = educationDetialsPercentage + 100.00;
-                        }
-                        else
-                        {
-                            educationDetialsPercentage = educationDetialsPercentage + 0.00;
-                        }
+                        //}
                         educationDetialsPercentage = educationDetialsPercentage / Convert.ToDouble(averageCount);
                     }
                 }
