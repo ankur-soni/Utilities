@@ -275,7 +275,7 @@ namespace HR_Web.ViewModel
                 List<DocumentDetail> userEducationDocumentCatList = new List<DocumentDetail>();
                 var userEducationCatList = userDetails.AdminEducationCategoryForUsers.Where(x => x.IsActive == true).ToList();
                 var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true);
-
+                var educationalDocCount = 0;
                 if ((userEducationCatList.Any() && userEducationCatList.Count != 0) && (documentDetails.Any() && documentDetails.Count() != 0))
                 {
                     var a = documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.Education).ToList();
@@ -283,6 +283,7 @@ namespace HR_Web.ViewModel
                                                     join mappingItem in documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.Education).ToList()
                                                     on educationItem.Master_EducationCategory.EducationDocumentCategoryMappings.FirstOrDefault().DocumentID equals mappingItem.DocumentID
                                                     select mappingItem).ToList();
+                    educationalDocCount = userEducationCatList.Count;
                 }
 
                 double employmentUploadPercentage = 0.0;
@@ -306,7 +307,7 @@ namespace HR_Web.ViewModel
                     uploadDocumentPercentage = (employmentUploadPercentage / Convert.ToDouble(totalCount));
                 }
 
-                uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentagEducation(userEducationDocumentCatList);
+                uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentagEducation(userEducationDocumentCatList,educationalDocCount);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageAddressProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof), requiredCountForAddress);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageIDProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof));
 
@@ -433,10 +434,10 @@ namespace HR_Web.ViewModel
             return uploadDocumentPercentage;
         }
 
-        private double GetDocumentPercentagEducation(IEnumerable<DocumentDetail> DocumentDetails)
+        private double GetDocumentPercentagEducation(IEnumerable<DocumentDetail> DocumentDetails,int requiredCount)
         {
             double uploadDocumentPercentage = 0.0;
-            int acuatalCount = 0;
+            int actualCount = 0;
             //int totalCount = DocumentDetails.GroupBy(x => x.DocumentID).Distinct().Count();
             //if (totalCount != 0)
             //{
@@ -449,7 +450,6 @@ namespace HR_Web.ViewModel
             //    }
             //    uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(totalCount)) * Convert.ToDouble(100);
             //}
-            int requiredCount = 3;
             if (DocumentDetails.Any())
             {
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
@@ -457,19 +457,28 @@ namespace HR_Web.ViewModel
                     switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
                     {
                         case Constant.EducationProof.HSC:
-                            acuatalCount++;
+                            actualCount++;
                             break;
                         case Constant.EducationProof.SSC:
-                            acuatalCount++;
+                            actualCount++;
                             break;
                         case Constant.EducationProof.Graduation:
-                            acuatalCount++;
+                            actualCount++;
+                            break;
+                        case Constant.EducationProof.Diploma:
+                            actualCount++;
+                            break;
+                        case Constant.EducationProof.PostGraduateDiploma:
+                            actualCount++;
+                            break;
+                        case Constant.EducationProof.PostGraduation:
+                            actualCount++;
                             break;
                         default:
                             break;
                     }
                 }
-                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(requiredCount)) * Convert.ToDouble(100);
+                uploadDocumentPercentage = (Convert.ToDouble(actualCount) / Convert.ToDouble(requiredCount)) * Convert.ToDouble(100);
             }
             return uploadDocumentPercentage;
         }
@@ -485,18 +494,20 @@ namespace HR_Web.ViewModel
 
 
                 var personalDetails = userDetails.EmployeePersonalDetails.FirstOrDefault(x => x.IsActive == true);
-                var familydetails = userDetails.EmployeeFamilyDetails.Where(x => x.IsActive == true && x.RelationshipID != Constants.Child).ToList();
+                var familydetails = userDetails.EmployeeFamilyDetails
+                    .Where(x => x.IsActive == true && x.RelationshipID != Constants.Child).ToList();
 
                 if (personalDetails != null && personalDetails.MaritalStatID == Constants.Single)
                 {
-                    relationList = relationList.Where(r => r.RelationID != Constants.Spouse && r.RelationID != Constants.Child).ToList();
+                    relationList = relationList
+                        .Where(r => r.RelationID != Constants.Spouse && r.RelationID != Constants.Child && r.RelationID != Constants.Relative).ToList();
 
                     if (familydetails.Any() && familydetails.Count != 0)
                     {
                         averageCount = relationList.Count();
                         foreach (var item in familydetails.Where(x => x.RelationshipID != Constants.Spouse))
                         {
-                            if (!String.IsNullOrEmpty(item.FirstName) && !String.IsNullOrEmpty(item.LastName))
+                            if (!String.IsNullOrEmpty(item.FirstName) && !String.IsNullOrEmpty(item.LastName) && item.RelationshipID != Constants.Relative)
                                 educationDetialsPercentage = educationDetialsPercentage + 100.00;
                             else
                                 educationDetialsPercentage = educationDetialsPercentage + 0.00;
@@ -506,7 +517,8 @@ namespace HR_Web.ViewModel
                 }
                 else
                 {
-                    var relList = relationList.Select(r => new { r.RelationID, r.RelationName }).GroupBy(x => x.RelationID).ToList();
+                    var relList = relationList.Where(x=>x.RelationID != Constants.Relative && x.RelationID != Constants.Child).Select(r => new {r.RelationID, r.RelationName})
+                        .GroupBy(x => x.RelationID).ToList();
 
                     if (familydetails.Any() && familydetails.Count != 0)
                     {
@@ -516,13 +528,13 @@ namespace HR_Web.ViewModel
                             if (item.RelationshipID == Constants.Spouse)
                             {
                                 int acuatalCount = 0;
-                                String[] _chosenOtherDetails = new string[] 
-                                                { 
-                                                    Convert.ToString(item.FirstName),
-                                                    Convert.ToString(item.LastName),
-                                                    Convert.ToString(item.DOB),
-                                                    Convert.ToString(item.ContactNumber), 
-                                                };
+                                String[] _chosenOtherDetails = new string[]
+                                {
+                                    Convert.ToString(item.FirstName),
+                                    Convert.ToString(item.LastName),
+                                    Convert.ToString(item.DOB),
+                                    Convert.ToString(item.ContactNumber),
+                                };
 
                                 int totalFieldCount = _chosenOtherDetails.Length;
 
@@ -533,11 +545,16 @@ namespace HR_Web.ViewModel
                                         acuatalCount++;
                                     }
                                 }
-                                educationDetialsPercentage = educationDetialsPercentage + ((Convert.ToDouble(acuatalCount) / Convert.ToDouble(totalFieldCount)) * Convert.ToDouble(100));
+                                educationDetialsPercentage =
+                                    educationDetialsPercentage +
+                                    ((Convert.ToDouble(acuatalCount) / Convert.ToDouble(totalFieldCount)) *
+                                     Convert.ToDouble(100));
                             }
                             else
                             {
-                                if (!String.IsNullOrEmpty(item.FirstName) && !String.IsNullOrEmpty(item.LastName))
+                                if (!String.IsNullOrEmpty(item.FirstName) && !String.IsNullOrEmpty(item.LastName) &&
+                                    item.RelationshipID != Constants.Relative &&
+                                     item.RelationshipID != Constants.Child)
                                     educationDetialsPercentage = educationDetialsPercentage + 100.00;
                                 else
                                     educationDetialsPercentage = educationDetialsPercentage + 0.00;
@@ -551,7 +568,7 @@ namespace HR_Web.ViewModel
                         //}
                         //else
                         //{
-                            educationDetialsPercentage = educationDetialsPercentage + 100.00;
+                        //    educationDetialsPercentage = educationDetialsPercentage + 0.00;
                         //}
                         educationDetialsPercentage = educationDetialsPercentage / Convert.ToDouble(averageCount);
                     }

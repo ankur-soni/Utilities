@@ -143,7 +143,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 @Html.LabelFor(m => m.BreaksDuringEducation)
-                                                @Html.TextAreaFor(model => model.BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks", placeholder = "Breaks During Education", @class = "form-control", tabindex = 11, MaxLength = 100 })
+                                                @Html.TextAreaFor(model => model.BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks", placeholder = "Breaks During Education", @class = "form-control", tabindex = 11, MaxLength = 350 })
                                                 @Html.ValidationMessageFor(model => model.BreaksDuringEducation, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -322,7 +322,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     @Html.LabelFor(m => Model.educationDetialslist[i].BreaksDuringEducation, new { @class = "" }) <span class="red">*</span>
-                                                    @Html.TextAreaFor(m => Model.educationDetialslist[i].BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks" + i.ToString(), placeholder = "Breaks During Education", @class = "form-control", tabindex = (@i + 1).ToString() + 25, MaxLength = 100 })
+                                                    @Html.TextAreaFor(m => Model.educationDetialslist[i].BreaksDuringEducation, 10, 30, new { id = "CD_txtBreaks" + i.ToString(), placeholder = "Breaks During Education", @class = "form-control", tabindex = (@i + 1).ToString() + 25, MaxLength = 350 })
                                                     @Html.ValidationMessageFor(m => Model.educationDetialslist[i].BreaksDuringEducation, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
