@@ -3,14 +3,14 @@
 @{
     var CurrencyList = (SelectList)ViewBag.Currencies;
 }
-<div class="panel panel-default">
-<div class="panel-heading" role="tab">
-    <h4 class="panel-title">
-        <label>Is Fresher ?</label>
-        <input type="checkbox" id="is-fresher" />
-    </h4>
-</div>
-</div>
+@*<div class="panel panel-default">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <label>Is Fresher ?</label>
+            <input type="checkbox" id="is-fresher" />
+        </h4>
+    </div>
+</div>*@
 <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab">
@@ -26,7 +26,7 @@
                     {*@
                 @*if (Model.NoOfEmployementAdmin > Model.NoOfEmployementAdded)
                     {*@
-                <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel-group emplyomentDetails emplyoment-details-form" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
                         @using (Html.BeginForm("Index", "Employement", FormMethod.Post, new { id = "PD_FormId" }))
                         {
@@ -161,23 +161,7 @@
         return date;
     };
 
-    var DisableIsFresher = function () {
-        debugger;
-        if ($(".employment-details").length > 0) {
-            $("#is-fresher").attr("disabled", "disabled");
-        }
-    };
-
-    $("#is-fresher").click(function () {
-        debugger;
-        if ($(this).prop("checked")) {
-            //$(".emplyomentDetails").css('pointer-events', 'none');
-            $(".emplyomentDetails").hide();
-        } else {
-            //$(".emplyomentDetails").css('pointer-events', '');
-            $(".emplyomentDetails").show();
-        }
-    });
+  
 
     $(".btn-save ").click(function (e) {
         debugger;
@@ -300,7 +284,6 @@
             );
         });
         //$('.hasDatepicker').attr('readonly', true);
-        DisableIsFresher();
     });
    
 </script>

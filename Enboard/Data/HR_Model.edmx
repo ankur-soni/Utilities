@@ -348,6 +348,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="IsActive" Type="int" />
           <Property Name="IsDelete" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="IsFresher" Type="bit"/>
         </EntityType>
         <EntityType Name="Master_Bloodgroup">
           <Key>
@@ -2758,6 +2759,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="IsSubmitted" Type="Boolean" />
           <Property Name="IsActive" Type="Int32" />
+          <Property Name="IsFresher" Type="Boolean" />
           <Property Name="IsDelete" Type="Boolean" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AdminEducationCategoryForUsers" Relationship="IPDModel.FK_AdminEducationCategoryForUser_LoginDetails" FromRole="LoginDetail" ToRole="AdminEducationCategoryForUser" />
@@ -3797,6 +3799,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="LoginDetails">
             <EntityTypeMapping TypeName="IPDModel.LoginDetail">
               <MappingFragment StoreEntitySet="LoginDetails">
+                <ScalarProperty Name="IsFresher" ColumnName="IsFresher"/>
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />

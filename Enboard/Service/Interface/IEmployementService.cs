@@ -21,5 +21,6 @@ namespace Service
         bool CheckSelectedEmploymentStatus(int userId, int employmentDetID);
 
         List<Master_Currency> GetCurrencies();
+        bool IsFresher(int UserID);
     }
 }

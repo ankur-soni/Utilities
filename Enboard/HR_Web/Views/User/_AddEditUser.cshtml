@@ -103,13 +103,17 @@
                             @Html.Label("Education Category", new { @class = "" }) <span class="red">*</span>
                             <div class="educationCategoryList">
                                 @Html.CheckBoxListFor(model => model.PostedEducationCategories.EducationCategoryIds,
-                                  model => model.AvailableEducationCategories,
-                                  educationcategory => educationcategory.Id,
-                                  educationcategory => educationcategory.Name,
-                                  model => model.SelectedEducationCategories,
-                                  Position.Vertical,
-                                  x => new { @class = "chkEducationCategory", tabindex = 16 })
+                                    model => model.AvailableEducationCategories,
+                                    educationcategory => educationcategory.Id,
+                                    educationcategory => educationcategory.Name,
+                                    model => model.SelectedEducationCategories,
+                                    Position.Vertical,
+                                    x => new { @class = "chkEducationCategory", tabindex = 16 })
                                 <label style="color:red" id="lblmsgEducationCategory"> </label>
+                            </div>
+                            <div class="Fresher">
+                                @Html.LabelFor(x => x.IsFresher)
+                                @Html.CheckBoxFor(x => x.IsFresher)
                             </div>
                         </div>
                     </div>

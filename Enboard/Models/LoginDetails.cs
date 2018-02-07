@@ -180,6 +180,7 @@ namespace Models
         //[Required(ErrorMessage = "Please enter No. of employments")]
         //[RegularExpression(@"^[0-9]{1,2}$", ErrorMessage = "Not a valid No. of employments")]
         //public int NoOfEmployments { get; set; }
+        public bool IsFresher { get; set; }
 
     }
 

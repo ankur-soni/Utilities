@@ -181,6 +181,10 @@ namespace HR_Web.ViewModel
                 //if (employmentCount != null)
                 //{
                     var numberOfEmployments = employmentCount;
+                   if (userDetails.IsFresher??false)
+                   {
+                       employementDetialsPercentage = Convert.ToDouble(100);
+                   }
                     if (numberOfEmployments > 0)
                     {
                         if (userEmployemntList.Any() && userEmployemntList.Count() != 0)
