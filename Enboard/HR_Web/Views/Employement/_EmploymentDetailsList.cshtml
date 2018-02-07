@@ -18,7 +18,7 @@
             </a>
         </h4>
     </div>
-    @using (Html.BeginForm("EditSave", "Employement", FormMethod.Post, new { id = @Html.Raw("frmEdit" + @Model.EmploymentId) }))
+    @using (Html.BeginForm("EditSave", "Employement", FormMethod.Post, new { id = @Html.Raw("frmEdit" + @Model.EmploymentId), @class = "employment-details" }))
     {
         <input type="hidden" id="@Html.Raw("EmployementNo" + @Model.EmploymentId)" name="EmployementNo" value="@Model.EmployementNo" />
         <input type="hidden" id="@Html.Raw("EmploymentId" + @Model.EmploymentId)" name="EmploymentDetID" value="@Model.EmploymentId" />
