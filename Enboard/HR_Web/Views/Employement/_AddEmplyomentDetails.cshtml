@@ -161,7 +161,7 @@
         return date;
     };
 
-  
+
 
     $(".btn-save ").click(function (e) {
         debugger;
@@ -284,6 +284,17 @@
             );
         });
         //$('.hasDatepicker').attr('readonly', true);
+        var status =  @Html.Raw(Json.Encode(Model)) == null ? false : true;
+        var fresher = false;
+        if (status) {
+            fresher =  @Html.Raw(Json.Encode(Model.IsFresher));
+        }
+
+        if (fresher) {
+            $(".emplyomentDetails").css("pointer-events", "none");
+        } else {
+            $(".emplyomentDetails").css("pointer-events", "all");
+        }
     });
    
 </script>
