@@ -60,6 +60,22 @@ namespace Service
             return data;
         }
 
+        public bool IsFresher(int UserID)
+        {
+            var status = false;
+
+            using (IPDEntities ctx = new IPDEntities())
+            {
+             var data = ctx.LoginDetails.FirstOrDefault(m => m.UserID == UserID && m.IsFresher == true);
+                if (data != null && data.IsFresher.HasValue)
+                {
+                    status = data.IsFresher??false;
+                }
+
+            }
+            return status;
+        }
+
         public bool DeleteEmploymnetDetail(int ID, string userName)
         {
             bool result;

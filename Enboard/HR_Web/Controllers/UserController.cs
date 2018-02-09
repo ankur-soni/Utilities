@@ -2483,6 +2483,7 @@ namespace HR_Web.Controllers
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
+                    model.IsFresher = obj.IsFresher??false;
                     //model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
 
@@ -2555,6 +2556,7 @@ namespace HR_Web.Controllers
                         //newly added
                         obj.CountryCode = model.CountryCode;
                         obj.Gender = model.Gender;
+                        obj.IsFresher = model.IsFresher;
                         //obj.NoOfEmployments = model.NoOfEmployments;
 
                         try

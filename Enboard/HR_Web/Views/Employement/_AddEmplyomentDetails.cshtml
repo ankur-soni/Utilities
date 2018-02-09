@@ -3,6 +3,14 @@
 @{
     var CurrencyList = (SelectList)ViewBag.Currencies;
 }
+@*<div class="panel panel-default">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <label>Is Fresher ?</label>
+            <input type="checkbox" id="is-fresher" />
+        </h4>
+    </div>
+</div>*@
 <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab">
@@ -18,7 +26,7 @@
                     {*@
                 @*if (Model.NoOfEmployementAdmin > Model.NoOfEmployementAdded)
                     {*@
-                <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel-group emplyomentDetails emplyoment-details-form" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
                         @using (Html.BeginForm("Index", "Employement", FormMethod.Post, new { id = "PD_FormId" }))
                         {
@@ -153,6 +161,8 @@
         return date;
     };
 
+
+
     $(".btn-save ").click(function (e) {
         debugger;
         e.preventDefault();
@@ -274,5 +284,18 @@
             );
         });
         //$('.hasDatepicker').attr('readonly', true);
+        var status =  @Html.Raw(Json.Encode(Model)) == null ? false : true;
+        var fresher = false;
+        if (status) {
+            fresher =  @Html.Raw(Json.Encode(Model.IsFresher));
+        }
+
+        if (fresher) {
+            $(".emplyomentDetails").css("pointer-events", "none");
+        } else {
+            $(".emplyomentDetails").css("pointer-events", "all");
+        }
     });
+   
 </script>
+

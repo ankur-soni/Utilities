@@ -164,6 +164,7 @@ namespace HR_Web.Controllers
             //employementModel.NoOfEmployementAdmin = userDetails.NoOfEmployments == null ? 0 : Convert.ToInt32(userDetails.NoOfEmployments); 
             employementModel.NoOfEmployementAdded = employmentList.Count;
             employementModel.CurrencyList = GetCurrencies();
+            employementModel.IsFresher = _IEmployementService.IsFresher(userId);
             employementModel.EmploymnetDetailsList = EmploymnetListPagedList(employmentList.OrderByDescending(p => p.ToDate).ToList()).ToList();
             return View(employementModel);
         }

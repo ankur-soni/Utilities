@@ -100,16 +100,20 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.Label("Education Category", new { @class = "" }) <span class="red">*</span>
-                            <div class="educationCategoryList">
+                            <div class="educationCategoryList col-md-5 col-sm-5 col-xs-12">
+                                @Html.Label("Education Category", new { @class = "" }) <span class="red">*</span><br/>
                                 @Html.CheckBoxListFor(model => model.PostedEducationCategories.EducationCategoryIds,
-                                  model => model.AvailableEducationCategories,
-                                  educationcategory => educationcategory.Id,
-                                  educationcategory => educationcategory.Name,
-                                  model => model.SelectedEducationCategories,
-                                  Position.Vertical,
-                                  x => new { @class = "chkEducationCategory", tabindex = 16 })
-                                <label style="color:red" id="lblmsgEducationCategory"> </label>
+                                    model => model.AvailableEducationCategories,
+                                    educationcategory => educationcategory.Id,
+                                    educationcategory => educationcategory.Name,
+                                    model => model.SelectedEducationCategories,
+                                    Position.Vertical,
+                                    x => new {@class = "chkEducationCategory", tabindex = 16})
+                                <label style="color: red" id="lblmsgEducationCategory"> </label>
+                            </div>
+                            <div class="Fresher col-md-5 col-sm-5 col-xs-12">
+                                @Html.LabelFor(x => x.IsFresher)
+                                @Html.CheckBoxFor(x => x.IsFresher)
                             </div>
                         </div>
                     </div>
