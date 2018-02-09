@@ -314,7 +314,6 @@ namespace HR_Web.ViewModel
 
                     uploadDocumentPercentage = (employmentUploadPercentage / Convert.ToDouble(totalCount));
                 }
-                
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentagEducation(userEducationDocumentCatList,educationalDocCount);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageAddressProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof), requiredCountForAddress);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageIDProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof));
