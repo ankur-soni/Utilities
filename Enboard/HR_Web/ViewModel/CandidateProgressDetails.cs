@@ -291,6 +291,10 @@ namespace HR_Web.ViewModel
                 }
 
                 double employmentUploadPercentage = 0.0;
+                if (userDetails.IsFresher ?? false)
+                {
+                    uploadDocumentPercentage = Convert.ToDouble(100);
+                }
                 if (documentDetails.Any() && userDetails.EmploymentDetails.Where(x => x.IsActive == true).Count() != 0)
                 {
                     int totalCount = userDetails.EmploymentDetails.Where(x => x.IsActive == true).Count();
@@ -310,7 +314,7 @@ namespace HR_Web.ViewModel
 
                     uploadDocumentPercentage = (employmentUploadPercentage / Convert.ToDouble(totalCount));
                 }
-
+                
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentagEducation(userEducationDocumentCatList,educationalDocCount);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageAddressProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof), requiredCountForAddress);
                 uploadDocumentPercentage = uploadDocumentPercentage + GetDocumentPercentageIDProof(documentDetails.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof));
