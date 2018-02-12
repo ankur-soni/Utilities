@@ -43,7 +43,7 @@ namespace Silicus.Ensure.Web.Controllers
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.Status == (int)TestSuiteStatus.Ready).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
-            var userTestSuites = _userService.GetAllTestSuiteDetails();
+            var userTestSuites = _testSuiteService.GetEmployeeTestSuite();
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
@@ -66,7 +66,8 @@ namespace Silicus.Ensure.Web.Controllers
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false ).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
-            var userTestSuites = _userService.GetAllTestSuiteDetails();
+            //var userTestSuites = _userService.GetAllTestSuiteDetails();
+            var userTestSuites = _testSuiteService.GetEmployeeTestSuite();
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
@@ -175,6 +176,9 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 testSuiteView.ToExperience = 0;
             }
+
+            testSuiteView.Status = Convert.ToInt32(TestSuiteStatus.Pending);
+
             var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
             if (string.IsNullOrWhiteSpace(errorMessage))
             {

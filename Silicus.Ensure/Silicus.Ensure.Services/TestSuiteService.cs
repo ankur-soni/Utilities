@@ -461,10 +461,12 @@ namespace Silicus.Ensure.Services
 
             var TestSuiteViewQuesModel = new TestSuiteViewQuesBussinessModel();
             TestSuiteViewQuesModel.TestSuiteName = testSuite.TestSuiteName;
-            if (questions.Count > 0)
-            {
-                TestSuiteViewQuesModel.ObjectiveCount = questions.Count(x => x.QuestionType == 1);
-                TestSuiteViewQuesModel.PracticalCount = questions.Count(x => x.QuestionType == 2);
+
+            TestSuiteViewQuesModel.ObjectiveCount = questions.Count(x => x.QuestionType == 1);
+            TestSuiteViewQuesModel.PracticalCount = questions.Count(x => x.QuestionType == 2);
+
+            if (questions.Count >= 10)
+            {                
                 TestSuiteViewQuesModel.ErrorMessage = "Test Suit generated successfully";
             }
             else

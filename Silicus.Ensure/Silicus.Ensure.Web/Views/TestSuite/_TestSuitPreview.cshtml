@@ -55,7 +55,7 @@
     </div>
 
     <div class="modal-footer">
-        @if (Model.ObjectiveCount == 0 && Model.PracticalCount == 0)
+        @if (Model.ObjectiveCount + Model.PracticalCount < 10)
         {
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         }
