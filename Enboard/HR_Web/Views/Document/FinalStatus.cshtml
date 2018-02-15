@@ -111,6 +111,9 @@
                     if ('@Model.FinalStatus'.toLowerCase() === 'true') {
                         $("#FinalStatus").attr('disabled', 'disabled');
                     }
+                    if ('@Model.FinalStatus'.toLowerCase() === 'false') {
+                        $("#FinalStatus").removeAttr('disabled');
+                    }
 
                     if ('@flag' === 'False') {
                         $('#divDetails').show();

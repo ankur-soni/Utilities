@@ -15,6 +15,7 @@ namespace Models
         public List<int> EducationCategoryList { get; set; }
         public List<EmploymentDetail> EmploymentDetailsList { get; set; }
         public List<Master_Document> Master_DocumentList { set; get; }
+         public string HavePassport { get; set; }
     }
 
     public class DocumentDetailModel

@@ -465,6 +465,14 @@
                 $("#accordion button").remove();
                 $(".userNote").remove();
             }
+            if ('@ViewBag.IsSubmitted'.toLowerCase() === 'false') {
+                $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save, #PD_txtDOB").removeAttr('disabled');
+                $('#FD_Save').add();
+                $("#accordion a.btn-reset,#accordion a.btn-delete").add();
+                $("#accordion button").add();
+                $(".userNote").add();
+                $("#PD_txtDOB").attr('readonly', 'false');
+            }
         });
 
         //Set controls and validations for spouse name
@@ -768,7 +776,7 @@
                 if (otherBirthCity != '') {
                     $("#txtOtherPlaceOfBirthCity").show();
                     $("#PD_lstPlaceofBirthCity option[value='" + @Model.BirthCity + "']").attr('selected', 'selected')
-                    $("#txtOtherPlaceOfBirthCity").val(otherCurrCity);
+                  //  $("#txtOtherPlaceOfBirthCity").val(otherCurrCity);
                 }
                 else {
                     if (otherBirthCity == "" && '@Model.BirthCity' != '' && data.length > 1)

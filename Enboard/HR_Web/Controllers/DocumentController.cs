@@ -107,11 +107,15 @@ namespace HR_Web.Controllers
             ViewBag.DocCatID = DocCatID;
             var userDetails = _IUserService.GetById(userId);
             ViewBag.IsSubmitted = userDetails == null ? false : userDetails.IsSubmitted.HasValue && userDetails.IsSubmitted.Value;
+            var empDetailsList = GetEmploymentDetailsList(userId);
             return View(new DocumentDetailListViewModel()
             {
                 Master_DocumentList = DocumentDetaillist,
                 EmploymentDetailsList = GetEmploymentDetailsList(userId),
-                EducationCategoryList = GetEducationCategoryList(userId)
+                EducationCategoryList = GetEducationCategoryList(userId),
+                HavePassport = /*userDetails.Password*/""
+                
+
             });
         }
 
