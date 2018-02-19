@@ -558,7 +558,9 @@
         });
 
         //Save button click event
-        $("#PD_SaveId").click(function () {
+        $("#PD_SaveId").on('click', function () {
+            alert("Hi");
+     
             var form = $('#PD_FormId');
 
             //Spouse name validations

@@ -326,26 +326,69 @@ namespace HR_Web.ViewModel
         private double GetDocumentPercentageIDProof(IEnumerable<DocumentDetail> DocumentDetails)
         {
             double uploadDocumentPercentage = 0.0;
-            int acuatalCount = 0;
+            int actualCount = 0;
+            var requiredCountForIdProof = 0;
             if (DocumentDetails.Any() && DocumentDetails.Count() != 0)
             {
+                string hasPassport = string.Empty;
+                hasPassport= DocumentDetails.FirstOrDefault().LoginDetail.HasPassport;
+
+                hasPassport = "werwer";
+
+
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
                 {
-                    switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
+                    if (!String.IsNullOrEmpty(hasPassport))
                     {
-                        case Constant.IDProof.PANCard: acuatalCount++;
-                            break;
-                        //case Constant.IDProof.DrivingLicence: acuatalCount++;
-                        //    break;
-                        //case Constant.IDProof.VoterID: acuatalCount++;
-                        //    break;
-                        //case Constant.IDProof.MarriageCertificate: acuatalCount++;
-                        //    break;
-                        default:
-                            break;
+                        requiredCountForIdProof = 2;
+                        switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
+                        {
+                            case Constant.IDProof.PANCard:
+                                actualCount++;
+                                break;
+                            case Constant.IDProof.Passport: actualCount++;
+                                break;
+                            //case Constant.IDProof.DrivingLicence: acuatalCount++;
+                            //    break;
+                            //case Constant.IDProof.VoterID: acuatalCount++;
+                            //    break;
+                            //case Constant.IDProof.MarriageCertificate: acuatalCount++;
+                            //    break;
+                            default:
+                                break;
+                        }
+                        if (actualCount >= requiredCountForIdProof)
+                        {
+                            uploadDocumentPercentage = 100;
+                        }
+                        else
+                        {
+                            uploadDocumentPercentage = (Convert.ToDouble(actualCount) / Convert.ToDouble(requiredCountForIdProof)) * Convert.ToDouble(100);
+                        }
                     }
+                    else
+                    {
+                        switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
+                        {
+                            case Constant.IDProof.PANCard:
+                                actualCount++;
+                                break;
+                            //case Constant.IDProof.DrivingLicence: acuatalCount++;
+                            //    break;
+                            //case Constant.IDProof.DrivingLicence: acuatalCount++;
+                            //    break;
+                            //case Constant.IDProof.VoterID: acuatalCount++;
+                            //    break;
+                            //case Constant.IDProof.MarriageCertificate: acuatalCount++;
+                            //    break;
+                            default:
+                                break;
+                        }
+                    }
+                    uploadDocumentPercentage = (Convert.ToDouble(actualCount) / Convert.ToDouble(1)) * Convert.ToDouble(100);
+
                 }
-                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(1)) * Convert.ToDouble(100);
+              
             }
             return uploadDocumentPercentage;
         }

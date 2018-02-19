@@ -203,11 +203,11 @@
         var validation = true;
 
         var idProofMand = $("#idProof .docDescription span.mand").length;
-       
+        alert(idProofMand);
         if (idProofMand < 1) {
             validation = false;
         }
-
+    
         $("#adressProof .docList").each(function () {
             var uploaddoc = $(this).closest('ul').find('span.uploadName').length;
             if (uploaddoc == 0) {
@@ -321,6 +321,7 @@
                         setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 1600);
                     }
                     ajaxindicatorstop();
+                    $(".divUploadClass").css("display", "block")
                 },
                 error: function (error) {
                     ajaxindicatorstop();
@@ -346,6 +347,7 @@
                   closeButton: false,
                   allowHtml: true,
                   onShown: function (toast) {
+                      alert("ds");
                       $("#confirmationRevertYes").click(function () {
                           DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo);
                           var rowid = "Idproof" + SubDocCat_Pkforcontrol;
@@ -355,6 +357,15 @@
                           control.replaceWith(control = control.clone(true));
                           var cancelid = "groupbtn" + SubDocCat_Pkforcontrol;
                           $('#' + cancelid).css('visibility', 'hidden');
+                          var uploadId = "" + SubDocCat_Pkforcontrol;
+                          $('#' + DocumentID).css('visibility', 'hidden');
+                          var upload_Button = '#divUpload' + DocumentID;
+                          $("upload_Button").show();
+                          var upload_Button = '#divUpload' + DocumentID;
+                          $("upload_Button").show();
+
+                          $("#divUpload4").show();
+                          $(".divUploadClass").css("display", "block")
                       });
                       $("#confirmationRevertYes").click(function () {
                           this.fadeOut();
@@ -377,7 +388,8 @@
         var rowid = "Idproof" + DocumentID + EmploymentDetailID;
         var fileName = uploadid.files[0].name;
         var fileExist = false;
-
+        var isAddressProof = $('#IsAddressProof').is(":checked")
+        var isIdProof = $('#IsIdProof').is(":checked")
         $.ajax({
             type: "GET",
             url: '/Document/CheckDuplicateFileName',
@@ -397,7 +409,7 @@
                     $.each($(uploadid).prop("files"), function (k, v) {
                         if (uploadid.files[0].name.length <= 35) {
                             //Code change - Modified save call as per the modified defination
-                            SaveUpload(DocCat_Pk, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, uploadid);
+                            SaveUpload(DocCat_Pk, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, uploadid, isAddressProof, isIdProof);
                         }
                         else {
                             toastr.error('File Name charater limit should be less than 30');
@@ -420,7 +432,7 @@
 
     }
 
-    function SaveUpload(DocCat_Id, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, FileId) {
+    function SaveUpload(DocCat_Id, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, FileId, IsAddressProof, IsIdProof) {
         if (EmploymentDetID === undefined) {
             EmploymentDetID = "";
         }
@@ -455,12 +467,14 @@
         else {
             return false;
         }
-
+       
         formData.append("DocCat_Id", DocCat_Id);
         formData.append("DocumentID", DocumentID);
         formData.append("DocumentCategory", DocumentCategory);
         formData.append("EmploymentDetID", EmploymentDetID);
         formData.append("EmployementNo", EmployementNo);
+        formData.append("IsAddressProof", IsAddressProof);
+        formData.append("IsIdProof", IsIdProof);
 
         //Code change - Corrected Formatting
         ajaxindicatorstart('Uploading.. Please wait..');
@@ -483,8 +497,16 @@
                     var res = docids.split(" ");
                     array = array.concat(res);
                     var DocCategory = "'" + DocumentCategory + "'";
-
+                    //var upload_Button = '#divUpload' + DocumentID;
+                    //$("upload_Button").hide();
+                 
+                    //$("#divUpload4").hide();
                     toastr.success('Document has been uploaded.');
+                  
+                    $(".divUploadClass").css("display","none")
+
+                  
+
                     setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 5000);
          
                  

@@ -28,11 +28,11 @@ namespace HR_Web.Utilities
         public struct IDProof
         {
              public const int PANCard = 2;
-             public const int DrivingLicence = 3; 
+             public const int DrivingLicence = 44; 
              public const int VoterID = 14;
              public const int MarriageCertificate = 15;
              public const int ValidWorkVISA = 16;
-            public const int Passport = 4;
+            public const int Passport = 3;
         }
 
         public struct AddressProof

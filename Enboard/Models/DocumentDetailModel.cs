@@ -16,6 +16,8 @@ namespace Models
         public List<EmploymentDetail> EmploymentDetailsList { get; set; }
         public List<Master_Document> Master_DocumentList { set; get; }
          public string HavePassport { get; set; }
+        public bool IsAddressProof { get; set; }
+        public bool IsIdProof { get; set; }
     }
 
     public class DocumentDetailModel
@@ -69,5 +71,9 @@ namespace Models
         public string DocumentCategory { get; set; }
         public string EmploymentDetID { get; set; }
         public string EmployementNo { get; set; }
+        public bool IsAddressProof { get; set; }
+        public bool IsIdProof { get; set; }
     }
+
 }
+

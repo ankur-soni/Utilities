@@ -11,6 +11,7 @@ using System.IO;
 using HR_Web.ViewModel;
 using Service.Interface;
 using HR_Web.Utilities;
+using static HR_Web.Utilities.Constant;
 
 namespace HR_Web.Controllers
 {
@@ -108,14 +109,21 @@ namespace HR_Web.Controllers
             var userDetails = _IUserService.GetById(userId);
             ViewBag.IsSubmitted = userDetails == null ? false : userDetails.IsSubmitted.HasValue && userDetails.IsSubmitted.Value;
             var empDetailsList = GetEmploymentDetailsList(userId);
+            string hasPassport = string.Empty;
+
+            if(userDetails != null)
+            {
+                hasPassport = userDetails.HasPassport;
+            }
+           
             return View(new DocumentDetailListViewModel()
             {
                 Master_DocumentList = DocumentDetaillist,
                 EmploymentDetailsList = GetEmploymentDetailsList(userId),
                 EducationCategoryList = GetEducationCategoryList(userId),
-                HavePassport = /*userDetails.Password*/""
-                
+                HavePassport = "hasPassport"
 
+               // HavePassport = "hasPassport"
             });
         }
 
@@ -163,6 +171,8 @@ namespace HR_Web.Controllers
             userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
             var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
 
+            var documentInfo = docDetails_lst.Where(d => d.DocumentID == Convert.ToInt32(saveUploadDocumentVewModel.DocumentID)).FirstOrDefault(); ;
+
             for (int i = 0; i < Request.Files.Count; i++)
             {
 
@@ -200,7 +210,20 @@ namespace HR_Web.Controllers
                                 foreach (var item in obj)
                                 {
                                     item.IsActive = true;
-                                    status = _IDocumentDetailsService.Update(item, null, "");
+
+                                    //_document.
+                                    // item.Master_Document.
+                                  
+                                        //item.DocCatID = 1;
+
+                                        //status = _IDocumentDetailsService.Update(item, null, "");
+                                    
+                                        //item.DocCatID = 2;
+                                        ////  status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+
+                                        status = _IDocumentDetailsService.Update(item, null, "");
+                                   
+                                   
                                 }
 
                             }
@@ -224,7 +247,16 @@ namespace HR_Web.Controllers
                         {
                             _docDetails.EmploymentDetID = Convert.ToInt32(saveUploadDocumentVewModel.EmploymentDetID);
                         }
+                        _docDetails.DocCatID = DocumentCategory.IdProof;
+                        _docDetails.DocumentID = IDProof.Passport;
+                        _docDetails.IsAddressProof = Convert.ToBoolean( saveUploadDocumentVewModel.IsAddressProof);
                         status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                        //_docDetails.IsIdProof = saveUploadDocumentVewModel.IsIdProof;
+                        _docDetails.DocCatID = DocumentCategory.AddressProof; 
+                        _docDetails.DocumentID = AddressProof.Passport;
+                        _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
+                        status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+
                         DodIDs += id.ToString() + " ";
                     }
                     else

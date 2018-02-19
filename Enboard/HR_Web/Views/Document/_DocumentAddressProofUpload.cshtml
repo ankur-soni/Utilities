@@ -4,6 +4,11 @@
     IEnumerable<Data.DocumentDetail> _documentDetailList;
     IEnumerable<Data.Master_Document> _Master_DocumentListAddress = Model.Master_DocumentList;
 }
+<style>
+    divUploadClass {
+    display: block;
+}
+</style>
 <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i>Upload Address Proof document each for Current and Permanent Address. Upload against any of the options below. </span>
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
 {
@@ -15,7 +20,27 @@
                 <li>
                     <h6 class="docName">
                         @item.Document
+                        @if (item.Document == "Passport")
+                        {<br/>
+                            <label>Use as address proof</label>
+                            @Html.CheckBoxFor(m => m.IsIdProof)
+                        }
                     </h6>
+                   @if (item.Document == "Passport")
+                   {
+                    <ul class="docUpload">
+                        <li>
+                            <span class="userNote"> &nbsp;</span>
+
+                            <div class="btn btn-primary btn-upload btn-sm pull-right divUploadClass">
+                                <span>Upload</span>
+                                <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                            </div>
+                        </li>
+                    </ul>
+                   }
+                   else
+                   {
                     <ul class="docUpload">
                         <li>
                             <span class="userNote"> &nbsp;</span>
@@ -26,6 +51,8 @@
                             </div>
                         </li>
                     </ul>
+                   }
+                   
                     @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
                 {
@@ -38,15 +65,15 @@
                         <li>
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                             <span class="uploadName"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
-                            <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
+                            <a href="#" id =@("Reset" + item.DocumentID)+  class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
                         </li>
                             }
                         }
                     <li class="addDocument">
                         <span class="userNote"> &nbsp; </span>
-                        <div class="btn btn-primary btn-upload btn-sm pull-right">
+                        <div id=@("divUpload"+item.DocumentID) class="btn btn-primary btn-upload btn-sm pull-right">
                             <span>Upload</span>
-                            <input id=@("SaveUpload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                            <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
                         </div>
                     </li>
                 </ul>

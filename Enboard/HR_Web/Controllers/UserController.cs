@@ -895,8 +895,15 @@ namespace HR_Web.Controllers
             ViewBag.Languages = GetLanguages();
             ViewBag.BloodGroup = GetBloodGroup();
             ViewBag.MaritalStatus = GetMaritalStatus();
-
-
+            var loginDetails = _IUserService.GetById(userId);
+            if(loginDetails != null)
+            {
+                loginDetails.HasPassport = details.PassportNumber;
+                loginDetails.HasPassport = "kjksfj";
+                _IUserService.Update(loginDetails, null, "");
+            }
+        
+       
             return Json(new { result = true, Message = "Personal details updated sucesfully" }, JsonRequestBehavior.AllowGet);
 
         }

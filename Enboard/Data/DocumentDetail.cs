@@ -22,6 +22,8 @@ namespace Data
         public string ContentType { get; set; }
         public byte[] Data { get; set; }
         public string FilePath { get; set; }
+        public bool IsAddressProof { get; set; }
+        public bool IsIdProof { get; set; }
         public Nullable<long> EmploymentDetID { get; set; }
         public Nullable<bool> IsUploaded { get; set; }
         public Nullable<bool> IsActive { get; set; }
