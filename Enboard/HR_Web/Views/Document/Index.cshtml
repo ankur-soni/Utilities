@@ -27,10 +27,10 @@
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             <ul class="nav nav-tabs responsive-tabs">
-                                <li class="@(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty)"><a href="#idProof">ID Proof <span id="badgeId" class="badge"></span> </a></li>
-                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)"><a href="#adressProof">Address Proof <span id="badgeAdd" class="badge"></span> </a></li>
+                                <li class="@(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty)"><a href="#idProof" onclick="setDetails();">ID Proof <span id="badgeId" class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)"><a href="#adressProof" onclick="setDetails();">Address Proof <span id="badgeAdd" class="badge"></span> </a></li>
                                 <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Education.ToString()) ? "active" : string.Empty)"><a href="#educational">Educational Documents <span id="badgeEdu" class="badge"></span> </a></li>
-                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)"><a href="#emplyoment">Employment Documents <span id="badgeEmp"class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)"><a href="#emplyoment">Employment Documents <span id="badgeEmp" class="badge"></span> </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty) " id="idProof">
@@ -48,20 +48,20 @@
                             </div>
                             @*Change request - Merged save and next code*@
                             @*<div class="row btnRow">
-                                <div class="col-md-12">
-                                    <a href="#" onclick="SaveClick();" class="btn-save">Save </a>
-                                </div>
-                            </div>*@
+                                    <div class="col-md-12">
+                                        <a href="#" onclick="SaveClick();" class="btn-save">Save </a>
+                                    </div>
+                                </div>*@
                         </div>
-                       
+
                     </div>
-                   
+
                 </div>
-               
+
             </div>
-           
+
         </div>
-        
+
     </div>
     <div class="row btnRow finalDetailsNext">
         <div class="col-md-12">
@@ -69,7 +69,7 @@
             {
                 <a href="#" onclick="NextClick();" class="btn-save">Next</a>
             }
-            
+
         </div>
     </div>
 </div>
@@ -185,7 +185,7 @@
                     toastr.error('Please upload mandatory documents.');
                     return false;
                 }
-               
+
             });
             if (validation) {
                 $("#badgeEmp").parent('a').click();
@@ -199,7 +199,7 @@
     }*@
     @*Change request - Merged save and next code*@
     function NextClick() {
-       
+
         var validation = true;
 
         var idProofMand = $("#idProof .docDescription span.mand").length;
@@ -207,7 +207,14 @@
         if (idProofMand < 1) {
             validation = false;
         }
-    
+   var passportStatus=  $("#hidstatusIDProof").val();
+   if (passportStatus =="true")
+   {
+       if (idProofMand <= 2) {
+           validation = false;
+       }
+   }
+
         $("#adressProof .docList").each(function () {
             var uploaddoc = $(this).closest('ul').find('span.uploadName').length;
             if (uploaddoc == 0) {
@@ -242,7 +249,7 @@
             return validation;
         }
         else {
-            location.href="@Url.Action("FinalStatus", "Document")";
+            location.href = "@Url.Action("FinalStatus", "Document")";
         }
 
     }
@@ -289,10 +296,10 @@
         var addcount = $("#adressProof").find(".uploadName").length;
         var educount = $("#educational").find(".uploadName").length;
         var empcount = $("#emplyoment").find(".uploadName").length;
-        $("#badgeId").html(idcount).attr("title",  (idcount == 0 || idcount == 1)  ? idcount +" document uploaded" : idcount +" documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
-        $("#badgeAdd").html(addcount).attr("title", (addcount == 0 || addcount == 1) ? addcount+" document uploaded" :addcount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
-        $("#badgeEdu").html(educount).attr("title", (educount == 0 || educount == 1) ?educount+ " document uploaded" :educount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
-        $("#badgeEmp").html(empcount).attr("title", (empcount == 0 || empcount == 1) ? empcount+" document uploaded" :empcount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeId").html(idcount).attr("title", (idcount == 0 || idcount == 1) ? idcount + " document uploaded" : idcount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeAdd").html(addcount).attr("title", (addcount == 0 || addcount == 1) ? addcount + " document uploaded" : addcount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeEdu").html(educount).attr("title", (educount == 0 || educount == 1) ? educount + " document uploaded" : educount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeEmp").html(empcount).attr("title", (empcount == 0 || empcount == 1) ? empcount + " document uploaded" : empcount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
         $(".badge").tooltip({
             placement: "top"
         });
@@ -303,6 +310,7 @@
 
 
     function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
+        alert(DocumentID);
         var data = { DocumentID: DocumentID, EmployementNo: EmployementNo };
         if (DocumentID > 0) {
             ajaxindicatorstart('Deleting file.. Please wait..');
@@ -320,8 +328,10 @@
                         toastr.error('Unable to delete uploaded file.');
                         setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 1600);
                     }
+                 
+
                     ajaxindicatorstop();
-                    $(".divUploadClass").css("display", "block")
+
                 },
                 error: function (error) {
                     ajaxindicatorstop();
@@ -330,6 +340,7 @@
             });
         }
     }
+
 
     function Reset(DocumentID, EmployementNo, EmploymentDetID) {
 
@@ -347,8 +358,15 @@
                   closeButton: false,
                   allowHtml: true,
                   onShown: function (toast) {
-                      alert("ds");
+
                       $("#confirmationRevertYes").click(function () {
+                         
+                         // var DocumentID = $("#hidDocDetIDProof").val();
+                         // alert(DocumentID)
+                         // //DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo);
+                         //var DocumentID = $("#hidDocDetIdAddressProof").val();
+                         // //DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo);
+                         // alert(DocumentID);
                           DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo);
                           var rowid = "Idproof" + SubDocCat_Pkforcontrol;
                           $('#' + rowid).empty();
@@ -467,7 +485,7 @@
         else {
             return false;
         }
-       
+
         formData.append("DocCat_Id", DocCat_Id);
         formData.append("DocumentID", DocumentID);
         formData.append("DocumentCategory", DocumentCategory);
@@ -475,7 +493,7 @@
         formData.append("EmployementNo", EmployementNo);
         formData.append("IsAddressProof", IsAddressProof);
         formData.append("IsIdProof", IsIdProof);
-
+        debugger;
         //Code change - Corrected Formatting
         ajaxindicatorstart('Uploading.. Please wait..');
         $.ajax({
@@ -483,7 +501,7 @@
             url: '/Document/SaveUploadedDocuments',
             data: formData,
             dataType: 'json',
-           contentType: false,
+            contentType: false,
             processData: false,
             async: false,
             success: function (response) {
@@ -497,33 +515,60 @@
                     var res = docids.split(" ");
                     array = array.concat(res);
                     var DocCategory = "'" + DocumentCategory + "'";
+
+                    $("#hidstatusIDProof").val("true");
+                    $("#hidstatusAddressProof").val("true");
+
                     //var upload_Button = '#divUpload' + DocumentID;
                     //$("upload_Button").hide();
-                 
+
                     //$("#divUpload4").hide();
                     toastr.success('Document has been uploaded.');
-                  
-                    $(".divUploadClass").css("display","none")
 
-                  
+                    $(".divUploadClass").css("display", "none")
+
+
 
                     setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 5000);
-         
-                 
+
+
 
                 }
                 else {
                     toastr.error('Unable to upload file.');
-                   setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); },5000);
+                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 5000);
 
                 }
                 ajaxindicatorstop();
             },
             error: function (error) {
-              ajaxindicatorstop();
+                ajaxindicatorstop();
                 toastr.error(JSON.stringify(error.responseText.trim()));
             }
         });
 
+    }
+
+    function setDetails() {
+        debugger;
+        var docDetId = $("#hidDocDetIDProof").val();
+        var statusIdProof = $("#hidstatusIDProof").val();
+        var docDetAddress = $("#hidDocDetIdAddressProof").val();
+        var statusAddessProof = $("#hidstatusAddressProof").val();
+       
+        if (docDetId != "" && docDetId != undefined)
+        {
+            $(".divUploadClass").css("display", "none");
+            $("#divUpload4").hide();
+        }
+       else{
+            $(".divUploadClass").css("display", "block");
+            $("#divUpload4").show();
+         }
+        
+
+
+
+        return false;
     }
 </script>
