@@ -236,11 +236,35 @@
         </div>
     </div>
 </div>
+@using (Html.BeginForm("LoginAs","User",FormMethod.Post, new {id = "login-as"}))
+{
+    <div id="modalUserDetailsForLoginAs" class="modal fade in" aria-hidden="false" style="display:none;">
+        <div class="modal-backdrop fade in" style="z-index:0;"></div>
 
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseUserDetailsForLogInAs()">x</button>
+                    <h4 class="modal-title" id="mailTitalForLoginAs">Candidate List</h4>
+                </div>
+                <div class="modal-body pop-upNav" style="text-align: center;">
+                    <div id="divUserDetailsContentForLoginAs">
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="LogInAs">Login</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CloseUserDetailsForLogInAs()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+}
 
 @*script for user defined functions*@
 <script type="text/javascript">
-
     $(document).ready(function () {
         //click event for search user
         $('#btnSearch').click(function () {
@@ -321,27 +345,10 @@
 
         $('#modalJobViteDetails').hide();
     }
+    function CloseUserDetailsForLogInAs() {
+        debugger;
+        $('#modalUserDetailsForLoginAs').hide();
+    }
 
-    //function ShowJobViteDetails() {
-
-    //    var page = 1;
-    //    var searchString = "";
-    //    var data = { page: page, sortOrder: "", searchString: searchString }
-    //    ajaxindicatorstart('Please wait..');
-    //    $.ajax({
-    //        url: '/User/SyncCandidates/',
-    //        success: function (data) {
-    //            $("#divJobvitetDetailsContent").html(data);
-
-    //            ajaxindicatorstop();
-    //        },
-    //        error: function (data) {
-    //            ajaxindicatorstop();
-    //            toastr.error("Error occurred while opening Change Request Modal form.");
-    //        }
-    //    });
-    //    $('#modalJobViteDetails').show();
-
-    //}
 
 </script>
