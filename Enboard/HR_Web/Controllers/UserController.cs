@@ -766,7 +766,8 @@ namespace HR_Web.Controllers
                     {
                         _personalDetails = PersonalDetails;
                         _Logindetails = LoginDetails;
-
+                        System.Web.HttpContext.Current.Session["CandidateEmail"] = _Logindetails.Email;
+                        System.Web.HttpContext.Current.Session["UserID"] = _Logindetails.UserID;
                         employeePersonalDetails.FirstName = _Logindetails.FirstName;
                         employeePersonalDetails.LastName = _Logindetails.LastName;
                         employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
@@ -805,7 +806,8 @@ namespace HR_Web.Controllers
                 else
                 {
                     _Logindetails = LoginDetails;
-
+                    System.Web.HttpContext.Current.Session["CandidateEmail"] = _Logindetails.Email;
+                    System.Web.HttpContext.Current.Session["UserID"] = _Logindetails.UserID;
                     employeePersonalDetails.FirstName = _Logindetails.FirstName;
                     employeePersonalDetails.LastName = _Logindetails.LastName;
                     employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
@@ -2366,6 +2368,38 @@ namespace HR_Web.Controllers
             ZipFile.CreateFromDirectory(folderPath, zipPath);
         }
 
+        private void ConvertByteStreamFileToZip(int userId,int docId)
+        {
+           // var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "").Where(m => m.UserID == userId && m.IsActive == true);
+            var document = _IDocumentDetailsService.GetById(docId);
+            var userDetails = _IUserService.GetById(userId);
+            //string filename = userDetails.FirstName + "_" + userDetails.LastName;
+            string folderPath = Path.Combine(Server.MapPath("~/UploadedDocuments/"), document.DocumentName);
+            //string zipPath = folderPath + ".zip";
+            //DeleteAllZipFilesAndFolders();
+            //if (Directory.Exists(folderPath))
+            //    Directory.Delete(folderPath, true);
+                byte[] fileByte = document.Data;
+                string strContentType = string.Empty;
+                string strFileName = string.Empty;
+                strFileName = "Doc" +  "_" + document.DocumentName;
+                Response.Clear();
+                MemoryStream ms = new MemoryStream(fileByte);
+
+                //if (!Directory.Exists(folderPath))
+                //{
+                //    Directory.CreateDirectory(folderPath);
+                //}
+                //string path = "";
+                //path = Path.Combine(folderPath);
+                FileStream file = new FileStream(folderPath, FileMode.Create, FileAccess.Write);
+                ms.WriteTo(file);
+                file.Close();
+                ms.Close();                          
+           // ZipFile.CreateFromDirectory(folderPath, zipPath);
+        }
+
+
         // this methode is used to delete existing all zip and folders
         public void DeleteAllZipFilesAndFolders()
         {
@@ -2398,6 +2432,24 @@ namespace HR_Web.Controllers
             string folderPath = Path.Combine(Server.MapPath("~/UploadedDocuments/"), filename);
 
             SendMailToUser(userDetails, body, sub, to, Convert.ToBoolean(isAttach), folderPath + ".zip");
+
+            return Json("sucess");
+        }
+        [HttpPost]
+        public ActionResult SendEmailForRejectDocumment(string to, string sub, string body, string isAttach, string userId,string documentId)
+        {
+            DocumentDetail Doc = _IDocumentDetailsService.GetById(Convert.ToInt32(documentId));
+            // string folderPath = Doc.DocumentName;
+
+            LoginDetail userDetails = _IUserService.GetById(Convert.ToInt32(userId));
+            ConvertByteStreamFileToZip(Convert.ToInt32(userId), Convert.ToInt32(documentId));
+           
+            //string filename = userDetails.FirstName + "_" + userDetails.LastName;
+            string filePath = Path.Combine(Server.MapPath("~/UploadedDocuments/"), Doc.DocumentName);
+
+            SendMailToUser(userDetails, body, sub, to, Convert.ToBoolean(isAttach), filePath);
+            userDetails.IsSubmitted = false;
+            _IUserService.Update(userDetails,null, "");
 
             return Json("sucess");
         }
@@ -4399,6 +4451,7 @@ namespace HR_Web.Controllers
             ViewBag.PageIndex = pageNumber;
             ViewBag.SearchString = searchString;
             ViewBag.DocUserId = userId;
+            //ViewBag.DocName=
 
             return PartialView("_UserDocList", data.ToPagedList(pageNumber, pageSize));
         }

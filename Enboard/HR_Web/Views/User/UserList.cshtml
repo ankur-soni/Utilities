@@ -149,9 +149,13 @@
 <div id="documentStatusImageModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
     <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
     <input type="hidden" id="hdnDocId" />
+    <input type="hidden" id="hdnDocName" />
     <div class="modal-dialog" style="width: 60%;">
         <div class="modal-content" style="height: 600px;">
+          
             <div class="modal-header" style="height: 8%;">
+                <label id="lbDocCategory">fghfg</label>
+                <label id="lbDocName">fghfg</label>
                 <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
                 <h4 class="modal-title" id="hTitle"></h4>
             </div>
@@ -164,7 +168,7 @@
             <div class="clearfix"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="funVerify(true)">Approve</button>
-                <button type="button" class="btn btn-primary" onclick="funVerify(false)">Reject</button>
+                <button type="button" class="btn btn-primary" onclick="MailSendForRejection()">Reject</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
             </div>
         </div>
@@ -207,6 +211,48 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="fnSendMail()">Send</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancelMail()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="documentRejectMailModal" class="modal fade in" aria-hidden="false" style="display:none;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnUserIdRejectMail" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="ErrorDiv_EmailRejectMail" class="alert alert-danger" role="alert" style="display:none"> </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelRejectMail()">x</button>
+                <h4 class="modal-title" id="mailTital">Send Email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                    <div class="form-group">
+                        <label class="control-label">To</label><span class="red">*</span>
+                        <input class="form-control" id="txtToRejectMail" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <input class="form-control" id="txtSubjectRejectMail" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Body</label>
+
+                        <textarea id="txtBodyRejectMail" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input id="cbxAttachmentRejectMail" type="checkbox" checked="checked" name="attachment" value="Yes"> &nbsp; <label id="lblcheckbox">Attach documents</label>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="fnSendMailForReject()">Send</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancelRejectMail()">Cancel</button>
             </div>
         </div>
     </div>

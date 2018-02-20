@@ -32,6 +32,7 @@ namespace HR_Web.Utilities
              public const int VoterID = 14;
              public const int MarriageCertificate = 15;
              public const int ValidWorkVISA = 16;
+            public const int Passport = 4;
         }
 
         public struct AddressProof

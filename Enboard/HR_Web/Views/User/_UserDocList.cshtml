@@ -8,6 +8,9 @@
     var upArrow = "~/images/up-arrow.png";
     var downArrowPath = @Url.Content(downArrow);
     var upArrowPath = @Url.Content(upArrow);
+    
+    // var userID = System.Web.HttpContext.Current.Session["UserID"] as string;
+    // var userID = ViewBag.DocUserId;
 }
 <style type="text/css">
     th:hover:not([data-sort=disabled]) {
@@ -31,8 +34,7 @@
 
 <div class="box-body table-responsive">
 
-
-
+    
 
     @if (Model.Count() > 0)
     {
@@ -99,7 +101,7 @@
                                 }
                                 <td class="@strcolor">@Html.Raw(user.Maincategory)</td>
                                 <td class="@strcolor">@Html.Raw(user.SubCategory)</td>
-                                <td><a style="cursor:pointer;" title="Verify Doc" onclick="fnViewDoc(@user.Id,'@user.FilePath','@strTitleName')">@Html.Raw(user.DocumentName)</a></td>
+                                <td><a style="cursor:pointer;" title="Verify Doc" onclick="fnViewDoc(@user.Id,'@user.FilePath','@strTitleName','@user.DocumentName','@user.SubCategory')">@Html.Raw(user.DocumentName)</a></td>
                                 @if (user.IsVerify != null)
                                 {
                                     <td class="@strcolor">@Html.Raw(user.IsVerify == true ? "Approved" : "Rejected")</td>
@@ -156,8 +158,12 @@
 }
 
 <script>
-    function fnViewDoc(docId, docName, titleName) {;
+    function fnViewDoc(docId, docName, titleName,fileName,docCateory) {;
+
         $("#hdnDocId").val(docId);
+        $("#hdnDocName").val(docName);
+        $("#lbDocName").text(fileName);
+        $("#lbDocCategory").text(docCateory);
         var url = '@Url.Action("getImg", "Document")?id=' + docId;
 
         var imgWithExt = docName.split('.');
@@ -194,6 +200,11 @@
         $('#documentStatusMailModal').hide();
     }
 
+    // function for hide model
+    function cancelRejectMail() {
+        $('#documentRejectMailModal').hide();
+    }
+
     // function for Approve / Dis-Approve Doc
     function funVerify(result) {
         var userId = @ViewBag.DocUserId;
@@ -219,6 +230,31 @@
         });
     }
 
+    @*// function for Approve / Dis-Approve Doc
+    function funRejectStatus(result,docId) {
+        var userId = @ViewBag.DocUserId;
+        var intDocId = $("#hdnDocId").val();
+        var strUrl = '/User/VerifyDoc';
+        $.ajax({
+            type: "POST",
+            url: strUrl,
+            data: '{"Id":"' + docId + '" , "Val":"' + result + '"}',
+            contentType: "application/json; charset=utf-8",
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
+                return false;
+            },
+            success: function (data) {
+                $('#documentStatusImageModal').hide();
+                $('#myModalImage').hide();
+                $('#sucess-msg').show();
+                setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 3000)
+                GetUserDocumentDetails(userId);
+                //window.location.reload();
+            }
+        });
+    }*@
+
     function MailSend(userId, CandidateName) {
         $("#hdnUserId").val(userId);
         $("#txtTo").val("");
@@ -230,7 +266,30 @@
         $('#txtBody').val("Hello,\r\nPlease find the attached documents for the candidate " + CandidateName + " \r\n \r\n<br/><br/>From,<br/>\r\nTeam Silicus");
         //    $('#txtBody').val("Hello,\r\nPlease find the attached documents for the candidate " + CandidateName + " \r\n \r\nFrom,\r\nTeam Silicus");
         $('#documentStatusMailModal').show();
+
     }
+
+
+
+    function MailSendForRejection() {
+
+
+        var userID='@ViewBag.DocUserId';
+        var canditateEmail ='@System.Web.HttpContext.Current.Session["CandidateEmail"]';
+
+        $("#hdnUserIdRejectMail").val(userID);
+        $("#txtToRejectMail").val(canditateEmail);
+        $("#txtSubjectRejectMail").val("");
+       // $("#txtBody").val("This is the default test for mail body.");
+       // $("#lblcheckboxRejectMail").html("Attach documents of - " + canditateEmail);
+        $('#cbxAttachmentRejectMail').prop('checked', true)
+        $('#txtSubjectRejectMail').val('Emailing: Documents for ' + canditateEmail)
+        $('#txtBodyRejectMail').val("");
+        $('#txtBodyRejectMail').val(" \r\n \r\nFrom,\r\nTeam Silicus");
+      //  "\n Regards, \n Onboarding Team  Silicus <img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>"
+        $('#documentRejectMailModal').show();
+    }
+
 
 
     $(document).ready(function () {
@@ -271,6 +330,90 @@
             setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
         }
     }
+    function fnSendMailForReject() {
+        debugger;
+        var docID=   $("#hdnDocId").val();
+        var docName=   $("#hdnDocName").val();
+
+        if ($("#txtToRejectMail").val() != "") {
+            if (validateMultipleEmailsCommaSeparated()) {
+                ;
+                var strToIds = $("#txtToRejectMail").val();
+                var strSub = $("#txtSubjectRejectMail").val();
+                var strBody = $("#txtBodyRejectMail").val();
+                var isAttachment = $('#cbxAttachmentRejectMail').is(":checked");
+                var userId = $("#hdnUserIdRejectMail").val();
+                var strUrl = '/User/SendEmailForRejectDocumment';
+                $.ajax({
+                    type: "POST",
+                    url: strUrl,
+                    data: '{"to":"' + strToIds + '" , "sub":"' + strSub + '", "body":"' + strBody + '", "isAttach":"' + isAttachment + '", "userId":"' + userId + '","documentId":"'+docID+'"}',
+                   // data: '{"to":"' + strToIds + '" , "sub":"' + strSub + '", "body":"' + strBody + '", "isAttach":"' + isAttachment + '", "userId":"' + userId + '","documentId":"'+docName+'"}',
+                    contentType: "application/json; charset=utf-8",
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + " " + errorThrown);
+                        return false;
+                    },
+                    success: function (data) {
+                        $('#documentRejectMailModal').hide();
+                        $("#Smsg").html("Mail has been sent successfully to - " + strToIds);
+                        $('#sucess-msg').show();
+                        setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 4000)
+
+                        $('#documentStatusImageModal').hide();
+                        funVerify(false);
+
+                    }
+                });
+            }
+        }
+        else {
+            $("#ErrorDiv_EmailRejectMail").html('Please enter to email id.').show();
+            setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
+        }
+    }
+
+
+    //function fnSendMailForReject() {
+    //    debugger;
+    //         var docID=   $("#hdnDocId").val();
+    //         var docName=   $("#hdnDocName").val();
+    //         alert(docID);
+    //         alert(docName);
+    //    if ($("#txtToRejectMail").val() != "") {
+    //        if (validateMultipleEmailsCommaSeparated()) {
+    //            ;
+    //            var strToIds = $("#txtToRejectMail").val();
+    //            var strSub = $("#txtSubjectRejectMail").val();
+    //            var strBody = $("#txtBodyRejectMail").val();
+    //            var isAttachment = $('#cbxAttachmentRejectMail').is(":checked");
+    //            var userId = $("#hdnUserIdRejectMail").val();
+    //            var strUrl = '/User/SendEmail';
+    //            $.ajax({
+    //                type: "POST",
+    //                url: strUrl,
+    //                data: '{"to":"' + strToIds + '" , "sub":"' + strSub + '", "body":"' + strBody + '", "isAttach":"' + isAttachment + '", "userId":"' + userId + '"}',
+    //                contentType: "application/json; charset=utf-8",
+    //                error: function (jqXHR, textStatus, errorThrown) {
+    //                    alert(textStatus + " " + errorThrown);
+    //                    return false;
+    //                },
+    //                success: function (data) {
+    //                    $('#documentRejectMailModal').hide();
+    //                    $("#Smsg").html("Mail has been sent successfully to - " + strToIds);
+    //                    $('#sucess-msg').show();
+    //                    setTimeout(function () { $("#sucess-msg").fadeOut(1500); }, 4000)
+
+    //                    $('#documentStatusImageModal').hide();
+    //                }
+    //            });
+    //        }
+    //    }
+    //    else {
+    //        $("#ErrorDiv_EmailRejectMail").html('Please enter to email id.').show();
+    //        setTimeout(function () { $("#ErrorDiv_Email").fadeOut(1500); }, 2000)
+    //    }
+    //}
 
 
     function validateMultipleEmailsCommaSeparated() {
