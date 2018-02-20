@@ -284,14 +284,10 @@ namespace HR_Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoginAs(ImpersonateUser details)
+        public ActionResult LoginAs(string email)
         {
-
-
-
-
+            var details = new ImpersonateUser() {Email = email};
             var user = _IUserService.GetAll(null, null, "").ToList();
-
             var chkDeactivateduser = user.Where(u => u.Email.ToLower().Trim() == details.Email.ToLower().Trim() && Convert.ToInt32(u.IsActive) == 2).FirstOrDefault();
             if (chkDeactivateduser != null)
             {
@@ -299,7 +295,6 @@ namespace HR_Web.Controllers
                 return View(details);
             }
 
-            string EncryptedEmail = SessionManager.EncryptData(details.Email.Trim());
             var res = user.Where(u => u.Email.ToLower().Trim() == details.Email.ToLower().Trim() && Convert.ToInt32(u.IsActive) == 1).FirstOrDefault();
             if (res != null)
             {
@@ -309,8 +304,6 @@ namespace HR_Web.Controllers
 
             ModelState.AddModelError("", "User does not exist");
             return View(details);
-
-
         }
 
 
@@ -2785,6 +2778,44 @@ namespace HR_Web.Controllers
             }
         }
 
+        public ActionResult GetEmployeesForLoginAs(int? page, string sortOrder, string searchString = "")
+        {
+
+           var userList = new List<AddEditUserModel>();
+            try
+            {
+                    var activeUsers = _IUserService.GetActiveUsers();
+                    var candidateList = (from candidate in activeUsers
+
+                                         select new AddEditUserModel()
+                                         {
+                                             FirstName = candidate.FirstName,
+                                             LastName = candidate.LastName,
+                                             Email = candidate.Email,
+
+                                         }).ToList();
+
+                    if (Request.HttpMethod != "GET")
+                    {
+                        page = 1;
+                    }
+                    int pageSize = 10000;
+                    int pageNumber = (page ?? 1);
+                    ViewBag.PageIndex = pageNumber;
+                    return View("_employeesForLoginAs", candidateList.ToPagedList(pageNumber, pageSize));
+                
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //public ActionResult GetLoginAsPopup()
+        //{
+
+        //    return View("UserListForLoginAs");
+        //}
         [HttpPost]
         public ActionResult SaveJobeViteDetails(List<AddEditUserModel> jobViteCandidateList)
         {

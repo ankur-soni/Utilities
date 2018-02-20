@@ -291,9 +291,12 @@
         }
 
         if (fresher) {
-            $(".emplyomentDetails").css("pointer-events", "none");
+            $(".emplyomentDetails").css("cursor", "not-allowed");
+            $(".emplyomentDetails :input").prop("disabled", true);
+
         } else {
-            $(".emplyomentDetails").css("pointer-events", "all");
+            $(".emplyomentDetails").css("cursor", "default");
+            $(".emplyomentDetails :input").prop("disabled", false);
         }
     });
    

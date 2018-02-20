@@ -673,5 +673,14 @@ namespace Service
 
         }
 
+        public List<LoginDetail> GetActiveUsers()
+        {
+            var users = new List<LoginDetail>();
+            using (var context = new IPDEntities())
+            {
+                users = context.LoginDetails.Where(x => x.IsActive == 1 && x.RoleID == 16).ToList();
+                return users;
+            }
+        }
     }
 }

@@ -77,6 +77,7 @@
                 </a>
                 <ul class="dropdown-menu userMenu" aria-labelledby="dropdownMenu1">
                     <li><a href="#" onclick="OpenChangePasswordForm()" id="changePassword">Change Password</a></li>
+                    <li><a href="#" onclick="ShowUserListForLoginAs();" id="changePassword">Login As</a></li>
                     <li><a href="/User/LogOut" id="btnLogOff">Log Out</a></li>
                                         </ul>
                                 </li>
@@ -316,5 +317,28 @@
                 }
             });
         }
+    }
+
+    function ShowUserListForLoginAs() {
+        var page = 1;
+        var searchString = "";
+        var data = { page: page, searchString: searchString }
+        ajaxindicatorstart('Please wait..');
+        $.ajax({
+            type: "POST",
+            url: '/User/GetEmployeesForLoginAs/',
+            success: function (data) {
+
+                $("#divUserDetailsContentForLoginAs").html("");
+                $("#divUserDetailsContentForLoginAs").html(data);
+                ajaxindicatorstop();
+
+            },
+            error: function (data) {
+                ajaxindicatorstop();
+                toastr.error("Error occurred while opening Change Request Modal form.");
+            }
+        });
+        $('#modalUserDetailsForLoginAs').show();
     }
 </script>
