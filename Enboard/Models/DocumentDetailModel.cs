@@ -18,6 +18,8 @@ namespace Models
          public string HavePassport { get; set; }
         public bool IsAddressProof { get; set; }
         public bool IsIdProof { get; set; }
+        public string IdProofFormStatus { get; set; }
+        public string AddressProofFormStatus { get; set; }
     }
 
     public class DocumentDetailModel
@@ -73,6 +75,8 @@ namespace Models
         public string EmployementNo { get; set; }
         public bool IsAddressProof { get; set; }
         public bool IsIdProof { get; set; }
+        public string IdProofFormStatus { get; set; }
+        public string AddressProofFormStatus { get; set; }
     }
 
 }

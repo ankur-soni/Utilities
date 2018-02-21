@@ -174,8 +174,9 @@
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.DesignationID, new { @class = "" }) <span class="red">*</span>
-                            @Html.DropDownListFor(m => m.DesignationID, DesignationList, "", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 17 })
-                            @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(m => m.DesignationID, DesignationList, "", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 17,@onchange = "SetDesignation();" })
+                            @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })<br/>
+                            @Html.TextBoxFor(m=>m.OtherDesignation, new { @class = "form-control", @style = "display: none" , @onfocusout = "CheckDuplicate();" })
                         </div>
 
 
@@ -198,12 +199,19 @@
     var dateToday = new Date();
     var yrRange = dateToday.getFullYear() - 100 + ":" + (dateToday.getFullYear());
 
+
+        
+
     $(document).ready(function () {
         numeric($('#txtNoOfEmployments'));
         //Hide message label
         $("#lblmsgEducationCategory").hide();
         $("#lblmsgEducationCategory").text("Please select Education Category");
-
+        var designation = $('#ddlDesignation :selected').text();
+        if (designation == "Other") {
+            $("#OtherDesignation").css("display", "block");
+            //  $("#OtherDesignation").text(designation);
+        }
         $('#txtDOB').datepicker({
             maxDate: 0,
             showButtonPanel: false,
@@ -270,7 +278,7 @@
         });
 
         $('#btnSave').click(function () {
-           
+            debugger;
             //Education category validationsfor making it mandatory
             if ($("input[name='PostedEducationCategories.EducationCategoryIds']:checked").length == 0)
         {
@@ -278,7 +286,16 @@
                 $("#lblmsgEducationCategory").show();
                 return false;
             }
-
+            var designation = $('#ddlDesignation :selected').text();
+            if (designation == "Other") {
+                var otherDes = $("#OtherDesignation").val();
+                //var data = { "designation": otherDes }
+                if (otherDes == "") {
+                    $("#anchortag").addClass('disabled').removeAttr("href");
+                    toastr.error("Please enter the value in textbox");
+                    return false;
+                }
+            }
             //Duplicate username validations
             var isUserExists = false;
             var firstName = $("#txtFirstName").val();
@@ -396,4 +413,11 @@
         );
     });
     //numeric($('#txtContactNumber'));
+
+
+    //$("#DesignationID").change(function () {
+       
+       
+    //    var firstDropVal = $('#pick').val();
+    //});
 </script>

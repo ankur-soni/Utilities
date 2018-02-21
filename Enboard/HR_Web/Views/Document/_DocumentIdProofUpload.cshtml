@@ -12,6 +12,7 @@
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
 {
     <ul class="docList">
+        @Html.HiddenFor(m=>m.IdProofFormStatus)
         @foreach (var item in _Master_DocumentListIDProof.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof).AsQueryable())
         {
             if (item.DocumentID != Constant.IDProof.ValidWorkVISA)
@@ -26,8 +27,10 @@
                                 @item.Document;
                                 <span style="color:red">*</span>
                                 <br />
-                                <label>Use as address proof</label>
-                                @Html.CheckBoxFor(m => m.IsAddressProof)
+                                <div>
+                                    <label>Use as address proof</label>
+                                    @Html.CheckBoxFor(m => m.IsAddressProof)
+                                </div>
 
                             }
 

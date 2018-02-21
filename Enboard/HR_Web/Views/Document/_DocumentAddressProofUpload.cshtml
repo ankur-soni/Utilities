@@ -5,7 +5,7 @@
     IEnumerable<Data.Master_Document> _Master_DocumentListAddress = Model.Master_DocumentList;
 }
 <style>
-    divUploadClass {
+    divAddressProofUploadClass {
         display: block;
     }
 </style>
@@ -13,6 +13,7 @@
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
 {
     <ul class="docList">
+        @Html.HiddenFor(m => m.AddressProofFormStatus)
         @foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof).AsQueryable())
         {
             if (item.DocumentID != 1)
@@ -32,7 +33,7 @@
                             <li>
                                 <span class="userNote"> &nbsp;</span>
                                 <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files.</span>
-                                <div class="btn btn-primary btn-upload btn-sm pull-right divUploadClass">
+                                <div class="btn btn-primary btn-upload btn-sm pull-right divAddressProofUploadClass">
                                     <span>Upload</span>
                                     <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
                                 </div>

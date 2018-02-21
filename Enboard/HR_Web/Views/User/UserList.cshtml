@@ -13,7 +13,7 @@
     th:hover:not([data-sort=disabled]) {
         cursor: pointer;
     }
-
+    .disabled { color:gray; }
     table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
         background: #428bca;
     }
@@ -312,13 +312,18 @@
 @*script for user defined functions*@
 <script type="text/javascript">
     $(document).ready(function () {
+        //var designation = $('#ddlDesignation :selected').text();
+        //if (designation == "Other") {
+        //    $("#OtherDesignation").css("display", "block");
+        //  //  $("#OtherDesignation").text(designation);
+        //}
         //click event for search user
         $('#btnSearch').click(function () {
             var regex = /<[^>]*>|<|>|/g;
             GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
         });
 
-        //search user by search string 
+        //search user by search string
         $("#focusedInput").keyup(function (event) {
             if (event.keyCode == 13) {
                 $("#btnSearch").click();
@@ -361,7 +366,7 @@
         });
     }
 
-  
+
 
     function ShowJobViteDetails() {
         var page = 1;
@@ -371,8 +376,9 @@
         $.ajax({
             type: "POST",
             url: '/User/SyncCandidates/',
+
             success: function (data) {
-                
+
                 $("#divJobvitetDetailsContent").html("");
                 $("#divJobvitetDetailsContent").html(data);
                 ajaxindicatorstop();
@@ -395,6 +401,71 @@
         debugger;
         $('#modalUserDetailsForLoginAs').hide();
     }
+    function SetDesignation() {
+        debugger;
 
+        var designation = $('#ddlDesignation :selected').text();
+        if (designation == "Other")
+        {
+            $("#OtherDesignation").css("display","block");
+            $("#OtherDesignation").text(designation);
+            
+          
+           
 
+        }
+        else {
+            $("#OtherDesignation").css("display", "none");
+        }
+
+    }
+    function CheckDuplicate()
+    {
+        debugger;
+        var designation = $('#ddlDesignation :selected').text();
+        if (designation == "Other") {
+           
+            var otherDes = $("#OtherDesignation").val();
+            //var data = { "designation": otherDes }
+            //if (otherDes=="")
+            //{
+            //    $("#anchortag").addClass('disabled').removeAttr("href");
+            //    toastr.error("Please enter the value in textbox");
+            //}
+            //else {
+                $("#anchortag").removeClass("disabled").attr("href", "#");
+                ajaxindicatorstart('Please wait..');
+                $.ajax({
+                    type: "POST",
+                    url: '/User/CheckDuplicateDesignation/',
+                    data: {
+                        designation: otherDes,
+                    },
+                    success: function (data) {
+                        if (data.result == true) {
+                            if (data.result == true);
+                            //alert("Designation Already exist");
+                            $("#OtherDesignation").val("");
+                            toastr.error("Designation Already exist");
+                        }
+
+                        ajaxindicatorstop();
+
+                    },
+                    error: function (data) {
+                        ajaxindicatorstop();
+                        toastr.error("Error occurred while opening Change Request Modal form.");
+                    }
+                });
+
+            }
+  
+        }
+   // }
+    //$("#ddlDesignation").change(function () {
+
+    //    alert("skjk");
+    //    alert($(this).val())
+    //  //  var firstDropVal = $('#pick').val();
+    //});
 </script>

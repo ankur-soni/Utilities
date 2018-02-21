@@ -59,7 +59,7 @@ namespace HR_Web.Controllers
         private ICandidateProgressDetailService _ICandidateProgressDetailService;
         private IRelationService _IRelationService;
         private IEmploymentCountService _IEmploymentCountService;
-
+        private IDesignationService _IDesignationService;
         //Data clases
         LoginDetail _Logindetails;
         EmployeePersonalDetail _personalDetails;
@@ -82,7 +82,7 @@ namespace HR_Web.Controllers
             ICountryService ICountryService, IContactService IContactService, IEducationService IEducationService,
             IMaritalStatusService IMaritalStatusService, IDocumentDetailsService IDocumentDetailsService,
             IRoleService IRoleService, IEmployeeService IEmployeeService, IProfessionalDetailsService IProffesionalDetailsService
-            , IEducationCategoryService IEducationCategoryService, ICandidateProgressDetailService ICandidateProgressDetailService, IRelationService IRelationService, IEmploymentCountService IEmploymentCountService)
+            , IEducationCategoryService IEducationCategoryService, ICandidateProgressDetailService ICandidateProgressDetailService, IRelationService IRelationService, IEmploymentCountService IEmploymentCountService, IDesignationService IDesignationService)
         {
             this._IUserService = IUserService;
             this._IPersonalService = IPersonalService;
@@ -114,6 +114,7 @@ namespace HR_Web.Controllers
             _ICandidateProgressDetailService = ICandidateProgressDetailService;
             _IRelationService = IRelationService;
             _IEmploymentCountService = IEmploymentCountService;
+            _IDesignationService = IDesignationService;
             _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty),
                 (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
         }
@@ -275,7 +276,28 @@ namespace HR_Web.Controllers
         {
             return View();
         }
+        Master_Designation UpdateDesignationList(string designationName)
+        {
+            var designationList = GetDesignationList();
+            //  var count = 0;
+            var status = false;
+            Master_Designation masterDesignation = null;
+            if (designationList != null)
+            {
+                var designations = designationList.Where(d => d.Text == designationName);
+                if (designations.Count() == 0)
+                {
+                    Master_Designation master_Designation = new Master_Designation();
+                    master_Designation.Designation = designationName;
+                    master_Designation.IsActive = true;
+                    status = _IDesignationService.Insert(master_Designation, null, "");
+                    masterDesignation = _IDesignationService.GetAll(null, null, "").LastOrDefault();
+                }
 
+
+            }
+            return masterDesignation;
+        }
         public ActionResult GetDecryptString()
         {
             string Encrypt = "U19TYXRoZV8xMjM=";
@@ -626,6 +648,11 @@ namespace HR_Web.Controllers
         [HttpGet]
         [Authorize]
         [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+        public JsonResult UpdateMasterResignation(string OtherDesignation)
+        {
+            return Json("");
+        }
+
         public ActionResult PersonalDetails()
         {
             ViewBag.Languages = GetLanguages();
@@ -2531,6 +2558,7 @@ namespace HR_Web.Controllers
                     model.ProjectName = obj.ProjectName;
                     model.RecruiterName = obj.RecruiterName;
                     model.RequisitionID = obj.RequisitionID;
+                  //  model.DesignationOther= obj.
                     //code change 
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
@@ -2613,6 +2641,17 @@ namespace HR_Web.Controllers
 
                         try
                         {
+
+                           if (model.OtherDesignation != null)
+                            {
+                             var designation=   UpdateDesignationList(model.OtherDesignation);
+                                if(designation != null)
+                                {
+                                    obj.DesignationID = designation.DesignationID;
+                                }
+                                
+                            }
+
 
                             status = _IUserService.Update(obj, null, "");
 
@@ -2947,6 +2986,31 @@ namespace HR_Web.Controllers
                 return Json(new { result = false, Message = "Fail" }, JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+        [HttpPost]
+        public JsonResult CheckDuplicateDesignation( string designation)
+        {
+            var status = false;
+            var desginationList = _IDesignationService.GetAll(null, null, "");/*.Any(d=>d.Designation == designation).FirstOrDefault();*/
+
+            foreach(var des in desginationList)
+            {
+                if(des.Designation == designation)
+                {
+                    status = true;
+                }
+            }
+           
+           
+            if (status)
+            {
+                return Json(new { result = true, Message = "Success" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = false, Message = "Fail" }, JsonRequestBehavior.AllowGet);
+            }
         }
         [HttpPost]
         public ActionResult IsFirstNameLastNameEmailDuplicateCheck(List<AddEditUserModel> jobViteCandidateList)

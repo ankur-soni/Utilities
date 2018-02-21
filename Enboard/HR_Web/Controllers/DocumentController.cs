@@ -247,17 +247,48 @@ namespace HR_Web.Controllers
                         {
                             _docDetails.EmploymentDetID = Convert.ToInt32(saveUploadDocumentVewModel.EmploymentDetID);
                         }
-                        _docDetails.DocCatID = DocumentCategory.IdProof;
-                        _docDetails.DocumentID = IDProof.Passport;
-                        _docDetails.IsAddressProof = Convert.ToBoolean( saveUploadDocumentVewModel.IsAddressProof);
-                        status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+
+                        if(saveUploadDocumentVewModel.IsAddressProof == true && saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
+                        {
+                            _docDetails.DocCatID = DocumentCategory.IdProof;
+                            _docDetails.DocumentID = IDProof.Passport;
+                            _docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                            _docDetails.DocCatID = DocumentCategory.AddressProof;
+                            _docDetails.DocumentID = AddressProof.Passport;
+                            _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                        }
+                       else if(saveUploadDocumentVewModel.IsIdProof == true && saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof")
+                        {
+                            _docDetails.DocCatID = DocumentCategory.IdProof;
+                            _docDetails.DocumentID = IDProof.Passport;
+                            _docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                            _docDetails.DocCatID = DocumentCategory.AddressProof;
+                            _docDetails.DocumentID = AddressProof.Passport;
+                            _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                        }
+                        else if(saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
+                        {
+                            _docDetails.DocCatID = DocumentCategory.IdProof;
+                            _docDetails.DocumentID = IDProof.Passport;
+                            _docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                        }
+                        else if (saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof")
+                        {
+                            _docDetails.DocCatID = DocumentCategory.AddressProof;
+                            _docDetails.DocumentID = AddressProof.Passport;
+                            _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                        }
                         //_docDetails.IsIdProof = saveUploadDocumentVewModel.IsIdProof;
-                        _docDetails.DocCatID = DocumentCategory.AddressProof; 
-                        _docDetails.DocumentID = AddressProof.Passport;
-                        _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
-                        status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+
 
                         DodIDs += id.ToString() + " ";
+
                     }
                     else
                     {

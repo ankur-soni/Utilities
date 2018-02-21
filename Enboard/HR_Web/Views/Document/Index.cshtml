@@ -27,8 +27,8 @@
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             <ul class="nav nav-tabs responsive-tabs">
-                                <li class="@(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty)"><a href="#idProof" onclick="setDetails();">ID Proof <span id="badgeId" class="badge"></span> </a></li>
-                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)"><a href="#adressProof" onclick="setDetails();">Address Proof <span id="badgeAdd" class="badge"></span> </a></li>
+                                <li class="@(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty)"><a href="#idProof" onclick='setDetails("1");'>ID Proof <span id="badgeId" class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)"><a href="#adressProof" onclick='setDetails(2);'>Address Proof <span id="badgeAdd" class="badge"></span> </a></li>
                                 <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Education.ToString()) ? "active" : string.Empty)"><a href="#educational">Educational Documents <span id="badgeEdu" class="badge"></span> </a></li>
                                 <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)"><a href="#emplyoment">Employment Documents <span id="badgeEmp" class="badge"></span> </a></li>
                             </ul>
@@ -203,7 +203,7 @@
         var validation = true;
 
         var idProofMand = $("#idProof .docDescription span.mand").length;
-        alert(idProofMand);
+        
         if (idProofMand < 1) {
             validation = false;
         }
@@ -485,7 +485,19 @@
         else {
             return false;
         }
-
+        debugger;
+        if (DocCat_Id == "1")
+        {
+            $("#IdProofFormStatus").val("IDProof");
+            $("#AddressProofFormStatus").val("");
+        }
+        else if(DocCat_Id == "2"){
+            $("#AddressProofFormStatus").val("AddressProof");
+            $("#IdProofFormStatus").val("");
+           }
+    var idProofFormStatus = $("#IdProofFormStatus").val();
+        var addressProofFormStatus = $("#AddressProofFormStatus").val();
+        
         formData.append("DocCat_Id", DocCat_Id);
         formData.append("DocumentID", DocumentID);
         formData.append("DocumentCategory", DocumentCategory);
@@ -493,7 +505,9 @@
         formData.append("EmployementNo", EmployementNo);
         formData.append("IsAddressProof", IsAddressProof);
         formData.append("IsIdProof", IsIdProof);
-        debugger;
+        formData.append("IdProofFormStatus", idProofFormStatus);
+        formData.append("AddressProofFormStatus", addressProofFormStatus);
+       
         //Code change - Corrected Formatting
         ajaxindicatorstart('Uploading.. Please wait..');
         $.ajax({
@@ -546,29 +560,53 @@
                 toastr.error(JSON.stringify(error.responseText.trim()));
             }
         });
-
     }
 
-    function setDetails() {
-        debugger;
-        var docDetId = $("#hidDocDetIDProof").val();
-        var statusIdProof = $("#hidstatusIDProof").val();
-        var docDetAddress = $("#hidDocDetIdAddressProof").val();
-        var statusAddessProof = $("#hidstatusAddressProof").val();
-       
-        if (docDetId != "" && docDetId != undefined)
-        {
-            $(".divUploadClass").css("display", "none");
-            $("#divUpload4").hide();
+
+        function setDetails(status) {
+            debugger;
+            var docDetId = $("#hidDocDetIDProof").val();
+            var statusIdProof = $("#hidstatusIDProof").val();
+            var docDetAddress = $("#hidDocDetIdAddressProof").val();
+            var statusAddessProof = $("#hidstatusAddressProof").val();
+            var idProofFormStatus = $("#IdProofFormStatus").val();;
+            var addressProofFormStatus = $("#AddressProofFormStatus").val();
+            var isAddressProof = $('#IsAddressProof').is(":checked")
+            var isIdProof = $('#IsIdProof').is(":checked")
+            if (docDetId != "" && docDetId != undefined && isAddressProof == "true") {
+                $(".divUploadClass").css("display", "none");
+                $(".divAddressProofUploadClass").css("display", "none");
+               
+                $("#divUpload4").hide();
+            }
+            else if (docDetId != "" && docDetId != undefined && isIdProof == "true") {
+                $(".divUploadClass").css("display", "none");
+                $(".divAddressProofUploadClass").css("display", "none");
+
+                $("#divUpload4").hide();
+            }
+            else if (docDetId != "" && docDetId != undefined && isIdProof == "false" && status == "1") {
+              //  $(".divUploadClass").css("display", "none");
+                $(".divAddressProofUploadClass").css("display", "none");
+
+                $("#divUpload4").hide();
+            }
+           
+            else if (docDetId != "" && docDetId != undefined && isAddressProof == "false" && status == "2") {
+                $(".divUploadClass").css("display", "none");
+                //$(".divAddressProofUploadClass").css("display", "none");
+               
+                //$("#divUpload4").hide();
+            }
+            else {
+                $(".divUploadClass").css("display", "block");
+                $("#divUpload4").show();
+            }
+
+
+
+            return false;
+            
         }
-       else{
-            $(".divUploadClass").css("display", "block");
-            $("#divUpload4").show();
-         }
-        
-
-
-
-        return false;
-    }
+    
 </script>
