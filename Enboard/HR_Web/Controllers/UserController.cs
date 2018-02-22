@@ -719,6 +719,10 @@ namespace HR_Web.Controllers
                             employeePersonalDetails.OtherBirthState = _personalDetails.OtherPlaceOfBirth.Split('-')[0];
                             employeePersonalDetails.OtherBirthCity = _personalDetails.OtherPlaceOfBirth.Split('-')[1];
                         }
+                        else if(!string.IsNullOrEmpty(_personalDetails.OtherPlaceOfBirth))
+                        {
+                            employeePersonalDetails.OtherBirthCity = _personalDetails.OtherPlaceOfBirth;
+                        }
                         employeePersonalDetails.OtherPlaceOfBirth = _personalDetails.OtherPlaceOfBirth;
                         employeePersonalDetails.AadharCardNumber = _personalDetails.AadharCardNumber;
                         employeePersonalDetails.PANNumber = _personalDetails.PANNumber;
@@ -882,9 +886,35 @@ namespace HR_Web.Controllers
                 details.UpdatedBy = userName;
                 details.UpdatedDate = DateTime.UtcNow;
                 details.UserID = userId;
-                details.PlaceofBirth = !string.IsNullOrEmpty(details.BirthState) || !string.IsNullOrEmpty(details.BirthCity) ? details.BirthState + "-" + details.BirthCity : null;
-                details.OtherPlaceOfBirth = !string.IsNullOrEmpty(details.OtherBirthState) || !string.IsNullOrEmpty(details.OtherBirthCity) ? details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim() : null;
+               // var p = !string.IsNullOrEmpty(details.BirthState);
+                //var q = !string.IsNullOrEmpty(details.BirthCity);
+                //var r = details.BirthState + "-" + details.BirthCity;
+                if(!string.IsNullOrEmpty(details.BirthState) || !string.IsNullOrEmpty(details.BirthCity))
+                {
+                    details.PlaceofBirth = details.BirthState + "-" + details.BirthCity;
+                }
+                else
+                {
+                    details.PlaceofBirth = null;
+                }
+                
 
+                if(!string.IsNullOrEmpty(details.OtherBirthState))
+                {
+                    details.OtherPlaceOfBirth = details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim();
+                }
+                else
+                {
+                    if(!string.IsNullOrEmpty(details.OtherBirthCity))
+                    {
+                        details.OtherPlaceOfBirth = details.OtherBirthCity;
+                    }
+                   
+                }
+                //  var c = details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim();
+
+                //details.OtherPlaceOfBirth = !string.IsNullOrEmpty(details.OtherBirthState) || !string.IsNullOrEmpty(details.OtherBirthCity) ? details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim() : null;
+                details.PlaceofBirth = !string.IsNullOrEmpty(details.BirthState) || !string.IsNullOrEmpty(details.BirthCity) ? details.BirthState + "-" + details.BirthCity : null;
                 if (details.MotherTongue == "Other" && (!string.IsNullOrEmpty(details.SpecificLanguage)))
                 {
                     details.MotherTongue = details.SpecificLanguage;

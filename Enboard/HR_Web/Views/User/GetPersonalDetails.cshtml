@@ -24,6 +24,7 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jqueryui")
 @Scripts.Render("~/bundles/jqueryval")
+
 <script src="~/Scripts/EDP_Validations.js"></script>
 <div align="left">
 
@@ -276,8 +277,9 @@
 
         $("#PD_SaveId").click(function ()
         {
+            debugger;
             var form = $('#PD_FormId');
-
+          
             $.validator.unobtrusive.parse(form);
             if (form.valid() && $('#lblComparefutureDateError').text().trim() == '') {
                 ajaxindicatorstart('Loading.. please wait..');
@@ -301,6 +303,30 @@
                 });
             }
         });
+
+
+        //var validator = $("PD_FormId").validate()
+        //validator.errorList
+
+        if ($('#PD_FormId').valid()) {
+
+            console.log('FORM VALID');
+
+        } else {
+
+            console.log('FORM INVALID');
+
+            var validator = $('#form').validate();
+
+            $.each(validator.errorMap, function (index, value) {
+
+                console.log('Id: ' + index + ' Message: ' + value);
+
+            });
+
+        }
+
+
         $("#PD_Reset").click(function () {
 
             $('#PD_FormId').find('input, select').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');

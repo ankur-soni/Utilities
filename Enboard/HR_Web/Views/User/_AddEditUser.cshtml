@@ -177,6 +177,7 @@
                             @Html.DropDownListFor(m => m.DesignationID, DesignationList, "", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 17,@onchange = "SetDesignation();" })
                             @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })<br/>
                             @Html.TextBoxFor(m=>m.OtherDesignation, new { @class = "form-control", @style = "display: none" , @onfocusout = "CheckDuplicate();" })
+                            <label style="color:red" id="lblmsgDesignation"> </label>
                         </div>
 
 
@@ -206,6 +207,8 @@
         numeric($('#txtNoOfEmployments'));
         //Hide message label
         $("#lblmsgEducationCategory").hide();
+        $("#lblmsgDesignation").hide();
+        $("#lblmsgDesignation").text("Please enter designation");
         $("#lblmsgEducationCategory").text("Please select Education Category");
         var designation = $('#ddlDesignation :selected').text();
         if (designation == "Other") {
@@ -276,6 +279,16 @@
                 $("#lblmsgEducationCategory").hide();
             }
         });
+        $("#OtherDesignation").click(function () {
+            if ($("#OtherDesignation").length != 0) {
+                //hide validation error message
+                $("#lblmsgDesignation").hide();
+            }
+            else {
+                $("#lblmsgDesignation").show();
+}
+        });
+
 
         $('#btnSave').click(function () {
             debugger;
@@ -292,7 +305,8 @@
                 //var data = { "designation": otherDes }
                 if (otherDes == "") {
                     $("#anchortag").addClass('disabled').removeAttr("href");
-                    toastr.error("Please enter the value in textbox");
+                    // toastr.error("Please enter the value in textbox");
+                    $("#lblmsgDesignation").show();
                     return false;
                 }
             }

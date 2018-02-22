@@ -6,7 +6,7 @@
     }
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/EDP_Validations.js"></script>
@@ -208,7 +208,7 @@
 
 
     <script>
-
+       
     function AddEducationDetails()
     {
         var url = "/Education/EducationalDetails";
@@ -330,24 +330,29 @@
     
     }
 
-    $('#ED_Cancel').click(function () {
-        ajaxindicatorstart('Loading.. please wait..');
+   
 
-        $.ajax({
-            url: "/Education/DeleteEducationDetails",
-            cache: false,
-            type: 'GET',
-            success: function (data) {
-                // $("#succdiv").(data);
-                $("body").html(data);
-                ajaxindicatorstop();
-            },
-            error: function () {
-                alert('some error occured')
-                ajaxindicatorstop();
-            }
+    $(document).ready(function()
+    {
+        $('#ED_Cancel').click(function () {
+            ajaxindicatorstart('Loading.. please wait..');
+
+            $.ajax({
+                url: "/Education/DeleteEducationDetails",
+                cache: false,
+                type: 'GET',
+                success: function (data) {
+                    // $("#succdiv").(data);
+                    $("body").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+
         });
-
     });
 
     </script>

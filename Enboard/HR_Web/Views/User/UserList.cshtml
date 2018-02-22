@@ -433,6 +433,11 @@
             //    toastr.error("Please enter the value in textbox");
             //}
             //else {
+            if ($("#OtherDesignation").length == 0) {
+                //hide validation error message
+                $("#lblmsgDesignation").show();
+                return false;
+            }
                 $("#anchortag").removeClass("disabled").attr("href", "#");
                 ajaxindicatorstart('Please wait..');
                 $.ajax({

@@ -201,6 +201,8 @@
 
         // function for show hidden model for confirmation
         function fnUpdateUser(UserId, bolCurrentStatus, userFullName, active) {
+            
+           
             $("#hdnuserId").val(UserId);
             $("#hdCurrentStatus").val(bolCurrentStatus);
             var mainMsg = "";
@@ -406,7 +408,7 @@
                 dataType: 'html',
                 async: false,
                 success: function (data) {
-
+                    //alert(data);
                     $("#divUserDetailsContent").html("");
                     $("#divUserDetailsContent").html(data);
                     ajaxindicatorstop();

@@ -1,11 +1,13 @@
 ﻿@using HR_Web.Utilities
 @{
-    Layout = "";
+Layout = "";
+//Layout = null;
 }
 <!DOCTYPE html>
 @Scripts.Render("~/bundles/jquery")
 @Styles.Render("~/Content/css")
-@Scripts.Render("~/bundles/bootstrap")
+@*@Scripts.Render("~/bundles/bootstrap")*@
+
 
 <style type="text/css">
       /*.navbar-inverse .navbar-nav > .active > a {
@@ -54,6 +56,8 @@
 
 </body>
 </html>
+
+
 <script src="~/Scripts/LoadIndicator.js"></script>
 <script>
   
@@ -137,7 +141,9 @@
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-                $("#userGrid :input").prop("disabled", true);
+
+                $("#userGrid").find("input").prop("disabled", true);
+                //$("#userGrid > [type:input]").prop("disabled", true);
                 $("#bs-example-navbar-collapse-1 li").removeClass("active");
                 $("#liEducationalDetails").addClass("active");
 
