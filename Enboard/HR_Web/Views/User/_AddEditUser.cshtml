@@ -115,6 +115,10 @@
                                 @Html.LabelFor(x => x.IsFresher)
                                 @Html.CheckBoxFor(x => x.IsFresher)
                             </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                @Html.Label("Submit")
+                               @Html.CheckBox("IsSubmitted",Model.IsSubmitted != null && (bool)Model.IsSubmitted)
+                            </div>
                         </div>
                     </div>
 
