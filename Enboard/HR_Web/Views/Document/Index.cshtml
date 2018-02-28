@@ -310,8 +310,13 @@
 
 
     function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
-        alert(DocumentID);
-        var data = { DocumentID: DocumentID, EmployementNo: EmployementNo };
+        //alert(DocumentID);
+        debugger;
+        var docDetId = $("#hidDocDetIDProof").val();
+        var docDetAddress = $("#hidDocDetIdAddressProof").val();
+        var isAddressProof = $('#IsAddressProof').is(":checked")
+        var isIdProof = $('#IsIdProof').is(":checked")
+        var data = {isAddressProof: isAddressProof, isIdProof: isIdProof, DocumentID: DocumentID, EmployementNo: EmployementNo, docDetId: docDetId, docDetAddress: docDetAddress };
         if (DocumentID > 0) {
             ajaxindicatorstart('Deleting file.. Please wait..');
             $.ajax({
@@ -532,7 +537,7 @@
 
                     $("#hidstatusIDProof").val("true");
                     $("#hidstatusAddressProof").val("true");
-
+                    $(".divUploadCheckbox").css("display", "none")
                     //var upload_Button = '#divUpload' + DocumentID;
                     //$("upload_Button").hide();
 
@@ -566,41 +571,83 @@
         function setDetails(status) {
             debugger;
             var docDetId = $("#hidDocDetIDProof").val();
-            var statusIdProof = $("#hidstatusIDProof").val();
             var docDetAddress = $("#hidDocDetIdAddressProof").val();
+            var statusIdProof = $("#hidstatusIDProof").val();
+       
             var statusAddessProof = $("#hidstatusAddressProof").val();
             var idProofFormStatus = $("#IdProofFormStatus").val();;
             var addressProofFormStatus = $("#AddressProofFormStatus").val();
             var isAddressProof = $('#IsAddressProof').is(":checked")
             var isIdProof = $('#IsIdProof').is(":checked")
-            if (docDetId != "" && docDetId != undefined && isAddressProof == "true") {
+
+            if (docDetId != "" && docDetId != undefined && docDetAddress != "" && docDetAddress != undefined && isAddressProof == true)//else
+            {
                 $(".divUploadClass").css("display", "none");
                 $(".divAddressProofUploadClass").css("display", "none");
-               
+                $(".divUploadCheckbox").css("display", "none")
                 $("#divUpload4").hide();
             }
-            else if (docDetId != "" && docDetId != undefined && isIdProof == "true") {
+            else if (docDetId != "" && docDetId != undefined && docDetAddress != "" && docDetAddress != undefined && isIdProof == true) {
                 $(".divUploadClass").css("display", "none");
                 $(".divAddressProofUploadClass").css("display", "none");
-
+                $(".divUploadCheckbox").css("display", "none")
                 $("#divUpload4").hide();
             }
-            else if (docDetId != "" && docDetId != undefined && isIdProof == "false" && status == "1") {
-              //  $(".divUploadClass").css("display", "none");
+           else if (docDetId != "" && docDetId != undefined && docDetAddress != "" && docDetAddress != undefined && isAddressProof == false)//else
+            {
+                $(".divUploadClass").css("display", "none");
                 $(".divAddressProofUploadClass").css("display", "none");
-
+                $(".divUploadCheckbox").css("display", "none")
                 $("#divUpload4").hide();
+            }
+            else if (docDetId != "" && docDetId != undefined && docDetAddress != "" && docDetAddress != undefined && isIdProof == false) {
+                $(".divUploadClass").css("display", "none");
+                $(".divAddressProofUploadClass").css("display", "none");
+                $(".divUploadCheckbox").css("display", "none")
+                $("#divUpload4").hide();
+            }
+
+            else if (docDetId == "" || docDetId == undefined && docDetAddress == "" || docDetAddress == undefined && isAddressProof == false && isIdProof == false && status == "1") {
+                $(".divUploadClass").css("display", "block");
+                $(".divAddressProofUploadClass").css("display", "block")
+                $("#divUpload4").show();
+                $(".divUploadCheckbox").css("display", "block")
+            }
+            else if (docDetId == "" || docDetId == undefined && docDetAddress == "" || docDetAddress == undefined && isAddressProof == false && isIdProof == false && status == "2") {
+                $(".divUploadClass").css("display", "block");
+                $(".divAddressProofUploadClass").css("display", "block")
+                $("#divUpload4").show();
+                $(".divUploadCheckbox").css("display", "block")
+            }
+            else if (docDetId != "" && docDetId != undefined && docDetAddress == "" || docDetAddress == undefined && isIdProof == false && isAddressProof == false && status == "1") {
+                $(".divUploadClass").css("display", "none");
+                $(".divUploadCheckbox").css("display", "none")
+                //$("#divUpload4").hide();
+            }
+            else if (docDetId != "" && docDetId != undefined && docDetAddress == "" || docDetAddress == undefined && isIdProof == false && isAddressProof == false && status == "2") {
+                $(".divUploadClass").css("display", "none");
+                $(".divUploadCheckbox").css("display", "none")
+                //$("#divUpload4").hide();
             }
            
-            else if (docDetId != "" && docDetId != undefined && isAddressProof == "false" && status == "2") {
-                $(".divUploadClass").css("display", "none");
-                //$(".divAddressProofUploadClass").css("display", "none");
-               
+            else if (docDetId == "" || docDetId == undefined && docDetAddress != "" && docDetAddress != undefined && isAddressProof == false && isIdProof == false && status == "2") {
+             //   $(".divUploadClass").css("display", "none");
+                $(".divAddressProofUploadClass").css("display", "none");
+                $(".divUploadCheckbox").css("display", "none")
                 //$("#divUpload4").hide();
+            }
+        
+            else if (docDetId == "" || docDetId == undefined && docDetAddress != "" && docDetAddress != undefined && isAddressProof == false && isIdProof == false && status == "1") {
+                //   $(".divUploadClass").css("display", "none");
+                $(".divAddressProofUploadClass").css("display", "none");
+                $(".divUploadCheckbox").css("display", "none")
+                $("#divUpload4").hide();
             }
             else {
                 $(".divUploadClass").css("display", "block");
+                $(".divAddressProofUploadClass").css("display", "block")
                 $("#divUpload4").show();
+                $(".divUploadCheckbox").css("display", "block")
             }
 
 

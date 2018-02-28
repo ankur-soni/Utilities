@@ -949,7 +949,7 @@ namespace HR_Web.Controllers
             if(loginDetails != null)
             {
                 loginDetails.HasPassport = details.PassportNumber;
-                loginDetails.HasPassport = "kjksfj";
+               // loginDetails.HasPassport = "kjksfj";
                 _IUserService.Update(loginDetails, null, "");
             }
         

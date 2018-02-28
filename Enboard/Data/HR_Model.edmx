@@ -71,6 +71,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
           <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="IsAddressProof" Type="bit" />
+          <Property Name="IsIdProof" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoardMapping' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -155,7 +157,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="OtherSpecialization" Type="varchar" MaxLength="100" />
           <Property Name="ClassID" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" />
-          <Property Name="BreaksDuringEducation" Type="varchar" MaxLength="250" />
+          <Property Name="BreaksDuringEducation" Type="varchar" MaxLength="350" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
@@ -348,7 +350,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="IsActive" Type="int" />
           <Property Name="IsDelete" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
-          <Property Name="IsFresher" Type="bit"/>
+          <Property Name="IsFresher" Type="bit" />
+          <Property Name="HasPassport" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Master_Bloodgroup">
           <Key>
@@ -623,20 +626,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.temp_uni' does not have a prima
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="Test_CandidateChangeRequestsDetails">
-          <Key>
-            <PropertyRef Name="CandChangeReqID" />
-          </Key>
-          <Property Name="CandChangeReqID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="bigint" Nullable="false" />
-          <Property Name="FieldName" Type="varchar" MaxLength="100" />
-          <Property Name="FieldValue" Type="varchar" MaxLength="255" />
-          <Property Name="IsApproved" Type="bit" />
-          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
-          <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
-          <Property Name="UpdatedDate" Type="datetime" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserReminder">
@@ -694,18 +683,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="CandidateChangeRequestsDetails">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
-          <End Role="LoginDetails" Type="Self.LoginDetails" Multiplicity="1" />
-          <End Role="Test_CandidateChangeRequestsDetails" Type="Self.Test_CandidateChangeRequestsDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LoginDetails">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Test_CandidateChangeRequestsDetails">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1312,7 +1289,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySet Name="Master_SubDocumentsCategory" EntityType="Self.Master_SubDocumentsCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Master_University" EntityType="Self.Master_University" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PendingCandidateDetails" EntityType="Self.PendingCandidateDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Test_CandidateChangeRequestsDetails" EntityType="Self.Test_CandidateChangeRequestsDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WelcomeNoteDetails" EntityType="Self.WelcomeNoteDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EducationCategoryUniversityBoardMapping" EntityType="Self.EducationCategoryUniversityBoardMapping" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1360,10 +1336,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <AssociationSet Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails" Association="Self.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails">
             <End Role="LoginDetails" EntitySet="LoginDetails" />
             <End Role="CandidateChangeRequestsDetails" EntitySet="CandidateChangeRequestsDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" Association="Self.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
-            <End Role="LoginDetails" EntitySet="LoginDetails" />
-            <End Role="Test_CandidateChangeRequestsDetails" EntitySet="Test_CandidateChangeRequestsDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_DocumentDetails_LoginDetails1" Association="Self.FK_DocumentDetails_LoginDetails1">
             <End Role="LoginDetails" EntitySet="LoginDetails" />
@@ -2108,13 +2080,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           </AssociationSet>
           <EntitySet Name="Master_SubDocumentsCategory" EntityType="IPDModel.Master_SubDocumentsCategory" />
           <EntitySet Name="PendingCandidateDetails" EntityType="IPDModel.PendingCandidateDetail" />
-          <EntitySet Name="Test_CandidateChangeRequestsDetails" EntityType="IPDModel.Test_CandidateChangeRequestsDetails" />
           <EntitySet Name="temp_city" EntityType="IPDModel.temp_city" />
           <EntitySet Name="temp_uni" EntityType="IPDModel.temp_uni" />
-          <AssociationSet Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" Association="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
-            <End Role="LoginDetail" EntitySet="LoginDetails" />
-            <End Role="Test_CandidateChangeRequestsDetails" EntitySet="Test_CandidateChangeRequestsDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_Master_SubDocumentCategory_Master_DocumentCategory" Association="IPDModel.FK_Master_SubDocumentCategory_Master_DocumentCategory">
             <End Role="Master_DocumentCategory" EntitySet="Master_DocumentCategory" />
             <End Role="Master_SubDocumentsCategory" EntitySet="Master_SubDocumentsCategory" />
@@ -2655,6 +2622,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="Master_DocumentCategory" Relationship="IPDModel.FK_DocumentDetails_Master_DocumentCategory" FromRole="DocumentDetail" ToRole="Master_DocumentCategory" />
           <NavigationProperty Name="Master_DocumentCategory1" Relationship="IPDModel.FK_DocumentDetails_Master_SubDocumentCategory" FromRole="DocumentDetail" ToRole="Master_DocumentCategory" />
           <NavigationProperty Name="LoginDetail" Relationship="IPDModel.FK_DocumentDetails_LoginDetails1" FromRole="DocumentDetail" ToRole="LoginDetail" />
+          <Property Name="IsAddressProof" Type="Boolean" />
+          <Property Name="IsIdProof" Type="Boolean" />
         </EntityType>
         <EntityType Name="Master_Document">
           <Key>
@@ -2776,7 +2745,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="CandidateGraphProgressDetails" Relationship="IPDModel.FK_Graph_Graph1" FromRole="LoginDetail" ToRole="CandidateGraphProgressDetail" />
           <NavigationProperty Name="EmployeeEducationDetails" Relationship="IPDModel.FK_EmployeeEducationDetail_LoginDetails" FromRole="LoginDetail" ToRole="EmployeeEducationDetail" />
           <NavigationProperty Name="EmploymentCounts" Relationship="IPDModel.FK_EmploymentCount_LoginDetails" FromRole="LoginDetail" ToRole="EmploymentCount" />
-          <NavigationProperty Name="Test_CandidateChangeRequestsDetails" Relationship="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" FromRole="LoginDetail" ToRole="Test_CandidateChangeRequestsDetails" />
+          <Property Name="HasPassport" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_AdminEducationCategoryForUser_LoginDetails">
           <End Type="IPDModel.LoginDetail" Role="LoginDetail" Multiplicity="0..1" />
@@ -3161,21 +3130,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="Gender" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="ContactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Test_CandidateChangeRequestsDetails">
-          <Key>
-            <PropertyRef Name="CandChangeReqID" />
-          </Key>
-          <Property Name="CandChangeReqID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int64" Nullable="false" />
-          <Property Name="FieldName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FieldValue" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IsApproved" Type="Boolean" />
-          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="LoginDetail" Relationship="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" FromRole="Test_CandidateChangeRequestsDetails" ToRole="LoginDetail" />
-        </EntityType>
         <EntityType Name="temp_city">
           <Key>
             <PropertyRef Name="CityID" />
@@ -3196,18 +3150,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <Association Name="FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test">
-          <End Type="IPDModel.LoginDetail" Role="LoginDetail" Multiplicity="1" />
-          <End Type="IPDModel.Test_CandidateChangeRequestsDetails" Role="Test_CandidateChangeRequestsDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LoginDetail">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Test_CandidateChangeRequestsDetails">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Master_SubDocumentCategory_Master_DocumentCategory">
           <End Type="IPDModel.Master_DocumentCategory" Role="Master_DocumentCategory" Multiplicity="1" />
           <End Type="IPDModel.Master_SubDocumentsCategory" Role="Master_SubDocumentsCategory" Multiplicity="*" />
@@ -3764,6 +3706,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="DocumentDetails">
             <EntityTypeMapping TypeName="IPDModel.DocumentDetail">
               <MappingFragment StoreEntitySet="DocumentDetails">
+                <ScalarProperty Name="IsIdProof" ColumnName="IsIdProof" />
+                <ScalarProperty Name="IsAddressProof" ColumnName="IsAddressProof" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -3799,6 +3743,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="LoginDetails">
             <EntityTypeMapping TypeName="IPDModel.LoginDetail">
               <MappingFragment StoreEntitySet="LoginDetails">
+                <ScalarProperty Name="HasPassport" ColumnName="HasPassport" />
                 <ScalarProperty Name="IsFresher" ColumnName="IsFresher"/>
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
@@ -3938,21 +3883,6 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Ped_Cand_ID" ColumnName="Ped_Cand_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Test_CandidateChangeRequestsDetails">
-            <EntityTypeMapping TypeName="IPDModel.Test_CandidateChangeRequestsDetails">
-              <MappingFragment StoreEntitySet="Test_CandidateChangeRequestsDetails">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
-                <ScalarProperty Name="FieldValue" ColumnName="FieldValue" />
-                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CandChangeReqID" ColumnName="CandChangeReqID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

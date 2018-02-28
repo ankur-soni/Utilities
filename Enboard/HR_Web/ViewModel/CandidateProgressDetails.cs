@@ -333,7 +333,7 @@ namespace HR_Web.ViewModel
                 string hasPassport = string.Empty;
                 hasPassport= DocumentDetails.FirstOrDefault().LoginDetail.HasPassport;
 
-                hasPassport = "werwer";
+                //hasPassport = "werwer";
 
 
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())

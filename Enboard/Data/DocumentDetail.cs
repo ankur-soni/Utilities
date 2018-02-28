@@ -22,8 +22,6 @@ namespace Data
         public string ContentType { get; set; }
         public byte[] Data { get; set; }
         public string FilePath { get; set; }
-        public bool IsAddressProof { get; set; }
-        public bool IsIdProof { get; set; }
         public Nullable<long> EmploymentDetID { get; set; }
         public Nullable<bool> IsUploaded { get; set; }
         public Nullable<bool> IsActive { get; set; }
@@ -33,6 +31,8 @@ namespace Data
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<bool> IsAddressProof { get; set; }
+        public Nullable<bool> IsIdProof { get; set; }
     
         public virtual Master_Document Master_Document { get; set; }
         public virtual Master_DocumentCategory Master_DocumentCategory { get; set; }
