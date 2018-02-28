@@ -310,12 +310,12 @@
 
 
     function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
-        //alert(DocumentID);       
-        var docDetId = $("#hidDocDetIDProof").val();
+        //alert(DocumentID);           
+      //  var docDetId = $("#hidDocDetIDProof").val();
         var docDetAddress = $("#hidDocDetIdAddressProof").val();
         var isAddressProof = $('#IsAddressProof').is(":checked")
         var isIdProof = $('#IsIdProof').is(":checked")
-        var data = {isAddressProof: isAddressProof, isIdProof: isIdProof, DocumentID: DocumentID, EmployementNo: EmployementNo, docDetId: docDetId, docDetAddress: docDetAddress };
+        var data = { isAddressProof: isAddressProof, isIdProof: isIdProof, DocumentID: DocumentID, EmployementNo: EmployementNo, docDetId: DocumentID, docDetAddress: docDetAddress };
         if (DocumentID > 0) {
             ajaxindicatorstart('Deleting file.. Please wait..');
             $.ajax({
@@ -347,7 +347,7 @@
 
 
     function Reset(DocumentID, EmployementNo, EmploymentDetID) {
-
+       
         var SubDocCat_Pkforcontrol = DocumentID;
         if (EmployementNo === null || EmployementNo === undefined || EmployementNo === '' || EmployementNo === "") {
 

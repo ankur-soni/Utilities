@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using Data;
+using HR_Web.Utilities;
+using HR_Web.ViewModel;
 using Models;
 using Service;
-using Data;
-using System.IO;
-using HR_Web.ViewModel;
 using Service.Interface;
-using HR_Web.Utilities;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 using static HR_Web.Utilities.Constant;
 
 namespace HR_Web.Controllers
@@ -28,7 +26,7 @@ namespace HR_Web.Controllers
         private ICandidateProgressDetailService _ICandidateProgressDetailService;
         private IEducationDocumentCategoryMappingService _IEducationDocumentCategoryMappingService;
         private IEmployeeService _IEmployeeService;
-        private IPersonalService _IPersonalService; 
+        private IPersonalService _IPersonalService;
         private IEmploymentCountService _IEmploymentCountService;
 
         //Code change - EDMX Fix 
@@ -96,7 +94,7 @@ namespace HR_Web.Controllers
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
                 DocumentDetaillist = _IDocumentService.GetAll(null, null, "").ToList();
-                
+
             }
 
             foreach (var documentDetailsList in DocumentDetaillist)
@@ -105,27 +103,27 @@ namespace HR_Web.Controllers
                 {
 
                     documentDetails.UpdatedDate = TimeZoneInfo.ConvertTimeFromUtc(documentDetails.UpdatedDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    if(documentDetails.DocumentID ==  Constant.IDProof.Passport && documentDetails.DocCatID ==Constant.DocumentCategory.IdProof)
+                    if (documentDetails.DocumentID == Constant.IDProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.IdProof)
                     {
-                        if(documentDetails.IsAddressProof != null && documentDetails.IsIdProof != null)
+                        if (documentDetails.IsAddressProof != null && documentDetails.IsIdProof != null)
                         {
                             addressProof = (bool)documentDetails.IsAddressProof;
-                            idProof= isIdProof = (bool)documentDetails.IsIdProof;
+                            idProof = isIdProof = (bool)documentDetails.IsIdProof;
                             if (addressProof == true && isIdProof == false)
                             {
                                 isAddressProof = addressProof;
                                 isIdProof = idProof;
-                                
+
                             }
-                           else if (addressProof == false && idProof == true)
+                            else if (addressProof == false && idProof == true)
                             {
                                 isAddressProof = (bool)documentDetails.IsAddressProof;
                                 isIdProof = (bool)documentDetails.IsIdProof;
                             }
                         }
-                        
+
                     }
-                   else if (documentDetails.DocumentID == Constant.AddressProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.AddressProof)
+                    else if (documentDetails.DocumentID == Constant.AddressProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.AddressProof)
                     {
 
 
@@ -156,7 +154,7 @@ namespace HR_Web.Controllers
             var empDetailsList = GetEmploymentDetailsList(userId);
             string hasPassport = string.Empty;
 
-            if(userDetails != null)
+            if (userDetails != null)
             {
                 hasPassport = userDetails.HasPassport;
             }
@@ -261,17 +259,17 @@ namespace HR_Web.Controllers
 
                                     //_document.
                                     // item.Master_Document.
-                                  
-                                        //item.DocCatID = 1;
 
-                                        //status = _IDocumentDetailsService.Update(item, null, "");
-                                    
-                                        //item.DocCatID = 2;
-                                        ////  status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                                    //item.DocCatID = 1;
 
-                                        status = _IDocumentDetailsService.Update(item, null, "");
-                                   
-                                   
+                                    //status = _IDocumentDetailsService.Update(item, null, "");
+
+                                    //item.DocCatID = 2;
+                                    ////  status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+
+                                    status = _IDocumentDetailsService.Update(item, null, "");
+
+
                                 }
 
                             }
@@ -289,7 +287,7 @@ namespace HR_Web.Controllers
                         _docDetails.CreatedDate = DateTime.UtcNow;
                         _docDetails.IsActive = true;
                         //_docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
-                       // _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
+                        // _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
                         _docDetails.Data = FileToByteArray(fileName, path);
 
                         _docDetails.DocumentID = Convert.ToInt32(saveUploadDocumentVewModel.DocumentID);
@@ -298,7 +296,7 @@ namespace HR_Web.Controllers
                             _docDetails.EmploymentDetID = Convert.ToInt32(saveUploadDocumentVewModel.EmploymentDetID);
                         }
 
-                        if(saveUploadDocumentVewModel.IsAddressProof == true && saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
+                        if (saveUploadDocumentVewModel.IsAddressProof == true && saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
                         {
                             _docDetails.DocCatID = DocumentCategory.IdProof;
                             _docDetails.DocumentID = IDProof.Passport;
@@ -311,7 +309,7 @@ namespace HR_Web.Controllers
                             _docDetails.IsIdProof = true;/* Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);*/
                             status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
                         }
-                       else if(saveUploadDocumentVewModel.IsIdProof == true && saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof")
+                        else if (saveUploadDocumentVewModel.IsIdProof == true && saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof")
                         {
                             _docDetails.DocCatID = DocumentCategory.IdProof;
                             _docDetails.DocumentID = IDProof.Passport;
@@ -324,10 +322,10 @@ namespace HR_Web.Controllers
                             _docDetails.IsIdProof = true;/* Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);*/
                             status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
                         }
-                        else if(saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
+                        else if (saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
                         {
                             _docDetails.DocCatID = DocumentCategory.IdProof;
-                            _docDetails.DocumentID = IDProof.Passport;
+                            //  _docDetails.DocumentID = IDProof.Passport;
                             _docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
                             _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
                             status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
@@ -335,7 +333,7 @@ namespace HR_Web.Controllers
                         else if (saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof")
                         {
                             _docDetails.DocCatID = DocumentCategory.AddressProof;
-                            _docDetails.DocumentID = AddressProof.Passport;
+                            //_docDetails.DocumentID = AddressProof.Passport;
                             _docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
                             _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
                             status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
@@ -353,7 +351,7 @@ namespace HR_Web.Controllers
                 }
 
             }
-            var result = new {DocCatID = saveUploadDocumentVewModel.DocCat_Id ,  status = status, CurrDocId = DodIDs, DocumentName = _docDetails.DocumentName };
+            var result = new { DocCatID = saveUploadDocumentVewModel.DocCat_Id, status = status, CurrDocId = DodIDs, DocumentName = _docDetails.DocumentName };
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
@@ -365,8 +363,8 @@ namespace HR_Web.Controllers
             var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             long longEmploymentDetailID;
-            long.TryParse(EmploymentDetailID,out longEmploymentDetailID);
-            var obj = docDetails_lst.Where(u =>u.EmploymentDetID == longEmploymentDetailID && u.UserID == userId && u.DocumentID == Convert.ToInt32(DocumentID) && u.DocCatID == Convert.ToInt32(DocCat_Id) && u.IsActive == true && u.DocumentName == fileName).ToList();
+            long.TryParse(EmploymentDetailID, out longEmploymentDetailID);
+            var obj = docDetails_lst.Where(u => u.EmploymentDetID == longEmploymentDetailID && u.UserID == userId && u.DocumentID == Convert.ToInt32(DocumentID) && u.DocCatID == Convert.ToInt32(DocCat_Id) && u.IsActive == true && u.DocumentName == fileName).ToList();
             if (obj.Count > 0)
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
@@ -409,14 +407,14 @@ namespace HR_Web.Controllers
         }
 
         public ActionResult getDocument(int id)
-        {  
+        {
             byte[] byteArray;
             DocumentDetail Doc = _IDocumentDetailsService.GetById(id);
             byteArray = Doc.Data;
             string strContentType = string.Empty;
-            if (Doc.ContentType == ".docx" || Doc.ContentType ==".doc")
+            if (Doc.ContentType == ".docx" || Doc.ContentType == ".doc")
             {
-                if ( Doc.ContentType ==".doc")
+                if (Doc.ContentType == ".doc")
                 {
                     strContentType = "application/msword";
                 }
@@ -424,7 +422,7 @@ namespace HR_Web.Controllers
                 {
                     strContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
                 }
-               
+
             }
             else
             {
@@ -433,16 +431,16 @@ namespace HR_Web.Controllers
                 else
                     strContentType = "image/jpg";
             }
-            
+
             if (byteArray != null)
             {
-                return this.File(byteArray, strContentType,Doc.DocumentName);    
+                return this.File(byteArray, strContentType, Doc.DocumentName);
             }
             else
             {
                 return new EmptyResult();
             }
-            
+
         }
 
 
@@ -489,7 +487,7 @@ namespace HR_Web.Controllers
 
         //}
         [HttpPost]
-        public ActionResult DeleteUploadedDocuments(string isAddressProof, string isIdProof,string DocumentID = "", string EmployementNo = "", string docDetAddress = "", string docDetId = "")
+        public ActionResult DeleteUploadedDocuments(string isAddressProof, string isIdProof, string DocumentID = "", string EmployementNo = "", string docDetAddress = "", string docDetId = "")
         {
             bool status = false;
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
@@ -501,12 +499,12 @@ namespace HR_Web.Controllers
             idProofStatus = Convert.ToBoolean(isIdProof);
             if (!string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
             {
-                
-                if (idProofStatus == true && addressProofStatus== false)
+
+                if (idProofStatus == true && addressProofStatus == false)
                 {
                     var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
                     var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-                    return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
+                    return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault() != null ? docIdObj.SingleOrDefault().DocCatID : 1 : 1 });
                 }
                 else if (idProofStatus == true && addressProofStatus == false)
                 {
@@ -514,15 +512,15 @@ namespace HR_Web.Controllers
                     var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
                     return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
                 }
-                else 
+                else
                 {
                     List<DocumentDetail> docIdObj = null;
                     if (!string.IsNullOrEmpty(DocumentID))
                     {
                         // var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-                         docIdObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
+                        docIdObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
                     }
-                     return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
+                    return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
                 }
             }
             else if (!string.IsNullOrEmpty(docDetId) && string.IsNullOrEmpty(docDetAddress))
@@ -537,7 +535,7 @@ namespace HR_Web.Controllers
             }
             else
             {
-              //  var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
+                //  var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
                 if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
                 {
                     //Code change - EDMX Fix 
@@ -565,7 +563,7 @@ namespace HR_Web.Controllers
             }
 
         }
-         private List<DocumentDetail> DeleteUploadDocument(int DocumentID)
+        private List<DocumentDetail> DeleteUploadDocument(int DocumentID)
         {
             bool status = false;
             var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
@@ -719,7 +717,7 @@ namespace HR_Web.Controllers
                 }
                 if (documentDetails.Any() && documentDetails.Count() != 0)
                 {
-                   
+
                     //var docValidation = true;
 
                     //if (documentDetails.FirstOrDefault(x => x.DocumentID == Constant.IDProof.PANCard) == null)
@@ -781,7 +779,7 @@ namespace HR_Web.Controllers
                 {
                     finalSubmitViewModel.UploadDetailsError = "Upload Documents";
                 }
-                
+
 
 
             }
