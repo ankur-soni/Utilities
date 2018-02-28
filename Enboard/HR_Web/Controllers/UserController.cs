@@ -2594,6 +2594,7 @@ namespace HR_Web.Controllers
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
                     model.IsFresher = obj.IsFresher??false;
+                    model.IsSubmitted = obj.IsSubmitted;
                     //model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
 
@@ -2667,6 +2668,7 @@ namespace HR_Web.Controllers
                         obj.CountryCode = model.CountryCode;
                         obj.Gender = model.Gender;
                         obj.IsFresher = model.IsFresher;
+                        obj.IsSubmitted = model.IsSubmitted;
                         //obj.NoOfEmployments = model.NoOfEmployments;
 
                         try
