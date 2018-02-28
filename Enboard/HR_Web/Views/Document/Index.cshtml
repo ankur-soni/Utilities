@@ -310,8 +310,7 @@
 
 
     function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
-        //alert(DocumentID);
-        debugger;
+        //alert(DocumentID);       
         var docDetId = $("#hidDocDetIDProof").val();
         var docDetAddress = $("#hidDocDetIdAddressProof").val();
         var isAddressProof = $('#IsAddressProof').is(":checked")
@@ -490,7 +489,7 @@
         else {
             return false;
         }
-        debugger;
+       
         if (DocCat_Id == "1")
         {
             $("#IdProofFormStatus").val("IDProof");
@@ -569,7 +568,7 @@
 
 
         function setDetails(status) {
-            debugger;
+           
             var docDetId = $("#hidDocDetIDProof").val();
             var docDetAddress = $("#hidDocDetIdAddressProof").val();
             var statusIdProof = $("#hidstatusIDProof").val();
