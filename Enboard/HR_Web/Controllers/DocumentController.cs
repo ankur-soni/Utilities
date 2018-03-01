@@ -296,7 +296,7 @@ namespace HR_Web.Controllers
                             _docDetails.EmploymentDetID = Convert.ToInt32(saveUploadDocumentVewModel.EmploymentDetID);
                         }
 
-                        if (saveUploadDocumentVewModel.IsAddressProof == true && saveUploadDocumentVewModel.IdProofFormStatus == "IDProof")
+                        if (saveUploadDocumentVewModel.IsAddressProof == true && saveUploadDocumentVewModel.IdProofFormStatus == "IDProof" && _docDetails.DocumentID == IDProof.Passport)
                         {
                             _docDetails.DocCatID = DocumentCategory.IdProof;
                             _docDetails.DocumentID = IDProof.Passport;
@@ -309,7 +309,7 @@ namespace HR_Web.Controllers
                             _docDetails.IsIdProof = true;/* Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);*/
                             status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
                         }
-                        else if (saveUploadDocumentVewModel.IsIdProof == true && saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof")
+                        else if (saveUploadDocumentVewModel.IsIdProof == true && saveUploadDocumentVewModel.AddressProofFormStatus == "AddressProof" && _docDetails.DocumentID == IDProof.Passport)
                         {
                             _docDetails.DocCatID = DocumentCategory.IdProof;
                             _docDetails.DocumentID = IDProof.Passport;
@@ -500,13 +500,13 @@ namespace HR_Web.Controllers
             if (!string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
             {
 
-                if (idProofStatus == true && addressProofStatus == false)
+                if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
                 {
                     var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
                     var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
                     return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault() != null ? docIdObj.SingleOrDefault().DocCatID : 1 : 1 });
                 }
-                else if (idProofStatus == true && addressProofStatus == false)
+                else if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
                 {
                     var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
                     var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
