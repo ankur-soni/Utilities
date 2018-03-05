@@ -669,20 +669,29 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult SaveFinalScore(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
         {
-            foreach (var nomination in consolidatedNominationsViewModel.Nominations)
+            try
             {
-                foreach (var finalComment in nomination.ManagerComments)
+                foreach (var nomination in consolidatedNominationsViewModel.Nominations)
                 {
-                    var commentDb = _encourageDatabaseContext.Query<ManagerComment>().FirstOrDefault(mc => mc.NominationId == finalComment.NominationId && mc.CriteriaId == finalComment.CriteriaId);
-                    if (commentDb != null)
+                    foreach (var finalComment in nomination.ManagerComments)
                     {
-                        commentDb.AdminComment = finalComment.AdminComment;
-                        commentDb.FinalScore = finalComment.FinalScore;
-                    }
+                        var commentDb = _encourageDatabaseContext.Query<ManagerComment>().FirstOrDefault(mc => mc.NominationId == finalComment.NominationId && mc.CriteriaId == finalComment.CriteriaId);
+                        if (commentDb != null)
+                        {
+                            commentDb.AdminComment = finalComment.AdminComment;
+                            commentDb.FinalScore = finalComment.FinalScore;
+                            _encourageDatabaseContext.Update(commentDb);
+                        }
 
-                    _encourageDatabaseContext.Update(commentDb);
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                _logger.Log("Review-SaveFinalScore-POST-"+e.Message);
+                throw;
+            }
+           
 
             return Json(true);
         }

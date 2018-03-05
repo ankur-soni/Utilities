@@ -187,6 +187,8 @@
                         else
                         {
                             <td class="notNominated consolidatedLeftCell"></td>
+                            @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].NominationId", nomination.NominationId)
+                            @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].CriteriaId", criteria.Id)
                             for (int i = 0; i < (Model.Reviewers.Count - 2); i++)
                             {
                                 <td class="notNominated consolidatedMiddleCell"></td>
