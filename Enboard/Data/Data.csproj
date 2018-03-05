@@ -234,9 +234,6 @@
     <Compile Include="temp_uni.cs">
       <DependentUpon>HR_Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Test_CandidateChangeRequestsDetails.cs">
-      <DependentUpon>HR_Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="UserReminder.cs">
       <DependentUpon>HR_Model.tt</DependentUpon>
     </Compile>
