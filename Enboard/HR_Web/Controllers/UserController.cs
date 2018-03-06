@@ -398,7 +398,8 @@ namespace HR_Web.Controllers
 
                 ViewBag.PageIndex = pageNumber;
                 ViewBag.SearchString = searchString;
-                ViewModel.CandidateProgressDetails candidateProgressDetails = new ViewModel.CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
+                CandidateProgressDetails candidateProgressDetails = new ViewModel.CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
+                //ViewModel.CandidateProgressDetails candidateProgressDetails = _ICandidateProgressDetailService.
                 foreach (var item in user)
                 {
                     var Employee = _IEmployeeService.GetAll(null, null, "").Where(m => m.UserId == item.UserID).FirstOrDefault();
@@ -421,8 +422,8 @@ namespace HR_Web.Controllers
                         ContactNumber = item.ContactNumber,
                         DesignationID = item.DesignationID,
                         JoiningLocation = item.JoiningLocation,
-                        Designation = designation,
-                        OverAllUploadPecentage = candidateProgressDetails.SaveCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
+                        Designation = designation,                       
+                         OverAllUploadPecentage = candidateProgressDetails.GetCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
                     });
                 }
                 return View(userList.ToPagedList(pageNumber, pageSize));
@@ -1752,7 +1753,7 @@ namespace HR_Web.Controllers
 
                             //code change 
                             ContactNumber = item.ContactNumber,
-                            OverAllUploadPecentage = candidateProgressDetails.SaveCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
+                            OverAllUploadPecentage = candidateProgressDetails.GetCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
 
 
                         });
