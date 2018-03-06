@@ -32,7 +32,7 @@
                         @item.Document
                         @if (isDocPassport)
                         {
-                            @(Model.HavePassport){
+                            if(!string.IsNullOrWhiteSpace(Model.HavePassport)){
                                 <span class="divUploadAsIdCheckbox">
                                     <br />
                                     <label>Use as id proof</label>

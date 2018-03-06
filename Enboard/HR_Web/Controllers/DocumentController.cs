@@ -119,27 +119,6 @@ namespace HR_Web.Controllers
                         }
 
                     }
-                    //else if (documentDetails.DocumentID == Constant.AddressProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.AddressProof)
-                    //{
-
-
-                    //    if (documentDetails.IsAddressProof != null && documentDetails.IsIdProof != null)
-                    //    {
-                    //        addressProof = (bool)documentDetails.IsAddressProof;
-                    //        idProof = isIdProof = (bool)documentDetails.IsIdProof;
-                    //        if (addressProof == true && isIdProof == false)
-                    //        {
-                    //            isAddressProof = addressProof;
-                    //            isIdProof = idProof;
-
-                    //        }
-                    //        else if (addressProof == false && idProof == true)
-                    //        {
-                    //            isAddressProof = (bool)documentDetails.IsAddressProof;
-                    //            isIdProof = (bool)documentDetails.IsIdProof;
-                    //        }
-                    //    }
-                    //}
 
                 }
             }
