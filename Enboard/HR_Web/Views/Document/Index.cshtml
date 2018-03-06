@@ -280,13 +280,8 @@
             });
         }
 
-        function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
-            //alert(DocumentID);
-            //  var docDetId = $("#hidDocDetIDProof").val();
-            var docDetAddress = $("#hidDocDetIdAddressProof").val();
-            var isAddressProof = $('#IsAddressProof').is(":checked")
-            var isIdProof = $('#IsIdProof').is(":checked")
-            var data = { isAddressProof: isAddressProof, isIdProof: isIdProof, DocumentID: DocumentID, EmployementNo: EmployementNo, docDetId: DocumentID, docDetAddress: docDetAddress };
+        function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {           
+            var data = {  DocumentID: DocumentID, EmployementNo: EmployementNo};
             if (DocumentID > 0) {
                 ajaxindicatorstart('Deleting file.. Please wait..');
                 $.ajax({

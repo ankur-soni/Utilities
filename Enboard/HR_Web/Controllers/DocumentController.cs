@@ -423,125 +423,170 @@ namespace HR_Web.Controllers
         }
 
 
-        //[HttpPost]
-        //public ActionResult DeleteUploadedDocuments(string DocumentID = "", string EmployementNo = "")
-        //{
-        //    bool status = false;
-        //    userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-        //    userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-        //    var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-        //    if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
-        //    {
-        //        //Code change - EDMX Fix 
-        //        var obj = docDetails_lst.Where(u => u.UserID == userId && u.DocDetID == Convert.ToInt32(DocumentID) && u.IsActive == true).ToList();
-        //        if (obj != null)
-        //        {
-        //            foreach (var item in obj)
-        //            {
-        //                item.IsActive = false;
-        //                item.UpdatedBy = userName;
-        //                item.UpdatedDate = DateTime.UtcNow;
-        //                status = _IDocumentDetailsService.Update(item, null, "");
-        //            }
-        //        }
-
-        //        return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
-
-        //    }
-        //    else
-        //    {
-        //        //EDMX Fix - Commenting below code as its not in use 
-        //        var obj = docDetails_lst.Where(u => u.UserID == userId && u.IsActive == true).ToList();
-        //        if (obj != null)
-        //        {
-        //            foreach (var item in obj)
-        //            {
-        //                item.IsActive = false;
-        //                status = _IDocumentDetailsService.Update(item, null, "");
-        //            }
-        //        }
-
-        //        return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
-        //    }
-
-        //}
         [HttpPost]
-        public ActionResult DeleteUploadedDocuments(string isAddressProof, string isIdProof, string DocumentID = "", string EmployementNo = "", string docDetAddress = "", string docDetId = "")
+        public ActionResult DeleteUploadedDocuments(string DocumentID = "", string EmployementNo = "")
         {
             bool status = false;
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-            var addressProofStatus = false;
-            var idProofStatus = false;
             var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-            addressProofStatus = Convert.ToBoolean(isAddressProof);
-            idProofStatus = Convert.ToBoolean(isIdProof);
-            if (!string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
+            if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
             {
-
-                if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
+                //Code change - EDMX Fix 
+                var obj = docDetails_lst.Where(u => u.UserID == userId && u.DocDetID == Convert.ToInt32(DocumentID) && u.IsActive == true).ToList();
+                if (obj != null)
                 {
-                    var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-                    var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-                    return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault() != null ? docIdObj.SingleOrDefault().DocCatID : 1 : 1 });
-                }
-                else if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
-                {
-                    var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-                    var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-                    return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
-                }
-                else
-                {
-                    List<DocumentDetail> docIdObj = null;
-                    if (!string.IsNullOrEmpty(DocumentID))
+                    foreach (var item in obj)
                     {
-                        // var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-                        docIdObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
+                        item.IsActive = false;
+                        item.UpdatedBy = userName;
+                        item.UpdatedDate = DateTime.UtcNow;
+                        status = _IDocumentDetailsService.Update(item, null, "");
+
+                        if (item.DocumentID == IDProof.Passport && item.IsAddressProof == true)
+                        {
+                            var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == AddressProof.Passport && u.IsActive == true);
+                            if (cloneObj != null)
+                            {
+                                cloneObj.IsActive = false;
+                                cloneObj.UpdatedBy = userName;
+                                cloneObj.UpdatedDate = DateTime.UtcNow;
+                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                            }
+                        }
+                        else if (item.DocumentID == AddressProof.Passport && item.IsIdProof == true)
+                        {
+                            var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == IDProof.Passport && u.IsActive == true);
+                            if (cloneObj != null)
+                            {
+                                cloneObj.IsActive = false;
+                                cloneObj.UpdatedBy = userName;
+                                cloneObj.UpdatedDate = DateTime.UtcNow;
+                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                            }
+                        }
                     }
-                    return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
                 }
-            }
-            else if (!string.IsNullOrEmpty(docDetId) && string.IsNullOrEmpty(docDetAddress))
-            {
-                var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-                return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
-            }
-            else if (string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
-            {
-                var docObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-                return Json(new { status = status, DocCatID = docObj != null ? docObj.SingleOrDefault().DocCatID : 1 });
+
+                return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
+
             }
             else
             {
-                //  var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-                if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
+                //EDMX Fix - Commenting below code as its not in use 
+                var obj = docDetails_lst.Where(u => u.UserID == userId && u.IsActive == true).ToList();
+                if (obj != null)
                 {
-                    //Code change - EDMX Fix 
-                    var docObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
-
-                    return Json(new { status = status, DocCatID = docObj != null ? docObj.SingleOrDefault().DocCatID : 1 });
-
-                }
-                else
-                {
-                    //EDMX Fix - Commenting below code as its not in use 
-                    var obj = docDetails_lst.Where(u => u.UserID == userId && u.IsActive == true).ToList();
-                    if (obj != null)
+                    foreach (var item in obj)
                     {
-                        foreach (var item in obj)
+                        item.IsActive = false;
+                        status = _IDocumentDetailsService.Update(item, null, "");
+                        if (item.DocumentID == IDProof.Passport && item.IsAddressProof == true)
                         {
-                            item.IsActive = false;
-                            status = _IDocumentDetailsService.Update(item, null, "");
+                            var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == AddressProof.Passport && u.IsActive == true);
+                            if (cloneObj != null)
+                            {
+                                cloneObj.IsActive = false;
+                                cloneObj.UpdatedBy = userName;
+                                cloneObj.UpdatedDate = DateTime.UtcNow;
+                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                            }
+                        }
+                        else if (item.DocumentID == AddressProof.Passport && item.IsIdProof == true)
+                        {
+                            var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == IDProof.Passport && u.IsActive == true);
+                            if (cloneObj != null)
+                            {
+                                cloneObj.IsActive = false;
+                                cloneObj.UpdatedBy = userName;
+                                cloneObj.UpdatedDate = DateTime.UtcNow;
+                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                            }
                         }
                     }
-
-                    return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
                 }
 
+                return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
             }
 
         }
+        //[HttpPost]
+        //public ActionResult DeleteUploadedDocuments(string isAddressProof, string isIdProof, string DocumentID = "", string EmployementNo = "", string docDetAddress = "", string docDetId = "")
+        //{
+        //    bool status = false;
+        //    userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+        //    userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
+        //    var addressProofStatus = false;
+        //    var idProofStatus = false;
+        //    var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
+        //    addressProofStatus = Convert.ToBoolean(isAddressProof);
+        //    idProofStatus = Convert.ToBoolean(isIdProof);
+        //    if (!string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
+        //    {
+
+        //        if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
+        //        {
+        //            var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
+        //            var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
+        //            return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault() != null ? docIdObj.SingleOrDefault().DocCatID : 1 : 1 });
+        //        }
+        //        else if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
+        //        {
+        //            var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
+        //            var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
+        //            return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
+        //        }
+        //        else
+        //        {
+        //            List<DocumentDetail> docIdObj = null;
+        //            if (!string.IsNullOrEmpty(DocumentID))
+        //            {
+        //                // var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
+        //                docIdObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
+        //            }
+        //            return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
+        //        }
+        //    }
+        //    else if (!string.IsNullOrEmpty(docDetId) && string.IsNullOrEmpty(docDetAddress))
+        //    {
+        //        var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
+        //        return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
+        //    }
+        //    else if (string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
+        //    {
+        //        var docObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
+        //        return Json(new { status = status, DocCatID = docObj != null ? docObj.SingleOrDefault().DocCatID : 1 });
+        //    }
+        //    else
+        //    {
+        //        //  var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
+        //        if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
+        //        {
+        //            //Code change - EDMX Fix 
+        //            var docObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
+
+        //            return Json(new { status = status, DocCatID = docObj != null ? docObj.SingleOrDefault().DocCatID : 1 });
+
+        //        }
+        //        else
+        //        {
+        //            //EDMX Fix - Commenting below code as its not in use 
+        //            var obj = docDetails_lst.Where(u => u.UserID == userId && u.IsActive == true).ToList();
+        //            if (obj != null)
+        //            {
+        //                foreach (var item in obj)
+        //                {
+        //                    item.IsActive = false;
+        //                    status = _IDocumentDetailsService.Update(item, null, "");
+        //                }
+        //            }
+
+        //            return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
+        //        }
+
+        //    }
+
+        //}
         private List<DocumentDetail> DeleteUploadDocument(int DocumentID)
         {
             bool status = false;
