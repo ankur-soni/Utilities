@@ -313,6 +313,10 @@ namespace HR_Web.Controllers
                             _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
                             status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
                         }
+                        else
+                        {
+                            status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
+                        }
                         //_docDetails.IsIdProof = saveUploadDocumentVewModel.IsIdProof;
 
 
