@@ -84,8 +84,6 @@ namespace HR_Web.Controllers
             ViewBag.DocumentCategory = GetDocumentCategory();
             bool isAddressProof = false;
             bool isIdProof = false;
-            bool addressProof;
-            bool idProof;
 
             if (System.Web.HttpContext.Current.Request.IsAuthenticated)
             {
@@ -94,8 +92,9 @@ namespace HR_Web.Controllers
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
 
                 DocumentDetaillist = _IDocumentService.GetAll(null, null, "").ToList();
-
             }
+
+
 
             foreach (var documentDetailsList in DocumentDetaillist)
             {
@@ -103,47 +102,44 @@ namespace HR_Web.Controllers
                 {
 
                     documentDetails.UpdatedDate = TimeZoneInfo.ConvertTimeFromUtc(documentDetails.UpdatedDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    if (documentDetails.DocumentID == Constant.IDProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.IdProof)
+                    if (documentDetails.DocumentID == IDProof.Passport && documentDetails.DocCatID == DocumentCategory.IdProof && documentDetails.IsActive == true)
                     {
-                        if (documentDetails.IsAddressProof != null && documentDetails.IsIdProof != null)
+                        if (documentDetails.IsAddressProof != null)
                         {
-                            addressProof = (bool)documentDetails.IsAddressProof;
-                            idProof = isIdProof = (bool)documentDetails.IsIdProof;
-                            if (addressProof == true && isIdProof == false)
-                            {
-                                isAddressProof = addressProof;
-                                isIdProof = idProof;
-
-                            }
-                            else if (addressProof == false && idProof == true)
-                            {
-                                isAddressProof = (bool)documentDetails.IsAddressProof;
-                                isIdProof = (bool)documentDetails.IsIdProof;
-                            }
+                            isAddressProof = documentDetails.IsAddressProof.Value;
                         }
 
                     }
-                    else if (documentDetails.DocumentID == Constant.AddressProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.AddressProof)
+
+                    if (documentDetails.DocumentID == AddressProof.Passport && documentDetails.DocCatID == DocumentCategory.AddressProof && documentDetails.IsActive == true)
                     {
-
-
-                        if (documentDetails.IsAddressProof != null && documentDetails.IsIdProof != null)
+                        if (documentDetails.IsIdProof != null)
                         {
-                            addressProof = (bool)documentDetails.IsAddressProof;
-                            idProof = isIdProof = (bool)documentDetails.IsIdProof;
-                            if (addressProof == true && isIdProof == false)
-                            {
-                                isAddressProof = addressProof;
-                                isIdProof = idProof;
-
-                            }
-                            else if (addressProof == false && idProof == true)
-                            {
-                                isAddressProof = (bool)documentDetails.IsAddressProof;
-                                isIdProof = (bool)documentDetails.IsIdProof;
-                            }
+                            isIdProof = documentDetails.IsIdProof.Value;
                         }
+
                     }
+                    //else if (documentDetails.DocumentID == Constant.AddressProof.Passport && documentDetails.DocCatID == Constant.DocumentCategory.AddressProof)
+                    //{
+
+
+                    //    if (documentDetails.IsAddressProof != null && documentDetails.IsIdProof != null)
+                    //    {
+                    //        addressProof = (bool)documentDetails.IsAddressProof;
+                    //        idProof = isIdProof = (bool)documentDetails.IsIdProof;
+                    //        if (addressProof == true && isIdProof == false)
+                    //        {
+                    //            isAddressProof = addressProof;
+                    //            isIdProof = idProof;
+
+                    //        }
+                    //        else if (addressProof == false && idProof == true)
+                    //        {
+                    //            isAddressProof = (bool)documentDetails.IsAddressProof;
+                    //            isIdProof = (bool)documentDetails.IsIdProof;
+                    //        }
+                    //    }
+                    //}
 
                 }
             }
@@ -822,6 +818,47 @@ namespace HR_Web.Controllers
             bool IsOnboarded = Employee == null ? false : true;
             ViewBag.IsOnboarded = IsOnboarded;
             return View();
+        }
+
+        public ActionResult UpdateIsAddressProofProp(DocumentDetail model)
+        {
+            bool status = false;
+            long id;
+            if (model.IsAddressProof != null && model.IsAddressProof.Value)
+            {
+                var cloneObj = _IDocumentDetailsService.GetById(model.DocDetID);
+                cloneObj.CreatedDate = DateTime.Now;
+                cloneObj.DocumentID = AddressProof.Passport;
+                cloneObj.DocCatID = DocumentCategory.AddressProof;
+                cloneObj.IsAddressProof = true;
+                status = _IDocumentDetailsService.InsertDocDetails(out id, cloneObj, null, "");
+            }
+            if ((model.IsAddressProof != null && model.IsAddressProof.Value == false) || status)
+            {
+                status = _IDocumentDetailsService.Update(model, p => p.IsAddressProof);
+            }
+
+            return Json(new { status = status });
+        }
+        public ActionResult UpdateIsIdProofProp(DocumentDetail model)
+        {
+            bool status = false;
+            long id;
+            if (model.IsIdProof != null && model.IsIdProof.Value)
+            {
+                var cloneObj = _IDocumentDetailsService.GetById(model.DocDetID);
+                cloneObj.CreatedDate = DateTime.Now;
+                cloneObj.DocumentID = IDProof.Passport;
+                cloneObj.DocCatID = DocumentCategory.IdProof;
+                cloneObj.IsIdProof = true;
+                status = _IDocumentDetailsService.InsertDocDetails(out id, cloneObj, null, "");
+            }
+            if ((model.IsIdProof != null && model.IsIdProof.Value == false) || status)
+            {
+                status = _IDocumentDetailsService.Update(model, p => p.IsIdProof);
+            }
+
+            return Json(new { status = status });
         }
     }
 }

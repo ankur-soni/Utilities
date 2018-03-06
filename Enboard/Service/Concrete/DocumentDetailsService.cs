@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Data;
+﻿using Data;
 using Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Service
 {
-    public class DocumentDetailsService :IDocumentDetailsService
+    public class DocumentDetailsService : IDocumentDetailsService
     {
         private IDocumentDetailsRepository _IDocumentDetailsRepository;
 
@@ -37,6 +38,11 @@ namespace Service
         public bool UpdateById(object Id)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Update(DocumentDetail obj, Expression<Func<DocumentDetail, object>> property)
+        {
+            return _IDocumentDetailsRepository.Update(obj, property);
         }
 
         public bool Save()

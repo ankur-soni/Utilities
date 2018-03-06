@@ -8,7 +8,8 @@
     divAddressProofUploadClass {
         display: block;
     }
-  divUploadCheckbox {
+
+    divUploadAsIdCheckbox {
         display: block;
     }
 </style>
@@ -17,51 +18,60 @@
 {
     <ul class="docList">
         @Html.HiddenFor(m => m.AddressProofFormStatus)
+        @{
+            var docs = _Master_DocumentListAddress.Where(t => t.DocCatID == Constant.DocumentCategory.IdProof);
+            bool anyPassportDocAsIDProof = docs.Any(t => t.DocumentDetails.Any(b => b.DocumentID == Constant.IDProof.Passport && b.IsActive == true));
+        }
         @foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof).AsQueryable())
         {
+            var isDocPassport = item.Document == "Passport";
             if (item.DocumentID != 1)
             {
                 <li>
                     <h6 class="docName">
                         @item.Document
-                        @if (item.Document == "Passport")
+                        @if (isDocPassport)
                         {
-                            <span class="divUploadCheckbox">
-                                <br />
-                                <label>Use as id proof</label>
-                                @Html.CheckBoxFor(m => m.IsIdProof)
-                            </span>
+                            @(Model.HavePassport){
+                                <span class="divUploadAsIdCheckbox">
+                                    <br />
+                                    <label>Use as id proof</label>
+
+
+                                    @if (!item.DocumentDetails.Any(t => t.DocumentID == Constant.AddressProof.Passport && t.IsActive == true))
+                                    {
+                                        @Html.CheckBox("IsIdProof", false, new { @disabled = "disabled" })
+                                    }
+                                    else if (!anyPassportDocAsIDProof)
+                                    {
+                                        @Html.CheckBox("IsIdProof", false)
+                                    }
+                                    else if ((Model.IsAddressProof && anyPassportDocAsIDProof) || anyPassportDocAsIDProof)
+                                    {
+                                        @Html.CheckBoxFor(m => m.IsIdProof, new { @disabled = "disabled" })
+                                    }
+                                    else
+                                    {
+                                        @Html.CheckBoxFor(m => m.IsIdProof)
+
+
+                                    }
+                                </span>
+                            }
                         }
-                            
+
                     </h6>
-                    @if (item.Document == "Passport")
-                    {
-                        <ul class="docUpload">
-                            <li>
-                                <h1>1</h1>
-                                <span class="userNote"> &nbsp;</span>
-                                <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files.</span>
-                                <div class="btn btn-primary btn-upload btn-sm pull-right divAddressProofUploadClass">
-                                    <span>Upload</span>
-                                    <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
-                                </div>
-                            </li>
-                        </ul>
-                    }
-                    else
-                    {
-                        <ul class="docUpload">
-                            <li>
-                               
-                                <span class="userNote"> &nbsp;</span>
-                                <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files.</span>
-                                <div class="btn btn-primary btn-upload btn-sm pull-right">
-                                    <span>Upload</span>
-                                    <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
-                                </div>
-                            </li>
-                        </ul>
-                    }
+
+                    <ul class="docUpload">
+                        <li>
+                            <span class="userNote"> &nbsp;</span>
+                            <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files.</span>
+                            <div class="btn btn-primary btn-upload btn-sm pull-right @(isDocPassport?"divAddressProofUploadClass":"")">
+                                <span>Upload</span>
+                                <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                            </div>
+                        </li>
+                    </ul>
 
                     @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
@@ -73,23 +83,27 @@
                                 if (item != null)
                                 {
                                     <li>
-                                        @*<h1>3</h1>*@
                                         <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                                         <span class="uploadName"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
                                         <a href="#" id=@("Reset" + item.DocumentID) + class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
-                                        <input type="hidden" value="@itemDetails.DocDetID" id="hidDocDetIdAddressProof" />
-                                        <input type="hidden" id="hidstatusAddressProof" />
+                                        @if (itemDetails.DocumentID == Constant.AddressProof.Passport)
+                                        {
+                                            <input type="hidden" value="@itemDetails.DocDetID" id="hidDocDetAddressProof" />
+                                            <input type="hidden" id="hidstatusAddressProof" />
+                                        }
                                     </li>
                                 }
                             }
-                            @*<h1>4</h1>*@
-                            <li class="addDocument">
-                                <span class="userNote"> &nbsp; </span>
-                                <div id=@("divUpload"+item.DocumentID) class="btn btn-primary btn-upload btn-sm pull-right">
-                                    <span>Upload</span>
-                                    <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
-                                </div>
-                            </li>
+                            @if (item.DocumentID == Constant.AddressProof.Passport && item.DocumentDetails.Count == 0)
+                            {
+                                <li class="addDocument">
+                                    <span class="userNote"> &nbsp; </span>
+                                    <div id=@("divUpload" + item.DocumentID) class="btn btn-primary btn-upload btn-sm pull-right">
+                                        <span>Upload</span>
+                                        <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
+                                    </div>
+                                </li>
+                            }
                         </ul>
                     }
                 </li>
