@@ -2,48 +2,17 @@
 @{
     Layout = null;
 }
-
-
 <div class="progressBar">
     <h4> Overall Tasks Completed</h4>
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="@Html.Raw(String.Format("{0:0.0}", Model.AverragePercentage) + "%")"
-             aria-valuemin=" 0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.AverragePercentage) + "%")">
-            @Html.Raw(String.Format("{0:0.0}", Model.AverragePercentage) + "%")
-        </div>
-    </div>
+    @Progressbar(Model.AverragePercentage,"") 
 </div>
-<div class="progressChart">
-    <div class="progress vertical">
-        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.PersonalDetailsPercentage) + "%")">
-            <div class="progress-value">@Html.Raw(String.Format("{0:0.0}", Model.PersonalDetailsPercentage) + "%")</div>
-        </div>
-    </div>
-    <div class="progress vertical">
-        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.ContactDetailsPercentage) + "%")">
-            <div class="progress-value">@Html.Raw(String.Format("{0:0.0}", Model.ContactDetailsPercentage) + "%")</div>
-        </div>
-    </div>
-    <div class="progress vertical">
-        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.EducationDetailsPercentage) + "%")">
-            <div class="progress-value">@Html.Raw(String.Format("{0:0.0}", Model.EducationDetailsPercentage) + "%")</div>
-        </div>
-    </div>
-    <div class="progress vertical">
-        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.EmploymentDetailsPercentage) + "%")">
-            <div class="progress-value">@Html.Raw(String.Format("{0:0.0}", Model.EmploymentDetailsPercentage) + "%")</div>
-        </div>
-    </div>
-    <div class="progress vertical">
-        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.FamilyDetailsPercentage) + "%")">
-            <div class="progress-value">@Html.Raw(String.Format("{0:0.0}", Model.FamilyDetailsPercentage) + "%")</div>
-        </div>
-    </div>
-    <div class="progress vertical">
-        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0.0}", Model.UploadDcoumentsPercentage) + "%")">
-            <div class="progress-value">@Html.Raw(String.Format("{0:0.0}", Model.UploadDcoumentsPercentage) + "%")</div>
-        </div>
-    </div>
+<div class="progressChart">  
+    @Progressbar(Model.PersonalDetailsPercentage, "progress-bar-info")
+    @Progressbar(Model.ContactDetailsPercentage, "progress-bar-success")
+    @Progressbar(Model.EducationDetailsPercentage, "progress-bar-warning")
+    @Progressbar(Model.EmploymentDetailsPercentage, "progress-bar-danger")
+    @Progressbar(Model.FamilyDetailsPercentage, "progress-bar-danger")
+    @Progressbar(Model.UploadDcoumentsPercentage, "progress-bar-danger")   
 </div>
 <div class="Chartlegend">
     <ul>
@@ -55,3 +24,11 @@
         <li>Upload Documents</li>
     </ul>
 </div>
+@helper Progressbar(double? percentage,string className,bool vertical=true)
+{
+    <div class="progress @(vertical ? "vertical":"")">
+        <div class="progress-bar @className" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0}", percentage) + "%")">
+            <div class="progress-value">@Html.Raw( String.Format(percentage%1==0? "{0:0}":"{0:0.0}", percentage) + "%")</div>
+        </div>
+    </div>
+}

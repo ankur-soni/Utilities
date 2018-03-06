@@ -65,8 +65,8 @@
                         <td onclick="return ShowUserDetails(@user.UserId)"><a data-target="#">@Html.Raw(strUserFullName)</a></td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0}", user.OverAllUploadPecentage) + "%"); color: lightsteelblue;">
-                                    @Html.Raw(String.Format("{0:0}", user.OverAllUploadPecentage) + "%")
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="@Html.Raw("width:" + String.Format("{0:0}", user.OverAllUploadPecentage) + "%"); color: lightsteelblue;">                                                                       
+                                    @Html.Raw(String.Format(user.OverAllUploadPecentage % 1 == 0 ? "{0:0}" : "{0:0.0}", user.OverAllUploadPecentage) + "%")
                                 </div>
                             </div>
                         </td>
