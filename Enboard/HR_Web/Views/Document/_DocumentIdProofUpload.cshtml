@@ -32,36 +32,16 @@
                         @item.Document;
                         @if (isPassportAvailable || item.DocumentID == Constant.IDProof.PANCard)
                         {
-                            <span style="color:red">*</span>
+                        <span style="color:red">*</span>
                         }
                         @if (isPassportAvailable)
                         {
-                            <br />
-                            <span class="divUploadAsAddressCheckbox">
-                                <label>Use as address proof</label>
-
-                                @if (!item.DocumentDetails.Any(t => t.DocumentID == Constant.IDProof.Passport && t.IsActive == true))
-                                {
-                                    @Html.CheckBox("IsAddressProof", false, new { @disabled = "disabled" })
-                                }
-                                else if (!anyPassportDocAsAddressProof)
-                                {
-                                    @Html.CheckBox("IsAddressProof", false)
-                                }
-                                else if ((Model.IsIdProof && anyPassportDocAsAddressProof) || anyPassportDocAsAddressProof)
-                                {
-                                    @Html.CheckBoxFor(m => m.IsAddressProof, new { @disabled = "disabled" })
-                                }
-                                else
-                                {
-                                    @Html.CheckBoxFor(m => m.IsAddressProof)
-
-
-                                }
-
-
-
-                            </span>
+                        <br />
+                        <span class="divUploadAsAddressCheckbox">
+                            <label class="uploadCheckBoxLabel">Use as address proof</label>
+                            @UploadCheckBox(!item.DocumentDetails.Any(t => t.DocumentID == Constant.IDProof.Passport && t.IsActive == true),
+                                anyPassportDocAsAddressProof)                            
+                        </span>
                         }
 
 
@@ -87,39 +67,20 @@
                             {
                                 if (item != null)
                                 {
-                                    if (item.Document == "Passport")
-                                    {
-                                        if (!String.IsNullOrEmpty(Model.HavePassport))
+
+
+                                    <li>
+                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        <span class="uploadName @(item.DocumentID == Constant.IDProof.PANCard ? "mand idproofdoc" : string.Empty)">
+                                            <a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a>
+                                        </span>
+                                        <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove</a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
+                                        @if (itemDetails.DocumentID == Constant.IDProof.Passport)
                                         {
-                                            <li>
-                                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                                <span class="uploadName">
-                                                    <a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a>
-                                                </span>
-                                                <div id=@("divReset"+ item.DocumentID)>
-                                                    <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove</a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
-                                                </div>
-                                                @if (itemDetails.DocumentID == Constant.IDProof.Passport)
-                                            {
-                                                    <input type="hidden" value="@itemDetails.DocDetID" id="hidDocDetIDProof" />
-
-
-                                                    <input type="hidden" id="hidstatusIDProof" />
-                                                }
-                                            </li>
+                                            <input type="hidden" value="@itemDetails.DocDetID" id="hidDocDetIDProof" />
+                                            <input type="hidden" id="hidstatusIDProof" />
                                         }
-                                    }
-                                    if (item.Document != "Passport")
-                                    {
-                                        <li>
-                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                            <span class="uploadName @(item.DocumentID == Constant.IDProof.PANCard ? "mand idproofdoc" : string.Empty)">
-                                                <a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a>
-                                            </span>
-                                            <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove</a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
-                                        </li>
-                                    }
-
+                                    </li>
                                 }
                             }
                         </ul>
@@ -130,3 +91,24 @@
                         }
     </ul>
                         }
+@helper UploadCheckBox(bool noDocInIdProof, bool anyPassportDocAsAddressProof)
+{
+    if (noDocInIdProof)
+    {
+        @Html.CheckBox("IsAddressProof", false, new { @disabled = "disabled" })
+    }
+    else if (!anyPassportDocAsAddressProof)
+    {
+        @Html.CheckBox("IsAddressProof", false)
+    }
+    else if ((Model.IsIdProof && anyPassportDocAsAddressProof) || anyPassportDocAsAddressProof)
+    {
+        @Html.CheckBoxFor(m => m.IsAddressProof, new { @disabled = "disabled" })
+    }
+    else
+    {
+        @Html.CheckBoxFor(m => m.IsAddressProof)
+
+
+    }
+}

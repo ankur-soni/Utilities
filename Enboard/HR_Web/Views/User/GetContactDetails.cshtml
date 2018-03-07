@@ -66,7 +66,7 @@
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.PermanantCountryID, new { @class = "" }) <span class="red">*</span>
-                                    @Html.DropDownListFor(m => m.PermanantCountryID, CountryList, "Select Country", new { id = "CD_ddlPermanantAddCountry", @class = "form-control", placeholder = "Select Country", tabindex = 4 })
+                                    @DropDownListFor(Model.PermanantCountryID, CountryList, "Select Country", new { id = "CD_ddlPermanantAddCountry", @class = "form-control", placeholder = "Select Country", tabindex = 4 })
                                     @Html.ValidationMessageFor(model => model.PermanantCountryID, "", new { @class = "text-danger" })
 
                                 </div>
@@ -76,9 +76,8 @@
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <div class="form-group pAddress">
                                     @Html.LabelFor(m => m.PermanantStateID, new { @class = "" }) <span class="red">*</span>
-                                    @Html.DropDownListFor(m => m.PermanantStateID, StateList, "Select State", new { id = "CD_ddlPermanantAddState", @class = "form-control", placeholder = "Select State", tabindex = 5 })
-                                    @Html.ValidationMessageFor(model => model.PermanantStateID, "", new { @class = "text-danger", id = "CD_valPermanantAddState" })
-                                    @Html.TextBoxFor(m => m.OtherPermanantState, new { id = "CD_txtOtherPermanantAddState", @class = "form-control", placeholder = "Please enter your State", tabindex = 5 })
+                                    @DropDownListForWithOtherOption(Model.PermanantStateID, StateList,Model.OtherPermanantState, "Select State", new { id = "CD_ddlPermanantAddState", @class = "form-control", placeholder = "Select State", tabindex = 5 })
+                                    @Html.ValidationMessageFor(model => model.PermanantStateID, "", new { @class = "text-danger", id = "CD_valPermanantAddState" })                                    
                                     @Html.ValidationMessageFor(model => model.OtherPermanantState, "", new { @class = "text-danger", id = "CD_valOtherPermanantAddState" })
                                 </div>
 
@@ -86,9 +85,8 @@
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <div class="form-group pAddress">
                                     @Html.LabelFor(m => m.PermanantCityID, new { @class = "" }) <span class="red">*</span>
-                                    @Html.DropDownListFor(m => m.PermanantCityID, CityList, "Select City", new { id = "CD_ddlPermanantAddCity", @class = "form-control", placeholder = "Select City", tabindex = 6 })
-                                    @Html.ValidationMessageFor(model => model.PermanantCityID, "", new { @class = "text-danger", id = "CD_valPermanantAddCity" })
-                                    @Html.TextBoxFor(m => m.OtherPermanantCity, new { id = "CD_txtOtherPermanantAddCity", @class = "form-control", placeholder = "Please enter your City", tabindex = 6 })
+                                    @DropDownListForWithOtherOption(Model.PermanantCityID, CityList,Model.OtherPermanantCity, "Select City", new { id = "CD_ddlPermanantAddCity", @class = "form-control", placeholder = "Select City", tabindex = 6 })
+                                    @Html.ValidationMessageFor(model => model.PermanantCityID, "", new { @class = "text-danger", id = "CD_valPermanantAddCity" })                                    
                                     @Html.ValidationMessageFor(model => model.OtherPermanantCity, "", new { @class = "text-danger", id = "CD_valOtherPermanantAddCity" })
 
                                 </div>
@@ -152,7 +150,7 @@
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.CurrentCountryID, new { @class = "" })<span class="red">*</span>
-                                    @Html.DropDownListFor(m => m.CurrentCountryID, CountryList, "Select Country", new { id = "CD_ddlCurrentAddCountry", @class = "form-control", placeholder = "Select Country", tabindex = 12 })
+                                    @DropDownListFor(Model.CurrentCountryID, CountryList, "Select Country", new { id = "CD_ddlCurrentAddCountry", @class = "form-control", placeholder = "Select Country", tabindex = 12 })
                                     @Html.ValidationMessageFor(model => model.CurrentCountryID, "", new { @class = "text-danger", id = "CD_valCurrentAddCountry" })
                                 </div>
 
@@ -161,9 +159,8 @@
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <div class="form-group pAddress">
                                     @Html.LabelFor(m => m.CurrentStateID, new { @class = "" }) <span class="red">*</span>
-                                    @Html.DropDownListFor(m => m.CurrentStateID, StateList, "Select State", new { id = "CD_ddlCurrentAddState", @class = "form-control", placeholder = "Select State", tabindex = 13 })
-                                    @Html.ValidationMessageFor(model => model.CurrentStateID, "", new { @class = "text-danger", id = "CD_valCurrentAddState" })
-                                    @Html.TextBoxFor(m => m.OtherCurrentState, new { id = "CD_txtOtherCurrentAddState", @class = "form-control", placeholder = "Please enter your State", tabindex = 13 })
+                                    @DropDownListForWithOtherOption(Model.CurrentStateID, StateList,Model.OtherCurrentState, "Select State", new { id = "CD_ddlCurrentAddState", @class = "form-control", placeholder = "Select State", tabindex = 13 })
+                                    @Html.ValidationMessageFor(model => model.CurrentStateID, "", new { @class = "text-danger", id = "CD_valCurrentAddState" })                                    
                                     @Html.ValidationMessageFor(model => model.OtherCurrentState, "", new { @class = "text-danger", id = "CD_valOtherCurrentAddState" })
                                 </div>
 
@@ -171,9 +168,8 @@
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <div class="form-group pAddress">
                                     @Html.LabelFor(m => m.CurrentCityID, new { @class = "" }) <span class="red">*</span>
-                                    @Html.DropDownListFor(m => m.CurrentCityID, CityList, "Select City", new { id = "CD_ddlCurrentAddCity", @class = "form-control", placeholder = "Select City", tabindex = 14 })
-                                    @Html.ValidationMessageFor(model => model.CurrentCityID, "", new { @class = "text-danger", id = "CD_valCurrentAddCity" })
-                                    @Html.TextBoxFor(m => m.OtherCurrentCity, new { id = "CD_txtOtherCurrentAddCity", @class = "form-control", placeholder = "Please enter your City", tabindex = 14 })
+                                    @DropDownListForWithOtherOption(Model.CurrentCityID, CityList,Model.OtherCurrentCity, "Select City", new { id = "CD_ddlCurrentAddCity", @class = "form-control", placeholder = "Select City", tabindex = 14 })
+                                    @Html.ValidationMessageFor(model => model.CurrentCityID, "", new { @class = "text-danger", id = "CD_valCurrentAddCity" })                                    
                                     @Html.ValidationMessageFor(model => model.OtherCurrentCity, "", new { @class = "text-danger", id = "CD_valOtherCurrentAddCity" })
                                 </div>
 
@@ -199,32 +195,20 @@
                         <h3 class="panel-title">Contact Details</h3>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-
-
+                        <div class="col-md-6 col-sm-6 col-xs-12">                          
                             <div class="panel-body">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.HomePhone, new { @class = "" })
-                                    @Html.TextBoxFor(m => m.HomePhone, new { id = "CD_txtHomePhone", placeholder = "02023659820", @class = "form-control", maxlength = "11", tabindex = 16 })
+                                    @Html.TextBoxFor(m => m.HomePhone, new { id = "CD_txtHomePhone", placeholder = "02023659820", @class = "form-control", maxlength = "11", tabindex = 19 })
                                     @Html.ValidationMessageFor(model => model.HomePhone, "", new { @class = "text-danger" })
                                 </div>
 
-                                <div class="form-group">
-                                    @Html.LabelFor(m => m.MobileNumber, new { @class = "" }) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.MobileNumber, new { id = "CD_txtMobileNumber", placeholder = "9912345412", @class = "form-control", maxlength = "11", tabindex = 18 })
-                                    @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
-                                </div>
                             </div>
 
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
 
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    @Html.LabelFor(m => m.Email, new { @class = "" }) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.Email, new { id = "CD_txtEmail", placeholder = "Email", @class = "form-control", tabindex = 17 })
-                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                </div>
+                            <div class="panel-body">                               
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.AnotherContact, new { @class = "" }) <span class="red">*</span>
                                     @Html.TextBoxFor(m => m.AnotherContact, new { id = "CD_txtAnotherContact", placeholder = "02023659820", @class = "form-control", maxlength = "11", tabindex = 19 })
@@ -789,3 +773,26 @@
 
 </script>
 
+
+@helper DropDownListFor(int? value, SelectList list, string placeholder, object htmlAttribute)
+{
+
+    string valueStr = value != null ? value.ToString() : string.Empty;
+    var selectedOption = list.FirstOrDefault(t => t.Value == valueStr);
+    var inputText = selectedOption != null ? selectedOption.Text : string.Empty;
+    <input class="form-control" value="@inputText" placeholder="@placeholder" />
+}
+
+@helper DropDownListForWithOtherOption(int? value, SelectList list, string otherOption, string placeholder, object htmlAttribute)
+{
+
+    if (!string.IsNullOrWhiteSpace(otherOption))
+    {
+            <input class="form-control" value="@otherOption" placeholder="@placeholder" />
+    }
+    else
+    {
+            @DropDownListFor(value,list,placeholder,htmlAttribute)
+    }
+
+}

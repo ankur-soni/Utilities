@@ -773,6 +773,7 @@ namespace HR_Web.Controllers
             ViewBag.Countries = GetCountries();
             ViewBag.CountryCodeList = GetCountryCode();
             ViewBag.CityList = GetCities();
+            ViewBag.StateList = GetStates();
 
 
             //Code change - EDMX Fix 
