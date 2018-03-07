@@ -1,4 +1,4 @@
-﻿
+﻿@using HR_Web.Helpers;
 @model Models.PersonalDetails
 @{
     ViewBag.Title = "PersonalDetails";
@@ -17,17 +17,12 @@
         font-size: inherit;
     }
 </style>
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jqueryui")
-@Scripts.Render("~/bundles/jqueryval")
 
-<script src="~/Scripts/EDP_Validations.js"></script>
 <div align="left">
 
     <!-- Row start -->
     @using (Html.BeginForm("PersonalDetails", "User", FormMethod.Post, new { id = "formPersonalDetails" }))
-    {
-        @Html.AntiForgeryToken()
+    {      
         <label style="color:green" id="lblmsg"> </label>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -43,7 +38,7 @@
                                 <div class="form-group">
 
                                     @Html.LabelFor(m => m.FirstName, new { @class = "" }) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName", placeholder = "First Name", @class = "form-control", @tabindex = 1, @maxlength = "20" })
+                                    @Html.TextBoxFor(m => m.FirstName, new { id = "txtFirstName",  @class = "form-control", @tabindex = 1, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                                 </div>
 
@@ -52,7 +47,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.LastName, new { @class = "" }) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName", placeholder = "Last Name", @class = "form-control", @tabindex = 3, @maxlength = "20" })
+                                    @Html.TextBoxFor(m => m.LastName, new { id = "txtLastName", @class = "form-control", @tabindex = 3, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -60,7 +55,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.EmpEmail, new { @class = "" }) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.EmpEmail, new { id = "txtEmpEmail", placeholder = "test@test.com", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.EmpEmail, new { id = "txtEmpEmail", @class = "form-control", @tabindex = 3, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.EmpEmail, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -69,7 +64,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Gender) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.Gender, new { id = "txtGender", placeholder = "Gender", @class = "form-control", @tabindex = 1, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.Gender, new { id = "txtGender",  @class = "form-control", @tabindex = 1, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -84,7 +79,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.Label("Contact Number") <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtContactNumber", placeholder = "9863251474", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.ContactNumber, new { id = "txtContactNumber",@class = "form-control", @tabindex = 3, @maxlength = "20"})
                                     @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -99,14 +94,14 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.Label("Offered Designation") <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.Designation, new { id = "txtDesignation", placeholder = "Software Engineer II", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.Designation, new { id = "txtDesignation",  @class = "form-control", @tabindex = 3, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.Label("Department") <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.Department, new { id = "txtDepartment", placeholder = "Delivery", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.Department, new { id = "txtDepartment", @class = "form-control", @tabindex = 3, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -114,7 +109,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.Label("Date Of Joining") <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.JoiningDate, new { id = "txtJoiningDate", placeholder = "10/01/2017", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.JoiningDate, new { id = "txtJoiningDate",  @class = "form-control", @tabindex = 3, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -125,7 +120,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <div class="form-group">
                                     @Html.Label("Joining Location") <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.JoiningLocation, new { id = "txtJoiningLocation", placeholder = "Pune", @class = "form-control", @tabindex = 3, @maxlength = "20", disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.JoiningLocation, new { id = "txtJoiningLocation", @class = "form-control", @tabindex = 3, @maxlength = "20" })
                                     @Html.ValidationMessageFor(model => model.JoiningLocation, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -147,36 +142,33 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.FatherName, new { @class = "" }) <span class="red">*</span>
-                                    @Html.TextBoxFor(m => m.FatherName, new { id = "PD_txtFatherName", placeholder = "Father Name", @class = "form-control", tabindex = 10, @maxlength = "30" })
-                                    @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.FatherName, new { id = "PD_txtFatherName", @class = "form-control", tabindex = 10, @maxlength = "30" })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.BloodGroup, new { @class = "" })
-                                    @DropDownListFor(Model.BloodGroup, BloodGroups, "Select Blood Group", new { id = "PD_ddlBloodGroup", @class = "form-control", placeholder = "p", tabindex = 12 })
+                                    @CustomHtmlHelper.DropDownListFor(Model.BloodGroup, BloodGroups,"form-control")
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.MotherTongue, new { @class = "" })
-                                    @DropDownListFor(Model.MotherTongue, LangList, "Select Mother Tongue", new { id = "PD_ddlMotherTongue", @class = "form-control", placeholder = "Select Mother Tongue", tabindex = 14 })
-                                </div>                                
+                                    @CustomHtmlHelper.DropDownListFor(Model.MotherTongue, LangList,  "form-control")
+                                </div>
                                 <div class="form-group pAddress">
                                     @Html.LabelFor(m => m.PlaceofBirth, new { @class = "" }) <span class="red">*</span>
 
-                                    @BirthPlace(Model.PlaceofBirth, CityList, StateList, Model.OtherPlaceOfBirth, "Place of Birth", new { id = "PD_txtPlaceofBirth", @class = "form-control", placeholder = "p", tabindex = 16 })
+                                    @CustomHtmlHelper.BirthPlace(Model.PlaceofBirth, CityList, StateList, Model.OtherPlaceOfBirth, "form-control")
 
-                                    @Html.ValidationMessageFor(model => model.PlaceofBirth, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.PANNumber, new { @class = "" })
-                                    @Html.TextBoxFor(m => m.PANNumber, new { id = "PD_txtPANNumber", placeholder = "PAN Number", @class = "form-control alphanumeric", tabindex = 18, @maxlength = "10" })
-                                    @Html.ValidationMessageFor(model => model.PANNumber, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.PANNumber, new { id = "PD_txtPANNumber", @class = "form-control alphanumeric", tabindex = 18, @maxlength = "10" })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.HavePassport, new { @class = "" })
-                                    @Html.TextBoxFor(m => m.HavePassport, new { id = "PD_txtHavePassportNumber", placeholder = "Yes/No", @class = "form-control alphanumeric", tabindex = 15, @maxlength = "10" })
+                                    @Html.TextBoxFor(m => m.HavePassport, new { id = "PD_txtHavePassportNumber", @class = "form-control alphanumeric", tabindex = 15, @maxlength = "10" })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.PassportNumber, new { @class = "" }) <span class="red" id="spPassportNumber">*</span>
-                                    @Html.TextBoxFor(m => m.PassportNumber, new { id = "PD_txtPassportNumber", placeholder = "Passport Number", @class = "form-control alphanumeric", tabindex = 15, @maxlength = "10" })
+                                    @Html.TextBoxFor(m => m.PassportNumber, new { id = "PD_txtPassportNumber",  @class = "form-control alphanumeric", tabindex = 15, @maxlength = "10" })
                                 </div>
                             </div>
 
@@ -186,35 +178,32 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Nationality) <span class="red">*</span>
-                                    @DropDownListFor(Model.Nationality, Countries, "Select Nationality", new { id = "PD_ddlNationality", @class = "form-control", placeholder = "Select Nationlity", tabindex = 14 })
-                                    @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                                    @CustomHtmlHelper.DropDownListFor(Model.Nationality, Countries, "form-control")
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.MaritalStatID, new { @class = "" }) <span class="red">*</span>
-                                    @DropDownListFor(Model.MaritalStatID, MaritalStatus, "Select Marital Status", new { id = "PD_ddlMaritalStatus", @class = "form-control", placeholder = "Select Marital Status", tabindex = 13 })
-                                    @Html.ValidationMessageFor(model => model.MaritalStatID, "", new { @class = "text-danger" })
+                                    @CustomHtmlHelper.DropDownListFor(Model.MaritalStatID, MaritalStatus, "form-control")
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.SpouseName) <span class="red" id="spSpouse">*</span>
-                                    @Html.TextBoxFor(m => m.SpouseName, new { id = "PD_txtSpouseName", placeholder = "Spouse Name", @class = "form-control", tabindex = 16, @maxlength = "30" })
+                                    @Html.TextBoxFor(m => m.SpouseName, new { id = "PD_txtSpouseName", @class = "form-control", tabindex = 16, @maxlength = "30" })
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.AadharCardNumber, new { @class = "" })
-                                    @Html.TextBoxFor(m => m.AadharCardNumber, new { id = "PD_txtAadharCardNumber", placeholder = "Aadhar Card Number", @class = "form-control alphanumeric", maxlength = "20", tabindex = 17 })
-                                    @Html.ValidationMessageFor(model => model.AadharCardNumber, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.AadharCardNumber, new { id = "PD_txtAadharCardNumber",@class = "form-control alphanumeric", maxlength = "20", tabindex = 17 })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.UANNumber, new { @class = "" })
-                                    @Html.TextBoxFor(m => m.UANNumber, new { id = "PD_txtUANNumber", placeholder = "UAN Number", @class = "form-control alphanumeric", maxlength = "20", tabindex = 19 })
+                                    @Html.TextBoxFor(m => m.UANNumber, new { id = "PD_txtUANNumber",  @class = "form-control alphanumeric", maxlength = "20", tabindex = 19 })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.NameOnPassport) <span class="red" id="spNameOnPassport">*</span>
-                                    @Html.TextBoxFor(m => m.NameOnPassport, new { id = "PD_txtNameOnPassport", placeholder = "Name On Passport", @class = "form-control alphanumeric", tabindex = 15, @maxlength = "50" })
+                                    @Html.TextBoxFor(m => m.NameOnPassport, new { id = "PD_txtNameOnPassport",  @class = "form-control alphanumeric", tabindex = 15, @maxlength = "50" })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.PassportExpiryDate) <span class="red" id="spPassportExpiryDate">*</span>
-                                    @Html.TextBoxFor(m => m.PassportExpiryDate, String.Format("{0:dd/MM/yyyy}", Model.PassportExpiryDate), new { data_mini = "true", id = "PD_txtPassportExpiryDate", placeholder = "DD/MM/YY", @class = "form-control", tabindex = 4 })
+                                    @Html.TextBoxFor(m => m.PassportExpiryDate, String.Format("{0:dd/MM/yyyy}", Model.PassportExpiryDate), new { data_mini = "true", id = "PD_txtPassportExpiryDate",  @class = "form-control", tabindex = 4 })
                                 </div>
                             </div>
 
@@ -231,344 +220,4 @@
 
     }
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        //Other birth place
-        var text = $("#PD_txtPlaceofBirth option:selected").text();
-
-        if (text == 'Other') {
-            $('#PD_txtOtherPlaceOfBirth').show();
-            $("#PD_txtPlaceofBirth").hide();
-        }
-
-        //Spouse
-        $("#spSpouse").hide();
-        var maritalStatus = $("#PD_ddlMaritalStatus").val();
-        if (maritalStatus == 1) //married
-        {
-            $("#spSpouse").show();
-        }
-
-        //Passport
-        $("#spPassportExpiryDate").hide();
-        $("#spNameOnPassport").hide();
-        $("#spPassportNumber").hide();
-        var havePassport = $("#PD_txtHavePassportNumber").val();
-        if (havePassport == 'yes') {
-
-            $("#spPassportExpiryDate").show();
-            $("#spNameOnPassport").show();
-            $("#spPassportNumber").show();
-        }
-
-
-        @*$("#PD_SaveId").click(function () {
-
-            var form = $('#PD_FormId');
-
-            $.validator.unobtrusive.parse(form);
-            if (form.valid() && $('#lblComparefutureDateError').text().trim() == '') {
-                ajaxindicatorstart('Loading.. please wait..');
-                $.ajax({
-                    url: '@Url.Action("PersonalDetails", "User")',
-                    data: form.serialize(),
-                    cache: false,
-                    type: 'POST',
-                    success: function (result) {
-
-                        if (result) {
-                            $('#lblmsg').text('Personal Details Saved');
-
-                        }
-
-                        ajaxindicatorstop();
-                    },
-                    error: function (data) {
-                        ajaxindicatorstop();
-                    }
-                });
-            }
-        });*@
-
-
-        //var validator = $("PD_FormId").validate()
-        //validator.errorList
-
-        //if ($('#PD_FormId').valid()) {
-
-        //    console.log('FORM VALID');
-
-        //} else {
-
-        //    console.log('FORM INVALID');
-
-        //    var validator = $('#form').validate();
-
-        //    $.each(validator.errorMap, function (index, value) {
-
-        //        console.log('Id: ' + index + ' Message: ' + value);
-
-        //    });
-
-        //}
-
-
-        $("#PD_Reset").click(function () {
-
-            $('#PD_FormId').find('input, select').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');
-
-            $('#divMotherTongueId').hide();
-            $('#lblmsg').text('');
-
-        });
-
-        $('#PD_txtDOB').datepicker({
-            maxDate: 0,
-            showButtonPanel: false,
-            changeMonth: true,
-            changeYear: true,
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            dateFormat: 'dd/mm/yy',
-            onSelect: function (dateText, inst) {
-                $('#lblComparefutureDateError').text('');
-                if ($('#PD_txtDOB').val() != '' || $('#PD_txtDOB').val() != "" || $('#PD_txtDOB').val() != null || $('#PD_txtDOB').val().length != 0) {
-
-                    var date = $('#PD_txtDOB').val();
-                    var arrDate = date.split("/");
-                    var today = new Date();
-                    useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
-
-                    var d = new Date(),
-                    date = d.getDate();
-                    n = d.getMonth(),
-
-                    y = d.getFullYear();
-
-                    if (arrDate[0] == date && arrDate[1] - 1 == n) {
-                        if (arrDate[2] >= date) {
-                            $('#lblComparefutureDateError').show();
-                            $('#lblComparefutureDateError').text('Invalid Date of Birth');
-                            return false;
-                        }
-                        else {
-                            $('#lblComparefutureDateError').text('');
-                            return true;
-                        }
-                    }
-
-
-                }
-            }
-        });
-
-        $('.ui-datepicker').css('font-size', $('.ui-datepicker').width() / 17 + 'px');
-
-        $("#divMotherTongueId").hide();
-
-        //code for other name
-        @*var othername = '@Model.OtherName'
-        if (othername == ' ' || othername == "" || othername == undefined) {
-            $('#PD_txtOtherName').hide(); SpecificLanguage
-            $('#PD_chkOtherName').attr('checked', false);
-        }
-        else {
-            $('#PD_txtOtherName').show();
-            $('#PD_chkOtherName').attr('checked', true);
-        }*@
-        //code if user select other as language
-        var otherlang = $("#PD_txtMotherTongue").val();
-        if (otherlang == '') {
-            otherlang = '@Model.MotherTongue';
-        }
-        var t = $("#PD_ddlMotherTongue").find("option").filter("[value=" + otherlang + "]").length;
-        if (t == 0) {
-            $("#divMotherTongueId").show();
-            $("#PD_ddlMotherTongue").val('Other');
-            $("#PD_txtMotherTongue").val(otherlang);
-        }
-
-        var ddlbloodval = $("#PD_ddlBloodGroup").val();
-        if (ddlbloodval == '') {
-            ddlbloodval = '@Model.BloodGroup';
-            $("#PD_ddlBloodGroup").val(ddlbloodval);
-        }
-
-    });
-
-    var gender = '@Model.Gender'
-    if (gender == "Female") {
-        $('#divMaidenName').show();
-    }
-    else {
-        $('#divMaidenName').hide();
-    }
-
-
-    $("#PD_ddlMotherTongue").change(function () {
-
-        var selectedText = $(this).find("option:selected").text();
-        if (selectedText == "Other") {
-            $("#divMotherTongueId").show();
-            $("#PD_txtMotherTongue").val('');
-            $("#PD_txtMotherTongue").focus();
-
-        }
-        else {
-            $("#divMotherTongueId").hide();
-            $("#PD_txtMotherTongue").val('');
-        }
-
-    });
-
-
-
-
-    $('#rbtFemale').on('change', function () {
-
-        if (this.checked) {
-            $('#divMaidenName').show();
-            $('#PD_txtMaidenName').val('');
-
-        }
-        else {
-            $('#PD_txtMaidenName').val('');
-            $('#divMaidenName').Hide();
-        }
-    });
-    $('#rbtMale').on('change', function () {
-
-        if (this.checked) {
-            $('#divMaidenName').hide();
-            $('#PD_txtMaidenName').text('');
-
-        }
-        else {
-            $('#PD_txtMaidenName').text('');
-            $('#divMaidenName').show();
-        }
-    });
-
-    $('#PD_chkOtherName').on('change', function () {
-
-        if (this.checked) {
-            $('#PD_txtOtherName').show();
-
-        }
-        else {
-            $('#PD_txtOtherName').hide();
-            $('#PD_txtOtherName').val('');
-        }
-    });
-
-    alphabets($('#txtFirstName'))
-    alphabets($('#txtMiddleName'))
-    alphabets($('#txtLastName'))
-    alphabets($('#PD_txtMaidenName'))
-    alphabets($('#PD_txtOtherName'))
-    alphabets($('#PD_txtFatherName'))
-    alphabets($('#PD_txtMotherTongue'))
-    alphabets($('#PD_txtPlaceofBirth'))
-    alphabets($('#PD_txtNationality'))
-    //alphabets($('#PD_txtMarritalStatus'))
-
-    // alphanumeric($('#PD_txtPANNumber'))l
-    //  alphanumeric($('#PD_txtPassportNumber'))
-    numeric($('#PD_txtAadharCardNumber'))
-    numeric($('#PD_txtUANNumber'))
-
-    $(function () {
-        $.validator.addMethod('date',
-        function (value, element) {
-            if (this.optional(element)) {
-                return true;
-            }
-            var ok = true;
-            try {
-                $.datepicker.parseDate('dd/mm/yy', value);
-            }
-            catch (err) {
-                ok = false;
-            }
-            return ok;
-        });
-        $(".datefield").datepicker({ dateFormat: 'dd/mm/yy', changeYear: true });
-
-        //Datepicker validation
-        //$('.hasDatepicker').attr('readonly', true);
-    });
-
-
-    $(function () {
-
-        $('.alphanumeric').keyup(function () {
-            if (this.value.match(/[^a-zA-Z0-9 ]/g)) {
-                this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');
-            }
-        });
-    });
-
-</script>
-
-@helper DropDownListFor(int? value, SelectList list, string placeholder, object htmlAttribute)
-{
-string valueStr = value != null ? value.ToString() : string.Empty;
-var selectedOption = list.FirstOrDefault(t => t.Value == valueStr);
-var inputText = selectedOption != null ? selectedOption.Text : string.Empty;
-    <input class="form-control" value="@inputText" placeholder="@placeholder" />
-}
-
-@helper DropDownListFor(string value, SelectList list, string placeholder, object htmlAttribute)
-{
-
-var selectedOption = list.FirstOrDefault(t => t.Value == value);
-var inputText = selectedOption != null ? selectedOption.Text : string.Empty;
-    <input class="form-control" value="@inputText" placeholder="@placeholder" />
-}
-
-
-
-@helper BirthPlace(string value, SelectList cityList, SelectList stateList, string otherOptionValue, string placeholder, object htmlAttribute)
-{
-
-string inputText = string.Empty;
-if (!string.IsNullOrWhiteSpace(otherOptionValue))
-{
-    inputText = otherOptionValue;
-
-}
-else
-{
-    if (value != null)
-    {
-        string[] tokens = value.Split('-');
-        if (tokens.Length == 2)
-        {
-            var stateId = tokens[0];
-            var cityId = tokens[1];
-            var city = cityList.FirstOrDefault(t => t.Value == cityId);
-            var cityText = city != null ? city.Text : string.Empty;
-            var state = stateList.FirstOrDefault(t => t.Value == stateId);
-            var stateText = state != null ? state.Text : string.Empty;
-            inputText = cityText + " - " + stateText;
-
-        }
-    }
-
-
-}
-
-    <input class="form-control" value="@inputText" placeholder="@placeholder" />
-
-}
-
-
-
-
-
-
-
-
-
 

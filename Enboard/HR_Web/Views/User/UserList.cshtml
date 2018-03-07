@@ -312,11 +312,7 @@
 @*script for user defined functions*@
 <script type="text/javascript">
     $(document).ready(function () {
-        //var designation = $('#ddlDesignation :selected').text();
-        //if (designation == "Other") {
-        //    $("#OtherDesignation").css("display", "block");
-        //  //  $("#OtherDesignation").text(designation);
-        //}
+       
         //click event for search user
         $('#btnSearch').click(function () {
             var regex = /<[^>]*>|<|>|/g;
@@ -331,10 +327,6 @@
         });
     });
 
-    //$('#focusedInput').bind('input propertychange', function () {
-    //    var regex = /<[^>]*>|<|>|/g;
-    //    GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
-    //});
 
     function viewAll()
     {
@@ -426,13 +418,7 @@
         if (designation == "Other") {
            
             var otherDes = $("#OtherDesignation").val();
-            //var data = { "designation": otherDes }
-            //if (otherDes=="")
-            //{
-            //    $("#anchortag").addClass('disabled').removeAttr("href");
-            //    toastr.error("Please enter the value in textbox");
-            //}
-            //else {
+           
             if ($("#OtherDesignation").length == 0) {
                 //hide validation error message
                 $("#lblmsgDesignation").show();
@@ -448,8 +434,7 @@
                     },
                     success: function (data) {
                         if (data.result == true) {
-                            if (data.result == true);
-                            //alert("Designation Already exist");
+                            if (data.result == true);                           
                             $("#OtherDesignation").val("");
                             toastr.error("Designation Already exist");
                         }
@@ -465,12 +450,5 @@
 
             }
   
-        }
-   // }
-    //$("#ddlDesignation").change(function () {
-
-    //    alert("skjk");
-    //    alert($(this).val())
-    //  //  var firstDropVal = $('#pick').val();
-    //});
+        }  
 </script>
