@@ -1,35 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Models;
-using Service;
+﻿using AutoMapper;
 using Data;
-using System.Web.Security;
-using System.Net.Mail;
+using HR_Web.CustomFilters;
+using HR_Web.Utilities;
+using HR_Web.ViewModel;
+using Models;
+using Newtonsoft.Json;
+using PagedList;
+using Service;
+using Service.Interface;
+using Silicus.FrameWorx.Logger;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity.Infrastructure.Interception;
-using AutoMapper;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Mail;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using HR_Web.Utilities;
-using PagedList;
-using System.Threading;
-using System.Globalization;
-using System.IO.Compression;
-using System.IO;
-using HR_Web.CustomFilters;
-using Service.Interface;
 using System.Text;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using HR_Web.ViewModel;
-using Silicus.FrameWorx.Logger;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using System.Web.Security;
 
 namespace HR_Web.Controllers
 {
@@ -308,7 +305,7 @@ namespace HR_Web.Controllers
         [HttpPost]
         public ActionResult LoginAs(string email)
         {
-            var details = new ImpersonateUser() {Email = email};
+            var details = new ImpersonateUser() { Email = email };
             var user = _IUserService.GetAll(null, null, "").ToList();
             var chkDeactivateduser = user.Where(u => u.Email.ToLower().Trim() == details.Email.ToLower().Trim() && Convert.ToInt32(u.IsActive) == 2).FirstOrDefault();
             if (chkDeactivateduser != null)
@@ -466,7 +463,7 @@ namespace HR_Web.Controllers
                     if (result != null)
                     {
                         var status = (result.IsApproved.HasValue && result.IsApproved.Value);
-                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <strong>" + getUIValue(result.FieldName) + "</strong> change on the Enboard Portal has been " + ( status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a> for further information or contact the Onboarding team") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img "+"src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/><br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020<br/> Tel: +91.20.3020 4000<br/></font></body></html>";
+                        string htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " + result.LoginDetail.FirstName + ",<br><br>Your request for <strong>" + getUIValue(result.FieldName) + "</strong> change on the Enboard Portal has been " + (status ? "Approved" : "denied.<br/>Please write to <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a> for further information or contact the Onboarding team") + ".<br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='" + strWebUrl + "/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020<br/> Tel: +91.20.3020 4000<br/></font></body></html>";
                         string subject = "Enboard: Change Request " + ((result.IsApproved.HasValue && result.IsApproved.Value) ? "Approved" : "Denied");
                         SendMailToUser(result.LoginDetail, htmlBody, subject);
                         return this.Json(new { Sucess = true });
@@ -719,7 +716,7 @@ namespace HR_Web.Controllers
                             employeePersonalDetails.OtherBirthState = _personalDetails.OtherPlaceOfBirth.Split('-')[0];
                             employeePersonalDetails.OtherBirthCity = _personalDetails.OtherPlaceOfBirth.Split('-')[1];
                         }
-                        else if(!string.IsNullOrEmpty(_personalDetails.OtherPlaceOfBirth))
+                        else if (!string.IsNullOrEmpty(_personalDetails.OtherPlaceOfBirth))
                         {
                             employeePersonalDetails.OtherBirthCity = _personalDetails.OtherPlaceOfBirth;
                         }
@@ -798,7 +795,7 @@ namespace HR_Web.Controllers
                         _personalDetails = PersonalDetails;
                         _Logindetails = LoginDetails;
                         System.Web.HttpContext.Current.Session["CandidateEmail"] = _Logindetails.Email;
-                        System.Web.HttpContext.Current.Session["UserID"] = _Logindetails.UserID;
+                        //System.Web.HttpContext.Current.Session["UserID"] = _Logindetails.UserID;
                         employeePersonalDetails.FirstName = _Logindetails.FirstName;
                         employeePersonalDetails.LastName = _Logindetails.LastName;
                         employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
@@ -838,7 +835,7 @@ namespace HR_Web.Controllers
                 {
                     _Logindetails = LoginDetails;
                     System.Web.HttpContext.Current.Session["CandidateEmail"] = _Logindetails.Email;
-                    System.Web.HttpContext.Current.Session["UserID"] = _Logindetails.UserID;
+                    //System.Web.HttpContext.Current.Session["UserID"] = _Logindetails.UserID;
                     employeePersonalDetails.FirstName = _Logindetails.FirstName;
                     employeePersonalDetails.LastName = _Logindetails.LastName;
                     employeePersonalDetails.ContactNumber = _Logindetails.ContactNumber;
@@ -886,10 +883,10 @@ namespace HR_Web.Controllers
                 details.UpdatedBy = userName;
                 details.UpdatedDate = DateTime.UtcNow;
                 details.UserID = userId;
-               // var p = !string.IsNullOrEmpty(details.BirthState);
+                // var p = !string.IsNullOrEmpty(details.BirthState);
                 //var q = !string.IsNullOrEmpty(details.BirthCity);
                 //var r = details.BirthState + "-" + details.BirthCity;
-                if(!string.IsNullOrEmpty(details.BirthState) || !string.IsNullOrEmpty(details.BirthCity))
+                if (!string.IsNullOrEmpty(details.BirthState) || !string.IsNullOrEmpty(details.BirthCity))
                 {
                     details.PlaceofBirth = details.BirthState + "-" + details.BirthCity;
                 }
@@ -897,19 +894,19 @@ namespace HR_Web.Controllers
                 {
                     details.PlaceofBirth = null;
                 }
-                
 
-                if(!string.IsNullOrEmpty(details.OtherBirthState))
+
+                if (!string.IsNullOrEmpty(details.OtherBirthState))
                 {
                     details.OtherPlaceOfBirth = details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim();
                 }
                 else
                 {
-                    if(!string.IsNullOrEmpty(details.OtherBirthCity))
+                    if (!string.IsNullOrEmpty(details.OtherBirthCity))
                     {
                         details.OtherPlaceOfBirth = details.OtherBirthCity;
                     }
-                   
+
                 }
                 //  var c = details.OtherBirthState.Trim() + "-" + details.OtherBirthCity.Trim();
 
@@ -946,14 +943,14 @@ namespace HR_Web.Controllers
             ViewBag.BloodGroup = GetBloodGroup();
             ViewBag.MaritalStatus = GetMaritalStatus();
             var loginDetails = _IUserService.GetById(userId);
-            if(loginDetails != null)
+            if (loginDetails != null)
             {
                 loginDetails.HasPassport = details.PassportNumber;
-               // loginDetails.HasPassport = "kjksfj";
+                // loginDetails.HasPassport = "kjksfj";
                 _IUserService.Update(loginDetails, null, "");
             }
-        
-       
+
+
             return Json(new { result = true, Message = "Personal details updated sucesfully" }, JsonRequestBehavior.AllowGet);
 
         }
@@ -1021,7 +1018,7 @@ namespace HR_Web.Controllers
                                          + "<br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions. You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>."
                                          + "<font face='Cambria' size= '3'><br> <br><br> Regards, " +
                                          " <br/> Onboarding Team @ Silicus " +
-                                         "<br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'"+"/>" +
+                                         "<br/><img " + "src='" + strWebUrl + "/Content/NewUI/images/sign/email_sign.png'" + "/>" +
                                          " <br/><font face='Cambria' Size= '3' color ='#2C567C'>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020" +
                                          " <br/> Tel: +91.20.3020 4000<br/></font>" +
                                          "</body></html>";
@@ -1051,9 +1048,9 @@ namespace HR_Web.Controllers
 
                 NetworkCredential basicCredential = new NetworkCredential(SMTPUserName, SMTPPassword);
                 string From = ConfigurationManager.AppSettings["EmailFrom"];
-                _logger.Log("SendEmailToUser-From"+ From  );
+                _logger.Log("SendEmailToUser-From" + From);
                 string To = model.Email;
-                _logger.Log("SendEmailToUser-To"+To);
+                _logger.Log("SendEmailToUser-To" + To);
                 if (strto != null)
                     To = strto;
                 System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(From, To, subject, body);
@@ -1089,7 +1086,7 @@ namespace HR_Web.Controllers
                         }
                         if (e.Error != null)
                         {
-                            _logger.Log("SendEmailToUser-error"+e.Error.Message);
+                            _logger.Log("SendEmailToUser-error" + e.Error.Message);
                             // prompt user with error message 
                         }
                         else
@@ -1111,7 +1108,7 @@ namespace HR_Web.Controllers
                 _logger.Log("Before Dispose");
                 client.Dispose();
                 _logger.Log(ex);
-                _logger.Log("SendEmailToUser-"+ex.Message);
+                _logger.Log("SendEmailToUser-" + ex.Message);
                 throw ex;
 
             }
@@ -1537,19 +1534,19 @@ namespace HR_Web.Controllers
                     var monthName = dt.ToString("MMMM", CultureInfo.InvariantCulture);
                     string strJoiningDate = dt.DayOfWeek.ToString() + " " + dt.Day + " " + monthName + " " + dt.Year + " ";
                     string hrEmailID = ConfigurationManager.AppSettings["HREmailId"];
-                    htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear " 
+                    htmlBody = @"<html><body><font face='Cambria' size= '3' color ='black'> Dear "
                                 + user.FirstName + ",<br><br>" +
-                               "Congratulations on your selection at Silicus! We look forward towards your joining on <strong>" +strJoiningDate+"</strong>"+
+                               "Congratulations on your selection at Silicus! We look forward towards your joining on <strong>" + strJoiningDate + "</strong>" +
                                ".<br/>Please login to the Silicus Onboarding Portal – <strong>Enboard</strong> – to initiate the pre-joining process" +
                               "<br><br>The credentials are as below:<ul><li><a href="
                                + strWebUrl + " target='_blank'>Click</a> here to login </li><li> UserName: <font color ='blue'>"
                                + user.Email.Trim() + "</font>  </li><li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim()
-                               + "</font> </li></ul> <br/> " 
-                               + "You are required to fill the necessary forms and upload all the documents as listed in the ‘Joining Document Checklist’ issued to you along with the Offer letter." 
+                               + "</font> </li></ul> <br/> "
+                               + "You are required to fill the necessary forms and upload all the documents as listed in the ‘Joining Document Checklist’ issued to you along with the Offer letter."
                                +
                                " <br/> Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions." +
                                " You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>. " +
-                               " <br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>" +
+                               " <br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='" + strWebUrl + "/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>" +
                                "</body></html>";
                     subject = "Enboard (Onboarding Portal) login credentials: Silicus Technologies";
                 }
@@ -1568,7 +1565,7 @@ namespace HR_Web.Controllers
                                "</ul><br/>Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions.<br/> " +
                                "You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>.<br><br> Regards," +
                                "<br/> Onboarding Team @ Silicus<br/>" +
-                               "<img" + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/>" +
+                               "<img" + "src='" + strWebUrl + "/Content/NewUI/images/sign/email_sign.png'" + "/>" +
                                "<br/> <font face='Cambria' Size= '3' color ='#2C567C'> Pune IT Park, 6th & 7th Floor, 34 Aundh Road," +
                                "<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <font/></body></html>";
                     subject = "Enboard (Onboarding Portal) Reactivation credentials: Silicus Technologies";
@@ -2432,9 +2429,9 @@ namespace HR_Web.Controllers
             ZipFile.CreateFromDirectory(folderPath, zipPath);
         }
 
-        private void ConvertByteStreamFileToZip(int userId,int docId)
+        private void ConvertByteStreamFileToZip(int userId, int docId)
         {
-           // var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "").Where(m => m.UserID == userId && m.IsActive == true);
+            // var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "").Where(m => m.UserID == userId && m.IsActive == true);
             var document = _IDocumentDetailsService.GetById(docId);
             var userDetails = _IUserService.GetById(userId);
             //string filename = userDetails.FirstName + "_" + userDetails.LastName;
@@ -2443,24 +2440,24 @@ namespace HR_Web.Controllers
             //DeleteAllZipFilesAndFolders();
             //if (Directory.Exists(folderPath))
             //    Directory.Delete(folderPath, true);
-                byte[] fileByte = document.Data;
-                string strContentType = string.Empty;
-                string strFileName = string.Empty;
-                strFileName = "Doc" +  "_" + document.DocumentName;
-                Response.Clear();
-                MemoryStream ms = new MemoryStream(fileByte);
+            byte[] fileByte = document.Data;
+            string strContentType = string.Empty;
+            string strFileName = string.Empty;
+            strFileName = "Doc" + "_" + document.DocumentName;
+            Response.Clear();
+            MemoryStream ms = new MemoryStream(fileByte);
 
-                //if (!Directory.Exists(folderPath))
-                //{
-                //    Directory.CreateDirectory(folderPath);
-                //}
-                //string path = "";
-                //path = Path.Combine(folderPath);
-                FileStream file = new FileStream(folderPath, FileMode.Create, FileAccess.Write);
-                ms.WriteTo(file);
-                file.Close();
-                ms.Close();                          
-           // ZipFile.CreateFromDirectory(folderPath, zipPath);
+            //if (!Directory.Exists(folderPath))
+            //{
+            //    Directory.CreateDirectory(folderPath);
+            //}
+            //string path = "";
+            //path = Path.Combine(folderPath);
+            FileStream file = new FileStream(folderPath, FileMode.Create, FileAccess.Write);
+            ms.WriteTo(file);
+            file.Close();
+            ms.Close();
+            // ZipFile.CreateFromDirectory(folderPath, zipPath);
         }
 
 
@@ -2500,20 +2497,20 @@ namespace HR_Web.Controllers
             return Json("sucess");
         }
         [HttpPost]
-        public ActionResult SendEmailForRejectDocumment(string to, string sub, string body, string isAttach, string userId,string documentId)
+        public ActionResult SendEmailForRejectDocumment(string to, string sub, string body, string isAttach, string userId, string documentId)
         {
             DocumentDetail Doc = _IDocumentDetailsService.GetById(Convert.ToInt32(documentId));
             // string folderPath = Doc.DocumentName;
 
             LoginDetail userDetails = _IUserService.GetById(Convert.ToInt32(userId));
             ConvertByteStreamFileToZip(Convert.ToInt32(userId), Convert.ToInt32(documentId));
-           
+
             //string filename = userDetails.FirstName + "_" + userDetails.LastName;
             string filePath = Path.Combine(Server.MapPath("~/UploadedDocuments/"), Doc.DocumentName);
 
             SendMailToUser(userDetails, body, sub, to, Convert.ToBoolean(isAttach), filePath);
             userDetails.IsSubmitted = false;
-            _IUserService.Update(userDetails,null, "");
+            _IUserService.Update(userDetails, null, "");
 
             return Json("sucess");
         }
@@ -2588,12 +2585,12 @@ namespace HR_Web.Controllers
                     model.ProjectName = obj.ProjectName;
                     model.RecruiterName = obj.RecruiterName;
                     model.RequisitionID = obj.RequisitionID;
-                  //  model.DesignationOther= obj.
+                    //  model.DesignationOther= obj.
                     //code change 
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
-                    model.IsFresher = obj.IsFresher??false;
+                    model.IsFresher = obj.IsFresher ?? false;
                     model.IsSubmitted = obj.IsSubmitted;
                     //model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
@@ -2674,14 +2671,14 @@ namespace HR_Web.Controllers
                         try
                         {
 
-                           if (model.OtherDesignation != null)
+                            if (model.OtherDesignation != null)
                             {
-                             var designation=   UpdateDesignationList(model.OtherDesignation);
-                                if(designation != null)
+                                var designation = UpdateDesignationList(model.OtherDesignation);
+                                if (designation != null)
                                 {
                                     obj.DesignationID = designation.DesignationID;
                                 }
-                                
+
                             }
 
 
@@ -2852,29 +2849,29 @@ namespace HR_Web.Controllers
         public ActionResult GetEmployeesForLoginAs(int? page, string sortOrder, string searchString = "")
         {
 
-           var userList = new List<AddEditUserModel>();
+            var userList = new List<AddEditUserModel>();
             try
             {
-                    var activeUsers = _IUserService.GetActiveUsers();
-                    var candidateList = (from candidate in activeUsers
+                var activeUsers = _IUserService.GetActiveUsers();
+                var candidateList = (from candidate in activeUsers
 
-                                         select new AddEditUserModel()
-                                         {
-                                             FirstName = candidate.FirstName,
-                                             LastName = candidate.LastName,
-                                             Email = candidate.Email,
+                                     select new AddEditUserModel()
+                                     {
+                                         FirstName = candidate.FirstName,
+                                         LastName = candidate.LastName,
+                                         Email = candidate.Email,
 
-                                         }).ToList();
+                                     }).ToList();
 
-                    if (Request.HttpMethod != "GET")
-                    {
-                        page = 1;
-                    }
-                    int pageSize = 10000;
-                    int pageNumber = (page ?? 1);
-                    ViewBag.PageIndex = pageNumber;
-                    return View("_employeesForLoginAs", candidateList.ToPagedList(pageNumber, pageSize));
-                
+                if (Request.HttpMethod != "GET")
+                {
+                    page = 1;
+                }
+                int pageSize = 10000;
+                int pageNumber = (page ?? 1);
+                ViewBag.PageIndex = pageNumber;
+                return View("_employeesForLoginAs", candidateList.ToPagedList(pageNumber, pageSize));
+
             }
             catch (Exception e)
             {
@@ -3021,20 +3018,20 @@ namespace HR_Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult CheckDuplicateDesignation( string designation)
+        public JsonResult CheckDuplicateDesignation(string designation)
         {
             var status = false;
             var desginationList = _IDesignationService.GetAll(null, null, "");/*.Any(d=>d.Designation == designation).FirstOrDefault();*/
 
-            foreach(var des in desginationList)
+            foreach (var des in desginationList)
             {
-                if(des.Designation == designation)
+                if (des.Designation == designation)
                 {
                     status = true;
                 }
             }
-           
-           
+
+
             if (status)
             {
                 return Json(new { result = true, Message = "Success" }, JsonRequestBehavior.AllowGet);
