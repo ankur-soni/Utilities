@@ -12,6 +12,12 @@
     divUploadAsIdCheckbox {
         display: block;
     }
+
+    input[type=checkbox]{
+        position: relative;
+        vertical-align: middle;
+        bottom: 1px;
+    }    
 </style>
 <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i>Upload Address Proof document each for Current and Permanent Address. Upload against any of the options below. </span>
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))

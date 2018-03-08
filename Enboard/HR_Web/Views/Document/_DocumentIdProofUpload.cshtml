@@ -12,7 +12,13 @@
     divUploadAsAddressCheckbox {
         display: block;
     }
+     input[type=checkbox] {
+        position: relative;
+        vertical-align: middle;
+        bottom: 1px;
+    }     
 </style>
+
 @using (Ajax.BeginForm("Upload", "Document", new AjaxOptions { HttpMethod = "POST" }, null, new { enctype = "multipart/form-data" }))
 {
     <ul class="docList">
