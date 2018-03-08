@@ -10,7 +10,7 @@ namespace Service
 {
     public interface IDesignationService : IService<Master_Designation>
     {
-        
-       
+      //  bool UpdateMasterDesignation(Master_Designation designation);
+
     }
 }

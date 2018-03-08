@@ -222,6 +222,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CustomHtmlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportPage.aspx.cs">
       <DependentUpon>ReportPage.aspx</DependentUpon>
@@ -546,6 +547,7 @@
     <Content Include="Views\User\_popupJobViteCandidateList.cshtml" />
     <Content Include="Views\User\LoginAs.cshtml" />
     <Content Include="Views\Employement\_ChangeRequestForm.cshtml" />
+    <Content Include="Views\User\_employeesForLoginAs.cshtml" />
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

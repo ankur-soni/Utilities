@@ -1,65 +1,118 @@
-﻿
-@model PagedList.IPagedList<Models.FamilyHistory>
-<div class="inner-div">
-    @using PagedList.Mvc;
-    @{
+﻿@model PagedList.IPagedList<Models.FamilyHistory>
+@using HR_Web.Helpers;
+@{
+    ViewBag.Title = "FamilyDetails";
+    Layout = "";
+    var CountryCodeList = (SelectList)ViewBag.CountryCodeList;
+}
 
-        Layout = "";
 
-    }
+<div class="containerInner">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-group familyDetails tabSection" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                </div>
+                @if (Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="panel panel-default" style="margin-bottom:15px;">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title text-left">
+                                    <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="@Html.Raw("#" + @item.FamDetID)" aria-expanded="true" class="collapsed">
+                                        @item.RelationShipName
+                                    </a>
+                                </h4>
+                            </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/EDP_Validations.js"></script>
+                            @using (Html.BeginForm("FamilyDetails", "Family", FormMethod.Get, new { id = "FamilyHistory_Form" + @item.FamDetID }))
+                            {
+                                <div id="@Html.Raw(item.FamDetID)" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => item.FirstName, new { @class = "label labelfont" }) <span class="red">*</span>
+                                                    @Html.TextBoxFor(m => item.FirstName, new { id = "txtFirstName" + @item.FamDetID, @class = "form-control", tabindex = (@item.FamDetID + 1).ToString() + 10, @maxlength = "100"})
+                                                </div>
+                                                <div class="form-group familyContact_@item.FamDetID">
+                                                    @Html.LabelFor(m => item.ContactNumber, new { @class = "label labelfont" }) <span class="red" id="spContactNumber_@item.FamDetID">*</span>
+                                                    <div class="input-group">
+                                                        @CustomHtmlHelper.DropDownListFor(item.CountryCode, CountryCodeList,  "form-control titleSelect")
+                                                        @Html.TextBoxFor(m => item.ContactNumber, new { id = "txtContactNumber" + @item.FamDetID, @class = "form-control alphanumeric digit", tabindex = (@item.FamDetID + 1).ToString() + 14, @maxlength = "15" })
+                                                    </div>
+                                                    <label style="color:red" id="lblmsgContactNumber_@item.FamDetID"> </label>
 
-    <div class="box-body table-responsive" id="frmFamilyDetails">
+                                                </div>
+                                                @if (item.RelationShipName == "Child")
+                                                {
+                                                    <div class="form-group childGender_@item.FamDetID">
 
-        <div class="box-body table-responsive">
-            <br />
-            <br />
+                                                        <div>
+                                                            <div>
+                                                                @Html.LabelFor(m => item.Gender, new { @class = "label labelfont" }) <span class="red" id="spContactNumber_@item.FamDetID">*</span>
+                                                            </div>
+                                                            <label class="radio-inline">
+                                                                @Html.RadioButtonFor(m => item.Gender, "Male", new { tabindex = (@item.FamDetID + 1).ToString() + 15, id = "rbtMale" + @item.FamDetID, name = "optradio" }) Male
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                @Html.RadioButtonFor(m => item.Gender, "Female", new { tabindex = (@item.FamDetID + 1).ToString() + 15, id = "rbtFemale" + @item.FamDetID, name = "optradio"}) Female
+                                                            </label>
+                                                            <label class="text-danger field-validation-error" style="color:red" id="lblGenderMsg_@item.FamDetID">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => item.LastName, new { @class = "label labelfont" }) <span class="red">*</span>
+                                                    @Html.TextBoxFor(m => item.LastName, new { id = "txtLastName" + @item.FamDetID, @class = "form-control", tabindex = (@item.FamDetID + 1).ToString() + 11, @maxlength = "100" })
+                                                </div>
+                                                <div class="switchBox emergency_@item.FamDetID">
+                                                    <label class="switch">
+                                                        <input type="checkbox" id="@Html.Raw("chk" + @item.FamDetID)" checked="@item.IsEmergencyContact" disabled="disabled" name="chkBox">
+                                                        <span class="slider round" tabindex="@((@item.FamDetID + 1).ToString() + 16)"></span>
+                                                    </label>
+                                                    <span class="switchBoxTitle pull-left"> Emergency Contact </span>
+                                                </div>
+                                            </div>
+                                            @if (item.RelationShipName != "Sibling" && item.RelationShipName != "Relative")
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(m => item.DOB, new { @class = "label labelfont" }) <span class="red" id="spDOB_@item.FamDetID">*</span>
+                                                        <div class="input-group">
+                                                            @Html.TextBoxFor(m => item.DOB, String.Format("{0:dd/MM/yyyy}", item.DOB), new { id = "txtDOB" + @item.FamDetID, @class = "form-control", tabindex = (@item.FamDetID + 1).ToString() + 12, @maxlength = "14" })
+                                                            <label class="input-group-addon btn" for="@("txtDOB" + @item.FamDetID)">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </label>
+                                                        </div>
+                                                        <label id="lblComparefutureDateError_@item.FamDetID" class="text-danger" style="display:none;"> </label>
+                                                        <label style="color:red" id="lblmsgDOB_@item.FamDetID"> </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="col-md-4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
 
-            @if (Model != null && Model.Count() > 0)
-            {
-                <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
-                    <thead style="background-color:#428bca;color:white; ">
-                        <tr>
-                            <th>#.</th>
-                            <th>Relationship</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Date Of Birth</th>
-                            @*<th>Gender</th>
-                            <th>Dependent</th>*@
-                            <th>Contact Number</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                }
+            </div>
 
-                    <tbody>
-                        @foreach (var family in Model)
-                        {
-                            <tr>
-                                <td>@Html.Raw(family.ID)</td>
-                                <td>@Html.Raw(family.RelationShipName) </td>
-                                <td>@Html.Raw(family.FirstName)</td>
-                                <td>@Html.Raw(family.LastName)</td>
-                                <td>@Html.Raw(family.DOB)</td>
-                                @*<td>@Html.Raw(family.Gender)</td>
-                                <td>@Html.Raw(family.Dependent)</td>*@
-                                <td>@Html.Raw(family.ContactNumber)</td>
-                                <td>@Html.Raw(family.IsActive)</td>
-                            </tr>
-                        }
-
-                    </tbody>
-
-                </table>
-            }
-            else
-            {
-                <h4>No Records found</h4>
-            }
         </div>
     </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    });
+</script>

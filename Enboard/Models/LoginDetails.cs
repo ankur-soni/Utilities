@@ -29,7 +29,7 @@ namespace Models
         [Required(ErrorMessage = "Please enter User Name")]
         public string Email { get; set; }
 
-        
+       // public string DesignationOther { get; set; }
         public Nullable<int> Active { get; set; }
         public Nullable<System.DateTime> ActivatedDate { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
@@ -118,6 +118,7 @@ namespace Models
         [EmailAddress(ErrorMessage = "Not a valid email")]
         [System.Web.Mvc.Remote("IsUserEmailExist", "User", AdditionalFields = "UserID", ErrorMessage = "Email already exists!")]
         public string Email { get; set; }
+     //   public string DesignationOther { get; set; }
         public string EmpNo { get; set; }
         [Required(ErrorMessage = "Please enter Expected Joining Date")]
         public Nullable<System.DateTime> JoiningDate { get; set; }
@@ -131,7 +132,7 @@ namespace Models
         public string JoiningLocation { get; set; }
         public string JoiningLoc { get; set; }
         public string ProjectName { get; set; }
-
+        public string OtherDesignation { get; set; }
         public string PrimarySkill { get; set; }
         public string OnboardingSPOCName { get; set; }
         public string RecruiterName { get; set; }
@@ -180,6 +181,8 @@ namespace Models
         //[Required(ErrorMessage = "Please enter No. of employments")]
         //[RegularExpression(@"^[0-9]{1,2}$", ErrorMessage = "Not a valid No. of employments")]
         //public int NoOfEmployments { get; set; }
+        [Display(Name = "Fresher")]
+        public bool IsFresher { get; set; }
 
     }
 
