@@ -150,8 +150,8 @@
     <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
     <input type="hidden" id="hdnDocId" />
     <input type="hidden" id="hdnDocName" />
-    <div class="modal-dialog" style="width: 60%;">
-        <div class="modal-content" style="height: 600px;">
+    <div class="modal-dialog" style="margin-top: 56px;margin-left: 293px;margin-right: 200px;">
+        <div class="modal-content" style="height: 906px;width: 1614px;margin-left: -125px;">
           
             <div class="modal-header" style="height: 8%;">
                 <label id="lbDocCategory">fghfg</label>
@@ -161,12 +161,13 @@
             </div>
             <div class="modal-body" style="text-align: center;">
                 <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
-                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 100%;"></iframe>
+                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 738px;width: 1565px;"></iframe>
                     <a id="docDownload" style="display:none;" target="_blank" href=""> Download Document </a>
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="modal-footer">
+            <div class="modal-footer text-center" style="margin-top: 326px;">                
+                
                 <button type="button" class="btn btn-primary" onclick="funVerify(true)">Approve</button>
                 <button type="button" class="btn btn-primary" onclick="MailSendForRejection()">Reject</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
@@ -312,7 +313,7 @@
 @*script for user defined functions*@
 <script type="text/javascript">
     $(document).ready(function () {
-       
+
         //click event for search user
         $('#btnSearch').click(function () {
             var regex = /<[^>]*>|<|>|/g;
