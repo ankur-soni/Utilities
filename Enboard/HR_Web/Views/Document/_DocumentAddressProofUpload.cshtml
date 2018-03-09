@@ -25,8 +25,9 @@
     <ul class="docList">
         @Html.HiddenFor(m => m.AddressProofFormStatus)
         @{
+
             var docs = _Master_DocumentListAddress.Where(t => t.DocCatID == Constant.DocumentCategory.IdProof);
-            bool anyPassportDocAsIDProof = docs.Any(t => t.DocumentDetails.Any(b => b.DocumentID == Constant.IDProof.Passport && b.IsActive == true));
+            bool anyPassportDocAsIDProof = docs.Any(t => t.DocumentDetails.Any(b => b.UserID == ViewBag.userId && b.DocumentID == Constant.IDProof.Passport && b.IsActive == true));
         }
         @foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof).AsQueryable())
         {
@@ -42,7 +43,7 @@
                                 <span class="divUploadAsIdCheckbox">
                                     <br />
                                     <label class="uploadCheckBoxLabel">Use as id proof</label>
-                                    @UploadCheckBox(!item.DocumentDetails.Any(t => t.DocumentID == Constant.AddressProof.Passport && t.IsActive == true),anyPassportDocAsIDProof)
+                                    @UploadCheckBox(!item.DocumentDetails.Any(t => t.UserID == ViewBag.userId && t.DocumentID == Constant.AddressProof.Passport && t.IsActive == true),anyPassportDocAsIDProof)
                                 </span>
                             }
                         }
