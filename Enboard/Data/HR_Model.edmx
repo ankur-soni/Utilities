@@ -299,10 +299,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="FromDate" Type="date" />
           <Property Name="ToDate" Type="date" />
           <Property Name="JobTitle" Type="varchar" MaxLength="20" />
-          <Property Name="Designation" Type="varchar" MaxLength="20" />
+          <Property Name="Designation" Type="varchar" MaxLength="100" />
           <Property Name="PreviousEmpId" Type="varchar" MaxLength="20" />
           <Property Name="CTC" Type="varchar" MaxLength="20" />
-          <Property Name="ReasonForLeave" Type="varchar" MaxLength="50" />
+          <Property Name="ReasonForLeave" Type="varchar" MaxLength="350" />
           <Property Name="SupervisorName" Type="varchar" MaxLength="20" />
           <Property Name="SupervisorDesignation" Type="varchar" MaxLength="20" />
           <Property Name="SupervisorEmail" Type="varchar" MaxLength="255" />
@@ -348,6 +348,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="IsActive" Type="int" />
           <Property Name="IsDelete" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="IsFresher" Type="bit"/>
         </EntityType>
         <EntityType Name="Master_Bloodgroup">
           <Key>
@@ -2396,10 +2397,10 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="FromDate" Type="DateTime" Precision="0" />
           <Property Name="ToDate" Type="DateTime" Precision="0" />
           <Property Name="JobTitle" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Designation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PreviousEmpId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CTC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="ReasonForLeave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReasonForLeave" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
           <Property Name="SupervisorName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SupervisorDesignation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SupervisorEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -2758,6 +2759,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="IsSubmitted" Type="Boolean" />
           <Property Name="IsActive" Type="Int32" />
+          <Property Name="IsFresher" Type="Boolean" />
           <Property Name="IsDelete" Type="Boolean" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AdminEducationCategoryForUsers" Relationship="IPDModel.FK_AdminEducationCategoryForUser_LoginDetails" FromRole="LoginDetail" ToRole="AdminEducationCategoryForUser" />
@@ -2976,7 +2978,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <Property Name="OtherSpecialization" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ClassID" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" />
-          <Property Name="BreaksDuringEducation" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="BreaksDuringEducation" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -3797,6 +3799,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="LoginDetails">
             <EntityTypeMapping TypeName="IPDModel.LoginDetail">
               <MappingFragment StoreEntitySet="LoginDetails">
+                <ScalarProperty Name="IsFresher" ColumnName="IsFresher"/>
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />

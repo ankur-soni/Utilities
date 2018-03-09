@@ -30,7 +30,7 @@
                                         <ul class="docList">
                                             <li>
                                                 <h6 class="docName">
-                                                 @item.Document @if (item.DocumentID == Constant.EmploymentProof.Latest3PaySlips)
+                                                 @item.Document @if (item.DocumentID == Constant.EmploymentProof.Latest3PaySlips || item.DocumentID == Constant.EmploymentProof.AppointmentLetter)
                                                  {
                                                     <span class="mand-field" style="color:red">*</span>
                                                  }
@@ -56,7 +56,7 @@
                                                             {
                                                                 <li>
                                                                     <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                                                    <span class="uploadName @(item.DocumentID == Constant.EmploymentProof.Latest3PaySlips ? "mand employmentdoc" : string.Empty)"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
+                                                                    <span class="uploadName @(item.DocumentID == Constant.EmploymentProof.Latest3PaySlips || item.DocumentID == Constant.EmploymentProof.AppointmentLetter ? "mand employmentdoc" : string.Empty)"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
                                                                     <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
                                                                 </li>
                                                             }
@@ -82,7 +82,7 @@
                                         <ul class="docList">
                                             <li>
                                                 <h6 class="docName">
-                                                    @item.Document @if (item.DocumentID == Constant.EmploymentProof.ExperienceLetter || item.DocumentID == Constant.EmploymentProof.Latest3PaySlips)
+                                                    @item.Document @if (item.DocumentID == Constant.EmploymentProof.ExperienceLetter || item.DocumentID == Constant.EmploymentProof.Latest3PaySlips || item.DocumentID == Constant.EmploymentProof.AppointmentLetter)
                                                     {
                                                         <span class="mand-field" style="color:red">*</span>
                                                     }
@@ -109,7 +109,7 @@
                                                             {
                                                                 <li>
                                                                     <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                                                    <span class="uploadName  @(item.DocumentID == Constant.EmploymentProof.ExperienceLetter || item.DocumentID == Constant.EmploymentProof.Latest3PaySlips ? "mand employmentdoc" : string.Empty)"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
+                                                                    <span class="uploadName  @(item.DocumentID == Constant.EmploymentProof.ExperienceLetter || item.DocumentID == Constant.EmploymentProof.Latest3PaySlips || item.DocumentID == Constant.EmploymentProof.AppointmentLetter ? "mand employmentdoc" : string.Empty)"><a style="cursor:pointer;" title="View Document" onclick="fnViewDoc(@itemDetails.DocDetID,'@itemDetails.FilePath','@itemDetails.DocumentName')">@Html.Raw(itemDetails.DocumentName)</a></span>
                                                                     <a href="#" class="removeDoc pull-right" onclick="Reset('@itemDetails.DocDetID','','@itemDetails.EmploymentDetID');"> Remove </a> <span class="uploadedOn pull-right">@itemDetails.UpdatedDate</span>
                                                                 </li>
                                                             }

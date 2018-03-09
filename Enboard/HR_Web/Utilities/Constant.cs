@@ -53,7 +53,18 @@ namespace HR_Web.Utilities
             public const int Latest3PaySlips = 13;
             public const int LatestSalaryRevisionLetter = 28;
             public const int AppointmentLetter = 29;
-        }      
+        }   
+        
+        public struct EducationProof
+        {
+            public const int SSC = 32;
+            public const int HSC = 33;
+            public const int Graduation = 34;
+            public const int Diploma = 37;
+            public const int PostGraduation = 35;
+            public const int PostGraduateDiploma =36;
+
+        }
 
     }
 

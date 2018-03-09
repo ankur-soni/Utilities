@@ -18,7 +18,7 @@
             </a>
         </h4>
     </div>
-    @using (Html.BeginForm("EditSave", "Employement", FormMethod.Post, new { id = @Html.Raw("frmEdit" + @Model.EmploymentId) }))
+    @using (Html.BeginForm("EditSave", "Employement", FormMethod.Post, new { id = @Html.Raw("frmEdit" + @Model.EmploymentId), @class = "employment-details" }))
     {
         <input type="hidden" id="@Html.Raw("EmployementNo" + @Model.EmploymentId)" name="EmployementNo" value="@Model.EmployementNo" />
         <input type="hidden" id="@Html.Raw("EmploymentId" + @Model.EmploymentId)" name="EmploymentDetID" value="@Model.EmploymentId" />
@@ -117,7 +117,7 @@
                             disabled = true,
                             @class = "form-control",
                             @tabindex = (@Model.EmploymentId + 1).ToString() + 17,
-                            @maxlength = "50"
+                            @maxlength = "100"
                         })
                             @Html.ValidationMessage("Designation", "", new { @class = "text-danger" })
                         </div>
@@ -182,17 +182,12 @@
                     {
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Reason for Leaving</label><span class="red">*</span>
+                                <label>Reason for Leaving</label><span class="red">*</span>                               
 
-                                @Html.EditorFor(x => x.ReasonForLeave,
-                        new
-                        {
-
-                            @class = "form-control",
-                            @tabindex = (@Model.EmploymentId + 1).ToString() + 20,
-                            @maxlength = "500",
-                            htmlAttributes = new { rows = 3, style = "width: 100%;", id = @Html.Raw("ReasonForLeave" + @Model.EmploymentId), disabled = true }
-                        })
+                                @Html.TextAreaFor(model => model.ReasonForLeave, 10, 30,
+                               new { id = @Html.Raw("ReasonForLeave" + @Model.EmploymentId),placeholder = "Reason for leave", disabled = true,
+                                   @class = "form-control", tabindex = (@Model.EmploymentId + 1).ToString() + 20, MaxLength = 349
+                               })
                                 @Html.ValidationMessageFor(model => model.ReasonForLeave, "", new { @class = "text-danger" })
 
                             </div>

@@ -3,6 +3,14 @@
 @{
     var CurrencyList = (SelectList)ViewBag.Currencies;
 }
+@*<div class="panel panel-default">
+    <div class="panel-heading" role="tab">
+        <h4 class="panel-title">
+            <label>Is Fresher ?</label>
+            <input type="checkbox" id="is-fresher" />
+        </h4>
+    </div>
+</div>*@
 <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab">
@@ -18,7 +26,7 @@
                     {*@
                 @*if (Model.NoOfEmployementAdmin > Model.NoOfEmployementAdded)
                     {*@
-                <div class="panel-group emplyomentDetails" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel-group emplyomentDetails emplyoment-details-form" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
                         @using (Html.BeginForm("Index", "Employement", FormMethod.Post, new { id = "PD_FormId" }))
                         {
@@ -74,7 +82,7 @@
                                                 <div class="form-group">
                                                     <label class="PastEmployment" style="display:none">Designation (on leaving)</label>
                                                     <label class="currentEmployment">Current Designation</label> <span class="red">*</span>
-                                                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @tabindex = 8, @maxlength = "50" })
+                                                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @tabindex = 8, @maxlength = "100" })
                                                     @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -107,8 +115,8 @@
                                         <div class="row PastEmployment" style="display:none">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>Reason for leaving</label><span class="red">*</span>
-                                                    @Html.EditorFor(x => x.ReasonForLeave, new { @class = "form-control", @maxlength = "500", htmlAttributes = new { rows = 3, style = "width: 100%;" } })
+                                                    <label>Reason for leaving</label><span class="red">*</span>                                                    
+                                                    @Html.TextAreaFor(model => model.ReasonForLeave, 10, 30, new {  placeholder = "Reason for leave", @class = "form-control", tabindex = 11, MaxLength = 349 })
                                                     @Html.ValidationMessageFor(model => model.ReasonForLeave, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -152,6 +160,8 @@
         var date = new Date(todaysDateParts[0], todaysDateParts[1], todaysDateParts[2]);
         return date;
     };
+
+
 
     $(".btn-save ").click(function (e) {
         debugger;
@@ -274,5 +284,18 @@
             );
         });
         //$('.hasDatepicker').attr('readonly', true);
+        var status =  @Html.Raw(Json.Encode(Model)) == null ? false : true;
+        var fresher = false;
+        if (status) {
+            fresher =  @Html.Raw(Json.Encode(Model.IsFresher));
+        }
+
+        if (fresher) {
+            $(".emplyomentDetails").css("pointer-events", "none");
+        } else {
+            $(".emplyomentDetails").css("pointer-events", "all");
+        }
     });
+   
 </script>
+

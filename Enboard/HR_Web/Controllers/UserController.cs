@@ -398,7 +398,8 @@ namespace HR_Web.Controllers
 
                 ViewBag.PageIndex = pageNumber;
                 ViewBag.SearchString = searchString;
-                ViewModel.CandidateProgressDetails candidateProgressDetails = new ViewModel.CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
+                CandidateProgressDetails candidateProgressDetails = new ViewModel.CandidateProgressDetails(_IUserService, _IRelationService, _ICandidateProgressDetailService, _IEmploymentCountService);
+                //ViewModel.CandidateProgressDetails candidateProgressDetails = _ICandidateProgressDetailService.
                 foreach (var item in user)
                 {
                     var Employee = _IEmployeeService.GetAll(null, null, "").Where(m => m.UserId == item.UserID).FirstOrDefault();
@@ -421,8 +422,8 @@ namespace HR_Web.Controllers
                         ContactNumber = item.ContactNumber,
                         DesignationID = item.DesignationID,
                         JoiningLocation = item.JoiningLocation,
-                        Designation = designation,
-                        OverAllUploadPecentage = candidateProgressDetails.SaveCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
+                        Designation = designation,                       
+                         OverAllUploadPecentage = candidateProgressDetails.GetCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
                     });
                 }
                 return View(userList.ToPagedList(pageNumber, pageSize));
@@ -1486,11 +1487,10 @@ namespace HR_Web.Controllers
                                + strWebUrl + " target='_blank'>Click</a> here to login </li><li> UserName: <font color ='blue'>"
                                + user.Email.Trim() + "</font>  </li><li> Password: <font color ='blue'>" + SessionManager.DecryptData(user.Password).Trim()
                                + "</font> </li></ul> <br/> " 
-                               + "You are required to fill the necessary forms and upload all the documents as listed in the <br/>‘Joining Document Checklist’ " +
-                               "issued to you along with the Offer letter." 
+                               + "You are required to fill the necessary forms and upload all the documents as listed in the ‘Joining Document Checklist’ issued to you along with the Offer letter." 
                                +
-                               " Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions." +
-                               " You can write to us at<a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>. " +
+                               " <br/> Kindly feel free to reach out to the Onboarding team at Silicus in case of any questions." +
+                               " You can write to us at <a href='mailto:onboarding-india@silicus.com'>onboarding-india@silicus.com</a>. " +
                                " <br><br> Regards, <br/> Onboarding Team @ Silicus <br/><img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>" +
                                "</body></html>";
                     subject = "Enboard (Onboarding Portal) login credentials: Silicus Technologies";
@@ -1753,7 +1753,7 @@ namespace HR_Web.Controllers
 
                             //code change 
                             ContactNumber = item.ContactNumber,
-                            OverAllUploadPecentage = candidateProgressDetails.SaveCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
+                            OverAllUploadPecentage = candidateProgressDetails.GetCandidateProgressDetails(Convert.ToInt32(item.UserID)).AverragePercentage
 
 
                         });
@@ -2484,6 +2484,7 @@ namespace HR_Web.Controllers
                     // model.SubDocCatID = obj.SubDocCatID;
                     model.CountryCode = obj.CountryCode;
                     model.Gender = obj.Gender;
+                    model.IsFresher = obj.IsFresher??false;
                     //model.NoOfEmployments = obj.NoOfEmployments == null ? 0 : (int)obj.NoOfEmployments;
                     //add for education categories
 
@@ -2556,6 +2557,7 @@ namespace HR_Web.Controllers
                         //newly added
                         obj.CountryCode = model.CountryCode;
                         obj.Gender = model.Gender;
+                        obj.IsFresher = model.IsFresher;
                         //obj.NoOfEmployments = model.NoOfEmployments;
 
                         try
