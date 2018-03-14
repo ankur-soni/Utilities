@@ -25,7 +25,7 @@
         @Html.HiddenFor(m => m.IdProofFormStatus)
         @{
             var docs = _Master_DocumentListIDProof.Where(t => t.DocCatID == Constant.DocumentCategory.AddressProof);
-            bool anyPassportDocAsAddressProof = docs.Any(t => t.DocumentDetails.Any(b => b.DocumentID == Constant.AddressProof.Passport && b.IsActive == true));
+            bool anyPassportDocAsAddressProof = docs.Any(t => t.DocumentDetails.Any(b => b.UserID == ViewBag.userId && b.DocumentID == Constant.AddressProof.Passport && b.IsActive == true));
         }
         @foreach (var item in _Master_DocumentListIDProof.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof).AsQueryable())
         {
@@ -33,6 +33,8 @@
             var isPassportAvailable = item.Document == "Passport" && !String.IsNullOrEmpty(Model.HavePassport);
             if (item.DocumentID != Constant.IDProof.ValidWorkVISA)
             {
+                if ((item.DocumentID!= Constant.IDProof.Passport) || (  item.DocumentID == Constant.IDProof.Passport && (!string.IsNullOrWhiteSpace(Model.HavePassport))))
+                {
                 <li>
                     <h6 class="docName">
                         @item.Document;
@@ -45,8 +47,8 @@
                         <br />
                         <span class="divUploadAsAddressCheckbox">
                             <label class="uploadCheckBoxLabel">Use as address proof</label>
-                            @UploadCheckBox(!item.DocumentDetails.Any(t => t.DocumentID == Constant.IDProof.Passport && t.IsActive == true),
-                                anyPassportDocAsAddressProof)                            
+                            @UploadCheckBox(!item.DocumentDetails.Any(t => t.UserID == ViewBag.userId && t.DocumentID == Constant.IDProof.Passport && t.IsActive == true),
+         anyPassportDocAsAddressProof)                            
                         </span>
                         }
 
@@ -57,7 +59,7 @@
                         <li>
                             <span class="userNote"><i class="fa fa-certificate" aria-hidden="true"></i> You can upload images(jpg, jpeg) and documents(pdf, doc, docx) files.</span>
 
-                            <div id="@("divUpload" + item.DocumentID)" class="btn btn-primary btn-upload btn-sm pull-right divUploadClass @(isPassportAvailable ? "divPassportUploadAsId":"") ">
+                            <div id="@("divUpload" + item.DocumentID)" class="btn btn-primary btn-upload btn-sm pull-right divUploadClass @(isPassportAvailable ? "divPassportUploadAsId" : "") ">
                                 <span>Upload</span>
                                 <input id=@("Upload" + item.DocumentID) type="file" name="file" accept="image/jpg,image/jpeg,application/pdf,application/msword,.docx" onchange="GetFilesNames(this,'@item.DocCatID','@item.DocumentID','','','@item.Document')" />
                             </div>
@@ -92,8 +94,9 @@
                         </ul>
                     }
                 </li>
-                            }
+                                }
 
+                            }
                         }
     </ul>
                         }
