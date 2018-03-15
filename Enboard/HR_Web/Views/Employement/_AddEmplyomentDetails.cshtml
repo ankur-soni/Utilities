@@ -284,6 +284,9 @@
             );
         });
         //$('.hasDatepicker').attr('readonly', true);
+    });
+
+    $(window).load(function() {
         var status =  @Html.Raw(Json.Encode(Model)) == null ? false : true;
         var fresher = false;
         if (status) {
@@ -291,12 +294,10 @@
         }
 
         if (fresher) {
-            $(".emplyomentDetails").css("cursor", "not-allowed");
-            $(".emplyomentDetails :input").prop("disabled", true);
+            $("#PD_FormId *").prop("disabled", true);
 
         } else {
-            $(".emplyomentDetails").css("cursor", "default");
-            $(".emplyomentDetails :input").prop("disabled", false);
+            $("#PD_FormId *").prop("disabled", false);
         }
     });
    
