@@ -25,6 +25,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -2500,6 +2501,10 @@ namespace HR_Web.Controllers
         [HttpPost]
         public ActionResult SendEmailForRejectDocumment(string to, string sub, string body, string isAttach, string userId, string documentId)
         {
+            if (!string.IsNullOrEmpty(body))
+            {
+               body = HttpUtility.UrlDecode(body, System.Text.Encoding.Default);
+            }
             DocumentDetail Doc = _IDocumentDetailsService.GetById(Convert.ToInt32(documentId));
             // string folderPath = Doc.DocumentName;
 

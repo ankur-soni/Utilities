@@ -101,7 +101,7 @@
                                 }
                                 <td class="@strcolor">@Html.Raw(user.Maincategory)</td>
                                 <td class="@strcolor">@Html.Raw(user.SubCategory)</td>
-                                <td><a style="cursor:pointer;" title="Verify Doc" onclick="fnViewDoc(@user.Id,'@user.FilePath','@strTitleName','@user.DocumentName','@user.SubCategory')">@Html.Raw(user.DocumentName)</a></td>
+                                <td><a style="cursor:pointer;" title="Verify Doc" onclick="fnViewDoc(@user.Id,'@user.FilePath','@strTitleName','@user.DocumentName','@user.SubCategory', '@user.Maincategory')">@Html.Raw(user.DocumentName)</a></td>
                                 @if (user.IsVerify != null)
                                 {
                                     <td class="@strcolor">@Html.Raw(user.IsVerify == true ? "Approved" : "Rejected")</td>
@@ -141,7 +141,8 @@
         <br />
         <h4>No Records found</h4>
     }
-
+    <input type="hidden" id="rejected-doc-main-category"/>
+    
 
 </div>
 
@@ -158,8 +159,8 @@
 }
 
 <script>
-    function fnViewDoc(docId, docName, titleName,fileName,docCateory) {;
-
+    function fnViewDoc(docId, docName, titleName,fileName,docCateory, mainCategory) {
+        $("#rejected-doc-main-category").val(mainCategory);
         $("#hdnDocId").val(docId);
         $("#hdnDocName").val(docName);
         $("#lbDocName").text(fileName);
@@ -276,17 +277,17 @@
 
         var userID='@ViewBag.DocUserId';
         var canditateEmail ='@System.Web.HttpContext.Current.Session["CandidateEmail"]';
-
+        var docName=   $("#lbDocName").text();
+        var docCategory =  $("#rejected-doc-main-category").val();
+        $("#doc-name").text(docName);
+        $("#doc-category").text(docCategory);
         $("#hdnUserIdRejectMail").val(userID);
         $("#txtToRejectMail").val(canditateEmail);
         $("#txtSubjectRejectMail").val("");
        // $("#txtBody").val("This is the default test for mail body.");
        // $("#lblcheckboxRejectMail").html("Attach documents of - " + canditateEmail);
-        $('#cbxAttachmentRejectMail').prop('checked', true)
-        $('#txtSubjectRejectMail').val('Emailing: Documents for ' + canditateEmail)
-        $('#txtBodyRejectMail').val("");
-        $('#txtBodyRejectMail').val(" \r\n \r\nFrom,\r\nOnboarding Team @@ Silicus");
-      //  "\n Regards, \n Onboarding Team  Silicus <img " + "src='"+strWebUrl+"/Content/NewUI/images/sign/email_sign.png'" + "/><br/><font face='Cambria' Size= '3' color ='#2C567C'> <br/>Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br/>Bhau Patil Marg, Pune 411020 <br/> Tel: +91.20.3020 4000 <br/></font>"
+        $('#cbxAttachmentRejectMail').prop('checked', true);
+        $('#txtSubjectRejectMail').val('Enboard (Onboarding Portal) Rejected document : ' +  $("#rejected-doc-main-category").val() + " : " + $("#lbDocName").text());
         $('#documentRejectMailModal').show();
     }
 
@@ -331,16 +332,12 @@
         }
     }
     function fnSendMailForReject() {
-
         var docID=   $("#hdnDocId").val();
-        var docName=   $("#hdnDocName").val();
-
         if ($("#txtToRejectMail").val() != "") {
             if (validateMultipleEmailsCommaSeparated()) {
-                ;
                 var strToIds = $("#txtToRejectMail").val();
                 var strSub = $("#txtSubjectRejectMail").val();
-                var strBody = $("#txtBodyRejectMail").val();
+                var strBody = escape($("#txtBodyRejectMail").html());
                 var isAttachment = $('#cbxAttachmentRejectMail').is(":checked");
                 var userId = $("#hdnUserIdRejectMail").val();
                 var strUrl = '/User/SendEmailForRejectDocumment';
