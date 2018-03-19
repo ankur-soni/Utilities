@@ -1,12 +1,13 @@
 ﻿@*@model IEnumerable<Models.LoginDetails>*@
 
+@using System.Configuration
 @using PagedList;
 @using PagedList.Mvc;
 @model PagedList.IPagedList<Models.LoginDetails>
 @{
     ViewBag.Title = "User List";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    string strWebUrl = ConfigurationManager.AppSettings["WebUrl"]+ "/Content/NewUI/images/sign/email_sign.png";
 }
 @Scripts.Render("~/bundles/jquery")
 <style type="text/css">
@@ -244,11 +245,19 @@
                         <label class="control-label">Subject</label>
                         <input class="form-control" id="txtSubjectRejectMail" type="text">
                     </div>
-                    <div class="form-group">
+                    <div>
                         <label class="control-label">Body</label>
-
-                        <textarea id="txtBodyRejectMail" class="form-control" rows="4"></textarea>
-                    </div>
+                        <div id="txtBodyRejectMail" class="form-control" style="height: auto" contenteditable>
+                            <span style="color: black; font-family: Cambria">
+                                Dear Varad,<br><br>Document : <span id="doc-category" style="font-weight: bold"></span> : <span id="doc-name" style="font-weight: bold"></span> has been rejected as {Reason}.<br><br>
+                                Please re upload the document.<br><br> Regards,<br /> Onboarding Team Silicus<br />
+                            </span>
+                            <img src='@strWebUrl' />
+                           <span style="font-family: Cambria; color: #2C567C"> 
+                            <br /> Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br />Bhau Patil Marg, Pune 411020 <br /> Tel: +91.20.3020 4000
+                           </span>
+                        </div>
+                    
                     <div class="form-group">
                         <input id="cbxAttachmentRejectMail" type="checkbox" checked="checked" name="attachment" value="Yes"> &nbsp; <label id="lblcheckbox">Attach documents</label>
                     </div>
@@ -262,7 +271,7 @@
         </div>
     </div>
 </div>
-
+</div>
 
 <div id="modalJobViteDetails" class="modal fade in" aria-hidden="false" style="display:none;">
     <div class="modal-backdrop fade in" style="z-index:0;"></div>
