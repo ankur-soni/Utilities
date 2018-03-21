@@ -388,7 +388,9 @@
     <None Include="Properties\PublishProfiles\beta-enboard - Web Deploy %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\beta-enboard - Web Deploy %285%29.pubxml" />
     <None Include="Properties\PublishProfiles\beta-enboard - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\enboard - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\enboard - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\enboard - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\enboard - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\enboard-beta - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\enboard-beta - FTP.pubxml" />
@@ -405,9 +407,11 @@
     <None Include="Properties\PublishProfiles\prod-enboard - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\prod-enboard - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\prod-enboard - FTP %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-enboard - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\prod-enboard - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\prod-enboard - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\prod-enboard - Web Deploy %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-enboard - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\educationlist.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
