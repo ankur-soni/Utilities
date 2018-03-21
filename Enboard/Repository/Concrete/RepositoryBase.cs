@@ -5,8 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
-
-
+using System.Linq.Expressions;
 namespace Repository
 {
     public class RepositoryBase<T> : IRepository<T> where T : class
@@ -85,6 +84,16 @@ namespace Repository
 
         //    }
         //            }
+
+
+        public bool Update(T entity, Expression<Func<T, object>> property)
+        {
+            var entry = _db.Entry(entity);
+            _db.Set<T>().Attach(entity);
+            entry.Property(property).IsModified = true;
+            bool status = Save();
+            return status;
+        }
 
         public bool Save()
         {

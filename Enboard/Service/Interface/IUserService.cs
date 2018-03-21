@@ -54,5 +54,7 @@ namespace Service
         LoginDetail GetUserExists(string Firstsname, string Lastname, string Email);
         Master_Department GetDepartmentId(string Name);
 
+       List<LoginDetail> GetActiveUsers();
+
     }
 }

@@ -223,7 +223,7 @@
         return date;
     };
     $(".saveText").unbind().click(function(e) {
-        debugger;
+        
         var employmentId =  $(this).closest('form').find('input[name="EmploymentDetID"]').val();
         if ($(this).hasClass("save-"+employmentId)) {
             e.preventDefault();

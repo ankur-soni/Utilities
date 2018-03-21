@@ -1,17 +1,22 @@
 ﻿@*@model IEnumerable<Models.LoginDetails>*@
 
+@using System.Configuration
 @using PagedList;
 @using PagedList.Mvc;
 @model PagedList.IPagedList<Models.LoginDetails>
 @{
     ViewBag.Title = "User List";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
+    string strWebUrl = ConfigurationManager.AppSettings["WebUrl"]+ "/Content/NewUI/images/sign/email_sign.png";
 }
 @*@Scripts.Render("~/bundles/jquery")*@
 <style type="text/css">
     th:hover:not([data-sort=disabled]) {
         cursor: pointer;
+    }
+
+    .disabled {
+        color: gray;
     }
 
     table.sortable > thead th:hover:not([data-defaultsort=disabled]) {
@@ -46,7 +51,7 @@
                         <td>
                             <button type="button" class="btn btn-primary" onclick="viewAll();"><i class="fa fa-eye"></i> View All</button>
                         </td>
-                        
+
                     </tr>
                 </table>
             </div>
@@ -56,7 +61,7 @@
             <div class="box" id="divUserList">
                 @Html.Partial("~/Views/User/_partialUserList.cshtml", Model)
             </div>
-        </div> 
+        </div>
         <div class="clearfix"></div>
     </div>
 </div>
@@ -149,22 +154,27 @@
 <div id="documentStatusImageModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
     <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
     <input type="hidden" id="hdnDocId" />
-    <div class="modal-dialog" style="width: 60%;">
-        <div class="modal-content" style="height: 600px;">
+    <input type="hidden" id="hdnDocName" />
+    <div class="modal-dialog" style="margin-top: 56px;margin-left: 200px;margin-right: 200px;">
+        <div class="modal-content" style="height: 90vh;width: 85vw;margin-left: -105px;">
+
             <div class="modal-header" style="height: 8%;">
+                <label id="lbDocCategory">fghfg</label>
+                <label id="lbDocName">fghfg</label>
                 <button type="button" title="Close" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
                 <h4 class="modal-title" id="hTitle"></h4>
             </div>
             <div class="modal-body" style="text-align: center;">
-                <div class="col-lg-12 col-xs-12" id="divMsg" style="height: 420px;">
-                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 100%;"></iframe>
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                    <iframe id="dociframe" src="#" scrolling="yes" style="height: 70vh;width: 80vw;"></iframe>
                     <a id="docDownload" style="display:none;" target="_blank" href=""> Download Document </a>
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="modal-footer">
+            <div class="modal-footer text-center">
+
                 <button type="button" class="btn btn-primary" onclick="funVerify(true)">Approve</button>
-                <button type="button" class="btn btn-primary" onclick="funVerify(false)">Reject</button>
+                <button type="button" class="btn btn-primary" onclick="MailSendForRejection()">Reject</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Close</button>
             </div>
         </div>
@@ -213,6 +223,56 @@
 </div>
 
 
+
+
+<div id="documentRejectMailModal" class="modal fade in" aria-hidden="false" style="display:none;">
+    <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+    <input type="hidden" id="hdnUserIdRejectMail" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="ErrorDiv_EmailRejectMail" class="alert alert-danger" role="alert" style="display:none"> </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancelRejectMail()">x</button>
+                <h4 class="modal-title" id="mailTital">Send Email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-xs-12" id="divMsg">
+                    <div class="form-group">
+                        <label class="control-label">To</label><span class="red">*</span>
+                        <input class="form-control" id="txtToRejectMail" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Subject</label>
+                        <input class="form-control" id="txtSubjectRejectMail" type="text">
+                    </div>
+                    <div>
+                        <label class="control-label">Body</label>
+                        <div id="txtBodyRejectMail" class="form-control" style="height: auto" contenteditable>
+                            <span style="color: black; font-family: Cambria">
+                                Dear Varad,<br><br>Document : <span id="doc-category" style="font-weight: bold"></span> : <span id="doc-name" style="font-weight: bold"></span> has been rejected as {Reason}.<br><br>
+                                Please re upload the document.<br><br> Regards,<br /> Onboarding Team Silicus<br />
+                            </span>
+                            <img src='@strWebUrl' />
+                           <span style="font-family: Cambria; color: #2C567C"> 
+                            <br /> Pune IT Park, 6th & 7th Floor, 34 Aundh Road,<br />Bhau Patil Marg, Pune 411020 <br /> Tel: +91.20.3020 4000
+                           </span>
+                        </div>
+                    
+                    <div class="form-group">
+                        <input id="cbxAttachmentRejectMail" type="checkbox" checked="checked" name="attachment" value="Yes"> &nbsp; <label id="lblcheckbox">Attach documents</label>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="fnSendMailForReject()">Send</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancelRejectMail()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 <div id="modalJobViteDetails" class="modal fade in" aria-hidden="false" style="display:none;">
     <div class="modal-backdrop fade in" style="z-index:0;"></div>
 
@@ -224,7 +284,7 @@
                 <h4 class="modal-title" id="mailTital">Jobvite Detail</h4>
             </div>
             <div class="modal-body pop-upNav" style="text-align: center;">
-                <div  id="divJobvitetDetailsContent" >
+                <div id="divJobvitetDetailsContent">
 
                 </div>
             </div>
@@ -236,19 +296,44 @@
         </div>
     </div>
 </div>
+@using (Html.BeginForm("LoginAs", "User", FormMethod.Post, new { id = "login-as" }))
+{
+    <div id="modalUserDetailsForLoginAs" class="modal fade in" aria-hidden="false" style="display:none;">
+        <div class="modal-backdrop fade in" style="z-index:0;"></div>
 
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseUserDetailsForLogInAs()">x</button>
+                    <h4 class="modal-title" id="mailTitalForLoginAs">Candidate List</h4>
+                </div>
+                <div class="modal-body pop-upNav" style="text-align: center;">
+                    <div id="divUserDetailsContentForLoginAs">
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="LogInAs">Login</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CloseUserDetailsForLogInAs()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @*script for user defined functions*@
 <script type="text/javascript">
-
     $(document).ready(function () {
+
         //click event for search user
         $('#btnSearch').click(function () {
             var regex = /<[^>]*>|<|>|/g;
             GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
         });
 
-        //search user by search string 
+        //search user by search string
         $("#focusedInput").keyup(function (event) {
             if (event.keyCode == 13) {
                 $("#btnSearch").click();
@@ -256,10 +341,6 @@
         });
     });
 
-    //$('#focusedInput').bind('input propertychange', function () {
-    //    var regex = /<[^>]*>|<|>|/g;
-    //    GetUserList($('#focusedInput').val().toLowerCase().replace(regex, "").trim());
-    //});
 
     function viewAll()
     {
@@ -291,7 +372,7 @@
         });
     }
 
-  
+
 
     function ShowJobViteDetails() {
         var page = 1;
@@ -301,8 +382,9 @@
         $.ajax({
             type: "POST",
             url: '/User/SyncCandidates/',
+
             success: function (data) {
-                
+
                 $("#divJobvitetDetailsContent").html("");
                 $("#divJobvitetDetailsContent").html(data);
                 ajaxindicatorstop();
@@ -321,27 +403,66 @@
 
         $('#modalJobViteDetails').hide();
     }
+    function CloseUserDetailsForLogInAs() {
 
-    //function ShowJobViteDetails() {
+        $('#modalUserDetailsForLoginAs').hide();
+    }
+    function SetDesignation() {
 
-    //    var page = 1;
-    //    var searchString = "";
-    //    var data = { page: page, sortOrder: "", searchString: searchString }
-    //    ajaxindicatorstart('Please wait..');
-    //    $.ajax({
-    //        url: '/User/SyncCandidates/',
-    //        success: function (data) {
-    //            $("#divJobvitetDetailsContent").html(data);
 
-    //            ajaxindicatorstop();
-    //        },
-    //        error: function (data) {
-    //            ajaxindicatorstop();
-    //            toastr.error("Error occurred while opening Change Request Modal form.");
-    //        }
-    //    });
-    //    $('#modalJobViteDetails').show();
+        var designation = $('#ddlDesignation :selected').text();
+        if (designation == "Other")
+        {
+            $("#OtherDesignation").css("display","block");
+            $("#OtherDesignation").text(designation);
 
-    //}
 
+
+
+        }
+        else {
+            $("#OtherDesignation").css("display", "none");
+        }
+
+    }
+    function CheckDuplicate()
+    {
+
+        var designation = $('#ddlDesignation :selected').text();
+        if (designation == "Other") {
+
+            var otherDes = $("#OtherDesignation").val();
+
+            if ($("#OtherDesignation").length == 0) {
+                //hide validation error message
+                $("#lblmsgDesignation").show();
+                return false;
+            }
+                $("#anchortag").removeClass("disabled").attr("href", "#");
+                ajaxindicatorstart('Please wait..');
+                $.ajax({
+                    type: "POST",
+                    url: '/User/CheckDuplicateDesignation/',
+                    data: {
+                        designation: otherDes,
+                    },
+                    success: function (data) {
+                        if (data.result == true) {
+                            if (data.result == true);
+                            $("#OtherDesignation").val("");
+                            toastr.error("Designation Already exist");
+                        }
+
+                        ajaxindicatorstop();
+
+                    },
+                    error: function (data) {
+                        ajaxindicatorstop();
+                        toastr.error("Error occurred while opening Change Request Modal form.");
+                    }
+                });
+
+            }
+
+        }
 </script>
