@@ -44,7 +44,8 @@ $(document).ready(function ($) {
     });
 
     //poup algin center 
-    function alignModal() {      
+    function alignModal() {
+        //debugger;
         var modalDialog = $(this).find(".modal-dialog");
 
         // Applying the top margin on modal dialog to align it vertically center

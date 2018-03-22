@@ -1,17 +1,26 @@
 ﻿@using HR_Web.Utilities
 @{
-Layout = "";
-//Layout = null;
+    Layout = "";
 }
-@*<!DOCTYPE html>*@
-@*@Scripts.Render("~/bundles/jquery")*@
+<!DOCTYPE html>
+@Scripts.Render("~/bundles/jquery")
 @Styles.Render("~/Content/css")
 @*@Scripts.Render("~/bundles/bootstrap")*@
 
+<style type="text/css">
+      /*.navbar-inverse .navbar-nav > .active > a {
+    
+}*/
+      /*.pop-upNav .navbar-nav li.active a{
+    background-color: #489cdf !important;
+    color:#fff !important;
+    
+    }*/
+</style>
 
-@*<html>
+<html>
 
-<body>*@
+<body>
     
         <nav role="navigation">
             
@@ -24,8 +33,10 @@ Layout = "";
                         <li id="liContactDetails" class=""><a href="#" onclick="GetContactDetails(@ViewBag.UserId)">Contact Details</a></li>
                         <li id="liEducationalDetails" class=""><a href="#" onclick="GetEducationalDetails(@ViewBag.UserId)">Educational Details</a></li>
                         <li id="liEmploymentDetails" class=""><a href="#" onclick="GetEmploymentDetails(@ViewBag.UserId)">Employment Details</a></li>
-                        <li id="liFamilyDetails" class=""><a href="#" onclick="return GetFamilyDetails(@ViewBag.UserId)">Family Details </a></li>                        
-                        <li id="liDocumentStatusDetails" class=""><a href="#" onclick="return GetUserDocumentDetails(@ViewBag.UserId)">Document Status </a></li>                     
+                        <li id="liFamilyDetails" class=""><a href="#" onclick="return GetFamilyDetails(@ViewBag.UserId)">Family Details </a></li>
+                        @*Code change - Added new tab for user*@
+                        <li id="liDocumentStatusDetails" class=""><a href="#" onclick="return GetUserDocumentDetails(@ViewBag.UserId)">Document Status </a></li>
+                        @*<li class=@Html.IsActive("User", "DocList")>@Html.ActionLink("Document Status Original", "DocList", "User")</li>*@
 
                     </ul>
                     <input type="hidden" value="@ViewBag.UserId" id="hiddenUserId" />
@@ -40,6 +51,9 @@ Layout = "";
 
         </div>
 
+
+@*</body>
+</html>*@
 
 
 <script src="~/Scripts/LoadIndicator.js"></script>
@@ -76,13 +90,15 @@ Layout = "";
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-                $("#formPersonalDetails :input").prop("readonly", true);
+                $("#formPersonalDetails :input").prop("disabled", true);
             },
             error: function (error) {
                 ajaxindicatorstop();
                 alert(JSON.stringify(error.responseText.trim()));
             }
         });
+
+       // $(window).scrollTop($('#bs-example-navbar-collapse-1').offset().top);
     }
 
     function GetContactDetails(userId) {
@@ -99,7 +115,7 @@ Layout = "";
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-                $("#formContactDetails :input").prop("readonly", true);
+                $("#formContactDetails :input").prop("disabled", true);
                
             },
             error: function (error) {
@@ -123,8 +139,7 @@ Layout = "";
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-
-                $("[id^=ED_Form]").find('input').prop('readonly', true);                
+                $("#userGrid :input").prop("disabled", true);
                 $("#bs-example-navbar-collapse-1 li").removeClass("active");
                 $("#liEducationalDetails").addClass("active");
 
@@ -149,7 +164,7 @@ Layout = "";
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-                $("[id^=frmEdit]").find('input').prop('readonly', true);
+                $("#frmEmployeeDetails :input").prop("disabled", true);
                 $("#bs-example-navbar-collapse-1 li").removeClass("active");
                 $("#liEmploymentDetails").addClass("active");
             },
@@ -173,7 +188,7 @@ Layout = "";
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-                $("#accordion :input").prop("readonly", true);
+                $("#accordion :input").prop("disabled", true);
                 $("#bs-example-navbar-collapse-1 li").removeClass("active");
                 $("#liUploadDocuments").addClass("active");
 
@@ -202,7 +217,7 @@ Layout = "";
             $("#divUserDetailsTab").html("");
             $("#divUserDetailsTab").html(data);
             ajaxindicatorstop();
-            $("#accordion :input").prop("readonly", true);
+            $("#accordion :input").prop("disabled", true);
             $("#bs-example-navbar-collapse-1 li").removeClass("active");
             $("#liDocumentStatusDetails").addClass("active");
 
@@ -239,7 +254,7 @@ Layout = "";
                 $("#divUserDetailsTab").html("");
                 $("#divUserDetailsTab").html(data);
                 ajaxindicatorstop();
-                $("[id^=FamilyHistory_Form]").find('input').prop('readonly', true);
+                $("#frmFamilyDetails :input").prop("disabled", true);
                 $("#bs-example-navbar-collapse-1 li").removeClass("active");
                 $("#liFamilyDetails").addClass("active");
             },

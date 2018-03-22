@@ -1,12 +1,13 @@
-﻿using AutoMapper;
-using Data;
-using HR_Web.Utilities;
-using Models;
+﻿using Data;
 using Service;
 using Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+using Models;
+using AutoMapper;
+using HR_Web.Utilities;
 namespace HR_Web.ViewModel
 {
     internal class CandidateProgressDetails
@@ -22,31 +23,6 @@ namespace HR_Web.ViewModel
             _IRelationService = IRelationService;
             _ICandidateProgressDetailService = ICandidateProgressDetailService;
             _IEmploymentCountService = IEmploymentCountService;
-        }
-
-        internal CandidateGraphProgressDetailViewModel GetCandidateProgressDetails(int userId)
-        {
-            var userDetails = _IUserService.GetById(userId);
-            CandidateGraphProgressDetailViewModel candidateGraphProgressDetailViewModel = new CandidateGraphProgressDetailViewModel();
-            CandidateGraphProgressDetail candidateGraphProgressDetail = userDetails.CandidateGraphProgressDetails.FirstOrDefault();
-
-            if (candidateGraphProgressDetail == null)
-                return SaveCandidateProgressDetails(userId);
-
-            Mapper.CreateMap<CandidateGraphProgressDetail, CandidateGraphProgressDetailViewModel>();
-            candidateGraphProgressDetailViewModel = Mapper.Map<CandidateGraphProgressDetail, CandidateGraphProgressDetailViewModel>(candidateGraphProgressDetail);
-
-            candidateGraphProgressDetailViewModel.AverragePercentage = (candidateGraphProgressDetailViewModel.PersonalDetailsPercentage
-                                                                    + candidateGraphProgressDetailViewModel.ContactDetailsPercentage
-                                                                    + candidateGraphProgressDetailViewModel.EducationDetailsPercentage
-                                                                    + candidateGraphProgressDetailViewModel.EmploymentDetailsPercentage
-                                                                    + candidateGraphProgressDetailViewModel.FamilyDetailsPercentage
-                                                                    + candidateGraphProgressDetailViewModel.UploadDcoumentsPercentage) / Convert.ToDouble(6);
-
-
-
-
-            return candidateGraphProgressDetailViewModel;
         }
 
         internal CandidateGraphProgressDetailViewModel SaveCandidateProgressDetails(int userId)
@@ -94,8 +70,6 @@ namespace HR_Web.ViewModel
                                                                         + candidateGraphProgressDetailViewModel.EmploymentDetailsPercentage
                                                                         + candidateGraphProgressDetailViewModel.FamilyDetailsPercentage
                                                                         + candidateGraphProgressDetailViewModel.UploadDcoumentsPercentage) / Convert.ToDouble(6);
-
-
             }
             catch (Exception ex)
             {
@@ -304,7 +278,7 @@ namespace HR_Web.ViewModel
             {
                 List<DocumentDetail> userEducationDocumentCatList = new List<DocumentDetail>();
                 var userEducationCatList = userDetails.AdminEducationCategoryForUsers.Where(x => x.IsActive == true).ToList();
-                var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true).Select(x => new DocumentDetail() { DocDetID = x.DocCatID, DocCatID = x.DocCatID, DocumentID=x.DocumentID, EmploymentDetID = x.EmploymentDetID });
+                var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true);
                 var educationalDocCount = 0;
                 if ((userEducationCatList.Any() && userEducationCatList.Count != 0) && (documentDetails.Any() && documentDetails.Count() != 0))
                 {
@@ -352,43 +326,29 @@ namespace HR_Web.ViewModel
         private double GetDocumentPercentageIDProof(IEnumerable<DocumentDetail> DocumentDetails)
         {
             double uploadDocumentPercentage = 0.0;
-            int actualCount = 0;
-
-
+            int acuatalCount = 0;
             if (DocumentDetails.Any() && DocumentDetails.Count() != 0)
             {
-                string hasPassport = string.Empty;
-                hasPassport = DocumentDetails.FirstOrDefault().LoginDetail.HasPassport;
-                var requiredCountForIdProof = string.IsNullOrWhiteSpace(hasPassport) ? 1 : 2;
-
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
                 {
-
-
                     switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
                     {
                         case Constant.IDProof.PANCard:
                             actualCount++;
                             break;
-                        case Constant.IDProof.Passport:
-                            actualCount++;
-                            break;
+                        //case Constant.IDProof.DrivingLicence: acuatalCount++;
+                        //    break;
+                        //case Constant.IDProof.VoterID: acuatalCount++;
+                        //    break;
+                        //case Constant.IDProof.MarriageCertificate: acuatalCount++;
+                        //    break;
                         default:
                             break;
                     }
-
-                    if (actualCount >= requiredCountForIdProof)
-                    {
-                        uploadDocumentPercentage = 100;
-                    }
-                    else
-                    {
-                        uploadDocumentPercentage = (Convert.ToDouble(actualCount) / Convert.ToDouble(requiredCountForIdProof)) * Convert.ToDouble(100);
-                    }
-
                 }
+                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(1)) * Convert.ToDouble(100);
             }
-            return uploadDocumentPercentage >= 100 ? 100 : uploadDocumentPercentage;
+            return uploadDocumentPercentage;
         }
 
         private double GetDocumentPercentageAddressProof(IEnumerable<DocumentDetail> DocumentDetails, int requiredCount)

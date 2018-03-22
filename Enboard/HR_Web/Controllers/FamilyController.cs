@@ -8,6 +8,7 @@ using Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace HR_Web.Controllers
@@ -39,7 +40,7 @@ namespace HR_Web.Controllers
             _IPersonalService = IPersonalService;
             this._IUserService = IUserService;
         }
-
+        
         // GET: Family
         public ActionResult Index()
         {
@@ -108,7 +109,7 @@ namespace HR_Web.Controllers
                 ModelList = ModelList.Where(m => m.RelationshipID != Constants.Child).ToList();
                 ModelList = ModelList.Where(m => m.RelationshipID != Constants.Spouse).ToList();
             }
-
+            
             int pageSize = 10; //not required
             int pageIndex = 1; //not required
 
@@ -121,7 +122,7 @@ namespace HR_Web.Controllers
             return ModelList.ToPagedList(pageIndex, pageSize);
         }
 
-
+        
         /// <summary>
         /// // For Dependent list //Not required
         /// </summary>
@@ -137,7 +138,7 @@ namespace HR_Web.Controllers
             return selList;
         }
 
-
+      
         /// <summary>
         ///   // For Gender list
         /// </summary>
@@ -165,7 +166,7 @@ namespace HR_Web.Controllers
             var userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
 
             var personalDetails = _IPersonalService.GetPersonalDetailsByUserId(userId);
-
+            
             if (personalDetails != null && personalDetails.MaritalStatID == Constants.Single)
             {
                 AllRelationshipList = AllRelationshipList.Where(r => r.RelationID != Constants.Spouse && r.RelationID != Constants.Child).ToList();
@@ -181,8 +182,8 @@ namespace HR_Web.Controllers
             foreach (var item in list)
             {
                 AddedRelationshipList.Add(new Master_Relation()
-                {
-                    RelationID = item.RelationshipID,
+                { 
+                    RelationID = item.RelationshipID ,
                     RelationName = MasterRelationShipList.SingleOrDefault(s => s.RelationID == item.RelationshipID).RelationName,
                 });
             }
@@ -238,7 +239,7 @@ namespace HR_Web.Controllers
         {
             bool status = false;
             try
-            {
+            {        
                 string message = string.Empty;
                 if (ModelState.IsValid)
                 {
@@ -247,7 +248,7 @@ namespace HR_Web.Controllers
 
                     Mapper.CreateMap<FamilyDetails, Data.EmployeeFamilyDetail>();
                     var EmpfamilyDetails = Mapper.Map<FamilyDetails, Data.EmployeeFamilyDetail>(familyDetails);
-
+                    
 
                     if (EmpfamilyDetails.CreatedBy == null || EmpfamilyDetails.CreatedBy == "")
                         EmpfamilyDetails.CreatedBy = userName;
@@ -272,7 +273,7 @@ namespace HR_Web.Controllers
 
                         if (obj.Count == 0)
                         {
-
+                            
                             EmpfamilyDetails.IsActive = true;
                             status = _IFamilyDetailsService.Insert(EmpfamilyDetails, null, "");
                             var addedFamilyDetail = EmpfamilyDetails;
@@ -280,7 +281,7 @@ namespace HR_Web.Controllers
                             #region Make only one emergency contact
                             if (addedFamilyDetail.IsEmergencyContact == true)
                             {
-                                foreach (EmployeeFamilyDetail employeeFamilyDetail in lstEmployeeFamilyDetails.Where(p => p.IsEmergencyContact == true))
+                                foreach (EmployeeFamilyDetail employeeFamilyDetail in lstEmployeeFamilyDetails.Where(p=>p.IsEmergencyContact == true))
                                 {
                                     employeeFamilyDetail.IsEmergencyContact = false;
                                     var isSuccess = _IFamilyDetailsService.Update(employeeFamilyDetail, null, "");
@@ -302,7 +303,7 @@ namespace HR_Web.Controllers
                     ViewBag.Relationship = GetRelationshipList();
                     ViewBag.DependentList = GetDependentList();
                     ViewBag.GenderList = GetGenderList();
-
+                    
                     var modelStateErrors = this.ModelState.Keys.SelectMany(key => this.ModelState[key].Errors);
                     foreach (var modelStateError in modelStateErrors)
                     {
@@ -344,7 +345,7 @@ namespace HR_Web.Controllers
                     #region Make only one emergency contact
                     if (familyDetails.IsEmergencyContact == true)
                     {
-                        var lstEmployeeFamilyDetails = _IFamilyDetailsService.GetEmployeeFamilyDetailsByUserID((int)familyDetails.UserID).Where(p => p.IsEmergencyContact == true);
+                        var lstEmployeeFamilyDetails = _IFamilyDetailsService.GetEmployeeFamilyDetailsByUserID((int)familyDetails.UserID).Where(p=>p.IsEmergencyContact == true);
                         foreach (EmployeeFamilyDetail employeeFamilyDetail in lstEmployeeFamilyDetails)
                         {
                             employeeFamilyDetail.IsEmergencyContact = false;
@@ -398,7 +399,7 @@ namespace HR_Web.Controllers
         /// <param name="FamDetID"></param>
         /// <returns></returns>
         [HttpPost]
-        public bool DeleteFamilyDetails(long FamDetID)
+        public bool DeleteFamilyDetails(long FamDetID) 
         {
             var userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
             var result = _IFamilyDetailsService.DeleteEmployeeFamilyDetails(FamDetID, userName);
@@ -415,8 +416,8 @@ namespace HR_Web.Controllers
         [Authorize]
         public ActionResult FamilyDetailsGridForAdmin(int Id = 0)
         {
-            ViewBag.CountryCodeList = GetCountryCode();
             FamilyDetails familydetailsModel = new FamilyDetails();
+            // userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             familydetailsModel.FamilyHistoryList = FamilyDetailsPagedList(Id);
             return View("_GetFamilyList", familydetailsModel.FamilyHistoryList);
         }

@@ -11,8 +11,8 @@ namespace Service
    public class ProfessionalDetailsService:IProfessionalDetailsService
     {
        private IProfessionalDetailsRepository _IProfessionalDetailsRepository;
-      //  private IDesignationRepository _designationRepository;
-        public ProfessionalDetailsService(IProfessionalDetailsRepository IProfessionalDetailsRepository)
+
+       public ProfessionalDetailsService(IProfessionalDetailsRepository IProfessionalDetailsRepository)
        {
            this._IProfessionalDetailsRepository = IProfessionalDetailsRepository;
        }
@@ -82,28 +82,6 @@ namespace Service
             }
             return data;
         }
-
-       //public bool UpdateDesignationList(string designationName)
-       // {
-       //     var designationList = GetDesignationList();
-       //     var count = 0;
-       //     if(designationList != null)
-       //     {
-       //         foreach(var designation in designationList)
-       //         {
-       //             if(designation.Designation == designationName)
-       //             {
-       //                 count++;
-       //             }
-       //             if(count > 0)
-       //             {
-
-                    
-       //             }
-       //         }
-       //     }
-       // return true;
-       // }
 
         public bool UpdateProfessionalDetails(EmployeeMaster empobj , EmployeeProfessionalDetail profobj)
         {           

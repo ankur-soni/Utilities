@@ -1,164 +1,354 @@
-﻿@model Models.EducationDetails
-@using HR_Web.Helpers;
-@{
-    ViewBag.Title = "EducationalDetails";
-    Layout = "";
+﻿@model PagedList.IPagedList<Models.EducationDetailsHistory>
+<div class="inner-div">
+    @using PagedList.Mvc;
+    @{
+        Layout = "";
+    }
 
-    var classes = (SelectList)ViewBag.Classes;
-    var discipline = (SelectList)ViewBag.Discipline;
-    var college = (SelectList)ViewBag.Colleges;
-    var educationCategorylist = (SelectList)ViewBag.EducationCategory;
-
-    var specialization = (SelectList)ViewBag.Specialization;
-    var university = (SelectList)ViewBag.University;
-    var Months = (SelectList)ViewBag.Months;
-    var Years = (SelectList)ViewBag.Years;
-    var educategories = (SelectList)ViewBag.EducationCategoryForUser;
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/EDP_Validations.js"></script>
 
 
-}
+    <div class="box-body table-responsive">
 
-<div class="containerInner">
-    <div class="row">
-        <div class="col-lg-12">
 
-            <div class="panel-group educationDetails tabSection" id="accordion" role="tablist" aria-multiselectable="true">
-                @if (Model.educationDetialslist != null)
-                {
-                    for (var i = 0; i < Model.educationDetialslist.Count; i++)
+
+      
+        <br />
+        <br />
+        @if (Model.Count() > 0)
+        {
+            <table id="userGrid" class="table table-bordered table-striped dataTable tablesorter " aria-describedby="example1_info">
+                <thead style="background-color:#428bca;color:white; ">
+                    <tr>
+                        <th>Education Category</th>
+                        <th>Discipline Name</th>
+                        <th>Passing Year</th>
+                        <th>Percentage</th>
+                        <th>University</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model)
                     {
-                        using (Html.BeginForm("EducationalDetails", "Education", FormMethod.Post, new { id = "ED_FormId" + i.ToString(), @class = "addFormClass" }))
-                        {
-                            <div class="panel panel-default">
-                                <div class="panel-heading text-left" role="tab">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#proposalAccordian" href="#tr@(i)" aria-expanded="true" class="collapsed">
-                                            @Model.educationDetialslist[i].EducationCategory
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="tr@(i)" class="panel-collapse collapse" role="tabpanel">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].EducationCategory, new { @class = "" }) <span class="red">*</span>
-                                                    @CustomHtmlHelper.DropDownListForWithOtherOption(Model.educationDetialslist[i].EducationCategoryId, educationCategorylist,
-                                                    Model.educationDetialslist[i].OtherEducationCategory, 
-                                                     "form-control")
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].TypeofDegreeDeploma, new { @class = "" }) <span class="red">*</span>
-
-                                                    @CustomHtmlHelper.DropDownListForWithOtherOption(Model.educationDetialslist[i].TypeofDegreeDeplomaId,
-                                                    discipline,
-                                                    Model.educationDetialslist[i].OtherDiscipline,
-                                                   "form-control")
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].PassingYear, new { @class = "" }) <span class="red">*</span>
-
-                                                    @CustomHtmlHelper.DropDownListFor(Model.educationDetialslist[i].PassingYear,
-                                                   Years, 
-                                                     "form-control")
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].Class, new { @class = "" }) <span class="red">*</span>
-                                                    @CustomHtmlHelper.DropDownListFor(Model.educationDetialslist[i].ClassId,
-                                                   classes,
-                                                    "form-control")
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].Specialization, new { @class = "" }) <span class="red">*</span>
-                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].OtherSpecialization, Model.educationDetialslist[i].OtherSpecialization, new {  @class = "form-control mt-5",  tabindex = (@i + 1).ToString() + 19 })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].Percentage, new { @class = "" }) <span class="red">*</span>
-                                                    @Html.TextBoxFor(m => Model.educationDetialslist[i].Percentage, new {  @class = "form-control", tabindex = (@i + 1).ToString() + 24, MaxLength = 5 })
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].FromDate, new { @class = "" }) <span class="red">*</span>
-                                                    <div class="input-group">
-                                                        @Html.TextBoxFor(m => m.educationDetialslist[i].FromDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.educationDetialslist[i].FromDate.HasValue ? Convert.ToString(Model.educationDetialslist[i].FromDate.Value.ToShortDateString()) : String.Empty))), new {  Name = "txtAttendedFrom" + i.ToString(), @class = "form-control", tabindex = (@i + 1).ToString() + 21 })
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].ToDate, new { @class = "" }) <span class="red">*</span>
-                                                    <div class="input-group">
-                                                        @Html.TextBoxFor(m => m.educationDetialslist[i].ToDate, String.Format("{0:dd/mm/yyyy}", (Model == null ? "" : (Model.educationDetialslist[i].ToDate.HasValue ? Convert.ToString(Model.educationDetialslist[i].ToDate.Value.ToShortDateString()) : String.Empty))), new {  Name = "txtAttendedTo" + i.ToString(), @class = "form-control", tabindex = (@i + 1).ToString() + 22 })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group">
-
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].InstituteName, new { @class = "" }) <span class="red">*</span>
-
-                                                    @CustomHtmlHelper.DropDownListForWithOtherOption(Model.educationDetialslist[i].InstituteNameId,
-                                                    college,
-                                                    Model.educationDetialslist[i].OtherCollegeName, 
-                                                   "form-control" )
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].University_BoardName, new { @class = "" }) <span class="red">*</span>
-                                                    @CustomHtmlHelper.DropDownListForWithOtherOption(Model.educationDetialslist[i].University_BoardNameId,
-                                                    @Model.educationDetialslist[i].UniversityList,
-                                                    Model.educationDetialslist[i].OtherUniversityName,
-                                                   "form-control")
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(m => Model.educationDetialslist[i].BreaksDuringEducation, new { @class = "" }) <span class="red">*</span>
-                                                    @Html.TextAreaFor(m => Model.educationDetialslist[i].BreaksDuringEducation, 10, 30, new
-                                               {
-                                                   @readonly = "readonly",
-                                                   @class = "form-control",
-                                                   tabindex = (@i + 1).ToString() + 25,
-                                                   MaxLength = 350
-                                               })
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
+                        <tr>
+                            <td>@Html.Raw(user.EducationCategory) </td>
+                            <td>@Html.Raw(user.DisciplineName)</td>
+                            <td>@Html.Raw(user.PassingYear)</td>
+                            <td>@Html.Raw(user.Percentage)</td>
+                            <td>@Html.Raw(user.University)</td>
+                            </tr>
                     }
-                }
 
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <h4>No Records found</h4>
+        }
+    </div>
+
+    <div id="myModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel()">x</button>
+                    <h4 class="modal-title" id="hTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsg">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="DeleteEducationDetails($('#hdnSelectedID').val())">Yes</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="cancel()">No</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div id="myModalInformation" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
+        <input type="hidden" id="hdnSelectedID" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="hTitleInfo"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12 col-xs-12" id="divMsgInfo">
+                        @*Are you sure you want to active / in-active user?*@
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="cancel()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--
+
+
+       <table id="tblEducationList" class="tableGrid">
+            <thead>
+                <tr class="grid-top">
+                    <th style="width:1%" hidden>
+                        <a class="th-link" >id</a>
+                    </th>
+                    <th style="width:15%">
+                        <a class="th-link">
+                            Education Category
+                        </a>
+                    </th>
+
+                    <th style="width:15%">
+                        <a class="th-link"">
+                            Discipline Name
+                        </a>
+                    </th>
+                    <th style="width:15%">
+                        <a class="th-link">
+                            PassingYear
+                        </a>
+                    </th>
+
+                    <th style="width:30%">
+                        <a class="th-link">
+                            Percentage
+                        </a>
+                    </th>
+                    <th style="width:30%">
+                        <a class="th-link">
+                            University
+                        </a>
+                    </th>
+
+                </tr>
+            </thead>
+            @{
+                int counter = 1;
+                var rowId = "";
+            }
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        @*<tr id="@item.Id" class="@((counter % 2) == 0? "odd" :"")" data-usage="@item.Id">*@
+                        @*<tr id="@item.Id" class="@(item.IsActive == false ? "inactive-row" : "") @((counter % 2) == 0? "odd" :"")">*@
+                        <td hidden>
+                            @Html.HiddenFor(modelItem => item.EduDetID, new { id = "ID" })
+
+
+                        </td>
+                        <td style="word-break:break-all;">
+                            @Html.DisplayFor(modelItem => item.EducationCategory)
+                        </td>
+                        <td style="word-break:break-all;">
+                            @Html.DisplayFor(modelItem => item.DisciplineName)
+                        </td>
+                        <td style="word-break:break-all;">
+                            @Html.DisplayFor(modelItem => item.PassingYear)
+                        </td>
+                        <td style="word-break:break-all;">
+                            @Html.DisplayFor(modelItem => item.Percentage)
+                        </td>
+                        <td style="word-break:break-all;">
+                            @Html.DisplayFor(modelItem => item.University)
+                        </td>
+
+                    </tr>
+                </tbody>
+                counter++;
+            }
+
+            <tr style="display:@(Model != null && Model.Count > 0 ? "none" : "block")">
+                <td colspan="5">
+                    <i class="noevents"><strong>No Data exist.</strong></i>
+
+                </td>
+            </tr>
+
+            <tr class="grid-bottom">
+                <td colspan="5">
+                    <div>
+                        @{
+                            if (Model.PageCount >= 1)
+                            {
+                                <span class="fr pagi">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                    of @Model.PageCount
+                                </span>
+                                @Html.PagedListPager(Model, page => Url.Action("GetMeterList", new {  @class = "fl" }))
+                            }
+                        }
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+          -->
+    </div>
+
+
+    <script>
+
+    function AddEducationDetails()
+    {
+        var url = "/Education/EducationalDetails";
+        var data = { EducationId: 0 }
+            ajaxindicatorstart('Loading.. please wait..');
+            $.ajax({
+                type: "GET",
+                url: "/Education/AddEditEducationDetails",
+                data: data,
+                datatype: "html",
+                success: function (data) {
+                    $(".container .body-content").html(data);
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    alert('some error occured')
+                    ajaxindicatorstop();
+                }
+            });
+    }
+
+    function EditEducationDetails(EducationID) {
+        var url = "/Education/EducationalDetails";
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Education/AddEditEducationDetails",
+            data: { EducationId: EducationID },
+            datatype: "html",
+            success: function (data) {
+                $(".container .body-content").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+     
+    }
+
+    function ViewEducationDetails(EducationID) {
+        var url = "/Education/EducationalDetails";
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Education/AddEditEducationDetails",
+            data: { EducationId: EducationID, IsReadOnly :true },
+            datatype: "html",
+            success: function (data) {
+                $(".container .body-content").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+        //}
+
+    }
+    function DeleteIndex(EducationID)
+    {
+
+        $('#hdnSelectedID').val(EducationID);
+        $("#hTitle").html('Delete?');
+        $("#divMsg").html('Are you sure you want to delete this Record?');
+        $('#myModal').show();
+    }
+    function cancel() {
+        $('#myModal').hide();
+        $('#myModalInformation').hide();
+    }
+    function cancel() {
+        $('#myModal').hide();
+        $('#myModalInformation').hide();
+    }
+
+    function DeleteEducationDetails(EducationID) {
+        var url = "/Education/EducationalDetails";
+
+       
+        ajaxindicatorstart('Loading.. please wait..');
+        $.ajax({
+            type: "GET",
+            url: "/Education/DeleteEducationDetails",
+            data: { EducationId: EducationID },
+            datatype: "json",
+            success: function (data) {
+                if(data)
+                {
+                    $('#myModal').hide();
+                    $("#hTitleInfo").html('Deleted');
+                  $("#divMsgInfo").html('Record Deleted Successfully');
+                  $('#myModalInformation').show();
+                  var urlGrid = "/Education/DeleteEducationDetails";
+                  $.ajax({
+                      urlGrid: "/Education/EducationalDetailsGrid",
+                      cache: false,
+                      type: 'GET',
+                      success: function (data) {
+                          $("body").html(data);
+                          ajaxindicatorstop();
+                      },
+                      error: function () {
+                          alert('some error occured')
+                          ajaxindicatorstop();
+                      }
+                  });
+
+                }
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+    
+    }
+
+    $('#ED_Cancel').click(function () {
+        ajaxindicatorstart('Loading.. please wait..');
+
+        $.ajax({
+            url: "/Education/DeleteEducationDetails",
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                // $("#succdiv").(data);
+                $("body").html(data);
+                ajaxindicatorstop();
+            },
+            error: function () {
+                alert('some error occured')
+                ajaxindicatorstop();
+            }
+        });
+
+    });
+
+    </script>
+

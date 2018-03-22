@@ -14,7 +14,6 @@ namespace Service
        List<GetProffesionalDetails_Result> GetProffesionalDetails();
        List<Master_Department> GetDepartMentList();
        List<Master_Designation> GetDesignationList();
-      //  bool UpdateDesignationList(string designationName);
        bool UpdateProfessionalDetails(EmployeeMaster empobj, EmployeeProfessionalDetail profobj);
     }
 }

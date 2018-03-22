@@ -1,13 +1,17 @@
-﻿using AutoMapper;
-using Data;
-using Models;
-using PagedList;
-using Service;
-using Service.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
+using AutoMapper;
+using Models;
+using Service;
+using Data;
+using PagedList;
+using System.Globalization;
+using System.Data.Entity;
+using Service.Interface;
 
 namespace HR_Web.Controllers
 {
@@ -73,65 +77,9 @@ namespace HR_Web.Controllers
         [Authorize]
         public ActionResult GetEducationalDetailsGrid(int userId)
         {
-            //Models.EducationDetails EducationModel = new EducationDetails();
-            //EducationModel.EducationalDetailsList = EducationListPagedList(userId);
-            //return View("_GetEducationList", EducationModel.EducationalDetailsList);
-
-            ViewBag.Classes = GetClasses();
-            ViewBag.Discipline = GetDiscipline(0);
-            ViewBag.Colleges = GetColleges();
-            ViewBag.EducationCategory = GetEducationCategory();
-            ViewBag.Specialization = GetSpecialization();
-            ViewBag.University = GetUniversity();
-            ViewBag.Months = GetMonths();
-            ViewBag.Years = GetYears();
-
-            EducationDetails educationModel = new EducationDetails();
-
-            List<EmployeeEducationDetail> list = _IEducationService.GetEmployeeEducationDetailsByUserID(userId);
-            educationModel.educationDetialslist = list
-            .Select(x => new EducationDetails()
-            {
-                EduDetID = x.EduDetID,
-                UserId = x.UserID,
-                FromDate = x.FromDate,
-                EducationCategoryId = x.EducationCategoryID,
-                OtherEducationCategory = x.OtherEducationCategory,
-                ToDate = x.ToDate,
-                BreaksDuringEducation = x.BreaksDuringEducation,
-                ClassId = x.ClassID,
-                TypeofDegreeDeplomaId = x.DisciplineID,
-                OtherDiscipline = x.OtherDiscipline,
-                PassingYear = x.PassingYear,
-                OtherSpecialization = x.OtherSpecialization,
-                InstituteNameId = x.CollegeID,
-                OtherCollegeName = x.OtherCollegeName,
-                University_BoardNameId = x.UniversityID,
-                OtherUniversityName = x.OtherUniversityName,
-                Percentage = x.Percentage,
-                UniversityList = GetUniversityList(x.EducationCategoryID)
-
-            }).OrderByDescending(x => x.PassingYear).ToList();
-
-            foreach (var item in educationModel.educationDetialslist)
-            {
-                if (item.EducationCategoryId == 0)
-                {
-                    item.EducationCategory = item.OtherEducationCategory;
-                }
-                else
-                {
-                    item.EducationCategory = (from pair in ViewBag.EducationCategory as SelectList
-                                              where pair.Value == item.EducationCategoryId.ToString()
-                                              select pair.Text).FirstOrDefault();
-                }
-            }
-
-
-            ViewBag.EducationCategoryForUser = GetEducationCategoryByEducationId(userId);
-            var userDetails = _IUserService.GetById(userId);
-            ViewBag.IsSubmitted = userDetails == null ? false : userDetails.IsSubmitted.HasValue && userDetails.IsSubmitted.Value == true;
-            return View("_GetEducationList", educationModel);
+            Models.EducationDetails EducationModel = new EducationDetails();
+            EducationModel.EducationalDetailsList = EducationListPagedList(userId);
+            return View("_GetEducationList", EducationModel.EducationalDetailsList);
         }
 
         [HttpGet]
@@ -327,7 +275,7 @@ namespace HR_Web.Controllers
                 int _EducationCategoryID = Convert.ToInt32(EducationCategoryID);
 
                 List = _IUniversityService.GetAll(null, null, "").ToList();
-                ListMapping = _IEducationCategoryUniversityBoardMappingService.GetAll(null, null, "").Where(x => x.EducationCategoryID == _EducationCategoryID).ToList();
+                ListMapping = _IEducationCategoryUniversityBoardMappingService.GetAll(null, null, "").Where(x => x.EducationCategoryID == _EducationCategoryID ).ToList();
 
 
             }

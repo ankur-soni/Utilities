@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="educationCategoryList col-md-8 col-sm-8 col-xs-12">
+                            <div class="educationCategoryList col-md-5 col-sm-5 col-xs-12">
                                 @Html.Label("Education Category", new { @class = "" }) <span class="red">*</span><br/>
                                 @Html.CheckBoxListFor(model => model.PostedEducationCategories.EducationCategoryIds,
                                     model => model.AvailableEducationCategories,
@@ -111,13 +111,9 @@
                                     x => new {@class = "chkEducationCategory", tabindex = 16})
                                 <label style="color: red" id="lblmsgEducationCategory"> </label>
                             </div>
-                            <div class="Fresher col-md-4 col-sm-4 col-xs-12">
+                            <div class="Fresher col-md-5 col-sm-5 col-xs-12">
                                 @Html.LabelFor(x => x.IsFresher)
                                 @Html.CheckBoxFor(x => x.IsFresher)
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                @Html.Label("Submit")
-                               @Html.CheckBox("IsSubmitted",Model.IsSubmitted != null && (bool)Model.IsSubmitted)
                             </div>
                         </div>
                     </div>
@@ -178,10 +174,8 @@
 
                         <div class="form-group">
                             @Html.LabelFor(m => m.DesignationID, new { @class = "" }) <span class="red">*</span>
-                            @Html.DropDownListFor(m => m.DesignationID, DesignationList, "", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 17,@onchange = "SetDesignation();" })
-                            @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })<br/>
-                            @Html.TextBoxFor(m=>m.OtherDesignation, new { @class = "form-control", @style = "display: none" , @onfocusout = "CheckDuplicate();" })
-                            <label style="color:red" id="lblmsgDesignation"> </label>
+                            @Html.DropDownListFor(m => m.DesignationID, DesignationList, "", new { id = "ddlDesignation", @class = "form-control", placeholder = "Select Designation", tabindex = 17 })
+                            @Html.ValidationMessageFor(model => model.DesignationID, "", new { @class = "text-danger" })
                         </div>
 
 
@@ -204,21 +198,12 @@
     var dateToday = new Date();
     var yrRange = dateToday.getFullYear() - 100 + ":" + (dateToday.getFullYear());
 
-
-        
-
     $(document).ready(function () {
         numeric($('#txtNoOfEmployments'));
         //Hide message label
         $("#lblmsgEducationCategory").hide();
-        $("#lblmsgDesignation").hide();
-        $("#lblmsgDesignation").text("Please enter designation");
         $("#lblmsgEducationCategory").text("Please select Education Category");
-        var designation = $('#ddlDesignation :selected').text();
-        if (designation == "Other") {
-            $("#OtherDesignation").css("display", "block");
-            //  $("#OtherDesignation").text(designation);
-        }
+
         $('#txtDOB').datepicker({
             maxDate: 0,
             showButtonPanel: false,
@@ -283,19 +268,9 @@
                 $("#lblmsgEducationCategory").hide();
             }
         });
-        $("#OtherDesignation").click(function () {
-            if ($("#OtherDesignation").length != 0) {
-                //hide validation error message
-                $("#lblmsgDesignation").hide();
-            }
-            else {
-                $("#lblmsgDesignation").show();
-}
-        });
-
 
         $('#btnSave').click(function () {
-            
+           
             //Education category validationsfor making it mandatory
             if ($("input[name='PostedEducationCategories.EducationCategoryIds']:checked").length == 0)
         {
@@ -303,17 +278,7 @@
                 $("#lblmsgEducationCategory").show();
                 return false;
             }
-            var designation = $('#ddlDesignation :selected').text();
-            if (designation == "Other") {
-                var otherDes = $("#OtherDesignation").val();
-                //var data = { "designation": otherDes }
-                if (otherDes == "") {
-                    $("#anchortag").addClass('disabled').removeAttr("href");
-                    // toastr.error("Please enter the value in textbox");
-                    $("#lblmsgDesignation").show();
-                    return false;
-                }
-            }
+
             //Duplicate username validations
             var isUserExists = false;
             var firstName = $("#txtFirstName").val();
@@ -431,11 +396,4 @@
         );
     });
     //numeric($('#txtContactNumber'));
-
-
-    //$("#DesignationID").change(function () {
-       
-       
-    //    var firstDropVal = $('#pick').val();
-    //});
 </script>

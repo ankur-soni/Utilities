@@ -6,13 +6,6 @@
     var DocumentCategory = (SelectList)ViewBag.DocumentCategory;
     var userId = ViewBag.userId;
 }
-
-<style>
-    .uploadCheckBoxLabel {
-        font-size: 12px;
-        font-style: normal;
-    }
-</style>
 <link href="~/Content/NewUI/css/bootstrap-responsive-tabs.css" rel="stylesheet" />
 <div class="containerInner">
     <div class="row">
@@ -37,7 +30,7 @@
                                 <li class="@(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty)"><a href="#idProof">ID Proof <span id="badgeId" class="badge"></span> </a></li>
                                 <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.AddressProof.ToString()) ? "active" : string.Empty)"><a href="#adressProof">Address Proof <span id="badgeAdd" class="badge"></span> </a></li>
                                 <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Education.ToString()) ? "active" : string.Empty)"><a href="#educational">Educational Documents <span id="badgeEdu" class="badge"></span> </a></li>
-                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)"><a href="#emplyoment">Employment Documents <span id="badgeEmp" class="badge"></span> </a></li>
+                                <li class="@(!string.IsNullOrWhiteSpace(ViewBag.DocCatID) && ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.Employment.ToString()) ? "active" : string.Empty)"><a href="#emplyoment">Employment Documents <span id="badgeEmp"class="badge"></span> </a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @(string.IsNullOrWhiteSpace(ViewBag.DocCatID) || ViewBag.DocCatID.ToString().Equals(Constant.DocumentCategory.IdProof.ToString()) ? "active" : string.Empty) " id="idProof">
@@ -53,18 +46,32 @@
                                     @Html.Partial("_DocumentEmploymentDetails")
                                 </div>
                             </div>
+                            @*Change request - Merged save and next code*@
+                            @*<div class="row btnRow">
+                                <div class="col-md-12">
+                                    <a href="#" onclick="SaveClick();" class="btn-save">Save </a>
+                                </div>
+                            </div>*@
                         </div>
-
+                       
                     </div>
-
+                   
                 </div>
-
+               
             </div>
-
+           
         </div>
-
+        
     </div>
-
+    <div class="row btnRow finalDetailsNext">
+        <div class="col-md-12">
+            @if (ViewBag.IsSubmitted == false)
+            {
+                <a href="#" onclick="NextClick();" class="btn-save">Next</a>
+            }
+            
+        </div>
+    </div>
 </div>
 <div id="documentStatusImageModal" class="modal fade in" aria-hidden="false" style="display:none; padding-right: 17px;">
     <div class="modal-backdrop fade in" style="height: 100%; z-index:0;"></div>
@@ -114,21 +121,91 @@
             $('#documentStatusImageModal').show();
         }
     }
-
-    function NextClick() {
+    @*Change request - Merged save and next code*@
+    @*function SaveClick() {
 
         var validation = true;
 
-        var idProofMand = $("#idProof .docDescription span.mand").length;
+        if ($("#idProof").hasClass('active')) {
+            var idProofMand = $("#idProof .docDescription span.mand").length
+            var addressProofMand = $("#adressProof .docDescription span.mand").length
 
+            if (idProofMand < 1) {
+                validation = false;
+                toastr.error('Please upload mandatory documents.');
+                return false;
+            }
+            else {
+                $("#badgeAdd").parent('a').click();
+                return false;
+            }
+        }
+
+        if ($("#adressProof").hasClass('active')) {
+            $("#badgeEdu").parent('a').click();
+            return false;
+        }
+
+        if ($("#emplyoment").hasClass('active')) {
+            var curemp = $("#emplyoment .company.current-company").find('.mand-field');
+            if ($(curemp).length === 0&& $("#emplyoment .company.non-current-company").find('.mand-field').length == 0)
+            {
+                location.href="@Url.Action("FinalStatus", "Document")";
+            }
+            else {
+                $(curemp).each(function () {
+                    if ($(this).closest('ul.docList').find('span.mand').length == 0) {
+                        validation = false;
+                        toastr.error('Please upload mandatory documents.');
+                        return false;
+
+                    }
+                    else {
+                        location.href="@Url.Action("FinalStatus", "Document")";
+                    }
+                });
+
+                $("#emplyoment .company.non-current-company").find('.mand-field').each(function () {
+                    if ($(this).closest('ul.docList').find('span.mand').length == 0) {
+                        validation = false;
+                        toastr.error('Please upload mandatory documents.');
+                    }
+                    else {
+                        location.href="@Url.Action("FinalStatus", "Document")";
+                    }
+                });
+            }
+
+        }
+        if ($("#educational").hasClass('active')) {
+            $("#educational .docName").each(function () {
+                var uploaddoc = $(this).closest('li').children('ul.docDescription').find('span.mand').length;
+                if (uploaddoc == 0) {
+                    validation = false;
+                    toastr.error('Please upload mandatory documents.');
+                    return false;
+                }
+               
+            });
+            if (validation) {
+                $("#badgeEmp").parent('a').click();
+                return false;
+            }
+        }
+
+        return validation;
+
+
+    }*@
+    @*Change request - Merged save and next code*@
+    function NextClick() {
+       
+        var validation = true;
+
+        var idProofMand = $("#idProof .docDescription span.mand").length;
+       
         if (idProofMand < 1) {
             validation = false;
-        }
-        var passportStatus = $("#hidstatusIDProof").val();
-        if (passportStatus == "true") {
-            if (idProofMand <= 2) {
-                validation = false;
-            }
         }
 
         $("#adressProof .docList").each(function () {
@@ -165,7 +242,7 @@
             return validation;
         }
         else {
-            location.href = "@Url.Action("FinalStatus", "Document")";
+            location.href="@Url.Action("FinalStatus", "Document")";
         }
 
     }
@@ -177,6 +254,7 @@
             $('#collapseOne div.btn-upload').remove();
             $("#collapseOne a.removeDoc").remove();
         }
+
 
         $('.responsive-tabs').responsiveTabs({
             accordionOn: ['xs', 'sm'] // xs, sm, md, lg
@@ -203,89 +281,18 @@
         var addcount = $("#adressProof").find(".uploadName").length;
         var educount = $("#educational").find(".uploadName").length;
         var empcount = $("#emplyoment").find(".uploadName").length;
-        $("#badgeId").html(idcount).attr("title", (idcount == 0 || idcount == 1) ? idcount + " document uploaded" : idcount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
-        $("#badgeAdd").html(addcount).attr("title", (addcount == 0 || addcount == 1) ? addcount + " document uploaded" : addcount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
-        $("#badgeEdu").html(educount).attr("title", (educount == 0 || educount == 1) ? educount + " document uploaded" : educount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
-        $("#badgeEmp").html(empcount).attr("title", (empcount == 0 || empcount == 1) ? empcount + " document uploaded" : empcount + " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeId").html(idcount).attr("title",  (idcount == 0 || idcount == 1)  ? idcount +" document uploaded" : idcount +" documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeAdd").html(addcount).attr("title", (addcount == 0 || addcount == 1) ? addcount+" document uploaded" :addcount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeEdu").html(educount).attr("title", (educount == 0 || educount == 1) ?educount+ " document uploaded" :educount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
+        $("#badgeEmp").html(empcount).attr("title", (empcount == 0 || empcount == 1) ? empcount+" document uploaded" :empcount+ " documents uploaded").attr('data-toggle', "tooltip").attr('data-placement', "right");
         $(".badge").tooltip({
             placement: "top"
         });
 
-        $('#IsAddressProof').change(function () {
-            var detID = $('#hidDocDetIDProof').val();
-            var isAddressProof = $(this).is(":checked");
-            updateIsAddressProofProp({ DocDetID: detID, IsAddressProof: isAddressProof });
-        });
-
-
-        $('#IsIdProof').change(function () {
-            var detID = $('#hidDocDetAddressProof').val();
-            var isIdProof = $(this).is(":checked");
-
-            updateIsIdProofProp({ DocDetID: detID, IsIdProof: isIdProof });
-        });
 
 
     });
 
-
-    function updateIsAddressProofProp(param) {
-
-        ajaxindicatorstart('Please wait..');
-        $.ajax({
-            url: '/Document/UpdateIsAddressProofProp/',
-            type: "POST",
-            data: param,
-            dataType: 'json',
-            success: function (response) {
-                if (response.status = true) {
-                    toastr.success('Updated Sucessfully.');
-                    setTimeout(function () { window.location.href = baseUrl + "?DocCatID=" + "@Constant.DocumentCategory.IdProof"; }, 1600);
-                }
-                else {
-                    toastr.error('Unable to update.');
-                    setTimeout(function () { window.location.href = baseUrl + "?DocCatID=" + "@Constant.DocumentCategory.IdProof"; }, 1600);
-                }
-
-
-                ajaxindicatorstop();
-
-            },
-            error: function (error) {
-                ajaxindicatorstop();
-                toastr.error(JSON.stringify(error.responseText.trim()));
-            }
-        });
-    }
-
-    function updateIsIdProofProp(param) {
-
-        ajaxindicatorstart('Please wait..');
-        $.ajax({
-            url: '/Document/UpdateIsIdProofProp/',
-            type: "POST",
-            data: param,
-            dataType: 'json',
-            success: function (response) {
-                if (response.status = true) {
-                    toastr.success('Updated Sucessfully.');
-                    setTimeout(function () { window.location.href = baseUrl + "?DocCatID=" + "@Constant.DocumentCategory.AddressProof"; }, 1600);
-                }
-                else {
-                    toastr.error('Unable to update.');
-                    setTimeout(function () { window.location.href = baseUrl + "?DocCatID=" + "@Constant.DocumentCategory.AddressProof"; }, 1600);
-                }
-
-
-                ajaxindicatorstop();
-
-            },
-            error: function (error) {
-                ajaxindicatorstop();
-                toastr.error(JSON.stringify(error.responseText.trim()));
-            }
-        });
-    }
 
     function DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo) {
         var data = { DocumentID: DocumentID, EmployementNo: EmployementNo };
@@ -305,10 +312,7 @@
                         toastr.error('Unable to delete uploaded file.');
                         setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 1600);
                     }
-
-
                     ajaxindicatorstop();
-
                 },
                 error: function (error) {
                     ajaxindicatorstop();
@@ -317,7 +321,6 @@
             });
         }
     }
-
 
     function Reset(DocumentID, EmployementNo, EmploymentDetID) {
 
@@ -335,10 +338,7 @@
                   closeButton: false,
                   allowHtml: true,
                   onShown: function (toast) {
-
                       $("#confirmationRevertYes").click(function () {
-
-
                           DeleteUpload(DocumentID, SubDocCat_Pkforcontrol, EmployementNo);
                           var rowid = "Idproof" + SubDocCat_Pkforcontrol;
                           $('#' + rowid).empty();
@@ -347,15 +347,6 @@
                           control.replaceWith(control = control.clone(true));
                           var cancelid = "groupbtn" + SubDocCat_Pkforcontrol;
                           $('#' + cancelid).css('visibility', 'hidden');
-                          var uploadId = "" + SubDocCat_Pkforcontrol;
-                          $('#' + DocumentID).css('visibility', 'hidden');
-                          var upload_Button = '#divUpload' + DocumentID;
-                          $("upload_Button").show();
-                          var upload_Button = '#divUpload' + DocumentID;
-                          $("upload_Button").show();
-
-                          $("#divUpload4").show();
-                          $(".divUploadClass").css("display", "block")
                       });
                       $("#confirmationRevertYes").click(function () {
                           this.fadeOut();
@@ -378,8 +369,7 @@
         var rowid = "Idproof" + DocumentID + EmploymentDetailID;
         var fileName = uploadid.files[0].name;
         var fileExist = false;
-        var isAddressProof = $('#IsAddressProof').is(":checked")
-        var isIdProof = $('#IsIdProof').is(":checked")
+
         $.ajax({
             type: "GET",
             url: '/Document/CheckDuplicateFileName',
@@ -399,7 +389,7 @@
                     $.each($(uploadid).prop("files"), function (k, v) {
                         if (uploadid.files[0].name.length <= 35) {
                             //Code change - Modified save call as per the modified defination
-                            SaveUpload(DocCat_Pk, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, uploadid, isAddressProof, isIdProof);
+                            SaveUpload(DocCat_Pk, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, uploadid);
                         }
                         else {
                             toastr.error('File Name charater limit should be less than 30');
@@ -422,7 +412,7 @@
 
     }
 
-    function SaveUpload(DocCat_Id, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, FileId, IsAddressProof, IsIdProof) {
+    function SaveUpload(DocCat_Id, DocumentID, DocumentCategory, EmployementNo, tempId, EmploymentDetID, FileId) {
         if (EmploymentDetID === undefined) {
             EmploymentDetID = "";
         }
@@ -458,26 +448,11 @@
             return false;
         }
 
-        if (DocCat_Id == "1") {
-            $("#IdProofFormStatus").val("IDProof");
-            $("#AddressProofFormStatus").val("");
-        }
-        else if (DocCat_Id == "2") {
-            $("#AddressProofFormStatus").val("AddressProof");
-            $("#IdProofFormStatus").val("");
-        }
-        var idProofFormStatus = $("#IdProofFormStatus").val();
-        var addressProofFormStatus = $("#AddressProofFormStatus").val();
-
         formData.append("DocCat_Id", DocCat_Id);
         formData.append("DocumentID", DocumentID);
         formData.append("DocumentCategory", DocumentCategory);
         formData.append("EmploymentDetID", EmploymentDetID);
         formData.append("EmployementNo", EmployementNo);
-        formData.append("IsAddressProof", IsAddressProof);
-        formData.append("IsIdProof", IsIdProof);
-        formData.append("IdProofFormStatus", idProofFormStatus);
-        formData.append("AddressProofFormStatus", addressProofFormStatus);
 
         //Code change - Corrected Formatting
         ajaxindicatorstart('Uploading.. Please wait..');
@@ -486,7 +461,7 @@
             url: '/Document/SaveUploadedDocuments',
             data: formData,
             dataType: 'json',
-            contentType: false,
+           contentType: false,
             processData: false,
             async: false,
             success: function (response) {
@@ -501,33 +476,24 @@
                     array = array.concat(res);
                     var DocCategory = "'" + DocumentCategory + "'";
 
-                    $("#hidstatusIDProof").val("true");
-                    $("#hidstatusAddressProof").val("true");
-                    $(".divUploadCheckbox").css("display", "none")
-
                     toastr.success('Document has been uploaded.');
-
-                    $(".divUploadClass").css("display", "none")
-
-
-
                     setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 5000);
-
-
+         
+                 
 
                 }
                 else {
                     toastr.error('Unable to upload file.');
-                    setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); }, 5000);
+                   setTimeout(function () { window.location.href = baseUrl + (response.DocCatID == undefined ? "" : "?DocCatID=" + response.DocCatID); },5000);
 
                 }
                 ajaxindicatorstop();
             },
             error: function (error) {
-                ajaxindicatorstop();
+              ajaxindicatorstop();
                 toastr.error(JSON.stringify(error.responseText.trim()));
             }
         });
-    }
 
+    }
 </script>

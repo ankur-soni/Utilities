@@ -512,13 +512,6 @@
             $("#accordion button").remove();
             $("#ED_SaveData").remove();
         }
-        if ('@ViewBag.IsSubmitted'.toLowerCase() === 'false') {
-            $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save").removeAttr('disabled');
-            $('#FD_Save').add();
-            $("#accordion a.btn-reset,#accordion a.btn-delete").add();
-            $("#accordion button").add();
-            $("#ED_SaveData").add();
-        }
     });
 
 

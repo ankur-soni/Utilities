@@ -33,7 +33,7 @@ namespace Service
 
         public bool Insert(Master_Designation obj, string[] param, string spName)
         {
-            return _designationRepository.Insert(obj, param, spName);
+            throw new NotImplementedException();
         }
 
         public Master_Designation GetById(object Id)

@@ -71,6 +71,7 @@ namespace Data
         public virtual DbSet<EducationCategoryUniversityBoardMapping> EducationCategoryUniversityBoardMappings { get; set; }
         public virtual DbSet<Master_SubDocumentsCategory> Master_SubDocumentsCategory { get; set; }
         public virtual DbSet<PendingCandidateDetail> PendingCandidateDetails { get; set; }
+        public virtual DbSet<Test_CandidateChangeRequestsDetails> Test_CandidateChangeRequestsDetails { get; set; }
         public virtual DbSet<temp_city> temp_city { get; set; }
         public virtual DbSet<temp_uni> temp_uni { get; set; }
     

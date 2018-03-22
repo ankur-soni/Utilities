@@ -12,12 +12,10 @@ namespace Service
     public class EducationService : IEducationService
     {
         private IEducationRepository _IEducationRepository;
-        private readonly IUserService _userService;
 
-        public EducationService(IEducationRepository _IEducationRepository, IUserService userService = null)
+        public EducationService(IEducationRepository _IEducationRepository)
         {
             this._IEducationRepository = _IEducationRepository;
-            _userService = userService;
 
         }
 
@@ -67,19 +65,12 @@ namespace Service
 
         public List<EmployeeEducationDetail> GetEmployeeEducationDetailsByUserID(int UserID)
         {
-            var data = new List<EmployeeEducationDetail>();
-            var selectedCategoriesByAdmin = _userService.GetSelectedCategories(UserID);
+            List<EmployeeEducationDetail> data = null;
+
             using (IPDEntities ctx = new IPDEntities())
             {
-                foreach (var selectedCategory in selectedCategoriesByAdmin)
-                {
-                    var educationDetails =
-                        ctx.EmployeeEducationDetails.FirstOrDefault(m => m.UserID == UserID && m.IsActive == true && m.EducationCategoryID == selectedCategory.EducationCategoryId);
-                    if (educationDetails != null)
-                    {
-                        data.Add(educationDetails);
-                    }
-                }
+                data = ctx.EmployeeEducationDetails.Where(m => m.UserID == UserID && m.IsActive == true).ToList();
+
             }
             return data;
         }
