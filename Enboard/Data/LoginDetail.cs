@@ -28,7 +28,6 @@ namespace Data
             this.CandidateGraphProgressDetails = new HashSet<CandidateGraphProgressDetail>();
             this.EmployeeEducationDetails = new HashSet<EmployeeEducationDetail>();
             this.EmploymentCounts = new HashSet<EmploymentCount>();
-            this.Test_CandidateChangeRequestsDetails = new HashSet<Test_CandidateChangeRequestsDetails>();
         }
     
         public long UserID { get; set; }
@@ -85,7 +84,5 @@ namespace Data
         public virtual ICollection<EmployeeEducationDetail> EmployeeEducationDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmploymentCount> EmploymentCounts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Test_CandidateChangeRequestsDetails> Test_CandidateChangeRequestsDetails { get; set; }
     }
 }
