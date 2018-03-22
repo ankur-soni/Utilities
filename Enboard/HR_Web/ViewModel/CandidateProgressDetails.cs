@@ -368,7 +368,7 @@ namespace HR_Web.ViewModel
                     switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
                     {
                         case Constant.IDProof.PANCard:
-                            actualCount++;
+                            acuatalCount++;
                             break;
                         case Constant.IDProof.Passport:
                             actualCount++;
