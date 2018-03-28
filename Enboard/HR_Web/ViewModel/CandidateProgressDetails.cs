@@ -24,6 +24,31 @@ namespace HR_Web.ViewModel
             _IEmploymentCountService = IEmploymentCountService;
         }
 
+        internal CandidateGraphProgressDetailViewModel GetCandidateProgressDetails(int userId)
+        {
+            var userDetails = _IUserService.GetById(userId);
+            CandidateGraphProgressDetailViewModel candidateGraphProgressDetailViewModel = new CandidateGraphProgressDetailViewModel();
+            CandidateGraphProgressDetail candidateGraphProgressDetail = userDetails.CandidateGraphProgressDetails.FirstOrDefault();
+
+            if (candidateGraphProgressDetail == null)
+                return SaveCandidateProgressDetails(userId);
+
+            Mapper.CreateMap<CandidateGraphProgressDetail, CandidateGraphProgressDetailViewModel>();
+            candidateGraphProgressDetailViewModel = Mapper.Map<CandidateGraphProgressDetail, CandidateGraphProgressDetailViewModel>(candidateGraphProgressDetail);
+
+            candidateGraphProgressDetailViewModel.AverragePercentage = (candidateGraphProgressDetailViewModel.PersonalDetailsPercentage
+                                                                    + candidateGraphProgressDetailViewModel.ContactDetailsPercentage
+                                                                    + candidateGraphProgressDetailViewModel.EducationDetailsPercentage
+                                                                    + candidateGraphProgressDetailViewModel.EmploymentDetailsPercentage
+                                                                    + candidateGraphProgressDetailViewModel.FamilyDetailsPercentage
+                                                                    + candidateGraphProgressDetailViewModel.UploadDcoumentsPercentage) / Convert.ToDouble(6);
+
+
+
+
+            return candidateGraphProgressDetailViewModel;
+        }
+
         internal CandidateGraphProgressDetailViewModel SaveCandidateProgressDetails(int userId)
         {
             var userDetails = _IUserService.GetById(userId);
@@ -69,6 +94,8 @@ namespace HR_Web.ViewModel
                                                                         + candidateGraphProgressDetailViewModel.EmploymentDetailsPercentage
                                                                         + candidateGraphProgressDetailViewModel.FamilyDetailsPercentage
                                                                         + candidateGraphProgressDetailViewModel.UploadDcoumentsPercentage) / Convert.ToDouble(6);
+
+
             }
             catch (Exception ex)
             {
@@ -277,7 +304,7 @@ namespace HR_Web.ViewModel
             {
                 List<DocumentDetail> userEducationDocumentCatList = new List<DocumentDetail>();
                 var userEducationCatList = userDetails.AdminEducationCategoryForUsers.Where(x => x.IsActive == true).ToList();
-                var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true);
+                var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true).Select(x => new DocumentDetail() { DocDetID = x.DocCatID, DocCatID = x.DocCatID, DocumentID=x.DocumentID, EmploymentDetID = x.EmploymentDetID });
                 var educationalDocCount = 0;
                 if ((userEducationCatList.Any() && userEducationCatList.Count != 0) && (documentDetails.Any() && documentDetails.Count() != 0))
                 {

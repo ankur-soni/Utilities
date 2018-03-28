@@ -82,7 +82,7 @@
                                                 <div class="form-group">
                                                     <label class="PastEmployment" style="display:none">Designation (on leaving)</label>
                                                     <label class="currentEmployment">Current Designation</label> <span class="red">*</span>
-                                                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @tabindex = 8, @maxlength = "50" })
+                                                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @tabindex = 8, @maxlength = "100" })
                                                     @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -115,8 +115,8 @@
                                         <div class="row PastEmployment" style="display:none">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>Reason for leaving</label><span class="red">*</span>
-                                                    @Html.EditorFor(x => x.ReasonForLeave, new { @class = "form-control", @maxlength = "500", htmlAttributes = new { rows = 3, style = "width: 100%;" } })
+                                                    <label>Reason for leaving</label><span class="red">*</span>                                                    
+                                                    @Html.TextAreaFor(model => model.ReasonForLeave, 10, 30, new {  placeholder = "Reason for leave", @class = "form-control", tabindex = 11, MaxLength = 349 })
                                                     @Html.ValidationMessageFor(model => model.ReasonForLeave, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
+
 namespace Repository
 {
     public class RepositoryBase<T> : IRepository<T> where T : class
@@ -85,6 +86,7 @@ namespace Repository
 
         //    }
         //            }
+
 
         public bool Update(T entity, Expression<Func<T, object>> property)
         {
