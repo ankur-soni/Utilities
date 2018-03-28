@@ -201,6 +201,12 @@
             $("#accordion a.btn-reset,#accordion a.btn-delete").remove();
             $("#accordion button").remove();
         }
+        if ('@ViewBag.IsSubmitted'.toLowerCase() === 'false') {
+            $("#accordion input,#accordion select,#accordion button,#accordion textarea, #FD_Save").removeAttr('disabled');
+            $('#FD_Save').add();
+            $("#accordion a.btn-reset,#accordion a.btn-delete").add();
+            $("#accordion button").add();
+        }
         if ($('#CD_chk_sameadd').is(":checked")) {
             $(".PermanentAddressForm").slideUp('slow');
             $(".currentAddressForm").css({ 'margin-top': '0px' })

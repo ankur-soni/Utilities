@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Data;
+﻿using Data;
 using Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Service
 {
-   public class DocumentDetailsService :IDocumentDetailsService
+    public class DocumentDetailsService : IDocumentDetailsService
     {
         private IDocumentDetailsRepository _IDocumentDetailsRepository;
 
@@ -42,14 +40,20 @@ namespace Service
             throw new NotImplementedException();
         }
 
+        public bool Update(DocumentDetail obj, Expression<Func<DocumentDetail, object>> property)
+        {
+            return _IDocumentDetailsRepository.Update(obj, property);
+        }
+
         public bool Save()
         {
             return _IDocumentDetailsRepository.Save();
         }
 
         public bool InsertDocDetails(out long ID, DocumentDetail obj, string[] param, string spName)
-        {           
-            bool status =_IDocumentDetailsRepository.Insert(obj, param, spName);
+        {
+
+            bool status = _IDocumentDetailsRepository.Insert(obj, param, spName);
             Save();
             ID = obj.DocDetID;
             return status;

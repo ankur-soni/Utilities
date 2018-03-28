@@ -31,6 +31,8 @@ namespace Data
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<bool> IsAddressProof { get; set; }
+        public Nullable<bool> IsIdProof { get; set; }
     
         public virtual Master_Document Master_Document { get; set; }
         public virtual Master_DocumentCategory Master_DocumentCategory { get; set; }

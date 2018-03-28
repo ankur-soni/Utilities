@@ -98,10 +98,8 @@
         <AssociationConnector Association="IPDModel.fk_UniversityBoardUniversityId_MappingtableUniversityId" />
         <EntityTypeShape EntityType="IPDModel.Master_SubDocumentsCategory" Width="1.5" PointX="3" PointY="25.125" />
         <EntityTypeShape EntityType="IPDModel.PendingCandidateDetail" Width="1.5" PointX="7.375" PointY="0.75" />
-        <EntityTypeShape EntityType="IPDModel.Test_CandidateChangeRequestsDetails" Width="1.5" PointX="7.5" PointY="62.75" />
         <EntityTypeShape EntityType="IPDModel.temp_city" Width="1.5" PointX="9.375" PointY="0.75" />
         <EntityTypeShape EntityType="IPDModel.temp_uni" Width="1.5" PointX="9.375" PointY="3.75" />
-        <AssociationConnector Association="IPDModel.FK_CandidateChangeRequestsDetails_CandidateChangeRequestsDetails_test" />
         <AssociationConnector Association="IPDModel.FK_Master_SubDocumentCategory_Master_DocumentCategory" />
       </Diagram>
     </edmx:Diagrams>

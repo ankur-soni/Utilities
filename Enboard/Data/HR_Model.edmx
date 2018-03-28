@@ -71,6 +71,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
           <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="IsAddressProof" Type="bit" />
+          <Property Name="IsIdProof" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoardMapping' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -155,7 +157,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="OtherSpecialization" Type="varchar" MaxLength="100" />
           <Property Name="ClassID" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" />
-          <Property Name="BreaksDuringEducation" Type="varchar" MaxLength="250" />
+          <Property Name="BreaksDuringEducation" Type="varchar" MaxLength="350" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
@@ -348,7 +350,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.EducationCategoryUniversityBoar
           <Property Name="IsActive" Type="int" />
           <Property Name="IsDelete" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
-          <Property Name="IsFresher" Type="bit"/>
+          <Property Name="IsFresher" Type="bit" />
+          <Property Name="HasPassport" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Master_Bloodgroup">
           <Key>
@@ -2619,6 +2622,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="Master_DocumentCategory" Relationship="IPDModel.FK_DocumentDetails_Master_DocumentCategory" FromRole="DocumentDetail" ToRole="Master_DocumentCategory" />
           <NavigationProperty Name="Master_DocumentCategory1" Relationship="IPDModel.FK_DocumentDetails_Master_SubDocumentCategory" FromRole="DocumentDetail" ToRole="Master_DocumentCategory" />
           <NavigationProperty Name="LoginDetail" Relationship="IPDModel.FK_DocumentDetails_LoginDetails1" FromRole="DocumentDetail" ToRole="LoginDetail" />
+          <Property Name="IsAddressProof" Type="Boolean" />
+          <Property Name="IsIdProof" Type="Boolean" />
         </EntityType>
         <EntityType Name="Master_Document">
           <Key>
@@ -2740,6 +2745,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <NavigationProperty Name="CandidateGraphProgressDetails" Relationship="IPDModel.FK_Graph_Graph1" FromRole="LoginDetail" ToRole="CandidateGraphProgressDetail" />
           <NavigationProperty Name="EmployeeEducationDetails" Relationship="IPDModel.FK_EmployeeEducationDetail_LoginDetails" FromRole="LoginDetail" ToRole="EmployeeEducationDetail" />
           <NavigationProperty Name="EmploymentCounts" Relationship="IPDModel.FK_EmploymentCount_LoginDetails" FromRole="LoginDetail" ToRole="EmploymentCount" />
+          <Property Name="HasPassport" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_AdminEducationCategoryForUser_LoginDetails">
           <End Type="IPDModel.LoginDetail" Role="LoginDetail" Multiplicity="0..1" />
@@ -3700,6 +3706,8 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="DocumentDetails">
             <EntityTypeMapping TypeName="IPDModel.DocumentDetail">
               <MappingFragment StoreEntitySet="DocumentDetails">
+                <ScalarProperty Name="IsIdProof" ColumnName="IsIdProof" />
+                <ScalarProperty Name="IsAddressProof" ColumnName="IsAddressProof" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -3735,6 +3743,7 @@ warning 6002: The table/view 'OnBoarding_Dev.dbo.UserReminder' does not have a p
           <EntitySetMapping Name="LoginDetails">
             <EntityTypeMapping TypeName="IPDModel.LoginDetail">
               <MappingFragment StoreEntitySet="LoginDetails">
+                <ScalarProperty Name="HasPassport" ColumnName="HasPassport" />
                 <ScalarProperty Name="IsFresher" ColumnName="IsFresher"/>
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />

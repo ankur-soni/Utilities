@@ -55,9 +55,10 @@ namespace Data
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> IsSubmitted { get; set; }
         public Nullable<int> IsActive { get; set; }
+        public Nullable<bool> IsFresher { get; set; }
         public Nullable<bool> IsDelete { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
-        public Nullable<bool> IsFresher { get; set; }
+        public string HasPassport { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdminEducationCategoryForUser> AdminEducationCategoryForUsers { get; set; }
@@ -84,6 +85,6 @@ namespace Data
         public virtual ICollection<EmployeeEducationDetail> EmployeeEducationDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmploymentCount> EmploymentCounts { get; set; }
-       
+
     }
 }

@@ -69,5 +69,10 @@
             $("#accordion a.btn-reset,#accordion a.btn-delete").remove();
             $("#accordion button").remove();
         }
+        if ('@ViewBag.IsSubmitted'.toLowerCase() === 'false') {
+            $("#accordion input,#accordion select,#accordion button,#accordion textarea").removeAttr('disabled');
+            $("#accordion a.btn-reset,#accordion a.btn-delete").add();
+            $("#accordion button").add();
+        }
     });
 </script>

@@ -1,13 +1,12 @@
-﻿using Data;
+﻿using AutoMapper;
+using Data;
+using HR_Web.Utilities;
+using Models;
 using Service;
 using Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Models;
-using AutoMapper;
-using HR_Web.Utilities;
 namespace HR_Web.ViewModel
 {
     internal class CandidateProgressDetails
@@ -353,29 +352,43 @@ namespace HR_Web.ViewModel
         private double GetDocumentPercentageIDProof(IEnumerable<DocumentDetail> DocumentDetails)
         {
             double uploadDocumentPercentage = 0.0;
-            int acuatalCount = 0;
+            int actualCount = 0;
+
+
             if (DocumentDetails.Any() && DocumentDetails.Count() != 0)
             {
+                string hasPassport = string.Empty;
+                hasPassport = DocumentDetails.FirstOrDefault().LoginDetail.HasPassport;
+                var requiredCountForIdProof = string.IsNullOrWhiteSpace(hasPassport) ? 1 : 2;
+
                 foreach (var item in DocumentDetails.GroupBy(x => x.DocumentID).Distinct())
                 {
+
+
                     switch (item.FirstOrDefault() != null ? item.FirstOrDefault().DocumentID : 0)
                     {
                         case Constant.IDProof.PANCard:
-                            acuatalCount++;
+                            actualCount++;
                             break;
-                        //case Constant.IDProof.DrivingLicence: acuatalCount++;
-                        //    break;
-                        //case Constant.IDProof.VoterID: acuatalCount++;
-                        //    break;
-                        //case Constant.IDProof.MarriageCertificate: acuatalCount++;
-                        //    break;
+                        case Constant.IDProof.Passport:
+                            actualCount++;
+                            break;
                         default:
                             break;
                     }
+
+                    if (actualCount >= requiredCountForIdProof)
+                    {
+                        uploadDocumentPercentage = 100;
+                    }
+                    else
+                    {
+                        uploadDocumentPercentage = (Convert.ToDouble(actualCount) / Convert.ToDouble(requiredCountForIdProof)) * Convert.ToDouble(100);
+                    }
+
                 }
-                uploadDocumentPercentage = (Convert.ToDouble(acuatalCount) / Convert.ToDouble(1)) * Convert.ToDouble(100);
             }
-            return uploadDocumentPercentage;
+            return uploadDocumentPercentage >= 100 ? 100 : uploadDocumentPercentage;
         }
 
         private double GetDocumentPercentageAddressProof(IEnumerable<DocumentDetail> DocumentDetails, int requiredCount)
