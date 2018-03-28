@@ -304,7 +304,7 @@ namespace HR_Web.ViewModel
             {
                 List<DocumentDetail> userEducationDocumentCatList = new List<DocumentDetail>();
                 var userEducationCatList = userDetails.AdminEducationCategoryForUsers.Where(x => x.IsActive == true).ToList();
-                var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true).Select(x => new DocumentDetail() { DocDetID = x.DocCatID, DocCatID = x.DocCatID, DocumentID=x.DocumentID, EmploymentDetID = x.EmploymentDetID });
+                var documentDetails = userDetails.DocumentDetails.Where(x => x.IsActive == true).Select(x => new DocumentDetail() { DocDetID = x.DocCatID, DocCatID = x.DocCatID, DocumentID=x.DocumentID, EmploymentDetID = x.EmploymentDetID , LoginDetail = x.LoginDetail});
                 var educationalDocCount = 0;
                 if ((userEducationCatList.Any() && userEducationCatList.Count != 0) && (documentDetails.Any() && documentDetails.Count() != 0))
                 {
