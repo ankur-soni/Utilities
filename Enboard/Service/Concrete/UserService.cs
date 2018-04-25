@@ -678,7 +678,7 @@ namespace Service
             var users = new List<LoginDetail>();
             using (var context = new IPDEntities())
             {
-                users = context.LoginDetails.Where(x => x.IsActive == 1 && x.RoleID == 16).ToList();
+                users = context.LoginDetails.Where(x => x.IsActive == 1 && x.RoleID == 16 && (!x.IsDelete??false)).ToList();
                 return users;
             }
         }
