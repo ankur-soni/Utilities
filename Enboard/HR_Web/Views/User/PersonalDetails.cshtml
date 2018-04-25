@@ -772,8 +772,10 @@
             type: "POST",
             success: function (data) {
                 var markup = "<option value=''></option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                if (data.length > 1) {
+                    for (var x = 0; x < data.length; x++) {
+                        markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                    }
                 }
                 markup += "<option value=" + '@CityList.LastOrDefault().Value' + ">" + '@CityList.LastOrDefault().Text' + "</option>";
 
