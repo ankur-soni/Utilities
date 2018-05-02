@@ -88,7 +88,8 @@ namespace Service
                         IsActive = x.IsActive,
                         DocumentID = x.DocumentID,
                         IsAddressProof = x.IsAddressProof,
-                        EmploymentDetID = x.EmploymentDetID
+                        EmploymentDetID = x.EmploymentDetID,
+                        IsIdProof = x.IsIdProof
                     }).ToList().Select(d => new DocumentDetail {
                         DocumentName = d.DocumentName,
                         DocCatID = d.DocCatID,
@@ -97,7 +98,8 @@ namespace Service
                         IsActive = d.IsActive,
                         DocumentID = d.DocumentID,
                         IsAddressProof = d.IsAddressProof,
-                        EmploymentDetID = d.EmploymentDetID
+                        EmploymentDetID = d.EmploymentDetID,
+                        IsIdProof = d.IsIdProof
                     }).ToList();
                 }
             }
