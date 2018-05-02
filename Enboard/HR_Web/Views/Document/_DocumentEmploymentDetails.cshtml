@@ -45,7 +45,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).AsQueryable();}
+                                                @{_documentDetailList = Model.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).AsQueryable();}
 
                                                 @if (_documentDetailList.Any())
                                                 {
@@ -98,7 +98,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).AsQueryable();}
+                                                @{_documentDetailList = @Model.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID && x.EmploymentDetID == documentId.EmploymentDetID).AsQueryable();}
 
                                                 @if (_documentDetailList.Any())
                                                 {

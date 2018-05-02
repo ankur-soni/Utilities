@@ -15,7 +15,8 @@ namespace Models
         public List<int> EducationCategoryList { get; set; }
         public List<EmploymentDetail> EmploymentDetailsList { get; set; }
         public List<Master_Document> Master_DocumentList { set; get; }
-         public string HavePassport { get; set; }
+        public List<DocumentDetail> DocumentDetails { set; get; }
+        public string HavePassport { get; set; }
         public bool IsAddressProof { get; set; }
         public bool IsIdProof { get; set; }
         public string IdProofFormStatus { get; set; }

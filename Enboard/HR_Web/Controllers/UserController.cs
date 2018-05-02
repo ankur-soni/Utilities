@@ -543,10 +543,7 @@ namespace HR_Web.Controllers
                     else
                     {
                         result = result.OrderByDescending(x => x.LoginDetail.FirstName).ToList();
-
                     }
-
-
                 }
 
                 if (Request.IsAjaxRequest())
@@ -2399,7 +2396,7 @@ namespace HR_Web.Controllers
 
         private void ConvertByteStreemToZip(int userId)
         {
-            var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "").Where(m => m.UserID == userId && m.IsActive == true);
+            var docDetails_lst = _IDocumentDetailsService.GetDocumentDetailsByUserId(userId);
             var userDetails = _IUserService.GetById(userId);
             string filename = userDetails.FirstName + "_" + userDetails.LastName;
             string folderPath = Path.Combine(Server.MapPath("~/UploadedDocuments/"), filename);

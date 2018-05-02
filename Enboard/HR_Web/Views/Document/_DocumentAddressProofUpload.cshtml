@@ -26,8 +26,8 @@
         @Html.HiddenFor(m => m.AddressProofFormStatus)
         @{
 
-            var docs = _Master_DocumentListAddress.Where(t => t.DocCatID == Constant.DocumentCategory.IdProof);
-            bool anyPassportDocAsIDProof = docs.Any(t => t.DocumentDetails.Any(b => b.UserID == ViewBag.userId && b.DocumentID == Constant.IDProof.Passport && b.IsActive == true));
+            var docs = Model.DocumentDetails.Where(t => t.DocCatID == Constant.DocumentCategory.IdProof);
+            bool anyPassportDocAsIDProof = docs.Any(b => b.UserID == ViewBag.userId && b.DocumentID == Constant.IDProof.Passport && b.IsActive == true);
         }
         @foreach (var item in _Master_DocumentListAddress.Where(x => x.DocCatID == Constant.DocumentCategory.AddressProof).AsQueryable())
         {
@@ -43,7 +43,7 @@
                                 <span class="divUploadAsIdCheckbox">
                                     <br />
                                     <label class="uploadCheckBoxLabel">Use as id proof</label>
-                                    @UploadCheckBox(!item.DocumentDetails.Any(t => t.UserID == ViewBag.userId && t.DocumentID == Constant.AddressProof.Passport && t.IsActive == true),anyPassportDocAsIDProof)
+                                    @UploadCheckBox(!Model.DocumentDetails.Any(t => t.UserID == ViewBag.userId && t.DocumentID == Constant.AddressProof.Passport && t.IsActive == true),anyPassportDocAsIDProof)
                                 </span>
                             }
                         }
@@ -61,7 +61,7 @@
                         </li>
                     </ul>
 
-                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
+                    @{_documentDetailList = Model.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
                     {
                         <ul class="docDescription">
@@ -82,7 +82,7 @@
                                     </li>
                                 }
                             }
-                            @if (item.DocumentID == Constant.AddressProof.Passport && item.DocumentDetails.Count == 0)
+                            @if (item.DocumentID == Constant.AddressProof.Passport && Model.DocumentDetails.Count == 0)
                             {
                                 <li class="addDocument">
                                     <span class="userNote"> &nbsp; </span>

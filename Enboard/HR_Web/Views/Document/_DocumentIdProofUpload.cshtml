@@ -24,8 +24,8 @@
     <ul class="docList">
         @Html.HiddenFor(m => m.IdProofFormStatus)
         @{
-            var docs = _Master_DocumentListIDProof.Where(t => t.DocCatID == Constant.DocumentCategory.AddressProof);
-            bool anyPassportDocAsAddressProof = docs.Any(t => t.DocumentDetails.Any(b => b.UserID == ViewBag.userId && b.DocumentID == Constant.AddressProof.Passport && b.IsActive == true));
+            var docs = Model.DocumentDetails.Where(t => t.DocCatID == Constant.DocumentCategory.AddressProof);
+            bool anyPassportDocAsAddressProof = docs.Any(b => b.UserID == ViewBag.userId && b.DocumentID == Constant.AddressProof.Passport && b.IsActive == true);
         }
         @foreach (var item in _Master_DocumentListIDProof.Where(x => x.DocCatID == Constant.DocumentCategory.IdProof).AsQueryable())
         {
@@ -47,7 +47,7 @@
                         <br />
                         <span class="divUploadAsAddressCheckbox">
                             <label class="uploadCheckBoxLabel">Use as address proof</label>
-                            @UploadCheckBox(!item.DocumentDetails.Any(t => t.UserID == ViewBag.userId && t.DocumentID == Constant.IDProof.Passport && t.IsActive == true),
+                            @UploadCheckBox(!Model.DocumentDetails.Any(t => t.UserID == ViewBag.userId && t.DocumentID == Constant.IDProof.Passport && t.IsActive == true),
          anyPassportDocAsAddressProof)                            
                         </span>
                         }
@@ -66,7 +66,7 @@
                         </li>
                     </ul>
 
-                    @{_documentDetailList = item.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
+                    @{_documentDetailList = Model.DocumentDetails.Where(x => x.UserID == ViewBag.userId && x.IsActive == true && x.DocumentID == item.DocumentID).AsQueryable();}
                     @if (_documentDetailList.Any())
                     {
 

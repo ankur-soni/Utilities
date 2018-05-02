@@ -71,12 +71,9 @@ namespace HR_Web.Controllers
             _IEmployeeService = IEmployeeService;
         }
 
-        [HttpGet]
-        [Authorize]
-        [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
         public ActionResult Index(string DocCatID)
         {
-            List<Master_Document> DocumentDetaillist = new List<Master_Document>();
+            var documentDetaillist = new List<DocumentDetail>();
 
             ViewBag.WebUrl = System.Configuration.ConfigurationManager.AppSettings["WebUrl"].ToString();
             ViewBag.WebUrlUploadedFolder = System.Configuration.ConfigurationManager.AppSettings["WebUrlUploadedFolder"].ToString();
@@ -84,43 +81,38 @@ namespace HR_Web.Controllers
             ViewBag.DocumentCategory = GetDocumentCategory();
             bool isAddressProof = false;
             bool isIdProof = false;
+            var master_DocumentList = new List<Master_Document>();
 
             if (System.Web.HttpContext.Current.Request.IsAuthenticated)
             {
                 userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
                 ViewBag.userId = userId;
                 userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-
-                DocumentDetaillist = _IDocumentService.GetAll(null, null, "").ToList();
+                master_DocumentList =  _IDocumentService.GetAll(null, null, "").ToList();
+                documentDetaillist = _IDocumentDetailsService.GetDocumentDetailsByUserId(userId);
             }
-
-
-
-            foreach (var documentDetailsList in DocumentDetaillist)
+           
+            foreach (var documentDetails in documentDetaillist)
             {
-                foreach (var documentDetails in documentDetailsList.DocumentDetails)
+                documentDetails.UpdatedDate = TimeZoneInfo.ConvertTimeFromUtc(documentDetails.UpdatedDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                if (documentDetails.DocumentID == IDProof.Passport && documentDetails.DocCatID == DocumentCategory.IdProof && documentDetails.IsActive == true)
                 {
-
-                    documentDetails.UpdatedDate = TimeZoneInfo.ConvertTimeFromUtc(documentDetails.UpdatedDate.Value, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    if (documentDetails.DocumentID == IDProof.Passport && documentDetails.DocCatID == DocumentCategory.IdProof && documentDetails.IsActive == true)
+                    if (documentDetails.IsAddressProof != null)
                     {
-                        if (documentDetails.IsAddressProof != null)
-                        {
-                            isAddressProof = documentDetails.IsAddressProof.Value;
-                        }
-
-                    }
-
-                    if (documentDetails.DocumentID == AddressProof.Passport && documentDetails.DocCatID == DocumentCategory.AddressProof && documentDetails.IsActive == true)
-                    {
-                        if (documentDetails.IsIdProof != null)
-                        {
-                            isIdProof = documentDetails.IsIdProof.Value;
-                        }
-
+                        isAddressProof = documentDetails.IsAddressProof.Value;
                     }
 
                 }
+
+                if (documentDetails.DocumentID == AddressProof.Passport && documentDetails.DocCatID == DocumentCategory.AddressProof && documentDetails.IsActive == true)
+                {
+                    if (documentDetails.IsIdProof != null)
+                    {
+                        isIdProof = documentDetails.IsIdProof.Value;
+                    }
+
+                }
+
             }
 
             ViewBag.DocCatID = DocCatID;
@@ -136,18 +128,17 @@ namespace HR_Web.Controllers
 
             return View(new DocumentDetailListViewModel()
             {
-                Master_DocumentList = DocumentDetaillist,
+                Master_DocumentList = master_DocumentList,
                 EmploymentDetailsList = GetEmploymentDetailsList(userId),
                 EducationCategoryList = GetEducationCategoryList(userId),
                 HavePassport = hasPassport,
                 IsAddressProof = isAddressProof,
-                IsIdProof = isIdProof
-                //IsIdProof = true,
-                //IsAddressProof= true
-
+                IsIdProof = isIdProof,
+                DocumentDetails = documentDetaillist
             });
         }
 
+       
         private List<EmploymentDetail> GetEmploymentDetailsList(int userId)
         {
             return _IEmployementService.GetEmploymnetByUser(userId);
@@ -190,9 +181,7 @@ namespace HR_Web.Controllers
 
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-            var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-
-            var documentInfo = docDetails_lst.Where(d => d.DocumentID == Convert.ToInt32(saveUploadDocumentVewModel.DocumentID)).FirstOrDefault(); ;
+            var docDetails_lst = _IDocumentDetailsService.GetDocumentDetails();
 
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -223,32 +212,7 @@ namespace HR_Web.Controllers
                         path = Path.Combine(Server.MapPath("~/UploadedDocuments/"), fileName);
                         file.SaveAs(path);
 
-                        if (string.IsNullOrEmpty(saveUploadDocumentVewModel.EmployementNo))
-                        {
-                            var obj = docDetails_lst.Where(u => u.UserID == userId && u.DocCatID == Convert.ToInt32(saveUploadDocumentVewModel.DocCat_Id) && u.IsActive == true).ToList();
-                            if (obj != null && obj.Count > 0)
-                            {
-                                foreach (var item in obj)
-                                {
-                                    item.IsActive = true;
-
-                                    //_document.
-                                    // item.Master_Document.
-
-                                    //item.DocCatID = 1;
-
-                                    //status = _IDocumentDetailsService.Update(item, null, "");
-
-                                    //item.DocCatID = 2;
-                                    ////  status = _IDocumentDetailsService.InsertDocDetails(out id, _docDetails, null, "");
-
-                                    status = _IDocumentDetailsService.Update(item, null, "");
-
-
-                                }
-
-                            }
-                        }
+                       
 
                         _docDetails.UserID = userId;
                         _docDetails.DocCatID = Convert.ToInt32(saveUploadDocumentVewModel.DocCat_Id);
@@ -261,8 +225,6 @@ namespace HR_Web.Controllers
                         _docDetails.CreatedBy = userName;
                         _docDetails.CreatedDate = DateTime.UtcNow;
                         _docDetails.IsActive = true;
-                        //_docDetails.IsAddressProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsAddressProof);
-                        // _docDetails.IsIdProof = Convert.ToBoolean(saveUploadDocumentVewModel.IsIdProof);
                         _docDetails.Data = FileToByteArray(fileName, path);
 
                         _docDetails.DocumentID = Convert.ToInt32(saveUploadDocumentVewModel.DocumentID);
@@ -339,8 +301,10 @@ namespace HR_Web.Controllers
         [HttpGet]
         public ActionResult CheckDuplicateFileName(string DocCat_Id, string DocumentID, string fileName, string EmploymentDetailID)
         {
-            var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
+            //var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
+            var docDetails_lst = _IDocumentDetailsService.GetDocumentDetailsByUserId(userId);
+
             long longEmploymentDetailID;
             long.TryParse(EmploymentDetailID, out longEmploymentDetailID);
             var obj = docDetails_lst.Where(u => u.EmploymentDetID == longEmploymentDetailID && u.UserID == userId && u.DocumentID == Convert.ToInt32(DocumentID) && u.DocCatID == Convert.ToInt32(DocCat_Id) && u.IsActive == true && u.DocumentName == fileName).ToList();
@@ -429,7 +393,7 @@ namespace HR_Web.Controllers
             bool status = false;
             userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
             userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-            var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
+            var docDetails_lst = _IDocumentDetailsService.GetDocumentDetails();
             if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
             {
                 //Code change - EDMX Fix 
@@ -441,17 +405,14 @@ namespace HR_Web.Controllers
                         item.IsActive = false;
                         item.UpdatedBy = userName;
                         item.UpdatedDate = DateTime.UtcNow;
-                        status = _IDocumentDetailsService.Update(item, null, "");
+                        status = _IDocumentDetailsService.SetInactive(item);
 
                         if (item.DocumentID == IDProof.Passport && item.IsAddressProof == true)
                         {
                             var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == AddressProof.Passport && u.IsActive == true);
                             if (cloneObj != null)
                             {
-                                cloneObj.IsActive = false;
-                                cloneObj.UpdatedBy = userName;
-                                cloneObj.UpdatedDate = DateTime.UtcNow;
-                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                                status = _IDocumentDetailsService.SetInactive(cloneObj);
                             }
                         }
                         else if (item.DocumentID == AddressProof.Passport && item.IsIdProof == true)
@@ -459,10 +420,7 @@ namespace HR_Web.Controllers
                             var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == IDProof.Passport && u.IsActive == true);
                             if (cloneObj != null)
                             {
-                                cloneObj.IsActive = false;
-                                cloneObj.UpdatedBy = userName;
-                                cloneObj.UpdatedDate = DateTime.UtcNow;
-                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                                status = _IDocumentDetailsService.SetInactive(cloneObj);
                             }
                         }
                     }
@@ -480,16 +438,13 @@ namespace HR_Web.Controllers
                     foreach (var item in obj)
                     {
                         item.IsActive = false;
-                        status = _IDocumentDetailsService.Update(item, null, "");
+                        status = _IDocumentDetailsService.SetInactive(item);
                         if (item.DocumentID == IDProof.Passport && item.IsAddressProof == true)
                         {
                             var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == AddressProof.Passport && u.IsActive == true);
                             if (cloneObj != null)
                             {
-                                cloneObj.IsActive = false;
-                                cloneObj.UpdatedBy = userName;
-                                cloneObj.UpdatedDate = DateTime.UtcNow;
-                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                                status = _IDocumentDetailsService.SetInactive(cloneObj);
                             }
                         }
                         else if (item.DocumentID == AddressProof.Passport && item.IsIdProof == true)
@@ -497,10 +452,7 @@ namespace HR_Web.Controllers
                             var cloneObj = docDetails_lst.FirstOrDefault(u => u.UserID == userId && u.DocumentID == IDProof.Passport && u.IsActive == true);
                             if (cloneObj != null)
                             {
-                                cloneObj.IsActive = false;
-                                cloneObj.UpdatedBy = userName;
-                                cloneObj.UpdatedDate = DateTime.UtcNow;
-                                status = _IDocumentDetailsService.Update(cloneObj, null, "");
+                                status = _IDocumentDetailsService.SetInactive(cloneObj);
                             }
                         }
                     }
@@ -510,101 +462,26 @@ namespace HR_Web.Controllers
             }
 
         }
-        //[HttpPost]
-        //public ActionResult DeleteUploadedDocuments(string isAddressProof, string isIdProof, string DocumentID = "", string EmployementNo = "", string docDetAddress = "", string docDetId = "")
+       
+        //-- Unused Method
+        //private List<DocumentDetail> DeleteUploadDocument(int DocumentID)
         //{
         //    bool status = false;
-        //    userId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name.Split('|')[1]);
-        //    userName = System.Web.HttpContext.Current.User.Identity.Name.Split('|')[0];
-        //    var addressProofStatus = false;
-        //    var idProofStatus = false;
         //    var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-        //    addressProofStatus = Convert.ToBoolean(isAddressProof);
-        //    idProofStatus = Convert.ToBoolean(isIdProof);
-        //    if (!string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
+        //    var obj = docDetails_lst.Where(u => u.UserID == userId && u.DocDetID == DocumentID && u.IsActive == true).ToList();
+        //    if (obj != null)
         //    {
 
-        //        if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
+        //        foreach (var item in obj)
         //        {
-        //            var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-        //            var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-        //            return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault() != null ? docIdObj.SingleOrDefault().DocCatID : 1 : 1 });
-        //        }
-        //        else if (idProofStatus == true && addressProofStatus == false && DocumentID == IDProof.Passport.ToString())
-        //        {
-        //            var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-        //            var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-        //            return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
-        //        }
-        //        else
-        //        {
-        //            List<DocumentDetail> docIdObj = null;
-        //            if (!string.IsNullOrEmpty(DocumentID))
-        //            {
-        //                // var docAddressObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-        //                docIdObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
-        //            }
-        //            return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
+        //            item.IsActive = false;
+        //            item.UpdatedBy = userName;
+        //            item.UpdatedDate = DateTime.UtcNow;
+        //            status = _IDocumentDetailsService.Update(item, null, "");
         //        }
         //    }
-        //    else if (!string.IsNullOrEmpty(docDetId) && string.IsNullOrEmpty(docDetAddress))
-        //    {
-        //        var docIdObj = DeleteUploadDocument(Convert.ToInt32(docDetId));
-        //        return Json(new { status = status, DocCatID = docIdObj != null ? docIdObj.SingleOrDefault().DocCatID : 1 });
-        //    }
-        //    else if (string.IsNullOrEmpty(docDetId) && !string.IsNullOrEmpty(docDetAddress))
-        //    {
-        //        var docObj = DeleteUploadDocument(Convert.ToInt32(docDetAddress));
-        //        return Json(new { status = status, DocCatID = docObj != null ? docObj.SingleOrDefault().DocCatID : 1 });
-        //    }
-        //    else
-        //    {
-        //        //  var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-        //        if (!string.IsNullOrEmpty(DocumentID) && string.IsNullOrEmpty(EmployementNo))
-        //        {
-        //            //Code change - EDMX Fix 
-        //            var docObj = DeleteUploadDocument(Convert.ToInt32(DocumentID));
-
-        //            return Json(new { status = status, DocCatID = docObj != null ? docObj.SingleOrDefault().DocCatID : 1 });
-
-        //        }
-        //        else
-        //        {
-        //            //EDMX Fix - Commenting below code as its not in use 
-        //            var obj = docDetails_lst.Where(u => u.UserID == userId && u.IsActive == true).ToList();
-        //            if (obj != null)
-        //            {
-        //                foreach (var item in obj)
-        //                {
-        //                    item.IsActive = false;
-        //                    status = _IDocumentDetailsService.Update(item, null, "");
-        //                }
-        //            }
-
-        //            return Json(new { status = status, DocCatID = obj != null ? obj.SingleOrDefault().DocCatID : 1 });
-        //        }
-
-        //    }
-
+        //    return obj;
         //}
-        private List<DocumentDetail> DeleteUploadDocument(int DocumentID)
-        {
-            bool status = false;
-            var docDetails_lst = _IDocumentDetailsService.GetAll(null, null, "");
-            var obj = docDetails_lst.Where(u => u.UserID == userId && u.DocDetID == DocumentID && u.IsActive == true).ToList();
-            if (obj != null)
-            {
-
-                foreach (var item in obj)
-                {
-                    item.IsActive = false;
-                    item.UpdatedBy = userName;
-                    item.UpdatedDate = DateTime.UtcNow;
-                    status = _IDocumentDetailsService.Update(item, null, "");
-                }
-            }
-            return obj;
-        }
 
 
         [HttpGet]
